@@ -2,7 +2,6 @@ rootProject.name = "webgpu-ktypes-root"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
-    includeBuild("generator")
     repositories {
         gradlePluginPortal()
         google()
@@ -22,3 +21,4 @@ dependencyResolutionManagement {
 include("webgpu-ktypes")
 include("webgpu-ktypes-descriptors")
 include("webgpu-ktypes-web")
+include("webgpu-ktypes-specifications")
