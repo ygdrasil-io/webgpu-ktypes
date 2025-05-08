@@ -20,10 +20,8 @@ class MapperContext(
 
     fun adaptToGuidelines() {
 
-        interfaces.find { it.name == "GPUDevice" }!!.apply {
-            // TODO move them to device descriptor
-            attributes = attributes.filter { it.name !in listOf("lost", "onuncapturederror") }
-        }
+        generateUncapturedErrorCallback()
+        changeGPUErrorAsSealed()
 
         // If interface contains destroy, we set it as AutoCloseable
         interfaces.forEach { kinterface ->
@@ -95,6 +93,29 @@ class MapperContext(
                 parameters = parameters.filter { it.name in listOf("index", "bindGroup", "dynamicOffsetsData") }
                 parameters.first { it.name == "dynamicOffsetsData"}.defaultValue = "emptyList()"
             }
+        }
+    }
+
+    private fun changeGPUErrorAsSealed() {
+        interfaces.find { it.name == "GPUError" }!!.apply {
+           sealed = true
+        }
+    }
+
+    private fun generateUncapturedErrorCallback() {
+        interfaces.find { it.name == "GPUDevice" }!!.apply {
+            attributes = attributes.filter { it.name !in listOf("lost", "onuncapturederror") }
+        }
+        descriptors.find { it.name == "GPUDeviceDescriptor" }!!.apply {
+            parameter += DescriptorClass.Parameter("onUncapturedError", "GPUUncapturedErrorCallback?", defaultValue = "null")
+        }
+        interfaces.find { it.name == "GPUDeviceDescriptor" }!!.apply {
+            attributes += Interface.Attribute("onUncapturedError", "GPUUncapturedErrorCallback?", true)
+        }
+        interfaces += Interface("GPUUncapturedErrorCallback", functional = true).apply {
+            methods += Interface.Method("onUncapturedError", "Unit", listOf(
+                Interface.Method.Parameter("error", "GPUError")
+            ))
         }
     }
 

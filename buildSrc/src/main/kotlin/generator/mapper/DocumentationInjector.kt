@@ -16,21 +16,39 @@ internal fun MapperContext.injectDocumentation(documentation: Map<String, String
         }
 
         kInterface.methods.forEach { attribute ->
-            documentation.get("${kInterface.name}#${attribute.name}(${attribute.parameters.joinToString(", ") { it.name }})")?.let {
+            documentation.get("${kInterface.name}#${attribute.name}(${attribute.parameters.joinToString(", ") { it.name }})")
+                ?.let {
+                    attribute.kDoc = KDoc(it, 1)
+                }
+        }
+    }
+
+    descriptors.forEach { descriptor ->
+        documentation.get(descriptor.name)?.let {
+            descriptor.kDoc = KDoc(it)
+        }
+
+        descriptor.parameter.forEach { attribute ->
+            documentation.get("${descriptor.name}#${attribute.name}")?.let {
                 attribute.kDoc = KDoc(it, 1)
             }
         }
+
     }
 
-    commonEnumerations.forEach { enumeration ->
-        documentation.get(enumeration.name)?.let {
-            enumeration.kDoc = KDoc(it)
-        }
+    (commonEnumerations + commonWebEnumerations + commonNativeEnumerations)
+        .forEach { enumeration ->
+            documentation.get(enumeration.name)?.let {
+                enumeration.kDoc = KDoc(it)
+            }
 
-        enumeration.values.forEach { value ->
-            documentation.get("${enumeration.name}#${value.name}")?.let {
-                value.kDoc = KDoc(it, 1)
+            enumeration.values.forEach { value ->
+                // Remove parameters from the documentation reference
+                val name = value.name.substringBefore("(")
+                documentation.get("${enumeration.name}#$name")?.let {
+                    value.kDoc = KDoc(it, 1)
+                }
             }
         }
-    }
+
 }
