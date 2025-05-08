@@ -1898,6 +1898,20 @@ interface GPUDeviceDescriptor : GPUObjectDescriptorBase {
 	 * 
 	 */
 	val defaultQueue: GPUQueueDescriptor
+	/**
+	 * An optional callback function used to handle uncaptured GPU errors associated with a GPU device.
+	 * 
+	 * This property can be set to a user-defined [GPUUncapturedErrorCallback] to intercept and process
+	 * uncaptured errors triggered by WebGPU operations. These errors might otherwise not be explicitly
+	 * handled by the application, such as those originating from the `uncapturederror` event.
+	 * 
+	 * Assigning a value to this property provides a mechanism for developers to log, debug, or respond
+	 * to uncaptured errors in a centralized manner, improving error-handling workflows for GPU-related
+	 * operations.
+	 * 
+	 * If set to `null`, no callback will be executed for uncaptured errors.
+	 * 
+	 */
 	val onUncapturedError: GPUUncapturedErrorCallback?
 }
 

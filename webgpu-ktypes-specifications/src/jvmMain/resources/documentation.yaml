@@ -1397,6 +1397,18 @@
   **Default Value:** An empty `GPUQueueDescriptor`
   
   For more details, refer to the [WebGPU specification on `defaultQueue`](https://www.w3.org/TR/webgpu/#dom-gpudevicedescriptor-defaultqueue).
+"GPUDeviceDescriptor#onUncapturedError": |
+  An optional callback function used to handle uncaptured GPU errors associated with a GPU device.
+  
+  This property can be set to a user-defined [GPUUncapturedErrorCallback] to intercept and process
+  uncaptured errors triggered by WebGPU operations. These errors might otherwise not be explicitly
+  handled by the application, such as those originating from the `uncapturederror` event.
+  
+  Assigning a value to this property provides a mechanism for developers to log, debug, or respond
+  to uncaptured errors in a centralized manner, improving error-handling workflows for GPU-related
+  operations.
+  
+  If set to `null`, no callback will be executed for uncaptured errors.
 "GPUBufferDescriptor": |
   Represents a descriptor for creating GPU buffers. This interface extends [GPUObjectDescriptorBase](https://www.w3.org/TR/webgpu/#gpuobjectdescriptorbase) and is used to specify the properties of a buffer, such as its size, usage flags, and whether it should be mapped at creation.
   

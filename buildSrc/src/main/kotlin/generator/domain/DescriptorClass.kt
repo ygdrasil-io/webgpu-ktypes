@@ -9,7 +9,7 @@ class DescriptorClass(val name: String, var parameter: List<Parameter>) {
 
         override fun toString(): String = StringBuilder().apply {
             kDoc?.let { append(it) }
-            append("override val $name: $type")
+            append("\toverride val $name: $type")
             if (defaultValue != null) append(" = $defaultValue")
         }.toString()
     }
@@ -19,7 +19,7 @@ class DescriptorClass(val name: String, var parameter: List<Parameter>) {
         append("data class ${name.removePrefix("GPU")}(\n")
         (parameter.filter { it.defaultValue == null } +
         parameter.filter { it.defaultValue != null }).let {
-            append(it.joinToString(",\n") { "\t$it" })
+            append(it.joinToString(",\n") { "$it" })
         }
         append("\n): $name\n")
     }.toString()

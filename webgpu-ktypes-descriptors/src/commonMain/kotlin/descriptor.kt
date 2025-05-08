@@ -9,34 +9,34 @@ package io.ygdrasil.webgpu
  * 
  */
 data class Color(
-		/**
+	/**
 	 * The red channel value of the color. This value is a `Double` representing the intensity of the red component in the RGBA color model.
 	 * 
 	 * **Type**: Double
 	 * 
 	 */
-override val r: Double,
-		/**
+	override val r: Double,
+	/**
 	 * The green channel value of the color. This value is a `Double` representing the intensity of the green component in the RGBA color model.
 	 * 
 	 * **Type**: Double
 	 * 
 	 */
-override val g: Double,
-		/**
+	override val g: Double,
+	/**
 	 * The blue channel value of the color. This value is a `Double` representing the intensity of the blue component in the RGBA color model.
 	 * 
 	 * **Type**: Double
 	 * 
 	 */
-override val b: Double,
-		/**
+	override val b: Double,
+	/**
 	 * The alpha channel value of the color. This value is a `Double` representing the opacity of the color, where 0.0 means fully transparent and 1.0 means fully opaque.
 	 * 
 	 * **Type**: Double
 	 * 
 	 */
-override val a: Double
+	override val a: Double
 ): GPUColor
 
 /**
@@ -48,7 +48,7 @@ override val a: Double
  * 
  */
 data class Origin2D(
-		/**
+	/**
 	 * The x-coordinate of the origin point. This value is of type `GPUIntegerCoordinate`.
 	 * 
 	 * - **Type**: `GPUIntegerCoordinate`
@@ -59,8 +59,8 @@ data class Origin2D(
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuorigin2ddict-x).
 	 * 
 	 */
-override val x: GPUIntegerCoordinate = 0u,
-		/**
+	override val x: GPUIntegerCoordinate = 0u,
+	/**
 	 * The y-coordinate of the origin point. This value is of type `GPUIntegerCoordinate`.
 	 * 
 	 * - **Type**: `GPUIntegerCoordinate`
@@ -71,7 +71,7 @@ override val x: GPUIntegerCoordinate = 0u,
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuorigin2ddict-y).
 	 * 
 	 */
-override val y: GPUIntegerCoordinate = 0u
+	override val y: GPUIntegerCoordinate = 0u
 ): GPUOrigin2D
 
 /**
@@ -83,7 +83,7 @@ override val y: GPUIntegerCoordinate = 0u
  * 
  */
 data class Origin3D(
-		/**
+	/**
 	 * The x-coordinate of the 3D origin point. This value is either the first item in a sequence of [GPUIntegerCoordinate] values or the `x` property of a [GPUOrigin3DDict].
 	 * 
 	 * **Type:** [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate)
@@ -91,8 +91,8 @@ data class Origin3D(
 	 * **Default Value:** 0
 	 * 
 	 */
-override val x: GPUIntegerCoordinate = 0u,
-		/**
+	override val x: GPUIntegerCoordinate = 0u,
+	/**
 	 * The y-coordinate of the 3D origin point. This value is either the second item in a sequence of [GPUIntegerCoordinate] values or the `y` property of a [GPUOrigin3DDict].
 	 * 
 	 * **Type:** [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate)
@@ -100,8 +100,8 @@ override val x: GPUIntegerCoordinate = 0u,
 	 * **Default Value:** 0
 	 * 
 	 */
-override val y: GPUIntegerCoordinate = 0u,
-		/**
+	override val y: GPUIntegerCoordinate = 0u,
+	/**
 	 * The z-coordinate of the 3D origin point. This value is either the third item in a sequence of [GPUIntegerCoordinate] values or the `z` property of a [GPUOrigin3DDict].
 	 * 
 	 * **Type:** [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate)
@@ -109,7 +109,7 @@ override val y: GPUIntegerCoordinate = 0u,
 	 * **Default Value:** 0
 	 * 
 	 */
-override val z: GPUIntegerCoordinate = 0u
+	override val z: GPUIntegerCoordinate = 0u
 ): GPUOrigin3D
 
 /**
@@ -121,7 +121,7 @@ override val z: GPUIntegerCoordinate = 0u
  * 
  */
 data class Extent3D(
-		/**
+	/**
 	 * The width of the extent.
 	 * 
 	 * This property corresponds to the `width` field in the [GPUExtent3DDict](https://www.w3.org/TR/webgpu/#dictdef-gpuextent3ddict).
@@ -129,8 +129,8 @@ data class Extent3D(
 	 * @return The width as a [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate).
 	 * 
 	 */
-override val width: GPUIntegerCoordinate,
-		/**
+	override val width: GPUIntegerCoordinate,
+	/**
 	 * The height of the extent.
 	 * 
 	 * This property corresponds to the `height` field in the [GPUExtent3DDict](https://www.w3.org/TR/webgpu/#dictdef-gpuextent3ddict), which defaults to 1 if not specified.
@@ -138,8 +138,8 @@ override val width: GPUIntegerCoordinate,
 	 * @return The height as a [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate).
 	 * 
 	 */
-override val height: GPUIntegerCoordinate = 1u,
-		/**
+	override val height: GPUIntegerCoordinate = 1u,
+	/**
 	 * The depth of the extent or the number of array layers it contains.
 	 * 
 	 * This property corresponds to the `depthOrArrayLayers` field in the [GPUExtent3DDict](https://www.w3.org/TR/webgpu/#dictdef-gpuextent3ddict), which defaults to 1 if not specified. If used with a [GPUTexture](https://www.w3.org/TR/webgpu/#gputexture) with a dimension of `"3d"`, it defines the depth of the texture. If used with a `GPUTexture` with a dimension of `"2d"`, it defines the number of array layers in the texture.
@@ -147,7 +147,7 @@ override val height: GPUIntegerCoordinate = 1u,
 	 * @return The depth or number of array layers as a [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate).
 	 * 
 	 */
-override val depthOrArrayLayers: GPUIntegerCoordinate = 1u
+	override val depthOrArrayLayers: GPUIntegerCoordinate = 1u
 ): GPUExtent3D
 
 /**
@@ -157,7 +157,7 @@ override val depthOrArrayLayers: GPUIntegerCoordinate = 1u
  * 
  */
 data class ObjectDescriptorBase(
-		/**
+	/**
 	 * A string that labels the GPU object. This label can be used for debugging purposes to identify the object.
 	 * 
 	 * **Type**: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/)
@@ -167,7 +167,7 @@ data class ObjectDescriptorBase(
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuobjectdescriptorbase-label).
 	 * 
 	 */
-override val label: String = ""
+	override val label: String = ""
 ): GPUObjectDescriptorBase
 
 /**
@@ -177,7 +177,7 @@ override val label: String = ""
  * 
  */
 data class RequestAdapterOptions(
-		/**
+	/**
 	 * The `featureLevel` property specifies the feature level for the adapter request. This string value influences which features of the GPU are enabled or restricted.
 	 * 
 	 * **Allowed Values:**
@@ -189,8 +189,8 @@ data class RequestAdapterOptions(
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurequestadapteroptions-featurelevel).
 	 * 
 	 */
-override val featureLevel: String = "core",
-		/**
+	override val featureLevel: String = "core",
+	/**
 	 * The `powerPreference` property provides a hint indicating what class of adapter should be selected from the system’s available adapters. This value can influence which GPU is used in a multi-GPU system, affecting power consumption and performance.
 	 * 
 	 * **Allowed Values:**
@@ -203,8 +203,8 @@ override val featureLevel: String = "core",
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurequestadapteroptions-powerpreference).
 	 * 
 	 */
-override val powerPreference: GPUPowerPreference? = null,
-		/**
+	override val powerPreference: GPUPowerPreference? = null,
+	/**
 	 * The `forceFallbackAdapter` property indicates whether only a fallback adapter may be returned. If set to `true`, the user agent will return a fallback adapter if available, or `null` if not supported.
 	 * 
 	 * **Default Value:** false
@@ -212,8 +212,8 @@ override val powerPreference: GPUPowerPreference? = null,
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurequestadapteroptions-forcefallbackadapter).
 	 * 
 	 */
-override val forceFallbackAdapter: Boolean = false,
-		/**
+	override val forceFallbackAdapter: Boolean = false,
+	/**
 	 * The `xrCompatible` property indicates whether the best adapter for rendering to a WebXR session must be returned. If set to `true`, the user agent will prioritize adapters suitable for WebXR rendering.
 	 * 
 	 * **Default Value:** false
@@ -221,7 +221,7 @@ override val forceFallbackAdapter: Boolean = false,
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurequestadapteroptions-xrcompatible).
 	 * 
 	 */
-override val xrCompatible: Boolean = false
+	override val xrCompatible: Boolean = false
 ): GPURequestAdapterOptions
 
 /**
@@ -233,7 +233,7 @@ override val xrCompatible: Boolean = false
  * 
  */
 data class DeviceDescriptor(
-		/**
+	/**
 	 * Specifies the features that are required by the device request. The request will fail if the adapter cannot provide these features.
 	 * 
 	 * Exactly the specified set of features, and no more or less, will be allowed in validation of API calls on the resulting device.
@@ -245,8 +245,8 @@ data class DeviceDescriptor(
 	 * For more details, refer to the [WebGPU specification on `requiredFeatures`](https://www.w3.org/TR/webgpu/#dom-gpudevicedescriptor-requiredfeatures).
 	 * 
 	 */
-override val requiredFeatures: List<GPUFeatureName> = emptyList(),
-		/**
+	override val requiredFeatures: List<GPUFeatureName> = emptyList(),
+	/**
 	 * Specifies the limits that are required by the device request. The request will fail if the adapter cannot provide these limits.
 	 * 
 	 * Each key with a non-`undefined` value must be the name of a member of [supported limits](https://www.w3.org/TR/webgpu/#supported-limits).
@@ -260,8 +260,8 @@ override val requiredFeatures: List<GPUFeatureName> = emptyList(),
 	 * For more details, refer to the [WebGPU specification on `requiredLimits`](https://www.w3.org/TR/webgpu/#dom-gpudevicedescriptor-requiredlimits).
 	 * 
 	 */
-override val requiredLimits: GPUSupportedLimits? = null,
-		/**
+	override val requiredLimits: GPUSupportedLimits? = null,
+	/**
 	 * The descriptor for the default [GPUQueue].
 	 * 
 	 * **Type:** `GPUQueueDescriptor`
@@ -271,8 +271,22 @@ override val requiredLimits: GPUSupportedLimits? = null,
 	 * For more details, refer to the [WebGPU specification on `defaultQueue`](https://www.w3.org/TR/webgpu/#dom-gpudevicedescriptor-defaultqueue).
 	 * 
 	 */
-override val defaultQueue: GPUQueueDescriptor = QueueDescriptor(),
+	override val defaultQueue: GPUQueueDescriptor = QueueDescriptor(),
 	override val label: String = "",
+	/**
+	 * An optional callback function used to handle uncaptured GPU errors associated with a GPU device.
+	 * 
+	 * This property can be set to a user-defined [GPUUncapturedErrorCallback] to intercept and process
+	 * uncaptured errors triggered by WebGPU operations. These errors might otherwise not be explicitly
+	 * handled by the application, such as those originating from the `uncapturederror` event.
+	 * 
+	 * Assigning a value to this property provides a mechanism for developers to log, debug, or respond
+	 * to uncaptured errors in a centralized manner, improving error-handling workflows for GPU-related
+	 * operations.
+	 * 
+	 * If set to `null`, no callback will be executed for uncaptured errors.
+	 * 
+	 */
 	override val onUncapturedError: GPUUncapturedErrorCallback? = null
 ): GPUDeviceDescriptor
 
@@ -283,21 +297,21 @@ override val defaultQueue: GPUQueueDescriptor = QueueDescriptor(),
  * 
  */
 data class BufferDescriptor(
-		/**
+	/**
 	 * The size of the buffer in bytes. This value must be a multiple of 4 and greater than or equal to 4.
 	 * 
 	 * **Type:** [GPUSize64](https://www.w3.org/TR/webgpu/#typedefdef-gpusize64)
 	 * 
 	 */
-override val size: GPUSize64,
-		/**
+	override val size: GPUSize64,
+	/**
 	 * Specifies the allowed usages for the buffer. This is a bitmask of [GPUBufferUsageFlags](https://www.w3.org/TR/webgpu/#typedefdef-gpubufferusageflags) that indicates how the buffer will be used.
 	 * 
 	 * **Type:** [GPUBufferUsageFlags](https://www.w3.org/TR/webgpu/#typedefdef-gpubufferusageflags)
 	 * 
 	 */
-override val usage: GPUBufferUsageFlags,
-		/**
+	override val usage: GPUBufferUsageFlags,
+	/**
 	 * Indicates whether the buffer should be created in an already mapped state. If `true`, the buffer can be immediately accessed using [getMappedRange()](https://www.w3.org/TR/webgpu/#dom-gpubuffer-getmappedrange). This is useful for setting the buffer's initial data.
 	 * 
 	 * **Type:** Boolean
@@ -305,7 +319,7 @@ override val usage: GPUBufferUsageFlags,
 	 * **Default Value:** `false`
 	 * 
 	 */
-override val mappedAtCreation: Boolean = false,
+	override val mappedAtCreation: Boolean = false,
 	override val label: String = ""
 ): GPUBufferDescriptor
 
@@ -316,55 +330,55 @@ override val mappedAtCreation: Boolean = false,
  * 
  */
 data class TextureDescriptor(
-		/**
+	/**
 	 * Specifies the size of the texture in 3D space. This is a required property.
 	 * 
 	 * **Type:** [GPUExtent3D]
 	 * 
 	 */
-override val size: GPUExtent3D,
-		/**
+	override val size: GPUExtent3D,
+	/**
 	 * Specifies the format of the texture data. This is a required property.
 	 * 
 	 * **Type:** [GPUTextureFormat]
 	 * 
 	 */
-override val format: GPUTextureFormat,
-		/**
+	override val format: GPUTextureFormat,
+	/**
 	 * Specifies the usage flags for the texture. This is a required property.
 	 * 
 	 * **Type:** [GPUTextureUsageFlags]
 	 * 
 	 */
-override val usage: GPUTextureUsageFlags,
-		/**
+	override val usage: GPUTextureUsageFlags,
+	/**
 	 * Specifies the number of mipmap levels in the texture. The default value is 1.
 	 * 
 	 * **Type:** [GPUIntegerCoordinate]
 	 * 
 	 */
-override val mipLevelCount: GPUIntegerCoordinate = 1u,
-		/**
+	override val mipLevelCount: GPUIntegerCoordinate = 1u,
+	/**
 	 * Specifies the number of samples for multisampling. The default value is 1.
 	 * 
 	 * **Type:** [GPUSize32]
 	 * 
 	 */
-override val sampleCount: GPUSize32 = 1u,
-		/**
+	override val sampleCount: GPUSize32 = 1u,
+	/**
 	 * Specifies the dimension of the texture. The default value is "2d".
 	 * 
 	 * **Type:** [GPUTextureDimension]
 	 * 
 	 */
-override val dimension: GPUTextureDimension = GPUTextureDimension.TwoD,
-		/**
+	override val dimension: GPUTextureDimension = GPUTextureDimension.TwoD,
+	/**
 	 * Specifies a list of formats that can be used to create views of the texture. The default value is an empty list.
 	 * 
 	 * **Type:** List<[GPUTextureFormat]>
 	 * 
 	 */
-override val viewFormats: List<GPUTextureFormat> = emptyList(),
+	override val viewFormats: List<GPUTextureFormat> = emptyList(),
 	override val label: String = ""
 ): GPUTextureDescriptor
 
@@ -375,62 +389,62 @@ override val viewFormats: List<GPUTextureFormat> = emptyList(),
  * 
  */
 data class TextureViewDescriptor(
-		/**
+	/**
 	 * `format` specifies the format of the texture view. This must be either the `format` of the texture or one of the `viewFormats` specified during its creation.
 	 * 
 	 * See also: [WebGPU Specification - GPUTextureFormat](https://www.w3.org/TR/webgpu/#enumdef-gputextureformat).
 	 * 
 	 */
-override val format: GPUTextureFormat? = null,
-		/**
+	override val format: GPUTextureFormat? = null,
+	/**
 	 * `dimension` specifies the dimension to view the texture as. This property determines how the texture will be interpreted in terms of its dimensionality (e.g., 1D, 2D, or 3D).
 	 * 
 	 * See also: [WebGPU Specification - GPUTextureViewDimension](https://www.w3.org/TR/webgpu/#enumdef-gputextureviewdimension).
 	 * 
 	 */
-override val dimension: GPUTextureViewDimension? = null,
-		/**
+	override val dimension: GPUTextureViewDimension? = null,
+	/**
 	 * `usage` specifies the allowed usages for the texture view. This must be a subset of the `usage` flags of the texture. If set to 0, it defaults to the full set of usage flags of the texture.
 	 * 
 	 * See also: [WebGPU Specification - GPUTextureUsageFlags](https://www.w3.org/TR/webgpu/#typedefdef-gputextureusageflags).
 	 * 
 	 */
-override val usage: GPUTextureUsageFlags = emptySet(),
-		/**
+	override val usage: GPUTextureUsageFlags = emptySet(),
+	/**
 	 * `aspect` specifies which aspects of the texture are accessible to the texture view. This property determines whether the view can access color, depth, stencil, or all aspects of the texture.
 	 * 
 	 * See also: [WebGPU Specification - GPUTextureAspect](https://www.w3.org/TR/webgpu/#enumdef-gputextureaspect).
 	 * 
 	 */
-override val aspect: GPUTextureAspect = GPUTextureAspect.All,
-		/**
+	override val aspect: GPUTextureAspect = GPUTextureAspect.All,
+	/**
 	 * `baseMipLevel` specifies the first (most detailed) mipmap level accessible to the texture view. This property defines the starting point for mipmap levels that can be accessed by the view.
 	 * 
 	 * See also: [WebGPU Specification - GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate).
 	 * 
 	 */
-override val baseMipLevel: GPUIntegerCoordinate = 0u,
-		/**
+	override val baseMipLevel: GPUIntegerCoordinate = 0u,
+	/**
 	 * `mipLevelCount` specifies how many mipmap levels, starting with `baseMipLevel`, are accessible to the texture view. This property defines the range of mipmap levels that can be accessed by the view.
 	 * 
 	 * See also: [WebGPU Specification - GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate).
 	 * 
 	 */
-override val mipLevelCount: GPUIntegerCoordinate? = null,
-		/**
+	override val mipLevelCount: GPUIntegerCoordinate? = null,
+	/**
 	 * `baseArrayLayer` specifies the index of the first array layer accessible to the texture view. This property defines the starting point for array layers that can be accessed by the view.
 	 * 
 	 * See also: [WebGPU Specification - GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate).
 	 * 
 	 */
-override val baseArrayLayer: GPUIntegerCoordinate = 0u,
-		/**
+	override val baseArrayLayer: GPUIntegerCoordinate = 0u,
+	/**
 	 * `arrayLayerCount` specifies how many array layers, starting with `baseArrayLayer`, are accessible to the texture view. This property defines the range of array layers that can be accessed by the view.
 	 * 
 	 * See also: [WebGPU Specification - GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate).
 	 * 
 	 */
-override val arrayLayerCount: GPUIntegerCoordinate? = null,
+	override val arrayLayerCount: GPUIntegerCoordinate? = null,
 	override val label: String = ""
 ): GPUTextureViewDescriptor
 
@@ -441,76 +455,76 @@ override val arrayLayerCount: GPUIntegerCoordinate? = null,
  * 
  */
 data class SamplerDescriptor(
-		/**
+	/**
 	 * Specifies the addressing mode for the U coordinate of the texture. This determines how texture coordinates are handled when they extend beyond the bounds of the texture. The default value is `GPUAddressMode.CLAMP_TO_EDGE`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on GPUAddressMode](https://www.w3.org/TR/webgpu/#enumdef-gpuaddressmode).
 	 * 
 	 */
-override val addressModeU: GPUAddressMode = GPUAddressMode.ClampToEdge,
-		/**
+	override val addressModeU: GPUAddressMode = GPUAddressMode.ClampToEdge,
+	/**
 	 * Specifies the addressing mode for the V coordinate of the texture. This determines how texture coordinates are handled when they extend beyond the bounds of the texture. The default value is `GPUAddressMode.CLAMP_TO_EDGE`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on GPUAddressMode](https://www.w3.org/TR/webgpu/#enumdef-gpuaddressmode).
 	 * 
 	 */
-override val addressModeV: GPUAddressMode = GPUAddressMode.ClampToEdge,
-		/**
+	override val addressModeV: GPUAddressMode = GPUAddressMode.ClampToEdge,
+	/**
 	 * Specifies the addressing mode for the W coordinate of the texture. This determines how texture coordinates are handled when they extend beyond the bounds of the texture. The default value is `GPUAddressMode.CLAMP_TO_EDGE`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on GPUAddressMode](https://www.w3.org/TR/webgpu/#enumdef-gpuaddressmode).
 	 * 
 	 */
-override val addressModeW: GPUAddressMode = GPUAddressMode.ClampToEdge,
-		/**
+	override val addressModeW: GPUAddressMode = GPUAddressMode.ClampToEdge,
+	/**
 	 * Specifies the filtering mode used when the sampled area is smaller than or equal to one texel. The default value is `GPUFilterMode.NEAREST`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on GPUFilterMode](https://www.w3.org/TR/webgpu/#enumdef-gpufiltermode).
 	 * 
 	 */
-override val magFilter: GPUFilterMode = GPUFilterMode.Nearest,
-		/**
+	override val magFilter: GPUFilterMode = GPUFilterMode.Nearest,
+	/**
 	 * Specifies the filtering mode used when the sampled area is larger than one texel. The default value is `GPUFilterMode.NEAREST`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on GPUFilterMode](https://www.w3.org/TR/webgpu/#enumdef-gpufiltermode).
 	 * 
 	 */
-override val minFilter: GPUFilterMode = GPUFilterMode.Nearest,
-		/**
+	override val minFilter: GPUFilterMode = GPUFilterMode.Nearest,
+	/**
 	 * Specifies the filtering mode used when sampling between mipmap levels. The default value is `GPUMipmapFilterMode.NEAREST`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on GPUMipmapFilterMode](https://www.w3.org/TR/webgpu/#enumdef-gpumipmapfiltermode).
 	 * 
 	 */
-override val mipmapFilter: GPUMipmapFilterMode = GPUMipmapFilterMode.Nearest,
-		/**
+	override val mipmapFilter: GPUMipmapFilterMode = GPUMipmapFilterMode.Nearest,
+	/**
 	 * Specifies the minimum level of detail (LOD) used internally when sampling a texture. The default value is `0.0`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on levels of detail](https://www.w3.org/TR/webgpu/#levels-of-detail).
 	 * 
 	 */
-override val lodMinClamp: Float = 0f,
-		/**
+	override val lodMinClamp: Float = 0f,
+	/**
 	 * Specifies the maximum level of detail (LOD) used internally when sampling a texture. The default value is `32.0`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on levels of detail](https://www.w3.org/TR/webgpu/#levels-of-detail).
 	 * 
 	 */
-override val lodMaxClamp: Float = 32f,
-		/**
+	override val lodMaxClamp: Float = 32f,
+	/**
 	 * Specifies the comparison function used by a comparison sampler. When provided, the sampler will be a comparison sampler with the specified `GPUCompareFunction`. Comparison samplers may use filtering, but the sampling results will be implementation-dependent and may differ from the normal filtering rules.
 	 * 
 	 * For more details, refer to the [WebGPU specification on GPUCompareFunction](https://www.w3.org/TR/webgpu/#enumdef-gpucomparefunction).
 	 * 
 	 */
-override val compare: GPUCompareFunction? = null,
-		/**
+	override val compare: GPUCompareFunction? = null,
+	/**
 	 * Specifies the maximum anisotropy value clamp used by the sampler. Anisotropic filtering is enabled when `maxAnisotropy` is greater than 1 and the implementation supports it. The default value is `1`.
 	 * 
 	 * For more details, refer to the [WebGPU specification on anisotropic filtering](https://www.w3.org/TR/webgpu/#dom-gpusamplerdescriptor-maxanisotropy).
 	 * 
 	 */
-override val maxAnisotropy: UShort = 1u,
+	override val maxAnisotropy: UShort = 1u,
 	override val label: String = ""
 ): GPUSamplerDescriptor
 
@@ -521,7 +535,7 @@ override val maxAnisotropy: UShort = 1u,
  * 
  */
 data class BindGroupLayoutDescriptor(
-		/**
+	/**
 	 * A required list of GPUBindGroupLayoutEntry objects that define the shader resource bindings for a bind group.
 	 * 
 	 * Each entry in this list describes a single shader resource binding to be included in a `GPUBindGroupLayout`. The entries specify how resources are bound to shaders, including buffers, samplers, textures, and external textures.
@@ -532,7 +546,7 @@ data class BindGroupLayoutDescriptor(
 	 * - GPUBindGroupLayoutEntry
 	 * 
 	 */
-override val entries: List<GPUBindGroupLayoutEntry>,
+	override val entries: List<GPUBindGroupLayoutEntry>,
 	override val label: String = ""
 ): GPUBindGroupLayoutDescriptor
 
@@ -546,48 +560,48 @@ override val entries: List<GPUBindGroupLayoutEntry>,
  * 
  */
 data class BindGroupLayoutEntry(
-		/**
+	/**
 	 * A unique identifier for a resource binding within the [GPUBindGroupLayout](https://www.w3.org/TR/webgpu/#gpubindgrouplayout). This ID corresponds to a `GPUBindGroupEntry.binding` and a `@binding` attribute in the [GPUShaderModule](https://www.w3.org/TR/webgpu/#gpushadermodule).
 	 * 
 	 * **Type:** [GPUIndex32](https://www.w3.org/TR/webgpu/#typedefdef-gpuindex32)
 	 * 
 	 */
-override val binding: GPUIndex32,
-		/**
+	override val binding: GPUIndex32,
+	/**
 	 * A bitset of the members of [GPUShaderStage](https://www.w3.org/TR/webgpu/#namespacedef-gpushaderstage). Each set bit indicates that a `GPUBindGroupLayoutEntry`'s resource will be accessible from the associated shader stage.
 	 * 
 	 * **Type:** [GPUShaderStageFlags](https://www.w3.org/TR/webgpu/#typedefdef-gpushaderstageflags)
 	 * 
 	 */
-override val visibility: GPUShaderStageFlags,
-		/**
+	override val visibility: GPUShaderStageFlags,
+	/**
 	 * When provided, indicates that the binding resource type for this `GPUBindGroupLayoutEntry` is [GPUBufferBinding](https://www.w3.org/TR/webgpu/#dictdef-gpubufferbinding).
 	 * 
 	 * **Type:** [GPUBufferBindingLayout?](https://www.w3.org/TR/webgpu/#dictdef-gpubufferbindinglayout)
 	 * 
 	 */
-override val buffer: GPUBufferBindingLayout? = null,
-		/**
+	override val buffer: GPUBufferBindingLayout? = null,
+	/**
 	 * When provided, indicates that the binding resource type for this `GPUBindGroupLayoutEntry` is [GPUSampler](https://www.w3.org/TR/webgpu/#gpusampler).
 	 * 
 	 * **Type:** [GPUSamplerBindingLayout?](https://www.w3.org/TR/webgpu/#dictdef-gpusamplerbindinglayout)
 	 * 
 	 */
-override val sampler: GPUSamplerBindingLayout? = null,
-		/**
+	override val sampler: GPUSamplerBindingLayout? = null,
+	/**
 	 * When provided, indicates that the binding resource type for this `GPUBindGroupLayoutEntry` is [GPUTextureView](https://www.w3.org/TR/webgpu/#gputextureview).
 	 * 
 	 * **Type:** [GPUTextureBindingLayout?](https://www.w3.org/TR/webgpu/#dictdef-gputexturebindinglayout)
 	 * 
 	 */
-override val texture: GPUTextureBindingLayout? = null,
-		/**
+	override val texture: GPUTextureBindingLayout? = null,
+	/**
 	 * When provided, indicates that the binding resource type for this `GPUBindGroupLayoutEntry` is [GPUTextureView](https://www.w3.org/TR/webgpu/#gputextureview).
 	 * 
 	 * **Type:** [GPUStorageTextureBindingLayout?](https://www.w3.org/TR/webgpu/#dictdef-gpustoragetexturebindinglayout)
 	 * 
 	 */
-override val storageTexture: GPUStorageTextureBindingLayout? = null
+	override val storageTexture: GPUStorageTextureBindingLayout? = null
 ): GPUBindGroupLayoutEntry
 
 /**
@@ -597,7 +611,7 @@ override val storageTexture: GPUStorageTextureBindingLayout? = null
  * 
  */
 data class BufferBindingLayout(
-		/**
+	/**
 	 * Specifies the type required for buffers bound to this binding point. This property determines how the buffer will be used in the shader.
 	 * 
 	 * **Type:** [GPUBufferBindingType](https://www.w3.org/TR/webgpu/#enumdef-gpubufferbindingtype)
@@ -605,8 +619,8 @@ data class BufferBindingLayout(
 	 * **Default Value:** "uniform"
 	 * 
 	 */
-override val type: GPUBufferBindingType = GPUBufferBindingType.Uniform,
-		/**
+	override val type: GPUBufferBindingType = GPUBufferBindingType.Uniform,
+	/**
 	 * Indicates whether this binding requires a dynamic offset. A dynamic offset allows for more flexible buffer binding, enabling the use of different buffer sizes at runtime.
 	 * 
 	 * **Type:** Boolean
@@ -614,8 +628,8 @@ override val type: GPUBufferBindingType = GPUBufferBindingType.Uniform,
 	 * **Default Value:** false
 	 * 
 	 */
-override val hasDynamicOffset: Boolean = false,
-		/**
+	override val hasDynamicOffset: Boolean = false,
+	/**
 	 * Specifies the minimum size of a buffer binding used with this bind point. This value is used to validate that buffers bound to this layout meet the required size constraints.
 	 * 
 	 * **Type:** GPUSize64
@@ -627,7 +641,7 @@ override val hasDynamicOffset: Boolean = false,
 	 * - If `minBindingSize` is `0`, it is ignored during pipeline creation, and draw/dispatch commands validate that each binding in the [GPUBindGroup](https://www.w3.org/TR/webgpu/#gpubindgroup) satisfies the minimum buffer binding size of the variable.
 	 * 
 	 */
-override val minBindingSize: GPUSize64 = 0u
+	override val minBindingSize: GPUSize64 = 0u
 ): GPUBufferBindingLayout
 
 /**
@@ -637,7 +651,7 @@ override val minBindingSize: GPUSize64 = 0u
  * 
  */
 data class SamplerBindingLayout(
-		/**
+	/**
 	 * Specifies the type of sampler that can be bound to this binding layout. This is an enumeration value that indicates whether the sampler is used for filtering, non-filtering, or comparison operations.
 	 * 
 	 * **Type**: [GPUSamplerBindingType]
@@ -647,7 +661,7 @@ data class SamplerBindingLayout(
 	 * This property determines how the sampler will be utilized in the shader. For example, a filtering sampler might be used for texture sampling with mipmapping, while a non-filtering sampler might be used for shadow mapping.
 	 * 
 	 */
-override val type: GPUSamplerBindingType = GPUSamplerBindingType.Filtering
+	override val type: GPUSamplerBindingType = GPUSamplerBindingType.Filtering
 ): GPUSamplerBindingLayout
 
 /**
@@ -657,7 +671,7 @@ override val type: GPUSamplerBindingType = GPUSamplerBindingType.Filtering
  * 
  */
 data class TextureBindingLayout(
-		/**
+	/**
 	 * Specifies the type required for texture views bound to this binding. This property determines how the texture data should be sampled.
 	 * 
 	 * **Default Value**: "float"
@@ -672,8 +686,8 @@ data class TextureBindingLayout(
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#enumdef-gputexturesampletype).
 	 * 
 	 */
-override val sampleType: GPUTextureSampleType = GPUTextureSampleType.Float,
-		/**
+	override val sampleType: GPUTextureSampleType = GPUTextureSampleType.Float,
+	/**
 	 * Specifies the required dimension for texture views bound to this binding. This property defines the dimensionality of the texture view.
 	 * 
 	 * **Default Value**: "2d"
@@ -689,8 +703,8 @@ override val sampleType: GPUTextureSampleType = GPUTextureSampleType.Float,
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#enumdef-gputextureviewdimension).
 	 * 
 	 */
-override val viewDimension: GPUTextureViewDimension = GPUTextureViewDimension.TwoD,
-		/**
+	override val viewDimension: GPUTextureViewDimension = GPUTextureViewDimension.TwoD,
+	/**
 	 * Indicates whether texture views bound to this binding must be multisampled. This property is used to specify if the texture should support multisampling.
 	 * 
 	 * **Default Value**: `false`
@@ -700,7 +714,7 @@ override val viewDimension: GPUTextureViewDimension = GPUTextureViewDimension.Tw
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dictdef-gputexturebindinglayout).
 	 * 
 	 */
-override val multisampled: Boolean = false
+	override val multisampled: Boolean = false
 ): GPUTextureBindingLayout
 
 /**
@@ -710,14 +724,14 @@ override val multisampled: Boolean = false
  * 
  */
 data class StorageTextureBindingLayout(
-		/**
+	/**
 	 * Specifies the required format of texture views bound to this binding. This property is mandatory and defines how the texture data is interpreted.
 	 * 
 	 * **Type:** [GPUTextureFormat](https://www.w3.org/TR/webgpu/#enumdef-gputextureformat)
 	 * 
 	 */
-override val format: GPUTextureFormat,
-		/**
+	override val format: GPUTextureFormat,
+	/**
 	 * Specifies the access mode for this binding, indicating whether the texture is readable, writable, or both. This property defaults to `GPUStorageTextureAccess.WriteOnly`.
 	 * 
 	 * **Type:** [GPUStorageTextureAccess](https://www.w3.org/TR/webgpu/#enumdef-gpustoragetextureaccess)
@@ -725,8 +739,8 @@ override val format: GPUTextureFormat,
 	 * **Default Value:** `GPUStorageTextureAccess.WriteOnly`
 	 * 
 	 */
-override val access: GPUStorageTextureAccess = GPUStorageTextureAccess.WriteOnly,
-		/**
+	override val access: GPUStorageTextureAccess = GPUStorageTextureAccess.WriteOnly,
+	/**
 	 * Specifies the required dimension for texture views bound to this binding. This property defaults to `GPUTextureViewDimension.D2`.
 	 * 
 	 * **Type:** [GPUTextureViewDimension](https://www.w3.org/TR/webgpu/#enumdef-gputextureviewdimension)
@@ -734,7 +748,7 @@ override val access: GPUStorageTextureAccess = GPUStorageTextureAccess.WriteOnly
 	 * **Default Value:** `GPUTextureViewDimension.D2`
 	 * 
 	 */
-override val viewDimension: GPUTextureViewDimension = GPUTextureViewDimension.TwoD
+	override val viewDimension: GPUTextureViewDimension = GPUTextureViewDimension.TwoD
 ): GPUStorageTextureBindingLayout
 
 /**
@@ -744,20 +758,20 @@ override val viewDimension: GPUTextureViewDimension = GPUTextureViewDimension.Tw
  * 
  */
 data class BindGroupDescriptor(
-		/**
+	/**
 	 * The `layout` property specifies the `GPUBindGroupLayout` that the entries of this bind group will conform to. This layout defines how resources are bound and accessed in shaders.
 	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpubindgroupdescriptor-layout).
 	 * 
 	 */
-override val layout: GPUBindGroupLayout,
-		/**
+	override val layout: GPUBindGroupLayout,
+	/**
 	 * The `entries` property is a list of `GPUBindGroupEntry` objects that describe the resources to expose to the shader for each binding described by the `layout`. Each entry specifies how a particular resource should be bound.
 	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpubindgroupdescriptor-entries).
 	 * 
 	 */
-override val entries: List<GPUBindGroupEntry>,
+	override val entries: List<GPUBindGroupEntry>,
 	override val label: String = ""
 ): GPUBindGroupDescriptor
 
@@ -768,14 +782,14 @@ override val entries: List<GPUBindGroupEntry>,
  * 
  */
 data class BindGroupEntry(
-		/**
+	/**
 	 * A unique identifier for a resource binding within the [GPUBindGroup]. This identifier corresponds to a `GPUBindGroupLayoutEntry.binding` and a `@binding` attribute in the [GPUShaderModule].
 	 * 
 	 * **Type:** [GPUIndex32](TYPE_MAPPING.md)
 	 * 
 	 */
-override val binding: GPUIndex32,
-		/**
+	override val binding: GPUIndex32,
+	/**
 	 * The resource to bind, which can be one of the following types:
 	 * - [GPUSampler]
 	 * - [GPUTextureView]
@@ -785,7 +799,7 @@ override val binding: GPUIndex32,
 	 * **Type:** [GPUBindingResource](TYPE_MAPPING.md)
 	 * 
 	 */
-override val resource: GPUBindingResource
+	override val resource: GPUBindingResource
 ): GPUBindGroupEntry
 
 /**
@@ -795,27 +809,27 @@ override val resource: GPUBindingResource
  * 
  */
 data class BufferBinding(
-		/**
+	/**
 	 * The `buffer` property specifies the `GPUBuffer` to bind. This buffer will be exposed to shaders as a resource.
 	 * 
 	 * **Type**: [WebGPU specification](https://www.w3.org/TR/webgpu/#gpubuffer)
 	 * 
 	 */
-override val buffer: GPUBuffer,
-		/**
+	override val buffer: GPUBuffer,
+	/**
 	 * The `offset` property specifies the offset, in bytes, from the beginning of the `buffer` to the start of the range exposed to the shader by the buffer binding. This value defaults to 0 if not specified.
 	 * 
 	 * **Type**: [WebGPU specification](https://www.w3.org/TR/webgpu/#typedefdef-gpusize64)
 	 * 
 	 */
-override val offset: GPUSize64 = 0u,
-		/**
+	override val offset: GPUSize64 = 0u,
+	/**
 	 * The `size` property specifies the size, in bytes, of the buffer binding. If not provided, it specifies the range starting at `offset` and ending at the end of the `buffer`.
 	 * 
 	 * **Type**: [GPUSize64](https://www.w3.org/TR/webgpu/#typedefdef-gpusize64)
 	 * 
 	 */
-override val size: GPUSize64? = null
+	override val size: GPUSize64? = null
 ): GPUBufferBinding
 
 /**
@@ -827,7 +841,7 @@ override val size: GPUSize64? = null
  * 
  */
 data class PipelineLayoutDescriptor(
-		/**
+	/**
 	 * A list of optional [GPUBindGroupLayout](https://www.w3.org/TR/webgpu/#dictdef-gpubindgrouplayout)s that the pipeline will use. Each element in this list corresponds to a `@group` attribute in the [GPUShaderModule], with the `N`th element corresponding to `@group(N)`.
 	 * 
 	 * **Type**: `List<GPUBindGroupLayout?>`
@@ -839,7 +853,7 @@ data class PipelineLayoutDescriptor(
 	 * In this example, `bindGroupLayout1` and `bindGroupLayout2` are instances of [GPUBindGroupLayout]. The `bindGroupLayouts` list defines the layout of bind groups that the pipeline will use.
 	 * 
 	 */
-override val bindGroupLayouts: List<GPUBindGroupLayout>,
+	override val bindGroupLayouts: List<GPUBindGroupLayout>,
 	override val label: String = ""
 ): GPUPipelineLayoutDescriptor
 
@@ -851,7 +865,7 @@ override val bindGroupLayouts: List<GPUBindGroupLayout>,
  * 
  */
 data class ShaderModuleDescriptor(
-		/**
+	/**
 	 * The WGSL source code for the shader module. This string contains the shader program written in the WebGPU Shading Language (WGSL). The shader code defines the vertex and fragment shaders or compute shaders that will be used in the rendering or compute pipeline.
 	 * 
 	 * **Type:** `String`
@@ -860,8 +874,8 @@ data class ShaderModuleDescriptor(
 	 * - [W3C WebGPU Specification: GPUShaderModuleDescriptor.code](https://www.w3.org/TR/webgpu/#dom-gpushadermoduledescriptor-code)
 	 * 
 	 */
-override val code: String,
-		/**
+	override val code: String,
+	/**
 	 * A list of `GPUShaderModuleCompilationHint` objects that provide additional information to the compiler about the shader module. These hints can include details about entry points, resource bindings, and other compilation-specific information. Providing these hints can improve performance by allowing the compiler to perform more optimizations during the creation of the shader module.
 	 * 
 	 * **Type:** `List<GPUShaderModuleCompilationHint>`
@@ -872,7 +886,7 @@ override val code: String,
 	 * - [W3C WebGPU Specification: GPUShaderModuleDescriptor.compilationHints](https://www.w3.org/TR/webgpu/#dom-gpushadermoduledescriptor-compilationhints)
 	 * 
 	 */
-override val compilationHints: List<GPUShaderModuleCompilationHint> = emptyList(),
+	override val compilationHints: List<GPUShaderModuleCompilationHint> = emptyList(),
 	override val label: String = ""
 ): GPUShaderModuleDescriptor
 
@@ -883,20 +897,20 @@ override val compilationHints: List<GPUShaderModuleCompilationHint> = emptyList(
  * 
  */
 data class ShaderModuleCompilationHint(
-		/**
+	/**
 	 * The entry point of the shader module. This is a required field and must be specified.
 	 * 
 	 * Type: String (https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/).
 	 * 
 	 */
-override val entryPoint: String,
-		/**
+	override val entryPoint: String,
+	/**
 	 * A GPUPipelineLayout that the shader module may be used with in future pipeline creation calls. If set to null, the default pipeline layout for the entry point associated with this hint will be used.
 	 * 
 	 * Type: GPUPipelineLayout or GPUAutoLayoutMode.
 	 * 
 	 */
-override val layout: GPUPipelineLayout? = null
+	override val layout: GPUPipelineLayout? = null
 ): GPUShaderModuleCompilationHint
 
 /**
@@ -906,7 +920,7 @@ override val layout: GPUPipelineLayout? = null
  * 
  */
 data class PipelineDescriptorBase(
-		/**
+	/**
 	 * Specifies the layout for this pipeline. This can be either a [GPUPipelineLayout] object or the string `"auto"` to generate the pipeline layout automatically.
 	 * 
 	 * **Type**: [GPUPipelineLayout] or `String`
@@ -920,7 +934,7 @@ data class PipelineDescriptorBase(
 	 * **See also**: [GPUAutoLayoutMode], [GPUBindGroup]
 	 * 
 	 */
-override val layout: GPUPipelineLayout? = null,
+	override val layout: GPUPipelineLayout? = null,
 	override val label: String = ""
 ): GPUPipelineDescriptorBase
 
@@ -930,23 +944,23 @@ override val layout: GPUPipelineLayout? = null,
  * 
  */
 data class ProgrammableStage(
-		/**
+	/**
 	 * The shader module containing the entry point for this programmable stage. This is a required field and must be provided when creating an instance of [GPUProgrammableStage].
 	 * 
 	 */
-override val module: GPUShaderModule,
-		/**
+	override val module: GPUShaderModule,
+	/**
 	 * The name of the entry point in the shader module. This is an optional field and can be null if not specified.
 	 * Entry point names must follow the rules defined in [WGSL identifier comparison](https://gpuweb.github.io/gpuweb/wgsl/#identifier-comparison).
 	 * 
 	 */
-override val entryPoint: String? = null,
-		/**
+	override val entryPoint: String? = null,
+	/**
 	 * A map of constant values that can be passed to the shader module. The keys are strings representing the names of the constants, and the values are of type [GPUPipelineConstantValue].
 	 * This field is optional and defaults to an empty map if not provided.
 	 * 
 	 */
-override val constants: Map<String, GPUPipelineConstantValue> = emptyMap()
+	override val constants: Map<String, GPUPipelineConstantValue> = emptyMap()
 ): GPUProgrammableStage
 
 /**
@@ -958,7 +972,7 @@ override val constants: Map<String, GPUPipelineConstantValue> = emptyMap()
  * 
  */
 data class ComputePipelineDescriptor(
-		/**
+	/**
 	 * Specifies the compute shader stage for the pipeline. This member is required and must be set to a valid [GPUProgrammableStage] object that describes the compute shader entry point.
 	 * 
 	 * The compute shader is responsible for executing the compute operations defined in the shader code. It does not produce visual output but can perform parallel computations on data.
@@ -966,7 +980,7 @@ data class ComputePipelineDescriptor(
 	 * **Type:** [GPUProgrammableStage]
 	 * 
 	 */
-override val compute: GPUProgrammableStage,
+	override val compute: GPUProgrammableStage,
 	override val layout: GPUPipelineLayout? = null,
 	override val label: String = ""
 ): GPUComputePipelineDescriptor
@@ -976,31 +990,31 @@ override val compute: GPUProgrammableStage,
  * 
  */
 data class RenderPipelineDescriptor(
-		/**
+	/**
 	 * `vertex` of type `GPUVertexState`. Describes the vertex shader entry point of the pipeline and its input buffer layouts. This is a required field. For more details, refer to the [W3C specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpipelinedescriptor-vertex).
 	 * 
 	 */
-override val vertex: GPUVertexState,
-		/**
+	override val vertex: GPUVertexState,
+	/**
 	 * `primitive` of type `GPUPrimitiveState`, defaulting to `{}` if not provided. Describes the primitive-related properties of the pipeline, such as topology and strip index format. For more details, refer to the [W3C specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpipelinedescriptor-primitive).
 	 * 
 	 */
-override val primitive: GPUPrimitiveState = PrimitiveState(),
-		/**
+	override val primitive: GPUPrimitiveState = PrimitiveState(),
+	/**
 	 * `depthStencil` of type `GPUDepthStencilState?`. Describes the optional depth-stencil properties, including testing, operations, and bias. This field is nullable. For more details, refer to the [W3C specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpipelinedescriptor-depthstencil).
 	 * 
 	 */
-override val depthStencil: GPUDepthStencilState? = null,
-		/**
+	override val depthStencil: GPUDepthStencilState? = null,
+	/**
 	 * `multisample` of type `GPUMultisampleState`, defaulting to `{}` if not provided. Describes the multi-sampling properties of the pipeline, such as count and mask. For more details, refer to the [W3C specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpipelinedescriptor-multisample).
 	 * 
 	 */
-override val multisample: GPUMultisampleState = MultisampleState(),
-		/**
+	override val multisample: GPUMultisampleState = MultisampleState(),
+	/**
 	 * `fragment` of type `GPUFragmentState?`. Describes the fragment shader entry point of the pipeline and its output colors. If not provided, the [no color output mode](https://www.w3.org/TR/webgpu/#no-color-output) is enabled. This field is nullable. For more details, refer to the [W3C specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpipelinedescriptor-fragment).
 	 * 
 	 */
-override val fragment: GPUFragmentState? = null,
+	override val fragment: GPUFragmentState? = null,
 	override val layout: GPUPipelineLayout? = null,
 	override val label: String = ""
 ): GPURenderPipelineDescriptor
@@ -1012,7 +1026,7 @@ override val fragment: GPUFragmentState? = null,
  * 
  */
 data class PrimitiveState(
-		/**
+	/**
 	 * Specifies the type of primitive topology used for rendering. This determines how vertices are interpreted when drawing primitives.
 	 * 
 	 * **Default Value:** `GPUPrimitiveTopology.TriangleList`
@@ -1021,8 +1035,8 @@ data class PrimitiveState(
 	 * - [GPUPrimitiveTopology](https://www.w3.org/TR/webgpu/#enumdef-gpuprimitivetopology)
 	 * 
 	 */
-override val topology: GPUPrimitiveTopology = GPUPrimitiveTopology.TriangleList,
-		/**
+	override val topology: GPUPrimitiveTopology = GPUPrimitiveTopology.TriangleList,
+	/**
 	 * Specifies the format of the strip index buffer, if used. This is relevant when rendering primitives that use strip indexing.
 	 * 
 	 * **Default Value:** `null`
@@ -1031,8 +1045,8 @@ override val topology: GPUPrimitiveTopology = GPUPrimitiveTopology.TriangleList,
 	 * - [GPUIndexFormat](https://www.w3.org/TR/webgpu/#enumdef-gpuindexformat)
 	 * 
 	 */
-override val stripIndexFormat: GPUIndexFormat? = null,
-		/**
+	override val stripIndexFormat: GPUIndexFormat? = null,
+	/**
 	 * Specifies the orientation of the front face of primitives. This determines which side of a triangle is considered the front face for culling and other operations.
 	 * 
 	 * **Default Value:** `GPUFrontFace.CCW`
@@ -1041,8 +1055,8 @@ override val stripIndexFormat: GPUIndexFormat? = null,
 	 * - [GPUFrontFace](https://www.w3.org/TR/webgpu/#enumdef-gpufrontface)
 	 * 
 	 */
-override val frontFace: GPUFrontFace = GPUFrontFace.CCW,
-		/**
+	override val frontFace: GPUFrontFace = GPUFrontFace.CCW,
+	/**
 	 * Specifies the culling mode for primitives. This determines which faces of a primitive are discarded during rendering.
 	 * 
 	 * **Default Value:** `GPUCullMode.None`
@@ -1051,8 +1065,8 @@ override val frontFace: GPUFrontFace = GPUFrontFace.CCW,
 	 * - [GPUCullMode](https://www.w3.org/TR/webgpu/#enumdef-gpucullmode)
 	 * 
 	 */
-override val cullMode: GPUCullMode = GPUCullMode.None,
-		/**
+	override val cullMode: GPUCullMode = GPUCullMode.None,
+	/**
 	 * Specifies whether depth values are clipped or unclipped. This feature requires the `"depth-clip-control"` feature to be enabled.
 	 * 
 	 * **Default Value:** `false`
@@ -1061,7 +1075,7 @@ override val cullMode: GPUCullMode = GPUCullMode.None,
 	 * - [WebGPU Features](https://www.w3.org/TR/webgpu/#features)
 	 * 
 	 */
-override val unclippedDepth: Boolean = false
+	override val unclippedDepth: Boolean = false
 ): GPUPrimitiveState
 
 /**
@@ -1074,7 +1088,7 @@ override val unclippedDepth: Boolean = false
  * 
  */
 data class MultisampleState(
-		/**
+	/**
 	 * Specifies the number of samples per pixel. This value determines the level of multisampling used during rendering.
 	 * 
 	 * **Type:** [GPUSize32](https://www.w3.org/TR/webgpu/#typedefdef-gpusize32)
@@ -1089,8 +1103,8 @@ data class MultisampleState(
 	 * - [count member in the WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-count)
 	 * 
 	 */
-override val count: GPUSize32 = 1u,
-		/**
+	override val count: GPUSize32 = 1u,
+	/**
 	 * Determines which samples are written to during rendering. This mask allows for selective sampling, which can be useful for optimizing performance or achieving specific visual effects.
 	 * 
 	 * **Type:** [GPUSampleMask](https://www.w3.org/TR/webgpu/#typedefdef-gpusamplemask)
@@ -1101,8 +1115,8 @@ override val count: GPUSize32 = 1u,
 	 * - [mask member in the WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-mask)
 	 * 
 	 */
-override val mask: GPUSampleMask = 0xFFFFFFFFu,
-		/**
+	override val mask: GPUSampleMask = 0xFFFFFFFFu,
+	/**
 	 * When set to `true`, enables alpha-to-coverage, which uses the fragment's alpha channel to generate a sample coverage mask. This can improve the quality of antialiased edges.
 	 * 
 	 * **Type:** Boolean
@@ -1116,7 +1130,7 @@ override val mask: GPUSampleMask = 0xFFFFFFFFu,
 	 * - [alphaToCoverageEnabled member in the WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-alphatocoverageenabled)
 	 * 
 	 */
-override val alphaToCoverageEnabled: Boolean = false
+	override val alphaToCoverageEnabled: Boolean = false
 ): GPUMultisampleState
 
 /**
@@ -1129,7 +1143,7 @@ override val alphaToCoverageEnabled: Boolean = false
  * 
  */
 data class FragmentState(
-		/**
+	/**
 	 * A list of [GPUColorTargetState] objects that define the formats and behaviors of the color targets this pipeline writes to. Each `GPUColorTargetState` in the list specifies how a particular color target should be handled during rendering.
 	 * 
 	 * **Type:** List<[GPUColorTargetState]?>
@@ -1138,7 +1152,7 @@ data class FragmentState(
 	 * - [WebGPU Specification: GPUFragmentState](https://www.w3.org/TR/webgpu/#dictdef-gpufragmentstate)
 	 * 
 	 */
-override val targets: List<GPUColorTargetState>,
+	override val targets: List<GPUColorTargetState>,
 	override val module: GPUShaderModule,
 	override val entryPoint: String? = null,
 	override val constants: Map<String, GPUPipelineConstantValue> = emptyMap()
@@ -1151,27 +1165,27 @@ override val targets: List<GPUColorTargetState>,
  * 
  */
 data class ColorTargetState(
-		/**
+	/**
 	 * The format of this color target. The pipeline will only be compatible with render pass encoders which use a texture view of this format in the corresponding color attachment.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpucolortargetstate-format).
 	 * 
 	 */
-override val format: GPUTextureFormat,
-		/**
+	override val format: GPUTextureFormat,
+	/**
 	 * The blending behavior for this color target. If left undefined, disables blending for this color target.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpucolortargetstate-blend).
 	 * 
 	 */
-override val blend: GPUBlendState? = null,
-		/**
+	override val blend: GPUBlendState? = null,
+	/**
 	 * Bitmask controlling which channels are written to when drawing to this color target. Defaults to `0xF` (all channels).
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpucolortargetstate-writemask).
 	 * 
 	 */
-override val writeMask: GPUColorWriteFlags = setOf(GPUColorWrite.All)
+	override val writeMask: GPUColorWriteFlags = setOf(GPUColorWrite.All)
 ): GPUColorTargetState
 
 /**
@@ -1183,7 +1197,7 @@ override val writeMask: GPUColorWriteFlags = setOf(GPUColorWrite.All)
  * 
  */
 data class BlendState(
-		/**
+	/**
 	 * Defines the blending behavior of the corresponding render target for color channels.
 	 * 
 	 * This property is of type `GPUBlendComponent` and specifies how the color channels are blended during rendering. 
@@ -1191,8 +1205,8 @@ data class BlendState(
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpublendstate-color).
 	 * 
 	 */
-override val color: GPUBlendComponent,
-		/**
+	override val color: GPUBlendComponent,
+	/**
 	 * Defines the blending behavior of the corresponding render target for the alpha channel.
 	 * 
 	 * This property is of type `GPUBlendComponent` and specifies how the alpha channel is blended during rendering. 
@@ -1200,7 +1214,7 @@ override val color: GPUBlendComponent,
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpublendstate-alpha).
 	 * 
 	 */
-override val alpha: GPUBlendComponent
+	override val alpha: GPUBlendComponent
 ): GPUBlendState
 
 /**
@@ -1210,7 +1224,7 @@ override val alpha: GPUBlendComponent
  * 
  */
 data class BlendComponent(
-		/**
+	/**
 	 * Defines the [GPUBlendOperation] used to calculate the values written to the target attachment components.
 	 * 
 	 * This property specifies the blending operation to be performed. The default value is `add`.
@@ -1222,8 +1236,8 @@ data class BlendComponent(
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpublendcomponent-operation).
 	 * 
 	 */
-override val operation: GPUBlendOperation = GPUBlendOperation.Add,
-		/**
+	override val operation: GPUBlendOperation = GPUBlendOperation.Add,
+	/**
 	 * Defines the [GPUBlendFactor] operation to be performed on values from the fragment shader.
 	 * 
 	 * This property specifies the blending factor for the source color. The default value is `one`.
@@ -1235,8 +1249,8 @@ override val operation: GPUBlendOperation = GPUBlendOperation.Add,
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpublendcomponent-srcfactor).
 	 * 
 	 */
-override val srcFactor: GPUBlendFactor = GPUBlendFactor.One,
-		/**
+	override val srcFactor: GPUBlendFactor = GPUBlendFactor.One,
+	/**
 	 * Defines the [GPUBlendFactor] operation to be performed on values from the target attachment.
 	 * 
 	 * This property specifies the blending factor for the destination color. The default value is `zero`.
@@ -1248,7 +1262,7 @@ override val srcFactor: GPUBlendFactor = GPUBlendFactor.One,
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpublendcomponent-dstfactor).
 	 * 
 	 */
-override val dstFactor: GPUBlendFactor = GPUBlendFactor.Zero
+	override val dstFactor: GPUBlendFactor = GPUBlendFactor.Zero
 ): GPUBlendComponent
 
 /**
@@ -1258,42 +1272,42 @@ override val dstFactor: GPUBlendFactor = GPUBlendFactor.Zero
  * 
  */
 data class DepthStencilState(
-		/**
+	/**
 	 * Specifies the format of the depth/stencil texture. This property determines how depth and stencil values are stored in the texture.
 	 * 
 	 * **Type:** [GPUTextureFormat](https://www.w3.org/TR/webgpu/#enumdef-gputextureformat)
 	 * 
 	 */
-override val format: GPUTextureFormat,
-		/**
+	override val format: GPUTextureFormat,
+	/**
 	 * Indicates whether depth values are written to the depth buffer. When set to `true`, depth values are written; when set to `false` or `null`, depth values are not written.
 	 * 
 	 * **Type:** Boolean?
 	 * 
 	 */
-override val depthWriteEnabled: Boolean? = null,
-		/**
+	override val depthWriteEnabled: Boolean? = null,
+	/**
 	 * Specifies the comparison function used for depth tests. This property determines how the current depth value is compared to the stored depth value.
 	 * 
 	 * **Type:** [GPUCompareFunction](https://www.w3.org/TR/webgpu/#enumdef-gpucomparefunction)
 	 * 
 	 */
-override val depthCompare: GPUCompareFunction? = null,
-		/**
+	override val depthCompare: GPUCompareFunction? = null,
+	/**
 	 * Defines the stencil state for front-facing primitives. This property configures how stencil tests are performed for front-facing geometry.
 	 * 
 	 * **Type:** [GPUStencilFaceState](https://www.w3.org/TR/webgpu/#dictdef-gpustencilfacestate)
 	 * 
 	 */
-override val stencilFront: GPUStencilFaceState = StencilFaceState(),
-		/**
+	override val stencilFront: GPUStencilFaceState = StencilFaceState(),
+	/**
 	 * Defines the stencil state for back-facing primitives. This property configures how stencil tests are performed for back-facing geometry.
 	 * 
 	 * **Type:** [GPUStencilFaceState](https://www.w3.org/TR/webgpu/#dictdef-gpustencilfacestate)
 	 * 
 	 */
-override val stencilBack: GPUStencilFaceState = StencilFaceState(),
-		/**
+	override val stencilBack: GPUStencilFaceState = StencilFaceState(),
+	/**
 	 * Specifies the mask used for reading stencil values. This property determines which bits of the stencil value are considered during read operations.
 	 * 
 	 * **Type:** [GPUStencilValue](https://www.w3.org/TR/webgpu/#typedefdef-gpustencilvalue)
@@ -1301,8 +1315,8 @@ override val stencilBack: GPUStencilFaceState = StencilFaceState(),
 	 * **Default Value:** `0xFFFFFFFF`
 	 * 
 	 */
-override val stencilReadMask: GPUStencilValue = 0xFFFFFFFFu,
-		/**
+	override val stencilReadMask: GPUStencilValue = 0xFFFFFFFFu,
+	/**
 	 * Specifies the mask used for writing stencil values. This property determines which bits of the stencil value are modified during write operations.
 	 * 
 	 * **Type:** [GPUStencilValue](https://www.w3.org/TR/webgpu/#typedefdef-gpustencilvalue)
@@ -1310,8 +1324,8 @@ override val stencilReadMask: GPUStencilValue = 0xFFFFFFFFu,
 	 * **Default Value:** `0xFFFFFFFF`
 	 * 
 	 */
-override val stencilWriteMask: GPUStencilValue = 0xFFFFFFFFu,
-		/**
+	override val stencilWriteMask: GPUStencilValue = 0xFFFFFFFFu,
+	/**
 	 * Specifies the depth bias value. This property is used to adjust the depth values for polygon offset.
 	 * 
 	 * **Type:** [GPUDepthBias](https://www.w3.org/TR/webgpu/#typedefdef-gpudepthbias)
@@ -1319,8 +1333,8 @@ override val stencilWriteMask: GPUStencilValue = 0xFFFFFFFFu,
 	 * **Default Value:** `0`
 	 * 
 	 */
-override val depthBias: GPUDepthBias = 0,
-		/**
+	override val depthBias: GPUDepthBias = 0,
+	/**
 	 * Specifies the slope scale factor for depth bias. This property is used to adjust the depth bias based on the slope of the polygon.
 	 * 
 	 * **Type:** Float
@@ -1328,8 +1342,8 @@ override val depthBias: GPUDepthBias = 0,
 	 * **Default Value:** `0.0`
 	 * 
 	 */
-override val depthBiasSlopeScale: Float = 0f,
-		/**
+	override val depthBiasSlopeScale: Float = 0f,
+	/**
 	 * Specifies the clamp value for depth bias. This property limits the maximum depth bias that can be applied.
 	 * 
 	 * **Type:** Float
@@ -1337,7 +1351,7 @@ override val depthBiasSlopeScale: Float = 0f,
 	 * **Default Value:** `0.0`
 	 * 
 	 */
-override val depthBiasClamp: Float = 0f
+	override val depthBiasClamp: Float = 0f
 ): GPUDepthStencilState
 
 /**
@@ -1347,7 +1361,7 @@ override val depthBiasClamp: Float = 0f
  * 
  */
 data class StencilFaceState(
-		/**
+	/**
 	 * Specifies the comparison function used for stencil tests. This determines how the current stencil value is compared to the reference value.
 	 * 
 	 * **Default Value:** `GPUCompareFunction.Always`
@@ -1356,8 +1370,8 @@ data class StencilFaceState(
 	 * - [W3C WebGPU specification: GPUStencilFaceState.compare](https://www.w3.org/TR/webgpu/#dom-gpustencilfacestate-compare)
 	 * 
 	 */
-override val compare: GPUCompareFunction = GPUCompareFunction.Always,
-		/**
+	override val compare: GPUCompareFunction = GPUCompareFunction.Always,
+	/**
 	 * Specifies the operation to perform when the stencil test fails. This defines what action to take if the comparison function does not pass.
 	 * 
 	 * **Default Value:** `GPUStencilOperation.Keep`
@@ -1366,8 +1380,8 @@ override val compare: GPUCompareFunction = GPUCompareFunction.Always,
 	 * - [W3C WebGPU specification: GPUStencilFaceState.failOp](https://www.w3.org/TR/webgpu/#dom-gpustencilfacestate-failop)
 	 * 
 	 */
-override val failOp: GPUStencilOperation = GPUStencilOperation.Keep,
-		/**
+	override val failOp: GPUStencilOperation = GPUStencilOperation.Keep,
+	/**
 	 * Specifies the operation to perform when the stencil test passes but the depth test fails. This defines what action to take if the comparison function passes but the depth test does not.
 	 * 
 	 * **Default Value:** `GPUStencilOperation.Keep`
@@ -1376,8 +1390,8 @@ override val failOp: GPUStencilOperation = GPUStencilOperation.Keep,
 	 * - [W3C WebGPU specification: GPUStencilFaceState.depthFailOp](https://www.w3.org/TR/webgpu/#dom-gpustencilfacestate-depthfailop)
 	 * 
 	 */
-override val depthFailOp: GPUStencilOperation = GPUStencilOperation.Keep,
-		/**
+	override val depthFailOp: GPUStencilOperation = GPUStencilOperation.Keep,
+	/**
 	 * Specifies the operation to perform when both the stencil test and the depth test pass. This defines what action to take if both tests are successful.
 	 * 
 	 * **Default Value:** `GPUStencilOperation.Keep`
@@ -1386,7 +1400,7 @@ override val depthFailOp: GPUStencilOperation = GPUStencilOperation.Keep,
 	 * - [W3C WebGPU specification: GPUStencilFaceState.passOp](https://www.w3.org/TR/webgpu/#dom-gpustencilfacestate-passop)
 	 * 
 	 */
-override val passOp: GPUStencilOperation = GPUStencilOperation.Keep
+	override val passOp: GPUStencilOperation = GPUStencilOperation.Keep
 ): GPUStencilFaceState
 
 /**
@@ -1399,7 +1413,7 @@ override val passOp: GPUStencilOperation = GPUStencilOperation.Keep
  */
 data class VertexState(
 	override val module: GPUShaderModule,
-		/**
+	/**
 	 * A list of `GPUVertexBufferLayout` objects that define the layout of vertex attribute data in each vertex buffer used by this pipeline.
 	 * 
 	 * Each `GPUVertexBufferLayout` specifies how the vertex data is structured, including the stride between elements and the attributes that describe the members of the structure. This allows the GPU to correctly interpret the vertex data during rendering.
@@ -1411,7 +1425,7 @@ data class VertexState(
 	 * For more information, see the [W3C WebGPU specification on GPUVertexBufferLayout](https://www.w3.org/TR/webgpu/#dictdef-gpuvertexbufferlayout).
 	 * 
 	 */
-override val buffers: List<GPUVertexBufferLayout> = emptyList(),
+	override val buffers: List<GPUVertexBufferLayout> = emptyList(),
 	override val entryPoint: String? = null,
 	override val constants: Map<String, GPUPipelineConstantValue> = emptyMap()
 ): GPUVertexState
@@ -1423,27 +1437,27 @@ override val buffers: List<GPUVertexBufferLayout> = emptyList(),
  * 
  */
 data class VertexBufferLayout(
-		/**
+	/**
 	 * The stride, in bytes, between elements of this array. This value specifies how much memory is allocated for each vertex or instance in the buffer.
 	 * 
 	 * **Type:** [GPUSize64](https://www.w3.org/TR/webgpu/#typedefdef-gpusize64)
 	 * 
 	 */
-override val arrayStride: GPUSize64,
-		/**
+	override val arrayStride: GPUSize64,
+	/**
 	 * An array defining the layout of the vertex attributes within each element. This sequence describes how the vertex data is structured and accessed.
 	 * 
 	 * **Type:** List<[GPUVertexAttribute](https://www.w3.org/TR/webgpu/#dictdef-gpuvertexattribute)>
 	 * 
 	 */
-override val attributes: List<GPUVertexAttribute>,
-		/**
+	override val attributes: List<GPUVertexAttribute>,
+	/**
 	 * Specifies whether each element of this array represents per-vertex data or per-instance data. The default value is `GPUVertexStepMode.VERTEX`.
 	 * 
 	 * **Type:** [GPUVertexStepMode](https://www.w3.org/TR/webgpu/#enumdef-gpuvertexstepmode)
 	 * 
 	 */
-override val stepMode: GPUVertexStepMode = GPUVertexStepMode.Vertex
+	override val stepMode: GPUVertexStepMode = GPUVertexStepMode.Vertex
 ): GPUVertexBufferLayout
 
 /**
@@ -1455,7 +1469,7 @@ override val stepMode: GPUVertexStepMode = GPUVertexStepMode.Vertex
  * 
  */
 data class VertexAttribute(
-		/**
+	/**
 	 * The format of the vertex attribute. This specifies how the data should be interpreted by the GPU.
 	 * 
 	 * **Type:** [GPUVertexFormat]
@@ -1463,8 +1477,8 @@ data class VertexAttribute(
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuvertexattribute-format).
 	 * 
 	 */
-override val format: GPUVertexFormat,
-		/**
+	override val format: GPUVertexFormat,
+	/**
 	 * The offset, in bytes, from the beginning of the vertex buffer element to the data for this attribute.
 	 * 
 	 * **Type:** [GPUSize64]
@@ -1474,8 +1488,8 @@ override val format: GPUVertexFormat,
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuvertexattribute-offset).
 	 * 
 	 */
-override val offset: GPUSize64,
-		/**
+	override val offset: GPUSize64,
+	/**
 	 * The numeric location associated with this attribute. This corresponds to a `@location` attribute declared in the vertex module of the shader.
 	 * 
 	 * **Type:** [GPUIndex32]
@@ -1485,7 +1499,7 @@ override val offset: GPUSize64,
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuvertexattribute-shaderlocation).
 	 * 
 	 */
-override val shaderLocation: GPUIndex32
+	override val shaderLocation: GPUIndex32
 ): GPUVertexAttribute
 
 /**
@@ -1495,23 +1509,23 @@ override val shaderLocation: GPUIndex32
  * 
  */
 data class TexelCopyBufferLayout(
-		/**
+	/**
 	 * The `offset` property specifies the starting offset in bytes from the beginning of the buffer where the texel data begins. This value is of type [GPUSize64], which represents a 64-bit unsigned integer.
 	 * 
 	 * **Default Value:** `0`
 	 * 
 	 */
-override val offset: GPUSize64 = 0u,
-		/**
+	override val offset: GPUSize64 = 0u,
+	/**
 	 * The `bytesPerRow` property specifies the number of bytes per row in the texel data. This value is of type [GPUSize32], which represents a 32-bit unsigned integer.
 	 * 
 	 */
-override val bytesPerRow: GPUSize32? = null,
-		/**
+	override val bytesPerRow: GPUSize32? = null,
+	/**
 	 * The `rowsPerImage` property specifies the number of rows per image in the texel data. This value is of type [GPUSize32], which represents a 32-bit unsigned integer.
 	 * 
 	 */
-override val rowsPerImage: GPUSize32? = null
+	override val rowsPerImage: GPUSize32? = null
 ): GPUTexelCopyBufferLayout
 
 /**
@@ -1523,13 +1537,13 @@ override val rowsPerImage: GPUSize32? = null
  * 
  */
 data class TexelCopyBufferInfo(
-		/**
+	/**
 	 * The `buffer` property represents a buffer that either contains texel data to be copied or will store the texel data being copied, depending on the method it is being passed to.
 	 * 
 	 * This property is of type [GPUBuffer](https://www.w3.org/TR/webgpu/#gpubuffer) and must be a valid GPU buffer. The validity of this buffer is checked during the validation process of `GPUTexelCopyBufferInfo`.
 	 * 
 	 */
-override val buffer: GPUBuffer,
+	override val buffer: GPUBuffer,
 	override val offset: GPUSize64 = 0u,
 	override val bytesPerRow: GPUSize32? = null,
 	override val rowsPerImage: GPUSize32? = null
@@ -1542,14 +1556,14 @@ override val buffer: GPUBuffer,
  * 
  */
 data class TexelCopyTextureInfo(
-		/**
+	/**
 	 * The texture to copy to or from. This is a required field and must be specified.
 	 * 
 	 * **Type:** GPUTexture
 	 * 
 	 */
-override val texture: GPUTexture,
-		/**
+	override val texture: GPUTexture,
+	/**
 	 * The mip-map level of the texture to copy to or from. This field defaults to `0` if not specified.
 	 * 
 	 * **Type:** GPUIntegerCoordinate
@@ -1557,8 +1571,8 @@ override val texture: GPUTexture,
 	 * **Default Value:** 0
 	 * 
 	 */
-override val mipLevel: GPUIntegerCoordinate = 0u,
-		/**
+	override val mipLevel: GPUIntegerCoordinate = 0u,
+	/**
 	 * Defines the origin of the copy, which is the minimum corner of the texture sub-region to copy to or from. Together with `copySize`, this defines the full copy sub-region. This field defaults to `{}` if not specified.
 	 * 
 	 * **Type:** GPUOrigin3D
@@ -1566,8 +1580,8 @@ override val mipLevel: GPUIntegerCoordinate = 0u,
 	 * **Default Value:** `{}` (an empty GPUOrigin3D object)
 	 * 
 	 */
-override val origin: GPUOrigin3D = Origin3D(),
-		/**
+	override val origin: GPUOrigin3D = Origin3D(),
+	/**
 	 * Defines which aspects of the texture to copy to or from. This field defaults to `all` if not specified.
 	 * 
 	 * **Type:** GPUTextureAspect
@@ -1575,7 +1589,7 @@ override val origin: GPUOrigin3D = Origin3D(),
 	 * **Default Value:** GPUTextureAspect.ALL
 	 * 
 	 */
-override val aspect: GPUTextureAspect = GPUTextureAspect.All
+	override val aspect: GPUTextureAspect = GPUTextureAspect.All
 ): GPUTexelCopyTextureInfo
 
 /**
@@ -1613,27 +1627,27 @@ data class CommandEncoderDescriptor(
  * 
  */
 data class ComputePassTimestampWrites(
-		/**
+	/**
 	 * The `GPUQuerySet` of type "timestamp" that the query results will be written to. This set contains the queries where the timestamps will be recorded.
 	 * 
 	 * **Type**: [GPUQuerySet](https://www.w3.org/TR/webgpu/#gpuqueryset)
 	 * 
 	 */
-override val querySet: GPUQuerySet,
-		/**
+	override val querySet: GPUQuerySet,
+	/**
 	 * If defined, indicates the query index in `querySet` into which the timestamp at the beginning of the compute pass will be written. This value is of type [GPUSize32](https://www.w3.org/TR/webgpu/#typedefdef-gpusize32).
 	 * 
 	 * **Type**: GPUSize32?
 	 * 
 	 */
-override val beginningOfPassWriteIndex: GPUSize32? = null,
-		/**
+	override val beginningOfPassWriteIndex: GPUSize32? = null,
+	/**
 	 * If defined, indicates the query index in `querySet` into which the timestamp at the end of the compute pass will be written. This value is of type [GPUSize32](https://www.w3.org/TR/webgpu/#typedefdef-gpusize32).
 	 * 
 	 * **Type**: GPUSize32?
 	 * 
 	 */
-override val endOfPassWriteIndex: GPUSize32? = null
+	override val endOfPassWriteIndex: GPUSize32? = null
 ): GPUComputePassTimestampWrites
 
 /**
@@ -1643,7 +1657,7 @@ override val endOfPassWriteIndex: GPUSize32? = null
  * 
  */
 data class ComputePassDescriptor(
-		/**
+	/**
 	 * Defines which timestamp values will be written for this pass and where to write them.
 	 * 
 	 * This property is of type [GPUComputePassTimestampWrites].
@@ -1651,7 +1665,7 @@ data class ComputePassDescriptor(
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpucomputepassdescriptor-timestampwrites).
 	 * 
 	 */
-override val timestampWrites: GPUComputePassTimestampWrites? = null,
+	override val timestampWrites: GPUComputePassTimestampWrites? = null,
 	override val label: String = ""
 ): GPUComputePassDescriptor
 
@@ -1662,27 +1676,27 @@ override val timestampWrites: GPUComputePassTimestampWrites? = null,
  * 
  */
 data class RenderPassTimestampWrites(
-		/**
+	/**
 	 * The GPUQuerySet of type `timestamp` that the query results will be written to.
 	 * 
 	 * This property is required and specifies the query set where the timestamps will be recorded.
 	 * 
 	 */
-override val querySet: GPUQuerySet,
-		/**
+	override val querySet: GPUQuerySet,
+	/**
 	 * An optional index in the [querySet] that indicates where the timestamp at the beginning of the render pass will be written.
 	 * 
 	 * If defined, this property specifies the exact query index within the `querySet` where the start timestamp of the render pass will be recorded.
 	 * 
 	 */
-override val beginningOfPassWriteIndex: GPUSize32? = null,
-		/**
+	override val beginningOfPassWriteIndex: GPUSize32? = null,
+	/**
 	 * An optional index in the [querySet] that indicates where the timestamp at the end of the render pass will be written.
 	 * 
 	 * If defined, this property specifies the exact query index within the `querySet` where the end timestamp of the render pass will be recorded.
 	 * 
 	 */
-override val endOfPassWriteIndex: GPUSize32? = null
+	override val endOfPassWriteIndex: GPUSize32? = null
 ): GPURenderPassTimestampWrites
 
 /**
@@ -1694,7 +1708,7 @@ override val endOfPassWriteIndex: GPUSize32? = null
  * 
  */
 data class RenderPassDescriptor(
-		/**
+	/**
 	 * The `colorAttachments` property is a list of `GPURenderPassColorAttachment` objects that define the color attachments for the render pass. Each attachment specifies how the output from the render pass will be written to a particular color buffer.
 	 * 
 	 * Due to usage compatibility, no color attachment may alias another attachment or any resource used inside the render pass.
@@ -1702,8 +1716,8 @@ data class RenderPassDescriptor(
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdescriptor-colorattachments).
 	 * 
 	 */
-override val colorAttachments: List<GPURenderPassColorAttachment>,
-		/**
+	override val colorAttachments: List<GPURenderPassColorAttachment>,
+	/**
 	 * The `depthStencilAttachment` property specifies a `GPURenderPassDepthStencilAttachment` object that defines the depth/stencil attachment for the render pass. This attachment is used for depth testing and stencil operations during the rendering process.
 	 * 
 	 * Due to usage compatibility, no writable depth/stencil attachment may alias another attachment or any resource used inside the render pass.
@@ -1711,24 +1725,24 @@ override val colorAttachments: List<GPURenderPassColorAttachment>,
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdescriptor-depthstencilattachment).
 	 * 
 	 */
-override val depthStencilAttachment: GPURenderPassDepthStencilAttachment? = null,
-		/**
+	override val depthStencilAttachment: GPURenderPassDepthStencilAttachment? = null,
+	/**
 	 * The `occlusionQuerySet` property specifies a `GPUQuerySet` object that defines where the occlusion query results will be stored for this render pass. Occlusion queries are used to determine whether certain pixels were rendered during the pass.
 	 * 
 	 */
-override val occlusionQuerySet: GPUQuerySet? = null,
-		/**
+	override val occlusionQuerySet: GPUQuerySet? = null,
+	/**
 	 * The `timestampWrites` property allows you to specify a list of `GPUQuerySet` objects that define where timestamp query results will be stored for this render pass. Timestamps are used to measure the time taken by different parts of the rendering process.
 	 * 
 	 */
-override val timestampWrites: GPURenderPassTimestampWrites? = null,
-		/**
+	override val timestampWrites: GPURenderPassTimestampWrites? = null,
+	/**
 	 * The `maxDrawCount` property specifies the maximum number of draw calls that can be made during the render pass. This is useful for optimizing performance and managing resources efficiently.
 	 * 
 	 * Setting an appropriate value for `maxDrawCount` helps in preventing resource exhaustion and ensures smooth rendering.
 	 * 
 	 */
-override val maxDrawCount: GPUSize64 = 50000000u,
+	override val maxDrawCount: GPUSize64 = 50000000u,
 	override val label: String = ""
 ): GPURenderPassDescriptor
 
@@ -1739,48 +1753,48 @@ override val maxDrawCount: GPUSize64 = 50000000u,
  * 
  */
 data class RenderPassColorAttachment(
-		/**
+	/**
 	 * A GPUTextureView describing the texture subresource that will be output to for this color attachment.
 	 * 
 	 * This property is required and must be a valid renderable texture view. The format of the view must be a color renderable format.
 	 * 
 	 */
-override val view: GPUTextureView,
-		/**
+	override val view: GPUTextureView,
+	/**
 	 * Indicates the load operation to perform on the GPUTextureView prior to executing the render pass.
 	 * 
 	 * This property is required and specifies how the contents of the view should be handled before rendering. It can be one of the following values: "clear", "load", or "dont-care".
 	 * 
 	 */
-override val loadOp: GPULoadOp,
-		/**
+	override val loadOp: GPULoadOp,
+	/**
 	 * The store operation to perform on the GPUTextureView after executing the render pass.
 	 * 
 	 * This property is required and specifies how the contents of the view should be handled after rendering. It can be one of the following values: "store", or "dont-store"
 	 * 
 	 */
-override val storeOp: GPUStoreOp,
-		/**
+	override val storeOp: GPUStoreOp,
+	/**
 	 * Indicates the depth slice index of the GPUTextureView that will be output to for this color attachment when the view's dimension is "3d".
 	 * 
 	 * This property is optional and must only be provided if the GPUTextureView's dimension is "3d"
 	 * 
 	 */
-override val depthSlice: GPUIntegerCoordinate? = null,
-		/**
+	override val depthSlice: GPUIntegerCoordinate? = null,
+	/**
 	 * A GPUTextureView describing the texture subresource that will receive the resolved output for this color attachment if the GPUTextureView is multisampled.
 	 * 
 	 * This property is optional and must only be provided if the GPUTextureView's sample count is greater than 1. The resolve target must have a sample count of 1.
 	 * 
 	 */
-override val resolveTarget: GPUTextureView? = null,
-		/**
+	override val resolveTarget: GPUTextureView? = null,
+	/**
 	 * Indicates the value to clear the GPUTextureView to prior to executing the render pass.
 	 * 
 	 * This property is optional and defaults to {r: 0, g: 0, b: 0, a: 0} if not provided. It is ignored if the loadOp is not "clear". The components of clearValue are converted to a texel value of the texture format matching the render attachment.
 	 * 
 	 */
-override val clearValue: GPUColor? = null
+	override val clearValue: GPUColor? = null
 ): GPURenderPassColorAttachment
 
 /**
@@ -1790,69 +1804,69 @@ override val clearValue: GPUColor? = null
  * 
  */
 data class RenderPassDepthStencilAttachment(
-		/**
+	/**
 	 * A `GPUTextureView` describing the texture subresource that will be output to and read from for this depth/stencil attachment.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-view).
 	 * 
 	 */
-override val view: GPUTextureView,
-		/**
+	override val view: GPUTextureView,
+	/**
 	 * Indicates the value to clear the `view`'s depth component to prior to executing the render pass. This value is ignored if `depthLoadOp` is not set to `GPULoadOp.CLEAR`. The value must be between 0.0 and 1.0, inclusive.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-depthclearvalue).
 	 * 
 	 */
-override val depthClearValue: Float? = null,
-		/**
+	override val depthClearValue: Float? = null,
+	/**
 	 * Indicates the load operation to perform on the `view`'s depth component prior to executing the render pass. It is recommended to prefer clearing; see `GPULoadOp.CLEAR` for details.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-depthloadop).
 	 * 
 	 */
-override val depthLoadOp: GPULoadOp? = null,
-		/**
+	override val depthLoadOp: GPULoadOp? = null,
+	/**
 	 * The store operation to perform on the `view`'s depth component after executing the render pass.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-depthstoreop).
 	 * 
 	 */
-override val depthStoreOp: GPUStoreOp? = null,
-		/**
+	override val depthStoreOp: GPUStoreOp? = null,
+	/**
 	 * Indicates that the depth component of the `view` is read-only. Defaults to `false`.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-depthreadonly).
 	 * 
 	 */
-override val depthReadOnly: Boolean = false,
-		/**
+	override val depthReadOnly: Boolean = false,
+	/**
 	 * Indicates the value to clear the `view`'s stencil component to prior to executing the render pass. This value is ignored if `stencilLoadOp` is not set to `GPULoadOp.CLEAR`. The value will be converted to the type of the stencil aspect of the `view` by taking the same number of least significant bits (LSBs) as the number of bits in the stencil aspect of one texel of the `view`.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-stencilclearvalue).
 	 * 
 	 */
-override val stencilClearValue: GPUStencilValue = 0u,
-		/**
+	override val stencilClearValue: GPUStencilValue = 0u,
+	/**
 	 * Indicates the load operation to perform on the `view`'s stencil component prior to executing the render pass. It is recommended to prefer clearing; see `GPULoadOp.CLEAR` for details.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-stencilloadop).
 	 * 
 	 */
-override val stencilLoadOp: GPULoadOp? = null,
-		/**
+	override val stencilLoadOp: GPULoadOp? = null,
+	/**
 	 * The store operation to perform on the `view`'s stencil component after executing the render pass.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-stencilstoreop).
 	 * 
 	 */
-override val stencilStoreOp: GPUStoreOp? = null,
-		/**
+	override val stencilStoreOp: GPUStoreOp? = null,
+	/**
 	 * Indicates that the stencil component of the `view` is read-only. Defaults to `false`.
 	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpurenderpassdepthstencilattachment-stencilreadonly).
 	 * 
 	 */
-override val stencilReadOnly: Boolean = false
+	override val stencilReadOnly: Boolean = false
 ): GPURenderPassDepthStencilAttachment
 
 /**
@@ -1864,27 +1878,27 @@ override val stencilReadOnly: Boolean = false
  * 
  */
 data class RenderPassLayout(
-		/**
+	/**
 	 * A list of the [GPUTextureFormat](https://www.w3.org/TR/webgpu/#enumdef-gputextureformat)s of the color attachments for this pass or bundle.
 	 * 
 	 * This property specifies the formats of the color attachments that will be used in the render pass. Each format corresponds to a texture view that will be rendered to during the pass.
 	 * 
 	 */
-override val colorFormats: List<GPUTextureFormat>,
-		/**
+	override val colorFormats: List<GPUTextureFormat>,
+	/**
 	 * The [GPUTextureFormat](https://www.w3.org/TR/webgpu/#enumdef-gputextureformat) of the depth/stencil attachment for this pass or bundle.
 	 * 
 	 * This property specifies the format of the depth/stencil attachment that will be used in the render pass. It is optional and can be `null` if no depth/stencil attachment is required.
 	 * 
 	 */
-override val depthStencilFormat: GPUTextureFormat? = null,
-		/**
+	override val depthStencilFormat: GPUTextureFormat? = null,
+	/**
 	 * Number of samples per pixel in the attachments for this pass or bundle.
 	 * 
 	 * This property specifies the number of samples per pixel for multisampling. The default value is `1`, which means no multisampling.
 	 * 
 	 */
-override val sampleCount: GPUSize32 = 1u,
+	override val sampleCount: GPUSize32 = 1u,
 	override val label: String = ""
 ): GPURenderPassLayout
 
@@ -1906,7 +1920,7 @@ data class RenderBundleDescriptor(
  */
 data class RenderBundleEncoderDescriptor(
 	override val colorFormats: List<GPUTextureFormat>,
-		/**
+	/**
 	 * Indicates whether the render bundle modifies the depth component of the GPURenderPassDepthStencilAttachment in any render pass it is executed in.
 	 * 
 	 * If set to true, the depth component is read-only. This can be useful for optimizing performance by avoiding unnecessary writes to the depth buffer.
@@ -1915,8 +1929,8 @@ data class RenderBundleEncoderDescriptor(
 	 * @default false
 	 * 
 	 */
-override val depthReadOnly: Boolean = false,
-		/**
+	override val depthReadOnly: Boolean = false,
+	/**
 	 * Indicates whether the render bundle modifies the stencil component of the GPURenderPassDepthStencilAttachment in any render pass it is executed in.
 	 * 
 	 * If set to true, the stencil component is read-only. This can be useful for optimizing performance by avoiding unnecessary writes to the stencil buffer.
@@ -1925,7 +1939,7 @@ override val depthReadOnly: Boolean = false,
 	 * @default false
 	 * 
 	 */
-override val stencilReadOnly: Boolean = false,
+	override val stencilReadOnly: Boolean = false,
 	override val depthStencilFormat: GPUTextureFormat? = null,
 	override val sampleCount: GPUSize32 = 1u,
 	override val label: String = ""
@@ -1952,21 +1966,21 @@ data class QueueDescriptor(
  * 
  */
 data class QuerySetDescriptor(
-		/**
+	/**
 	 * Specifies the type of queries managed by the [GPUQuerySet]. This property is required and must be set to one of the values defined in the [GPUQueryType](https://www.w3.org/TR/webgpu/#enumdef-gpuquerytype) enum.
 	 * 
 	 * **See also:**
 	 * - [WebGPU Specification: type](https://www.w3.org/TR/webgpu/#dom-gpuquerysetdescriptor-type)
 	 * 
 	 */
-override val type: GPUQueryType,
-		/**
+	override val type: GPUQueryType,
+	/**
 	 * Specifies the number of queries managed by the [GPUQuerySet]. This property is required and must be set to a valid [GPUSize32](https://www.w3.org/TR/webgpu/#typedefdef-gpusize32) value.
 	 * 
 	 * **See also:**
 	 * - [WebGPU Specification: count](https://www.w3.org/TR/webgpu/#dom-gpuquerysetdescriptor-count)
 	 * 
 	 */
-override val count: GPUSize32,
+	override val count: GPUSize32,
 	override val label: String = ""
 ): GPUQuerySetDescriptor
