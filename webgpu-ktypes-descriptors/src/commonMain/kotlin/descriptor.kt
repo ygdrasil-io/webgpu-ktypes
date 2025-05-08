@@ -830,6 +830,7 @@ data class ShaderModuleDescriptor(
 	 * - [W3C WebGPU Specification: GPUShaderModuleDescriptor.code](https://www.w3.org/TR/webgpu/#dom-gpushadermoduledescriptor-code)
 	 * 
 	 */
+	@org.intellij.lang.annotations.Language("WGSL")
 	override val code: String,
 	/**
 	 * A list of `GPUShaderModuleCompilationHint` objects that provide additional information to the compiler about the shader module. These hints can include details about entry points, resource bindings, and other compilation-specific information. Providing these hints can improve performance by allowing the compiler to perform more optimizations during the creation of the shader module.

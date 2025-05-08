@@ -22,6 +22,7 @@ class MapperContext(
 
         generateUncapturedErrorCallback()
         changeGPUErrorAsSealed()
+        injectAnnotationToSetCodeAsWGSLOnShaderModuleDescriptor()
 
         // If interface contains destroy, we set it as AutoCloseable
         interfaces.forEach { kinterface ->
@@ -92,6 +93,14 @@ class MapperContext(
                 // remove dynamicOffsetsStart and dynamicOffsetsLength
                 parameters = parameters.filter { it.name in listOf("index", "bindGroup", "dynamicOffsetsData") }
                 parameters.first { it.name == "dynamicOffsetsData"}.defaultValue = "emptyList()"
+            }
+        }
+    }
+
+    private fun injectAnnotationToSetCodeAsWGSLOnShaderModuleDescriptor() {
+        descriptors.first { it.name == "GPUShaderModuleDescriptor" }.apply {
+            parameter.first { it.name == "code" }.apply {
+                annotations += "@org.intellij.lang.annotations.Language(\"WGSL\")"
             }
         }
     }

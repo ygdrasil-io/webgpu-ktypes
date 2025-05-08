@@ -61,6 +61,7 @@ kotlin {
 
     sourceSets.commonMain.dependencies {
         implementation(project(":webgpu-ktypes"))
+        compileOnly(libs.jetbrains.annotations)
     }
 }
 
