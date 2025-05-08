@@ -76,28 +76,20 @@ interface GPUColor {
 	/**
 	 * The red channel value of the color. This value is a `Double` representing the intensity of the red component in the RGBA color model.
 	 * 
-	 * **Type**: Double
-	 * 
 	 */
 	val r: Double
 	/**
 	 * The green channel value of the color. This value is a `Double` representing the intensity of the green component in the RGBA color model.
-	 * 
-	 * **Type**: Double
 	 * 
 	 */
 	val g: Double
 	/**
 	 * The blue channel value of the color. This value is a `Double` representing the intensity of the blue component in the RGBA color model.
 	 * 
-	 * **Type**: Double
-	 * 
 	 */
 	val b: Double
 	/**
 	 * The alpha channel value of the color. This value is a `Double` representing the opacity of the color, where 0.0 means fully transparent and 1.0 means fully opaque.
-	 * 
-	 * **Type**: Double
 	 * 
 	 */
 	val a: Double
@@ -115,9 +107,6 @@ interface GPUOrigin2D {
 	/**
 	 * The x-coordinate of the origin point. This value is of type `GPUIntegerCoordinate`.
 	 * 
-	 * - **Type**: `GPUIntegerCoordinate`
-	 * - **Default Value**: 0
-	 * 
 	 * When using a sequence to represent `GPUOrigin2D`, this property refers to the first item in the sequence. If the sequence does not contain an item, the default value of 0 is used.
 	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuorigin2ddict-x).
@@ -126,9 +115,6 @@ interface GPUOrigin2D {
 	val x: GPUIntegerCoordinate
 	/**
 	 * The y-coordinate of the origin point. This value is of type `GPUIntegerCoordinate`.
-	 * 
-	 * - **Type**: `GPUIntegerCoordinate`
-	 * - **Default Value**: 0
 	 * 
 	 * When using a sequence to represent `GPUOrigin2D`, this property refers to the second item in the sequence. If the sequence does not contain an item, the default value of 0 is used.
 	 * 
@@ -152,8 +138,6 @@ interface GPUOrigin3D {
 	 * 
 	 * **Type:** [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate)
 	 * 
-	 * **Default Value:** 0
-	 * 
 	 */
 	val x: GPUIntegerCoordinate
 	/**
@@ -161,16 +145,12 @@ interface GPUOrigin3D {
 	 * 
 	 * **Type:** [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate)
 	 * 
-	 * **Default Value:** 0
-	 * 
 	 */
 	val y: GPUIntegerCoordinate
 	/**
 	 * The z-coordinate of the 3D origin point. This value is either the third item in a sequence of [GPUIntegerCoordinate] values or the `z` property of a [GPUOrigin3DDict].
 	 * 
 	 * **Type:** [GPUIntegerCoordinate](https://www.w3.org/TR/webgpu/#typedefdef-gpuintegercoordinate)
-	 * 
-	 * **Default Value:** 0
 	 * 
 	 */
 	val z: GPUIntegerCoordinate
@@ -227,8 +207,6 @@ interface GPUObjectBase {
 	 * A developer-provided label which is used in an implementation-defined way. It can be utilized by the browser, OS, or other tools to help identify the underlying internal object to the developer.
 	 * 
 	 * This property is particularly useful for debugging purposes as it allows developers to assign meaningful names to their WebGPU objects. These labels can then be displayed in error messages, console warnings, and various debugging utilities.
-	 * 
-	 * **Type**: `String`
 	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuobjectbase-label).
 	 * 
@@ -1070,8 +1048,6 @@ interface GPUCompilationInfo {
 	/**
 	 * A list of [GPUCompilationMessage] objects that contain detailed information about the compilation process. These messages can include warnings and errors that occurred during the compilation of a shader module.
 	 * 
-	 * **Type**: `List<[GPUCompilationMessage]>`
-	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#gpucompilationinfo).
 	 * 
 	 */
@@ -1786,10 +1762,6 @@ interface GPUObjectDescriptorBase {
 	/**
 	 * A string that labels the GPU object. This label can be used for debugging purposes to identify the object.
 	 * 
-	 * **Type**: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/)
-	 * 
-	 * **Default Value**: An empty string (`""`)
-	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuobjectdescriptorbase-label).
 	 * 
 	 */
@@ -2161,8 +2133,6 @@ interface GPUBindGroupLayoutDescriptor : GPUObjectDescriptorBase {
 	 * 
 	 * Each entry in this list describes a single shader resource binding to be included in a `GPUBindGroupLayout`. The entries specify how resources are bound to shaders, including buffers, samplers, textures, and external textures.
 	 * 
-	 * **Type**: List<GPUBindGroupLayoutEntry>
-	 * 
 	 * **See also**:
 	 * - GPUBindGroupLayoutEntry
 	 * 
@@ -2243,18 +2213,10 @@ interface GPUBufferBindingLayout {
 	/**
 	 * Indicates whether this binding requires a dynamic offset. A dynamic offset allows for more flexible buffer binding, enabling the use of different buffer sizes at runtime.
 	 * 
-	 * **Type:** Boolean
-	 * 
-	 * **Default Value:** false
-	 * 
 	 */
 	val hasDynamicOffset: Boolean
 	/**
 	 * Specifies the minimum size of a buffer binding used with this bind point. This value is used to validate that buffers bound to this layout meet the required size constraints.
-	 * 
-	 * **Type:** GPUSize64
-	 * 
-	 * **Default Value:** 0
 	 * 
 	 * **Behavior:**
 	 * - If `minBindingSize` is not `0`, pipeline creation validates that this value is greater than or equal to the minimum buffer binding size of the variable.
@@ -2326,10 +2288,6 @@ interface GPUTextureBindingLayout {
 	val viewDimension: GPUTextureViewDimension
 	/**
 	 * Indicates whether texture views bound to this binding must be multisampled. This property is used to specify if the texture should support multisampling.
-	 * 
-	 * **Default Value**: `false`
-	 * 
-	 * **Type**: `Boolean`
 	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dictdef-gputexturebindinglayout).
 	 * 
@@ -2404,8 +2362,6 @@ interface GPUBindGroupEntry {
 	/**
 	 * A unique identifier for a resource binding within the [GPUBindGroup]. This identifier corresponds to a `GPUBindGroupLayoutEntry.binding` and a `@binding` attribute in the [GPUShaderModule].
 	 * 
-	 * **Type:** [GPUIndex32](TYPE_MAPPING.md)
-	 * 
 	 */
 	val binding: GPUIndex32
 	/**
@@ -2414,8 +2370,6 @@ interface GPUBindGroupEntry {
 	 * - [GPUTextureView]
 	 * - [GPUExternalTexture]
 	 * - [GPUBufferBinding]
-	 * 
-	 * **Type:** [GPUBindingResource](TYPE_MAPPING.md)
 	 * 
 	 */
 	val resource: GPUBindingResource
@@ -2432,8 +2386,6 @@ interface GPUBindGroupEntry {
 interface GPUPipelineLayoutDescriptor : GPUObjectDescriptorBase {
 	/**
 	 * A list of optional [GPUBindGroupLayout](https://www.w3.org/TR/webgpu/#dictdef-gpubindgrouplayout)s that the pipeline will use. Each element in this list corresponds to a `@group` attribute in the [GPUShaderModule], with the `N`th element corresponding to `@group(N)`.
-	 * 
-	 * **Type**: `List<GPUBindGroupLayout?>`
 	 * 
 	 * **Details**:
 	 * - This list defines the layout of bind groups that the pipeline will use.
@@ -2510,10 +2462,6 @@ interface GPUPipelineDescriptorBase : GPUObjectDescriptorBase {
 	/**
 	 * Specifies the layout for this pipeline. This can be either a [GPUPipelineLayout] object or the string `"auto"` to generate the pipeline layout automatically.
 	 * 
-	 * **Type**: [GPUPipelineLayout] or `String`
-	 * 
-	 * **Default**: None
-	 * 
 	 * **Behavior**:
 	 * - If a [GPUPipelineLayout] is provided, it defines the specific layout for the pipeline.
 	 * - If `"auto"` is specified, the pipeline layout is generated automatically. However, this means that the pipeline cannot share [GPUBindGroup]s with any other pipelines.
@@ -2562,8 +2510,6 @@ interface GPUComputePipelineDescriptor : GPUPipelineDescriptorBase {
 	 * Specifies the compute shader stage for the pipeline. This member is required and must be set to a valid [GPUProgrammableStage] object that describes the compute shader entry point.
 	 * 
 	 * The compute shader is responsible for executing the compute operations defined in the shader code. It does not produce visual output but can perform parallel computations on data.
-	 * 
-	 * **Type:** [GPUProgrammableStage]
 	 * 
 	 */
 	val compute: GPUProgrammableStage
@@ -2673,10 +2619,6 @@ interface GPUMultisampleState {
 	/**
 	 * Specifies the number of samples per pixel. This value determines the level of multisampling used during rendering.
 	 * 
-	 * **Type:** [GPUSize32](https://www.w3.org/TR/webgpu/#typedefdef-gpusize32)
-	 * 
-	 * **Default Value:** 1
-	 * 
 	 * **Constraints:**
 	 * - Must be either 1 or 4.
 	 * - If `alphaToCoverageEnabled` is `true`, `count` must be greater than 1.
@@ -2689,10 +2631,6 @@ interface GPUMultisampleState {
 	/**
 	 * Determines which samples are written to during rendering. This mask allows for selective sampling, which can be useful for optimizing performance or achieving specific visual effects.
 	 * 
-	 * **Type:** [GPUSampleMask](https://www.w3.org/TR/webgpu/#typedefdef-gpusamplemask)
-	 * 
-	 * **Default Value:** 0xFFFFFFFF
-	 * 
 	 * **See also:**
 	 * - [mask member in the WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpumultisamplestate-mask)
 	 * 
@@ -2700,10 +2638,6 @@ interface GPUMultisampleState {
 	val mask: GPUSampleMask
 	/**
 	 * When set to `true`, enables alpha-to-coverage, which uses the fragment's alpha channel to generate a sample coverage mask. This can improve the quality of antialiased edges.
-	 * 
-	 * **Type:** Boolean
-	 * 
-	 * **Default Value:** false
 	 * 
 	 * **Constraints:**
 	 * - If `alphaToCoverageEnabled` is `true`, `count` must be greater than 1.
@@ -2727,8 +2661,6 @@ interface GPUMultisampleState {
 interface GPUFragmentState : GPUProgrammableStage {
 	/**
 	 * A list of [GPUColorTargetState] objects that define the formats and behaviors of the color targets this pipeline writes to. Each `GPUColorTargetState` in the list specifies how a particular color target should be handled during rendering.
-	 * 
-	 * **Type:** List<[GPUColorTargetState]?>
 	 * 
 	 * **See also:**
 	 * - [WebGPU Specification: GPUFragmentState](https://www.w3.org/TR/webgpu/#dictdef-gpufragmentstate)
@@ -2808,10 +2740,6 @@ interface GPUBlendComponent {
 	 * 
 	 * This property specifies the blending operation to be performed. The default value is `add`.
 	 * 
-	 * **Type:** [GPUBlendOperation]
-	 * 
-	 * **Default Value:** "add"
-	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpublendcomponent-operation).
 	 * 
 	 */
@@ -2821,10 +2749,6 @@ interface GPUBlendComponent {
 	 * 
 	 * This property specifies the blending factor for the source color. The default value is `one`.
 	 * 
-	 * **Type:** [GPUBlendFactor]
-	 * 
-	 * **Default Value:** "one"
-	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpublendcomponent-srcfactor).
 	 * 
 	 */
@@ -2833,10 +2757,6 @@ interface GPUBlendComponent {
 	 * Defines the [GPUBlendFactor] operation to be performed on values from the target attachment.
 	 * 
 	 * This property specifies the blending factor for the destination color. The default value is `zero`.
-	 * 
-	 * **Type:** [GPUBlendFactor]
-	 * 
-	 * **Default Value:** "zero"
 	 * 
 	 * @see [WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpublendcomponent-dstfactor).
 	 * 
@@ -2996,10 +2916,6 @@ interface GPUVertexState : GPUProgrammableStage {
 	 * 
 	 * Each `GPUVertexBufferLayout` specifies how the vertex data is structured, including the stride between elements and the attributes that describe the members of the structure. This allows the GPU to correctly interpret the vertex data during rendering.
 	 * 
-	 * **Type**: List<[GPUVertexBufferLayout]>
-	 * 
-	 * **Default Value**: An empty list
-	 * 
 	 * For more information, see the [W3C WebGPU specification on GPUVertexBufferLayout](https://www.w3.org/TR/webgpu/#dictdef-gpuvertexbufferlayout).
 	 * 
 	 */
@@ -3048,16 +2964,12 @@ interface GPUVertexAttribute {
 	/**
 	 * The format of the vertex attribute. This specifies how the data should be interpreted by the GPU.
 	 * 
-	 * **Type:** [GPUVertexFormat]
-	 * 
 	 * For more details, refer to the [W3C WebGPU specification](https://www.w3.org/TR/webgpu/#dom-gpuvertexattribute-format).
 	 * 
 	 */
 	val format: GPUVertexFormat
 	/**
 	 * The offset, in bytes, from the beginning of the vertex buffer element to the data for this attribute.
-	 * 
-	 * **Type:** [GPUSize64]
 	 * 
 	 * This value must be a multiple of the minimum of 4 and the byte size of the format specified by `format`. It defines where within the vertex buffer the data for this attribute begins.
 	 * 
