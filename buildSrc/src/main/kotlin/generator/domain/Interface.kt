@@ -3,7 +3,8 @@ package generator.domain
 class Interface(
     val name: String,
     val sealed: Boolean = false,
-    val external: Boolean = false
+    val external: Boolean = false,
+    val functional: Boolean = false,
 ) {
     var extends: Set<String> = emptySet()
     var attributes: List<Attribute> = emptyList()
@@ -14,7 +15,7 @@ class Interface(
         val name: String,
         var returnType: String,
         var parameters: List<Parameter>,
-        val isSuspend: Boolean
+        val isSuspend: Boolean = false
     ) {
         var kDoc: KDoc? = null
 
@@ -57,6 +58,7 @@ class Interface(
             kDoc?.let { append(it) }
             if (sealed) append("sealed ")
             if (external) append("external ")
+            if (functional) append("fun ")
             append("interface $name")
             if (extends.isNotEmpty()) {
                 append(" : ")

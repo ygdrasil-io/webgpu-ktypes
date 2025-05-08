@@ -41,7 +41,8 @@ data class DeviceDescriptor(
 	override val requiredFeatures: List<GPUFeatureName> = emptyList(),
 	override val requiredLimits: GPUSupportedLimits? = null,
 	override val defaultQueue: GPUQueueDescriptor = QueueDescriptor(),
-	override val label: String = ""
+	override val label: String = "",
+	override val onUncapturedError: GPUUncapturedErrorCallback? = null
 ): GPUDeviceDescriptor
 
 data class BufferDescriptor(

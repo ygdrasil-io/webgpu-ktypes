@@ -1,6 +1,6 @@
 package generator.domain
 
-class DescriptorClass(val name: String, val parameter: List<Parameter>) {
+class DescriptorClass(val name: String, var parameter: List<Parameter>) {
 
     class Parameter(val name: String, var type: String, var defaultValue: String? = null) {
 

@@ -1898,6 +1898,7 @@ interface GPUDeviceDescriptor : GPUObjectDescriptorBase {
 	 * 
 	 */
 	val defaultQueue: GPUQueueDescriptor
+	val onUncapturedError: GPUUncapturedErrorCallback?
 }
 
 /**
@@ -3521,4 +3522,32 @@ interface GPUQuerySetDescriptor : GPUObjectDescriptorBase {
 	 * 
 	 */
 	val count: GPUSize32
+}
+
+/**
+ * A functional interface representing a callback that handles uncaptured GPU errors.
+ * 
+ * This callback is designed to process errors surfaced from WebGPU operations that are not explicitly handled by user code, such as errors triggered by the `uncapturederror` event.
+ * 
+ * The purpose of this callback is to enable developers to log, debug, or otherwise respond to errors in a structured manner, improving the development experience and debugging process.
+ * 
+ * Error details are provided via the [GPUError] parameter, which contains information about the specific error, including a human-readable message.
+ * 
+ * **Usage Context:**
+ * - Typically set as part of error handling mechanisms in WebGPU-based applications.
+ * - Provides an opportunity to capture and respond to errors globally with [GPUDeviceDescriptor], outside of scoped error-handling like `popErrorScope`.
+ * 
+ */
+fun interface GPUUncapturedErrorCallback {
+	/**
+	 * Handles uncaptured GPU errors by providing a callback mechanism to process errors surfaced
+	 * from WebGPU operations that are not explicitly handled in user code.
+	 * 
+	 * The callback is triggered for errors such as those raised by the `uncapturederror` event.
+	 * Developers can use this method to log, debug, or respond to errors in a structured way.
+	 * 
+	 * @param error The GPU error instance containing details about the encountered error,
+	 *              including a human-readable message for debugging and logging purposes.
+	 */
+	fun onUncapturedError(error: GPUError)
 }
