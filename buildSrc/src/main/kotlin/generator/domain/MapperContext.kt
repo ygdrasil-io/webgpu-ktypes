@@ -21,7 +21,7 @@ class MapperContext(
     fun adaptToGuidelines() {
 
         generateUncapturedErrorCallback()
-        changeGPUErrroAsSealed()
+        changeGPUErrorAsSealed()
 
         // If interface contains destroy, we set it as AutoCloseable
         interfaces.forEach { kinterface ->
@@ -96,7 +96,7 @@ class MapperContext(
         }
     }
 
-    private fun changeGPUErrroAsSealed() {
+    private fun changeGPUErrorAsSealed() {
         interfaces.find { it.name == "GPUError" }!!.apply {
            sealed = true
         }
