@@ -23,6 +23,19 @@ internal fun MapperContext.injectDocumentation(documentation: Map<String, String
         }
     }
 
+    descriptors.forEach { descriptor ->
+        documentation.get(descriptor.name)?.let {
+            descriptor.kDoc = KDoc(it)
+        }
+
+        descriptor.parameter.forEach { attribute ->
+            documentation.get("${descriptor.name}#${attribute.name}")?.let {
+                attribute.kDoc = KDoc(it, 1)
+            }
+        }
+
+    }
+
     (commonEnumerations + commonWebEnumerations + commonNativeEnumerations)
         .forEach { enumeration ->
             documentation.get(enumeration.name)?.let {
