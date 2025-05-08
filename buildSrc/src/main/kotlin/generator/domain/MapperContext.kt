@@ -21,6 +21,7 @@ class MapperContext(
     fun adaptToGuidelines() {
 
         generateUncapturedErrorCallback()
+        changeGPUErrroAsSealed()
 
         // If interface contains destroy, we set it as AutoCloseable
         interfaces.forEach { kinterface ->
@@ -92,6 +93,12 @@ class MapperContext(
                 parameters = parameters.filter { it.name in listOf("index", "bindGroup", "dynamicOffsetsData") }
                 parameters.first { it.name == "dynamicOffsetsData"}.defaultValue = "emptyList()"
             }
+        }
+    }
+
+    private fun changeGPUErrroAsSealed() {
+        interfaces.find { it.name == "GPUError" }!!.apply {
+           sealed = true
         }
     }
 

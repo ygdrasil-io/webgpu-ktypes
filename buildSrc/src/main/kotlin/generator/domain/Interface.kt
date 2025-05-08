@@ -2,7 +2,7 @@ package generator.domain
 
 class Interface(
     val name: String,
-    val sealed: Boolean = false,
+    var sealed: Boolean = false,
     val external: Boolean = false,
     val functional: Boolean = false,
 ) {

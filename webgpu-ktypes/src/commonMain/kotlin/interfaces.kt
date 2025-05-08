@@ -1731,7 +1731,7 @@ interface GPUDeviceLostInfo {
  * **Note:** Future versions of this specification may introduce new subtypes of `GPUError`. Applications should handle this possibility by using the error's `message` property when possible and specializing using `instanceof`. Use `error.constructor.name` for serialization purposes, such as generating debug reports.
  * 
  */
-interface GPUError {
+sealed interface GPUError {
 	/**
 	 * A read-only string that provides a human-readable message describing the error.
 	 * 
