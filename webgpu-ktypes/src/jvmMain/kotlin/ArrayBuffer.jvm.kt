@@ -81,21 +81,21 @@ actual sealed interface ArrayBuffer {
      * @param offset the byte offset
      * @return the byte value
      */
-    actual fun getByte(offset: Int): Byte
+    actual fun getByte(offset: ULong): Byte
 
     /**
      * Reads a short at the specified offset.
      * @param offset the byte offset (must be aligned to 2 bytes)
      * @return the short value
      */
-    actual fun getShort(offset: Int): Short
+    actual fun getShort(offset: ULong): Short
 
     /**
      * Reads an int at the specified offset.
      * @param offset the byte offset (must be aligned to 4 bytes)
      * @return the int value
      */
-    actual fun getInt(offset: Int): Int
+    actual fun getInt(offset: ULong): Int
 
 
     /**
@@ -103,35 +103,35 @@ actual sealed interface ArrayBuffer {
      * @param offset the byte offset (must be aligned to 4 bytes)
      * @return the float value
      */
-    actual fun getFloat(offset: Int): Float
+    actual fun getFloat(offset: ULong): Float
 
     /**
      * Reads a double at the specified offset.
      * @param offset the byte offset (must be aligned to 8 bytes)
      * @return the double value
      */
-    actual fun getDouble(offset: Int): Double
+    actual fun getDouble(offset: ULong): Double
 
     /**
      * Reads an unsigned byte at the specified offset.
      * @param offset the byte offset
      * @return the unsigned byte value
      */
-    actual fun getUByte(offset: Int): UByte
+    actual fun getUByte(offset: ULong): UByte
 
     /**
      * Reads an unsigned short at the specified offset.
      * @param offset the byte offset (must be aligned to 2 bytes)
      * @return the unsigned short value
      */
-    actual fun getUShort(offset: Int): UShort
+    actual fun getUShort(offset: ULong): UShort
 
     /**
      * Reads an unsigned int at the specified offset.
      * @param offset the byte offset (must be aligned to 4 bytes)
      * @return the unsigned int value
      */
-    actual fun getUInt(offset: Int): UInt
+    actual fun getUInt(offset: ULong): UInt
 
 
     // Indexed write methods
@@ -141,21 +141,21 @@ actual sealed interface ArrayBuffer {
      * @param offset the byte offset
      * @param value the byte value to write
      */
-    actual fun setByte(offset: Int, value: Byte)
+    actual fun setByte(offset: ULong, value: Byte)
 
     /**
      * Writes a short at the specified offset.
      * @param offset the byte offset (must be aligned to 2 bytes)
      * @param value the short value to write
      */
-    actual fun setShort(offset: Int, value: Short)
+    actual fun setShort(offset: ULong, value: Short)
 
     /**
      * Writes an int at the specified offset.
      * @param offset the byte offset (must be aligned to 4 bytes)
      * @param value the int value to write
      */
-    actual fun setInt(offset: Int, value: Int)
+    actual fun setInt(offset: ULong, value: Int)
 
 
     /**
@@ -163,35 +163,93 @@ actual sealed interface ArrayBuffer {
      * @param offset the byte offset (must be aligned to 4 bytes)
      * @param value the float value to write
      */
-    actual fun setFloat(offset: Int, value: Float)
+    actual fun setFloat(offset: ULong, value: Float)
 
     /**
      * Writes a double at the specified offset.
      * @param offset the byte offset (must be aligned to 8 bytes)
      * @param value the double value to write
      */
-    actual fun setDouble(offset: Int, value: Double)
+    actual fun setDouble(offset: ULong, value: Double)
 
     /**
      * Writes an unsigned byte at the specified offset.
      * @param offset the byte offset
      * @param value the unsigned byte value to write
      */
-    actual fun setUByte(offset: Int, value: UByte)
+    actual fun setUByte(offset: ULong, value: UByte)
 
     /**
      * Writes an unsigned short at the specified offset.
      * @param offset the byte offset (must be aligned to 2 bytes)
      * @param value the unsigned short value to write
      */
-    actual fun setUShort(offset: Int, value: UShort)
+    actual fun setUShort(offset: ULong, value: UShort)
 
     /**
      * Writes an unsigned int at the specified offset.
      * @param offset the byte offset (must be aligned to 4 bytes)
      * @param value the unsigned int value to write
      */
-    actual fun setUInt(offset: Int, value: UInt)
+    actual fun setUInt(offset: ULong, value: UInt)
+
+    // Array write methods
+
+    /**
+     * Writes a ByteArray into the buffer at the specified offset.
+     * @param offset the byte offset where to start writing
+     * @param array the byte array to write
+     */
+    actual fun setBytes(offset: ULong, array: ByteArray)
+
+    /**
+     * Writes a ShortArray into the buffer at the specified offset.
+     * @param offset the byte offset where to start writing (must be aligned to 2 bytes)
+     * @param array the short array to write
+     */
+    actual fun setShorts(offset: ULong, array: ShortArray)
+
+    /**
+     * Writes an IntArray into the buffer at the specified offset.
+     * @param offset the byte offset where to start writing (must be aligned to 4 bytes)
+     * @param array the int array to write
+     */
+    actual fun setInts(offset: ULong, array: IntArray)
+
+    /**
+     * Writes a FloatArray into the buffer at the specified offset.
+     * @param offset the byte offset where to start writing (must be aligned to 4 bytes)
+     * @param array the float array to write
+     */
+    actual fun setFloats(offset: ULong, array: FloatArray)
+
+    /**
+     * Writes a DoubleArray into the buffer at the specified offset.
+     * @param offset the byte offset where to start writing (must be aligned to 8 bytes)
+     * @param array the double array to write
+     */
+    actual fun setDoubles(offset: ULong, array: DoubleArray)
+
+    /**
+     * Writes a UByteArray into the buffer at the specified offset.
+     * @param offset the byte offset where to start writing
+     * @param array the unsigned byte array to write
+     */
+    actual fun setUBytes(offset: ULong, array: UByteArray)
+
+    /**
+     * Writes a UShortArray into the buffer at the specified offset.
+     * @param offset the byte offset where to start writing (must be aligned to 2 bytes)
+     * @param array the unsigned short array to write
+     */
+    actual fun setUShorts(offset: ULong, array: UShortArray)
+
+    /**
+     * Writes a UIntArray into the buffer at the specified offset.
+     * @param offset the byte offset where to start writing (must be aligned to 4 bytes)
+     * @param array the unsigned int array to write
+     */
+    actual fun setUInts(offset: ULong, array: UIntArray)
 
 
     actual companion object {
@@ -211,7 +269,7 @@ actual sealed interface ArrayBuffer {
          * @param segment the memory segment to wrap
          * @return an ArrayBuffer backed by the memory segment
          */
-        fun from(segment: MemorySegment): ArrayBuffer = JvmArrayBuffer(segment)
+        fun wrap(segment: MemorySegment): ArrayBuffer = JvmArrayBuffer(segment)
 
         /**
          * Creates an ArrayBuffer from a ByteBuffer.
@@ -225,8 +283,8 @@ actual sealed interface ArrayBuffer {
          * @param array the byte array to convert
          * @return an ArrayBuffer containing the data from the byte array
          */
-        actual fun from(array: ByteArray): ArrayBuffer {
-            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        actual fun of(array: ByteArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.copyOf()))
         }
 
         /**
@@ -234,8 +292,8 @@ actual sealed interface ArrayBuffer {
          * @param array the short array to convert
          * @return an ArrayBuffer containing the data from the short array
          */
-        actual fun from(array: ShortArray): ArrayBuffer {
-            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        actual fun of(array: ShortArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.copyOf()))
         }
 
         /**
@@ -243,8 +301,8 @@ actual sealed interface ArrayBuffer {
          * @param array the int array to convert
          * @return an ArrayBuffer containing the data from the int array
          */
-        actual fun from(array: IntArray): ArrayBuffer {
-            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        actual fun of(array: IntArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.copyOf()))
         }
 
 
@@ -253,8 +311,8 @@ actual sealed interface ArrayBuffer {
          * @param array the float array to convert
          * @return an ArrayBuffer containing the data from the float array
          */
-        actual fun from(array: FloatArray): ArrayBuffer {
-            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        actual fun of(array: FloatArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.copyOf()))
         }
 
         /**
@@ -262,8 +320,8 @@ actual sealed interface ArrayBuffer {
          * @param array the double array to convert
          * @return an ArrayBuffer containing the data from the double array
          */
-        actual fun from(array: DoubleArray): ArrayBuffer {
-            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        actual fun of(array: DoubleArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.copyOf()))
         }
 
         /**
@@ -271,8 +329,8 @@ actual sealed interface ArrayBuffer {
          * @param array the unsigned byte array to convert
          * @return an ArrayBuffer containing the data from the unsigned byte array
          */
-        actual fun from(array: UByteArray): ArrayBuffer {
-            return JvmArrayBuffer(MemorySegment.ofArray(array.asByteArray()))
+        actual fun of(array: UByteArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.asByteArray().copyOf()))
         }
 
         /**
@@ -280,8 +338,8 @@ actual sealed interface ArrayBuffer {
          * @param array the unsigned short array to convert
          * @return an ArrayBuffer containing the data from the unsigned short array
          */
-        actual fun from(array: UShortArray): ArrayBuffer {
-            return JvmArrayBuffer(MemorySegment.ofArray(array.asShortArray()))
+        actual fun of(array: UShortArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.asShortArray().copyOf()))
         }
 
         /**
@@ -289,105 +347,9 @@ actual sealed interface ArrayBuffer {
          * @param array the unsigned int array to convert
          * @return an ArrayBuffer containing the data from the unsigned int array
          */
-        actual fun from(array: UIntArray): ArrayBuffer {
-            return JvmArrayBuffer(MemorySegment.ofArray(array.asIntArray()))
+        actual fun of(array: UIntArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.asIntArray().copyOf()))
         }
 
     }
-}
-
-
-/**
- * A JVM-specific implementation of the `ArrayBuffer` interface.
- *
- * `JvmArrayBuffer` provides a lightweight wrapper around the `MemorySegment` class, allowing
- * JVM platforms to manage, access, and manipulate raw binary data in a way that conforms
- * to the `ArrayBuffer` abstraction.
- *
- * This class leverages the `@JvmInline` annotation, making it a value class. This ensures
- * minimal runtime overhead and allows the `MemorySegment` instance to be used with improved
- * performance due to inlining and reduced object allocations.
- *
- * @param buffer The underlying `MemorySegment` instance that serves as the basis for this array buffer.
- */
-@JvmInline
-value class JvmArrayBuffer internal constructor(val buffer: MemorySegment): ArrayBuffer {
-    override val size: ULong
-        get() = buffer.byteSize().toULong()
-
-    // Read methods - convert entire buffer to typed arrays
-
-    override fun toByteArray(): ByteArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_BYTE)
-
-    override fun toShortArray(): ShortArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_SHORT_UNALIGNED)
-
-    override fun toIntArray(): IntArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_INT_UNALIGNED)
-
-
-    override fun toFloatArray(): FloatArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED)
-
-    override fun toDoubleArray(): DoubleArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED)
-
-    override fun toUByteArray(): UByteArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_BYTE).asUByteArray()
-
-    override fun toUShortArray(): UShortArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_SHORT_UNALIGNED).asUShortArray()
-
-    override fun toUIntArray(): UIntArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_INT_UNALIGNED).asUIntArray()
-
-
-    // Indexed read methods
-
-    override fun getByte(offset: Int): Byte = buffer.get(java.lang.foreign.ValueLayout.JAVA_BYTE, offset.toLong())
-
-    override fun getShort(offset: Int): Short = buffer.get(java.lang.foreign.ValueLayout.JAVA_SHORT_UNALIGNED, offset.toLong())
-
-    override fun getInt(offset: Int): Int = buffer.get(java.lang.foreign.ValueLayout.JAVA_INT_UNALIGNED, offset.toLong())
-
-
-    override fun getFloat(offset: Int): Float = buffer.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, offset.toLong())
-
-    override fun getDouble(offset: Int): Double = buffer.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, offset.toLong())
-
-    override fun getUByte(offset: Int): UByte = getByte(offset).toUByte()
-
-    override fun getUShort(offset: Int): UShort = getShort(offset).toUShort()
-
-    override fun getUInt(offset: Int): UInt = getInt(offset).toUInt()
-
-
-    // Indexed write methods
-
-    override fun setByte(offset: Int, value: Byte) {
-        buffer.set(java.lang.foreign.ValueLayout.JAVA_BYTE, offset.toLong(), value)
-    }
-
-    override fun setShort(offset: Int, value: Short) {
-        buffer.set(java.lang.foreign.ValueLayout.JAVA_SHORT_UNALIGNED, offset.toLong(), value)
-    }
-
-    override fun setInt(offset: Int, value: Int) {
-        buffer.set(java.lang.foreign.ValueLayout.JAVA_INT_UNALIGNED, offset.toLong(), value)
-    }
-
-
-    override fun setFloat(offset: Int, value: Float) {
-        buffer.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, offset.toLong(), value)
-    }
-
-    override fun setDouble(offset: Int, value: Double) {
-        buffer.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, offset.toLong(), value)
-    }
-
-    override fun setUByte(offset: Int, value: UByte) {
-        setByte(offset, value.toByte())
-    }
-
-    override fun setUShort(offset: Int, value: UShort) {
-        setShort(offset, value.toShort())
-    }
-
-    override fun setUInt(offset: Int, value: UInt) {
-        setInt(offset, value.toInt())
-    }
-
 }
