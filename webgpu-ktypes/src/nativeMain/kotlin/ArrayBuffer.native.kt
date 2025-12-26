@@ -1,17 +1,25 @@
-@file:OptIn(ExperimentalUnsignedTypes::class)
+@file:OptIn(ExperimentalForeignApi::class)
 
 package io.ygdrasil.webgpu
 
+import kotlinx.cinterop.COpaquePointer
+import kotlinx.cinterop.ExperimentalForeignApi
+
 /**
- * A platform-independent representation of a fixed-length raw binary data buffer.
+ * Represents a platform-specific abstraction over raw binary data stored in an ArrayBuffer.
  *
- * The `ArrayBuffer` interface provides the ability to efficiently handle and store
- * binary data in memory, often as the underlying storage for typed arrays. It is
- * immutable, meaning its size cannot be adjusted once created.
+ * This interface provides a unified way to interact with binary data across platforms,
+ * allowing efficient manipulation and processing of raw buffers. It is primarily used
+ * in contexts where native interop or web functionalities like WebGPU and WebGL require
+ * a representation of binary buffers.
  *
- * This abstraction is commonly used for processing low-level binary data, enabling
- * tasks such as file handling, network communication, or interfacing with Web APIs
- * that require binary data storage.
+ * Implementations of this interface may vary depending on the target platform, such as
+ * browser environments or native environments. They typically map to platform-native
+ * concepts like `org.khronos.webgl.ArrayBuffer` in JavaScript or analogous native
+ * structures in other environments.
+ *
+ * Intended for use with platform-specific operations where binary data transfer or
+ * manipulation is necessary.
  */
 actual sealed interface ArrayBuffer {
     /**
@@ -186,6 +194,7 @@ actual sealed interface ArrayBuffer {
     actual fun setUInt(offset: Int, value: UInt)
 
     actual companion object {
+
         /**
          * Allocates a new ArrayBuffer with the specified size in bytes.
          * The buffer is zero-initialized and memory is managed automatically.
@@ -194,16 +203,19 @@ actual sealed interface ArrayBuffer {
          * @return a new ArrayBuffer with the specified size
          */
         actual fun allocate(sizeInBytes: ULong): ArrayBuffer {
-            return WebArrayBuffer(js.buffer.ArrayBuffer(sizeInBytes.toInt()))
+            return OpaquePointerArrayBuffer(sizeInBytes)
         }
 
         /**
-         * Creates an ArrayBuffer from a JavaScript ArrayBuffer.
-         * @param buffer the JavaScript array buffer to wrap
-         * @return an ArrayBuffer backed by the JavaScript array buffer
+         * Wraps a native pointer and its size into an OpaquePointerArrayBuffer.
+         *
+         * @param pointer the native pointer to wrap
+         * @param size the size of the buffer in bytes
+         * @return an instance of OpaquePointerArrayBuffer wrapping the provided pointer and size
          */
-        fun wrap(buffer: js.buffer.ArrayBuffer)
-            = WebArrayBuffer(buffer)
+        fun wrap(pointer: COpaquePointer, size: ULong) : OpaquePointerArrayBuffer {
+            return OpaquePointerArrayBuffer(pointer, size)
+        }
 
         /**
          * Creates an ArrayBuffer from a ByteArray.
@@ -211,100 +223,71 @@ actual sealed interface ArrayBuffer {
          * @return an ArrayBuffer containing the data from the byte array
          */
         actual fun from(array: ByteArray): ArrayBuffer
-            = array.toArrayBuffer()
+                = NativeArrayBuffer(array)
 
         /**
          * Creates an ArrayBuffer from a ShortArray.
          * @param array the short array to convert
          * @return an ArrayBuffer containing the data from the short array
          */
-        actual fun from(array: ShortArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: ShortArray): ArrayBuffer {
+            return NativeArrayBuffer(array)
+        }
 
         /**
          * Creates an ArrayBuffer from an IntArray.
          * @param array the int array to convert
          * @return an ArrayBuffer containing the data from the int array
          */
-        actual fun from(array: IntArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: IntArray): ArrayBuffer {
+            return NativeArrayBuffer(array)
+        }
 
         /**
          * Creates an ArrayBuffer from a FloatArray.
          * @param array the float array to convert
          * @return an ArrayBuffer containing the data from the float array
          */
-        actual fun from(array: FloatArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: FloatArray): ArrayBuffer {
+            return NativeArrayBuffer(array)
+        }
 
         /**
          * Creates an ArrayBuffer from a DoubleArray.
          * @param array the double array to convert
          * @return an ArrayBuffer containing the data from the double array
          */
-        actual fun from(array: DoubleArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: DoubleArray): ArrayBuffer {
+            return NativeArrayBuffer(array)
+        }
 
         /**
          * Creates an ArrayBuffer from a UByteArray.
          * @param array the unsigned byte array to convert
          * @return an ArrayBuffer containing the data from the unsigned byte array
          */
-        actual fun from(array: UByteArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UByteArray): ArrayBuffer {
+            return NativeArrayBuffer(array)
+        }
 
         /**
          * Creates an ArrayBuffer from a UShortArray.
          * @param array the unsigned short array to convert
          * @return an ArrayBuffer containing the data from the unsigned short array
          */
-        actual fun from(array: UShortArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UShortArray): ArrayBuffer {
+            return NativeArrayBuffer(array)
+        }
 
         /**
          * Creates an ArrayBuffer from a UIntArray.
          * @param array the unsigned int array to convert
          * @return an ArrayBuffer containing the data from the unsigned int array
          */
-        actual fun from(array: UIntArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UIntArray): ArrayBuffer {
+            return NativeArrayBuffer(array)
+        }
     }
 }
 
-internal expect inline fun ByteArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun ShortArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun IntArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun FloatArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun DoubleArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UByteArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UShortArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UIntArray.toArrayBuffer(): ArrayBuffer
-
-// Platform-specific extension methods
-internal expect fun js.buffer.ArrayBuffer.readByteArray(): ByteArray
-internal expect fun js.buffer.ArrayBuffer.readShortArray(): ShortArray
-internal expect fun js.buffer.ArrayBuffer.readIntArray(): IntArray
-internal expect fun js.buffer.ArrayBuffer.readFloatArray(): FloatArray
-internal expect fun js.buffer.ArrayBuffer.readDoubleArray(): DoubleArray
-internal expect fun js.buffer.ArrayBuffer.readUByteArray(): UByteArray
-internal expect fun js.buffer.ArrayBuffer.readUShortArray(): UShortArray
-internal expect fun js.buffer.ArrayBuffer.readUIntArray(): UIntArray
-
-internal expect fun js.buffer.ArrayBuffer.readByte(offset: Int): Byte
-internal expect fun js.buffer.ArrayBuffer.readShort(offset: Int): Short
-internal expect fun js.buffer.ArrayBuffer.readInt(offset: Int): Int
-internal expect fun js.buffer.ArrayBuffer.readFloat(offset: Int): Float
-internal expect fun js.buffer.ArrayBuffer.readDouble(offset: Int): Double
-internal expect fun js.buffer.ArrayBuffer.readUByte(offset: Int): UByte
-internal expect fun js.buffer.ArrayBuffer.readUShort(offset: Int): UShort
-internal expect fun js.buffer.ArrayBuffer.readUInt(offset: Int): UInt
-
-internal expect fun js.buffer.ArrayBuffer.writeByte(offset: Int, value: Byte)
-internal expect fun js.buffer.ArrayBuffer.writeShort(offset: Int, value: Short)
-internal expect fun js.buffer.ArrayBuffer.writeInt(offset: Int, value: Int)
-internal expect fun js.buffer.ArrayBuffer.writeFloat(offset: Int, value: Float)
-internal expect fun js.buffer.ArrayBuffer.writeDouble(offset: Int, value: Double)
-internal expect fun js.buffer.ArrayBuffer.writeUByte(offset: Int, value: UByte)
-internal expect fun js.buffer.ArrayBuffer.writeUShort(offset: Int, value: UShort)
-internal expect fun js.buffer.ArrayBuffer.writeUInt(offset: Int, value: UInt)
 

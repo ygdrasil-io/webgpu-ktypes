@@ -3,13 +3,13 @@
 import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyTemplate
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     publish
     kotlin("multiplatform")
     alias(libs.plugins.android.library)
+    alias(libs.plugins.kotest)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -27,7 +27,6 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-    watchosArm32()
     watchosArm64()
     watchosSimulatorArm64()
     watchosX64()
@@ -36,9 +35,7 @@ kotlin {
     linuxArm64()
     linuxX64()
     mingwX64()
-    androidNativeArm32()
     androidNativeArm64()
-    androidNativeX86()
     androidNativeX64()
 
     androidLibrary {
@@ -56,6 +53,9 @@ kotlin {
     wasmJs {
         browser()
         nodejs()
+        compilerOptions {
+            freeCompilerArgs.add("-opt-in=kotlin.js.ExperimentalWasmJsInterop")
+        }
     }
 
     applyDefaultHierarchyTemplate()
@@ -81,11 +81,44 @@ kotlin {
         nativeMain.get().dependsOn(commonNativeMain)
         jvmMain.get().dependsOn(commonNativeMain)
         androidMain.get().dependsOn(commonNativeMain)
+
+        commonTest {
+            dependencies {
+                implementation(libs.bundles.kotest)
+            }
+        }
+
+        jvmTest {
+            dependencies {
+                implementation(libs.kotest.runner.junit5)
+                implementation(libs.kotlin.reflect)
+            }
+        }
     }
 }
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(25))
+    }
+}
+
+
+tasks.withType<Test>().configureEach {
+    filter {
+        failOnNoDiscoveredTests = false
+    }
+}
+
+tasks.named<Test>("jvmTest") {
+    useJUnitPlatform()
+    testLogging {
+        showExceptions = true
+        showStandardStreams = true
+        events = setOf(
+            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
+        )
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
 }

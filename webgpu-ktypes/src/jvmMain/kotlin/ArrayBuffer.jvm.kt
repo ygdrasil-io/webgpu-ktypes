@@ -2,16 +2,19 @@
 
 package io.ygdrasil.webgpu
 
+import java.lang.foreign.MemorySegment
+import java.nio.ByteBuffer
+
 /**
- * A platform-independent representation of a fixed-length raw binary data buffer.
+ * Represents a platform-specific abstraction for handling raw binary data buffers.
  *
- * The `ArrayBuffer` interface provides the ability to efficiently handle and store
- * binary data in memory, often as the underlying storage for typed arrays. It is
- * immutable, meaning its size cannot be adjusted once created.
+ * `ArrayBuffer` is a sealed interface that provides a common type for working with
+ * binary data across multiple platforms. It is typically associated with use cases
+ * such as data transfer, WebGPU operations, or interfacing with native libraries.
  *
- * This abstraction is commonly used for processing low-level binary data, enabling
- * tasks such as file handling, network communication, or interfacing with Web APIs
- * that require binary data storage.
+ * This interface is intended to be implemented by platform-specific classes
+ * or value types that wrap the underlying buffer implementation, such as `ByteBuffer`
+ * on JVM or `org.khronos.webgl.ArrayBuffer` on JavaScript or Wasm.
  */
 actual sealed interface ArrayBuffer {
     /**
@@ -38,6 +41,7 @@ actual sealed interface ArrayBuffer {
      * @return an IntArray containing the buffer's data (size must be multiple of 4)
      */
     actual fun toIntArray(): IntArray
+
 
     /**
      * Converts the buffer to a FloatArray.
@@ -69,6 +73,7 @@ actual sealed interface ArrayBuffer {
      */
     actual fun toUIntArray(): UIntArray
 
+
     // Indexed read methods
 
     /**
@@ -91,6 +96,7 @@ actual sealed interface ArrayBuffer {
      * @return the int value
      */
     actual fun getInt(offset: Int): Int
+
 
     /**
      * Reads a float at the specified offset.
@@ -127,6 +133,7 @@ actual sealed interface ArrayBuffer {
      */
     actual fun getUInt(offset: Int): UInt
 
+
     // Indexed write methods
 
     /**
@@ -149,6 +156,7 @@ actual sealed interface ArrayBuffer {
      * @param value the int value to write
      */
     actual fun setInt(offset: Int, value: Int)
+
 
     /**
      * Writes a float at the specified offset.
@@ -185,6 +193,7 @@ actual sealed interface ArrayBuffer {
      */
     actual fun setUInt(offset: Int, value: UInt)
 
+
     actual companion object {
         /**
          * Allocates a new ArrayBuffer with the specified size in bytes.
@@ -194,117 +203,191 @@ actual sealed interface ArrayBuffer {
          * @return a new ArrayBuffer with the specified size
          */
         actual fun allocate(sizeInBytes: ULong): ArrayBuffer {
-            return WebArrayBuffer(js.buffer.ArrayBuffer(sizeInBytes.toInt()))
+            return JvmArrayBuffer(MemorySegment.ofArray(ByteArray(sizeInBytes.toInt())))
         }
 
         /**
-         * Creates an ArrayBuffer from a JavaScript ArrayBuffer.
-         * @param buffer the JavaScript array buffer to wrap
-         * @return an ArrayBuffer backed by the JavaScript array buffer
+         * Creates an ArrayBuffer from a MemorySegment.
+         * @param segment the memory segment to wrap
+         * @return an ArrayBuffer backed by the memory segment
          */
-        fun wrap(buffer: js.buffer.ArrayBuffer)
-            = WebArrayBuffer(buffer)
+        fun from(segment: MemorySegment): ArrayBuffer = JvmArrayBuffer(segment)
+
+        /**
+         * Creates an ArrayBuffer from a ByteBuffer.
+         * @param buffer the byte buffer to convert
+         * @return an ArrayBuffer backed by the byte buffer's memory segment
+         */
+        fun from(buffer: ByteBuffer): ArrayBuffer = JvmArrayBuffer(MemorySegment.ofBuffer(buffer))
 
         /**
          * Creates an ArrayBuffer from a ByteArray.
          * @param array the byte array to convert
          * @return an ArrayBuffer containing the data from the byte array
          */
-        actual fun from(array: ByteArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: ByteArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        }
 
         /**
          * Creates an ArrayBuffer from a ShortArray.
          * @param array the short array to convert
          * @return an ArrayBuffer containing the data from the short array
          */
-        actual fun from(array: ShortArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: ShortArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        }
 
         /**
          * Creates an ArrayBuffer from an IntArray.
          * @param array the int array to convert
          * @return an ArrayBuffer containing the data from the int array
          */
-        actual fun from(array: IntArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: IntArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        }
+
 
         /**
          * Creates an ArrayBuffer from a FloatArray.
          * @param array the float array to convert
          * @return an ArrayBuffer containing the data from the float array
          */
-        actual fun from(array: FloatArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: FloatArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        }
 
         /**
          * Creates an ArrayBuffer from a DoubleArray.
          * @param array the double array to convert
          * @return an ArrayBuffer containing the data from the double array
          */
-        actual fun from(array: DoubleArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: DoubleArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array))
+        }
 
         /**
          * Creates an ArrayBuffer from a UByteArray.
          * @param array the unsigned byte array to convert
          * @return an ArrayBuffer containing the data from the unsigned byte array
          */
-        actual fun from(array: UByteArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UByteArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.asByteArray()))
+        }
 
         /**
          * Creates an ArrayBuffer from a UShortArray.
          * @param array the unsigned short array to convert
          * @return an ArrayBuffer containing the data from the unsigned short array
          */
-        actual fun from(array: UShortArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UShortArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.asShortArray()))
+        }
 
         /**
          * Creates an ArrayBuffer from a UIntArray.
          * @param array the unsigned int array to convert
          * @return an ArrayBuffer containing the data from the unsigned int array
          */
-        actual fun from(array: UIntArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UIntArray): ArrayBuffer {
+            return JvmArrayBuffer(MemorySegment.ofArray(array.asIntArray()))
+        }
+
     }
 }
 
-internal expect inline fun ByteArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun ShortArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun IntArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun FloatArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun DoubleArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UByteArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UShortArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UIntArray.toArrayBuffer(): ArrayBuffer
 
-// Platform-specific extension methods
-internal expect fun js.buffer.ArrayBuffer.readByteArray(): ByteArray
-internal expect fun js.buffer.ArrayBuffer.readShortArray(): ShortArray
-internal expect fun js.buffer.ArrayBuffer.readIntArray(): IntArray
-internal expect fun js.buffer.ArrayBuffer.readFloatArray(): FloatArray
-internal expect fun js.buffer.ArrayBuffer.readDoubleArray(): DoubleArray
-internal expect fun js.buffer.ArrayBuffer.readUByteArray(): UByteArray
-internal expect fun js.buffer.ArrayBuffer.readUShortArray(): UShortArray
-internal expect fun js.buffer.ArrayBuffer.readUIntArray(): UIntArray
+/**
+ * A JVM-specific implementation of the `ArrayBuffer` interface.
+ *
+ * `JvmArrayBuffer` provides a lightweight wrapper around the `MemorySegment` class, allowing
+ * JVM platforms to manage, access, and manipulate raw binary data in a way that conforms
+ * to the `ArrayBuffer` abstraction.
+ *
+ * This class leverages the `@JvmInline` annotation, making it a value class. This ensures
+ * minimal runtime overhead and allows the `MemorySegment` instance to be used with improved
+ * performance due to inlining and reduced object allocations.
+ *
+ * @param buffer The underlying `MemorySegment` instance that serves as the basis for this array buffer.
+ */
+@JvmInline
+value class JvmArrayBuffer internal constructor(val buffer: MemorySegment): ArrayBuffer {
+    override val size: ULong
+        get() = buffer.byteSize().toULong()
 
-internal expect fun js.buffer.ArrayBuffer.readByte(offset: Int): Byte
-internal expect fun js.buffer.ArrayBuffer.readShort(offset: Int): Short
-internal expect fun js.buffer.ArrayBuffer.readInt(offset: Int): Int
-internal expect fun js.buffer.ArrayBuffer.readFloat(offset: Int): Float
-internal expect fun js.buffer.ArrayBuffer.readDouble(offset: Int): Double
-internal expect fun js.buffer.ArrayBuffer.readUByte(offset: Int): UByte
-internal expect fun js.buffer.ArrayBuffer.readUShort(offset: Int): UShort
-internal expect fun js.buffer.ArrayBuffer.readUInt(offset: Int): UInt
+    // Read methods - convert entire buffer to typed arrays
 
-internal expect fun js.buffer.ArrayBuffer.writeByte(offset: Int, value: Byte)
-internal expect fun js.buffer.ArrayBuffer.writeShort(offset: Int, value: Short)
-internal expect fun js.buffer.ArrayBuffer.writeInt(offset: Int, value: Int)
-internal expect fun js.buffer.ArrayBuffer.writeFloat(offset: Int, value: Float)
-internal expect fun js.buffer.ArrayBuffer.writeDouble(offset: Int, value: Double)
-internal expect fun js.buffer.ArrayBuffer.writeUByte(offset: Int, value: UByte)
-internal expect fun js.buffer.ArrayBuffer.writeUShort(offset: Int, value: UShort)
-internal expect fun js.buffer.ArrayBuffer.writeUInt(offset: Int, value: UInt)
+    override fun toByteArray(): ByteArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_BYTE)
 
+    override fun toShortArray(): ShortArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_SHORT_UNALIGNED)
+
+    override fun toIntArray(): IntArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_INT_UNALIGNED)
+
+
+    override fun toFloatArray(): FloatArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED)
+
+    override fun toDoubleArray(): DoubleArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED)
+
+    override fun toUByteArray(): UByteArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_BYTE).asUByteArray()
+
+    override fun toUShortArray(): UShortArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_SHORT_UNALIGNED).asUShortArray()
+
+    override fun toUIntArray(): UIntArray = buffer.toArray(java.lang.foreign.ValueLayout.JAVA_INT_UNALIGNED).asUIntArray()
+
+
+    // Indexed read methods
+
+    override fun getByte(offset: Int): Byte = buffer.get(java.lang.foreign.ValueLayout.JAVA_BYTE, offset.toLong())
+
+    override fun getShort(offset: Int): Short = buffer.get(java.lang.foreign.ValueLayout.JAVA_SHORT_UNALIGNED, offset.toLong())
+
+    override fun getInt(offset: Int): Int = buffer.get(java.lang.foreign.ValueLayout.JAVA_INT_UNALIGNED, offset.toLong())
+
+
+    override fun getFloat(offset: Int): Float = buffer.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, offset.toLong())
+
+    override fun getDouble(offset: Int): Double = buffer.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, offset.toLong())
+
+    override fun getUByte(offset: Int): UByte = getByte(offset).toUByte()
+
+    override fun getUShort(offset: Int): UShort = getShort(offset).toUShort()
+
+    override fun getUInt(offset: Int): UInt = getInt(offset).toUInt()
+
+
+    // Indexed write methods
+
+    override fun setByte(offset: Int, value: Byte) {
+        buffer.set(java.lang.foreign.ValueLayout.JAVA_BYTE, offset.toLong(), value)
+    }
+
+    override fun setShort(offset: Int, value: Short) {
+        buffer.set(java.lang.foreign.ValueLayout.JAVA_SHORT_UNALIGNED, offset.toLong(), value)
+    }
+
+    override fun setInt(offset: Int, value: Int) {
+        buffer.set(java.lang.foreign.ValueLayout.JAVA_INT_UNALIGNED, offset.toLong(), value)
+    }
+
+
+    override fun setFloat(offset: Int, value: Float) {
+        buffer.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, offset.toLong(), value)
+    }
+
+    override fun setDouble(offset: Int, value: Double) {
+        buffer.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, offset.toLong(), value)
+    }
+
+    override fun setUByte(offset: Int, value: UByte) {
+        setByte(offset, value.toByte())
+    }
+
+    override fun setUShort(offset: Int, value: UShort) {
+        setShort(offset, value.toShort())
+    }
+
+    override fun setUInt(offset: Int, value: UInt) {
+        setInt(offset, value.toInt())
+    }
+
+}

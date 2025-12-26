@@ -2,16 +2,24 @@
 
 package io.ygdrasil.webgpu
 
+import java.nio.ByteBuffer
+
 /**
- * A platform-independent representation of a fixed-length raw binary data buffer.
+ * Represents a platform-specific abstraction for handling raw binary data buffers.
  *
- * The `ArrayBuffer` interface provides the ability to efficiently handle and store
- * binary data in memory, often as the underlying storage for typed arrays. It is
- * immutable, meaning its size cannot be adjusted once created.
+ * `ArrayBuffer` is a sealed interface that provides a common type for working with
+ * binary data across multiple platforms. It is typically associated with use cases
+ * such as data transfer, WebGPU operations, or interfacing with native libraries.
  *
- * This abstraction is commonly used for processing low-level binary data, enabling
- * tasks such as file handling, network communication, or interfacing with Web APIs
- * that require binary data storage.
+ * This interface is intended to be implemented by platform-specific classes
+ * or value types that wrap the underlying buffer implementation, such as direct
+ * `ByteBuffer` on Android.
+ *
+ * Example usage:
+ * ```kotlin
+ * val buffer = ArrayBuffer.from(byteArrayOf(1, 2, 3, 4))
+ * val intBuffer = ArrayBuffer.from(intArrayOf(100, 200, 300))
+ * ```
  */
 actual sealed interface ArrayBuffer {
     /**
@@ -186,6 +194,7 @@ actual sealed interface ArrayBuffer {
     actual fun setUInt(offset: Int, value: UInt)
 
     actual companion object {
+
         /**
          * Allocates a new ArrayBuffer with the specified size in bytes.
          * The buffer is zero-initialized and memory is managed automatically.
@@ -194,117 +203,113 @@ actual sealed interface ArrayBuffer {
          * @return a new ArrayBuffer with the specified size
          */
         actual fun allocate(sizeInBytes: ULong): ArrayBuffer {
-            return WebArrayBuffer(js.buffer.ArrayBuffer(sizeInBytes.toInt()))
+            val buffer = ByteBuffer.allocateDirect(sizeInBytes.toInt())
+            return AndroidArrayBuffer(buffer)
         }
 
         /**
-         * Creates an ArrayBuffer from a JavaScript ArrayBuffer.
-         * @param buffer the JavaScript array buffer to wrap
-         * @return an ArrayBuffer backed by the JavaScript array buffer
+         * Creates an ArrayBuffer from a ByteBuffer.
+         * @param buffer the byte buffer to wrap (must be a direct buffer)
+         * @return an ArrayBuffer backed by the byte buffer
          */
-        fun wrap(buffer: js.buffer.ArrayBuffer)
-            = WebArrayBuffer(buffer)
+        fun wrap(buffer: ByteBuffer): ArrayBuffer = AndroidArrayBuffer(buffer)
 
         /**
          * Creates an ArrayBuffer from a ByteArray.
          * @param array the byte array to convert
          * @return an ArrayBuffer containing the data from the byte array
          */
-        actual fun from(array: ByteArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: ByteArray): ArrayBuffer {
+            val buffer = ByteBuffer.allocateDirect(array.size)
+            buffer.put(array)
+            buffer.rewind()
+            return AndroidArrayBuffer(buffer)
+        }
 
         /**
          * Creates an ArrayBuffer from a ShortArray.
          * @param array the short array to convert
          * @return an ArrayBuffer containing the data from the short array
          */
-        actual fun from(array: ShortArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: ShortArray): ArrayBuffer {
+            val buffer = ByteBuffer.allocateDirect(array.size * Short.SIZE_BYTES)
+            buffer.asShortBuffer().put(array)
+            buffer.rewind()
+            return AndroidArrayBuffer(buffer)
+        }
 
         /**
          * Creates an ArrayBuffer from an IntArray.
          * @param array the int array to convert
          * @return an ArrayBuffer containing the data from the int array
          */
-        actual fun from(array: IntArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: IntArray): ArrayBuffer {
+            val buffer = ByteBuffer.allocateDirect(array.size * Int.SIZE_BYTES)
+            buffer.asIntBuffer().put(array)
+            buffer.rewind()
+            return AndroidArrayBuffer(buffer)
+        }
 
         /**
          * Creates an ArrayBuffer from a FloatArray.
          * @param array the float array to convert
          * @return an ArrayBuffer containing the data from the float array
          */
-        actual fun from(array: FloatArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: FloatArray): ArrayBuffer {
+            val buffer = ByteBuffer.allocateDirect(array.size * Float.SIZE_BYTES)
+            buffer.asFloatBuffer().put(array)
+            buffer.rewind()
+            return AndroidArrayBuffer(buffer)
+        }
 
         /**
          * Creates an ArrayBuffer from a DoubleArray.
          * @param array the double array to convert
          * @return an ArrayBuffer containing the data from the double array
          */
-        actual fun from(array: DoubleArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: DoubleArray): ArrayBuffer {
+            val buffer = ByteBuffer.allocateDirect(array.size * Double.SIZE_BYTES)
+            buffer.asDoubleBuffer().put(array)
+            buffer.rewind()
+            return AndroidArrayBuffer(buffer)
+        }
 
         /**
          * Creates an ArrayBuffer from a UByteArray.
          * @param array the unsigned byte array to convert
          * @return an ArrayBuffer containing the data from the unsigned byte array
          */
-        actual fun from(array: UByteArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UByteArray): ArrayBuffer {
+            val buffer = ByteBuffer.allocateDirect(array.size)
+            buffer.put(array.asByteArray())
+            buffer.rewind()
+            return AndroidArrayBuffer(buffer)
+        }
 
         /**
          * Creates an ArrayBuffer from a UShortArray.
          * @param array the unsigned short array to convert
          * @return an ArrayBuffer containing the data from the unsigned short array
          */
-        actual fun from(array: UShortArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UShortArray): ArrayBuffer {
+            val buffer = ByteBuffer.allocateDirect(array.size * Short.SIZE_BYTES)
+            buffer.asShortBuffer().put(array.asShortArray())
+            buffer.rewind()
+            return AndroidArrayBuffer(buffer)
+        }
 
         /**
          * Creates an ArrayBuffer from a UIntArray.
          * @param array the unsigned int array to convert
          * @return an ArrayBuffer containing the data from the unsigned int array
          */
-        actual fun from(array: UIntArray): ArrayBuffer
-            = array.toArrayBuffer()
+        actual fun from(array: UIntArray): ArrayBuffer {
+            val buffer = ByteBuffer.allocateDirect(array.size * Int.SIZE_BYTES)
+            buffer.asIntBuffer().put(array.asIntArray())
+            buffer.rewind()
+            return AndroidArrayBuffer(buffer)
+        }
+
     }
 }
-
-internal expect inline fun ByteArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun ShortArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun IntArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun FloatArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun DoubleArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UByteArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UShortArray.toArrayBuffer(): ArrayBuffer
-internal expect inline fun UIntArray.toArrayBuffer(): ArrayBuffer
-
-// Platform-specific extension methods
-internal expect fun js.buffer.ArrayBuffer.readByteArray(): ByteArray
-internal expect fun js.buffer.ArrayBuffer.readShortArray(): ShortArray
-internal expect fun js.buffer.ArrayBuffer.readIntArray(): IntArray
-internal expect fun js.buffer.ArrayBuffer.readFloatArray(): FloatArray
-internal expect fun js.buffer.ArrayBuffer.readDoubleArray(): DoubleArray
-internal expect fun js.buffer.ArrayBuffer.readUByteArray(): UByteArray
-internal expect fun js.buffer.ArrayBuffer.readUShortArray(): UShortArray
-internal expect fun js.buffer.ArrayBuffer.readUIntArray(): UIntArray
-
-internal expect fun js.buffer.ArrayBuffer.readByte(offset: Int): Byte
-internal expect fun js.buffer.ArrayBuffer.readShort(offset: Int): Short
-internal expect fun js.buffer.ArrayBuffer.readInt(offset: Int): Int
-internal expect fun js.buffer.ArrayBuffer.readFloat(offset: Int): Float
-internal expect fun js.buffer.ArrayBuffer.readDouble(offset: Int): Double
-internal expect fun js.buffer.ArrayBuffer.readUByte(offset: Int): UByte
-internal expect fun js.buffer.ArrayBuffer.readUShort(offset: Int): UShort
-internal expect fun js.buffer.ArrayBuffer.readUInt(offset: Int): UInt
-
-internal expect fun js.buffer.ArrayBuffer.writeByte(offset: Int, value: Byte)
-internal expect fun js.buffer.ArrayBuffer.writeShort(offset: Int, value: Short)
-internal expect fun js.buffer.ArrayBuffer.writeInt(offset: Int, value: Int)
-internal expect fun js.buffer.ArrayBuffer.writeFloat(offset: Int, value: Float)
-internal expect fun js.buffer.ArrayBuffer.writeDouble(offset: Int, value: Double)
-internal expect fun js.buffer.ArrayBuffer.writeUByte(offset: Int, value: UByte)
-internal expect fun js.buffer.ArrayBuffer.writeUShort(offset: Int, value: UShort)
-internal expect fun js.buffer.ArrayBuffer.writeUInt(offset: Int, value: UInt)
 
