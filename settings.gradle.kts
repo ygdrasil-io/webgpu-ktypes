@@ -24,6 +24,7 @@ dependencyResolutionManagement {
     }
 }
 
+include("naga-core")
 include("webgpu-ktypes")
 include("webgpu-ktypes-descriptors")
 include("webgpu-ktypes-web")

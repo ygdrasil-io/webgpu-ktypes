@@ -1,0 +1,507 @@
+# Validation - Checklist
+
+## Phase 5 : Validation
+**Objectif** : Mettre en place un système complet de validation pour garantir la qualité et la cohérence du code généré par WebGPU-KTypes.
+
+---
+
+## 📋 Structure
+
+- [ ] **00_golden-files.md** - Documentation des tests par fichiers golden ✅
+- [ ] **01_native-validators.md** - Documentation des validateurs natifs (spirv-val, glslangValidator, Metal, DXC/FXC) ✅
+- [ ] **02_roundtrip-tests.md** - Documentation des tests de round-trip (WGSL → IR → WGSL) ✅
+- [ ] **99_checklist.md** - Checklist complète pour la Phase 5 ✅
+
+---
+
+## 🎯 Objectifs de la Phase
+
+### Validation Fonctionnelle
+- [ ] Valider que le parser WGSL produit une IR correcte
+- [ ] Valider que les backends (MSL, HLSL, GLSL, WGSL) génèrent du code valide
+- [ ] Valider que le round-trip (WGSL → IR → WGSL) préserve la sémantique
+- [ ] Valider que les golden files sont cohérents avec les sources Rust
+
+### Validation Technique
+- [ ] Intégrer spirv-val pour la validation SPIR-V
+- [ ] Intégrer glslangValidator pour la validation GLSL
+- [ ] Intégrer le compilateur Metal pour la validation MSL
+- [ ] Intégrer DXC/FXC pour la validation HLSL
+- [ ] Mettre en place les tests de round-trip
+
+### Validation de Régression
+- [ ] Détecter les régressions dans le parser
+- [ ] Détecter les régressions dans les backends
+- [ ] Détecter les régressions dans la sérialisation
+- [ ] Intégrer avec le pipeline CI
+
+---
+
+## 📁 Structure des Répertoires
+
+### Répertoires de Test
+- [ ] Créer `tests/golden/` pour les fichiers golden
+  - [ ] `tests/golden/inputs/` pour les fichiers WGSL d'entrée
+  - [ ] `tests/golden/outputs/` pour les fichiers de sortie générés
+    - [ ] `tests/golden/outputs/ir/` pour la sérialisation IR
+    - [ ] `tests/golden/outputs/msl/` pour le code MSL
+    - [ ] `tests/golden/outputs/hlsl/` pour le code HLSL
+    - [ ] `tests/golden/outputs/glsl/` pour le code GLSL
+    - [ ] `tests/golden/outputs/wgsl/` pour le round-trip WGSL
+  - [ ] `tests/golden/reports/` pour les rapports de validation
+
+- [ ] Créer `tests/roundtrip/` pour les tests de round-trip
+  - [ ] `tests/roundtrip/inputs/` pour les fichiers WGSL
+  - [ ] `tests/roundtrip/outputs/` pour les fichiers générés
+  - [ ] `tests/roundtrip/reports/` pour les rapports
+
+### Répertoires de Code
+- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/test/golden/` pour les tests golden
+- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/test/validator/` pour les validateurs natifs
+- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/test/roundtrip/` pour les tests de round-trip
+
+---
+
+## 📄 Fichiers de Test (Golden Files)
+
+### Fichiers WGSL à Importer depuis Rust
+
+Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjects/wgpu/naga/tests/in/wgsl/` :
+
+#### Core Language
+- [ ] `const-exprs.wgsl` - Expressions constantes
+- [ ] `conv-bvec.wgsl` - Conversion de vecteurs booléens
+- [ ] `entry-point-args.wgsl` - Arguments des points d'entrée
+- [ ] `global-variable.wgsl` - Variables globales
+- [ ] `local-variable.wgsl` - Variables locales
+- [ ] `matrix.wgsl` - Opérations matricielles
+- [ ] `pointers.wgsl` - Pointeurs
+- [ ] `structs.wgsl` - Structures
+- [ ] `type-inference.wgsl` - Inférence de type
+
+#### Expressions
+- [ ] `access.wgsl` - Accès aux membres
+- [ ] `arithmetic.wgsl` - Opérations arithmétiques
+- [ ] `array.wgsl` - Opérations sur les tableaux
+- [ ] `bitwise.wgsl` - Opérations binaires
+- [ ] `bool.wgsl` - Opérations booléennes
+- [ ] `builtin.wgsl` - Fonctions builtin
+- [ ] `comparison.wgsl` - Comparaisons
+- [ ] `function-call.wgsl` - Appels de fonction
+- [ ] `init.wgsl` - Initialisation
+
+#### Control Flow
+- [ ] `break-continue-return.wgsl` - break, continue, return
+- [ ] `control-flow.wgsl` - Flux de contrôle général
+- [ ] `discard.wgsl` - Instruction discard
+- [ ] `for.wgsl` - Boucles for
+- [ ] `if.wgsl` - Conditionnelles if
+- [ ] `loop.wgsl` - Boucles
+- [ ] `switch.wgsl` - Instructions switch
+- [ ] `while.wgsl` - Boucles while
+
+#### Shader Stages
+- [ ] `compute.wgsl` - Shaders compute
+- [ ] `fragment.wgsl` - Shaders fragment
+- [ ] `vertex.wgsl` - Shaders vertex
+
+#### Avancé
+- [ ] `atomic.wgsl` - Opérations atomiques
+- [ ] `bindings.wgsl` - Bindings de ressources
+- [ ] `derivative.wgsl` - Dérivées
+- [ ] `image.wgsl` - Accès aux images
+- [ ] `interpolate.wgsl` - Interpolation
+- [ ] `modf.wgsl` - Fonction modf
+- [ ] `packing.wgsl` - Packing/unpacking
+- [ ] `sampler.wgsl` - Échantillonnage
+- [ ] `storage-class.wgsl` - Classes de stockage
+- [ ] `struct-layout.wgsl` - Layout des structures
+- [ ] `texture.wgsl` - Accès aux textures
+- [ ] `type-alias.wgsl` - Alias de type
+- [ ] `workgroup.wgsl` - Variables de workgroup
+
+### Génération Initiale des Golden Files
+- [ ] Copier les fichiers WGSL depuis Rust
+- [ ] Exécuter les tests avec `GOLDEN_UPDATE=true` pour générer les fichiers de référence
+- [ ] Valider manuellement les fichiers générés
+- [ ] Commiter les golden files initiaux
+
+---
+
+## 🔧 Implémentation des Validateurs
+
+### Validateur SPIR-V
+- [ ] Créer `SpirvValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
+- [ ] Implémenter la détection de `spirv-val`
+- [ ] Implémenter la validation des fichiers SPIR-V
+- [ ] Intégrer avec `ValidatorFactory`
+
+### Validateur GLSL
+- [ ] Créer `GlslValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
+- [ ] Implémenter la détection de `glslangValidator`
+- [ ] Implémenter la validation des fichiers GLSL
+- [ ] Gérer les différentes versions de GLSL (450, 460, etc.)
+- [ ] Gérer les différents stages (vertex, fragment, compute)
+- [ ] Intégrer avec `ValidatorFactory`
+
+### Validateur MSL
+- [ ] Créer `MetalValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
+- [ ] Implémenter la détection du compilateur Metal
+- [ ] Implémenter la validation des fichiers MSL
+- [ ] Gérer les différentes plateformes (macOS, iOS, simulator)
+- [ ] Intégrer avec `ValidatorFactory`
+
+### Validateur HLSL
+- [ ] Créer `HlslValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
+- [ ] Implémenter la détection de DXC/FXC
+- [ ] Implémenter la validation des fichiers HLSL
+- [ ] Gérer les différents shader models (ps_5_0, ps_6_0, etc.)
+- [ ] Préférer DXC sur FXC
+- [ ] Intégrer avec `ValidatorFactory`
+
+### Factory de Validateurs
+- [ ] Créer `BackendValidator.kt` (interface commune)
+- [ ] Créer `ValidatorFactory.kt`
+- [ ] Implémenter la détection automatique des validateurs disponibles
+- [ ] Fournir des méthodes pour obtenir les validateurs par type de backend
+
+---
+
+## 🔄 Tests de Round-Trip
+
+### Normaliseur WGSL
+- [ ] Créer `WgslNormalizer.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/roundtrip/`
+- [ ] Implémenter `removeComments()` pour supprimer les commentaires
+- [ ] Implémenter `normalizeWhitespace()` pour normaliser les espaces
+- [ ] Implémenter `normalizeIdentifiers()` pour normaliser les identifiants générés
+- [ ] Implémenter `normalizeLiterals()` pour normaliser les littéraux numériques
+- [ ] Implémenter `normalizeForSemanticComparison()` pour la comparaison sémantique
+
+### Analyseur de Différences
+- [ ] Créer `DifferenceAnalyzer.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/roundtrip/`
+- [ ] Implémenter `Difference` data class
+- [ ] Implémenter `DifferenceType` enum
+- [ ] Implémenter `DifferencePattern` data class
+- [ ] Implémenter `analyze()` pour analyser les différences
+- [ ] Implémenter la détection des différences acceptables
+- [ ] Implémenter la détection des différences problématiques
+
+### Validateur de Round-Trip
+- [ ] Créer `RoundTripValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/roundtrip/`
+- [ ] Implémenter l'interface `BackendValidator`
+- [ ] Implémenter `validate()` pour valider le round-trip
+- [ ] Intégrer avec `ValidatorFactory`
+
+### Tests Concrets
+- [ ] Créer `RoundTripTests.kt` pour les tests paramétrés
+- [ ] Créer `TargetedRoundTripTests.kt` pour les tests ciblés
+- [ ] Créer `CrossBackendConsistencyTests.kt` pour la cohérence multi-backend
+- [ ] Configurer les tests avec JUnit 5
+- [ ] Utiliser `@ParameterizedTest` pour les tests en masse
+- [ ] Utiliser `@ValueSource` pour fournir les noms de fichiers
+
+### Configuration
+- [ ] Créer `RoundTripConfig.kt` pour la configuration
+- [ ] Définir les `acceptablePatterns`
+- [ ] Définir les `problematicPatterns`
+- [ ] Implémenter `isAcceptableDifference()`
+- [ ] Implémenter `isProblematicDifference()`
+
+---
+
+## 📊 Rapports et Metrics
+
+### Génération de Rapports
+- [ ] Créer `RoundTripReport.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/roundtrip/`
+- [ ] Implémenter `generateTextReport()` pour les rapports texte
+- [ ] Implémenter `generateHtmlReport()` pour les rapports HTML
+- [ ] Implémenter `saveToFile()` pour sauvegarder les rapports
+- [ ] Implémenter `generateSummaryReport()` pour les rapports de synthèse
+
+### Collecte de Metrics
+- [ ] Créer `RoundTripMetrics.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/roundtrip/`
+- [ ] Implémenter `recordResult()` pour enregistrer les résultats
+- [ ] Implémenter `getStatistics()` pour obtenir les statistiques
+- [ ] Implémenter `getMostCommonDifferences()` pour les différences les plus fréquentes
+- [ ] Implémenter `clear()` pour réinitialiser les metrics
+- [ ] Implémenter `RoundTripStatistics` data class
+
+### Listener JUnit
+- [ ] Créer `RoundTripTestListener.kt` pour collecter les metrics
+- [ ] Intégrer avec JUnit Platform
+- [ ] Enregistrer automatiquement les résultats des tests
+
+---
+
+## 🔌 Intégration CI
+
+### GitHub Actions (macOS)
+- [ ] Créer `.github/workflows/validation-macos.yml`
+- [ ] Configurer l'environnement macOS
+- [ ] Installer les dépendances (JDK, glslangValidator)
+- [ ] Exécuter les tests de validation
+- [ ] Upload les rapports en cas d'échec
+
+### GitHub Actions (Windows)
+- [ ] Créer `.github/workflows/validation-windows.yml`
+- [ ] Configurer l'environnement Windows
+- [ ] Installer les dépendances (JDK, Vulkan SDK)
+- [ ] Exécuter les tests de validation
+- [ ] Upload les rapports en cas d'échec
+
+### GitHub Actions (Linux)
+- [ ] Créer `.github/workflows/validation-linux.yml`
+- [ ] Configurer l'environnement Linux
+- [ ] Installer les dépendances (JDK, Vulkan Tools, glslang-tools, spirv-tools)
+- [ ] Exécuter les tests de validation
+- [ ] Upload les rapports en cas d'échec
+
+### Workflow Principal
+- [ ] Créer `.github/workflows/test.yml` ou mettre à jour l'existant
+- [ ] Intégrer les tests de validation
+- [ ] Configurer les conditions d'exécution
+- [ ] Optimiser le temps d'exécution
+
+---
+
+## ⚙️ Configuration et Scripts
+
+### Scripts Gradle
+- [ ] Configurer `build.gradle.kts` pour les tests
+- [ ] Ajouter les dépendances de test (JUnit 5, AssertJ)
+- [ ] Configurer le plugin `kotlinx-serialization` si nécessaire
+- [ ] Configurer les tâches de test
+
+### Variables d'Environnement
+- [ ] Documenter `GOLDEN_UPDATE=true` pour la mise à jour des golden files
+- [ ] Documenter `VULKAN_SDK` pour la détection des outils Vulkan
+- [ ] Documenter les chemins des exécutables
+
+### Documentation
+- [ ] Documenter la procédure de mise à jour des golden files
+- [ ] Documenter la configuration des validateurs
+- [ ] Documenter l'exécution des tests localement
+- [ ] Documenter l'interprétation des rapports
+
+---
+
+## 🧪 Tests Unitaires
+
+### Tests des Validateurs
+- [ ] Créer `NativeValidatorTests.kt`
+- [ ] Tester la détection des validateurs
+- [ ] Tester la validation MSL avec des shaders simples
+- [ ] Tester la validation GLSL avec des shaders simples
+- [ ] Tester la validation HLSL avec des shaders simples
+- [ ] Tester la validation SPIR-V avec des shaders simples
+
+### Tests des Golden Files
+- [ ] Créer `IrGoldenTests.kt` pour les tests IR
+- [ ] Créer `MslGoldenTests.kt` pour les tests MSL
+- [ ] Créer `HlslGoldenTests.kt` pour les tests HLSL
+- [ ] Créer `GlslGoldenTests.kt` pour les tests GLSL
+- [ ] Créer `WgslRoundTripTests.kt` pour les tests de round-trip
+
+### Tests des Composants
+- [ ] Tester `WgslNormalizer` avec différents cas
+- [ ] Tester `DifferenceAnalyzer` avec différentes différences
+- [ ] Tester `RoundTripValidator` avec différents scénarios
+- [ ] Tester `RoundTripConfig` pour la configuration
+- [ ] Tester `RoundTripReport` pour la génération de rapports
+- [ ] Tester `RoundTripMetrics` pour la collecte de metrics
+
+---
+
+## 📈 Coverage des Tests
+
+### Coverage par Catégorie
+- [ ] Expressions constantes (100%)
+- [ ] Types (100%)
+- [ ] Variables (100%)
+- [ ] Fonctions (100%)
+- [ ] Structures (100%)
+- [ ] Tableaux (100%)
+- [ ] Vecteurs et Matrices (100%)
+- [ ] Flux de contrôle (100%)
+- [ ] Points d'entrée (100%)
+- [ ] Bindings (100%)
+- [ ] Builtins (100%)
+
+### Objectifs de Coverage
+- [ ] Coverage des instructions : > 95%
+- [ ] Coverage des expressions : > 95%
+- [ ] Coverage des types : > 95%
+- [ ] Coverage des backends : > 90%
+
+---
+
+## 🎉 Critères d'Acceptation
+
+### Pour la Phase 5
+- [ ] Tous les fichiers de documentation créés
+- [ ] Tous les fichiers WGSL importés depuis Rust
+- [ ] Tous les golden files générés pour les backends cibles (MSL, HLSL, GLSL, WGSL)
+- [ ] Tous les validateurs natifs intégrés (glslangValidator, Metal Compiler, DXC)
+- [ ] Tous les tests de round-trip implémentés et passants
+- [ ] Intégration CI configurée et fonctionnelle
+- [ ] Documentation complète des procédures
+
+### Pour chaque Backend
+- [ ] MSL : Validation avec Metal Compiler sur macOS
+- [ ] HLSL : Validation avec DXC sur Windows
+- [ ] GLSL : Validation avec glslangValidator sur toutes les plateformes
+- [ ] SPIR-V : Validation avec spirv-val (optionnel)
+- [ ] WGSL : Round-trip validation sur toutes les plateformes
+
+### Pour chaque Catégorie de Test
+- [ ] Parsing : Tous les fichiers WGSL parsés avec succès
+- [ ] Génération : Tous les backends génèrent du code valide
+- [ ] Round-trip : Tous les fichiers passent le test de round-trip
+- [ ] Régression : Détection automatique des régressions
+
+---
+
+## 📅 Planning
+
+### Semaine 1-2 : Préparation
+- [ ] Finaliser la structure des répertoires
+- [ ] Importer les fichiers WGSL depuis Rust
+- [ ] Créer les classes de base pour les tests
+- [ ] Implémenter les interfaces communes
+
+### Semaine 3-4 : Golden Files
+- [ ] Implémenter `GoldenTestBase`
+- [ ] Créer les tests golden pour chaque backend
+- [ ] Générer les golden files initiaux
+- [ ] Valider et commiter les golden files
+
+### Semaine 5-6 : Validateurs Natifs
+- [ ] Implémenter `GlslValidator`
+- [ ] Implémenter `MetalValidator`
+- [ ] Implémenter `HlslValidator`
+- [ ] Implémenter `SpirvValidator`
+- [ ] Implémenter `ValidatorFactory`
+
+### Semaine 7-8 : Round-Trip
+- [ ] Implémenter `WgslNormalizer`
+- [ ] Implémenter `DifferenceAnalyzer`
+- [ ] Implémenter `RoundTripValidator`
+- [ ] Créer les tests de round-trip
+- [ ] Configurer les listes blanches de différences
+
+### Semaine 9-10 : Intégration
+- [ ] Implémenter `RoundTripReport`
+- [ ] Implémenter `RoundTripMetrics`
+- [ ] Configurer l'intégration CI
+- [ ] Finaliser la documentation
+
+---
+
+## 🔍 Vérification
+
+### Vérification des Fichiers
+- [ ] Vérifier que tous les fichiers de documentation existent
+- [ ] Vérifier que tous les fichiers de code existent
+- [ ] Vérifier que tous les tests compilent
+- [ ] Vérifier que tous les tests passent
+
+### Vérification des Golden Files
+- [ ] Vérifier que tous les fichiers WGSL sont présents
+- [ ] Vérifier que tous les golden files sont générés
+- [ ] Vérifier que les golden files sont cohérents
+
+### Vérification CI
+- [ ] Vérifier que les workflows CI existent
+- [ ] Vérifier que les workflows CI passent
+- [ ] Vérifier que les artefacts sont générés en cas d'échec
+
+---
+
+## 📚 Documentation
+
+### Documentation Technique
+- [ ] Documenter l'architecture des tests de validation
+- [ ] Documenter l'intégration des validateurs natifs
+- [ ] Documenter les tests de round-trip
+- [ ] Documenter la configuration CI
+
+### Documentation Utilisateur
+- [ ] Documenter comment exécuter les tests localement
+- [ ] Documenter comment mettre à jour les golden files
+- [ ] Documenter comment interpréter les rapports
+- [ ] Documenter comment ajouter de nouveaux tests
+
+---
+
+## ✅ État Actuel
+
+| Élément | État | Date | Notes |
+|---------|------|------|-------|
+| 00_golden-files.md | ✅ | 2024-XX-XX | Complété |
+| 01_native-validators.md | ✅ | 2024-XX-XX | Complété |
+| 02_roundtrip-tests.md | ✅ | 2024-XX-XX | Complété |
+| 99_checklist.md | ✅ | 2024-XX-XX | En cours |
+| Structure des répertoires | ⬜ | - | À créer |
+| Fichiers WGSL importés | ⬜ | - | À importer |
+| Validateurs natifs | ⬜ | - | À implémenter |
+| Tests de round-trip | ⬜ | - | À implémenter |
+| Intégration CI | ⬜ | - | À configurer |
+
+---
+
+## 🎯 Prochaines Étapes
+
+1. [ ] **Phase 6 - Tests** : Créer les documents pour la stratégie de test et la couverture
+2. [ ] **Phase 7 - CLI** : Créer les documents pour l'interface en ligne de commande
+3. [ ] **Phase 99 - Annexes** : Créer les documents annexes (glossaire, comparaison Rust/Kotlin)
+
+---
+
+## 📞 Contacts et Ressources
+
+### Ressources Internes
+- Projet Rust : `/Users/chaos/RustroverProjects/wgpu/naga/`
+- Fichiers golden Rust : `/Users/chaos/RustroverProjects/wgpu/naga/tests/`
+- Documentation WGSL : `docs/wgsl/`
+- Spécification WebGPU : [https://gpuweb.github.io/gpuweb/](https://gpuweb.github.io/gpuweb/)
+
+### Outils Externes
+- SPIRV-Tools : [https://github.com/KhronosGroup/SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools)
+- glslang : [https://github.com/KhronosGroup/glslang](https://github.com/KhronosGroup/glslang)
+- DirectX Shader Compiler : [https://github.com/microsoft/DirectXShaderCompiler](https://github.com/microsoft/DirectXShaderCompiler)
+- Vulkan SDK : [https://vulkan.lunarg.com/sdk/home](https://vulkan.lunarg.com/sdk/home)
+
+### Documentation de Référence
+- [WGSL Specification](https://gpuweb.github.io/gpuweb/wgsl/)
+- [Metal Shading Language](https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf)
+- [HLSL Documentation](https://docs.microsoft.com/en-us/windows/win32/directxhlsl/dx-graphics-hlsl)
+- [GLSL Specification](https://www.khronos.org/opengl/wiki/Core_Language_(GLSL))
+
+---
+
+## 📝 Notes
+
+### Notes d'Implémentation
+- Utiliser `kotlinx.serialization` pour la sérialisation JSON de l'IR
+- Utiliser les coroutines Kotlin pour les opérations I/O asynchrones
+- Suivre les conventions de nommage Kotlin
+- Utiliser les data classes pour les structures de données
+- Utiliser les sealed classes pour les hiérarchies fermées
+- Utiliser les extension functions pour ajouter des fonctionnalités
+
+### Notes de Performance
+- Les tests de validation peuvent être lents (appels aux compilateurs natifs)
+- Prévoir un cache pour les golden files
+- Exécuter les tests de validation en parallèle quand possible
+- Limiter les tests de validation aux fichiers modifiés
+
+### Notes de Compatibilité
+- Les validateurs natifs peuvent ne pas être disponibles sur toutes les plateformes
+- Prévoir des fallbacks (skip des tests) quand les outils ne sont pas disponibles
+- Documenter clairement les prérequis pour chaque validateur
+
+---
+
+**Dernière mise à jour** : 2024-XX-XX
+**Responsable** : Équipe WebGPU-KTypes
+**Statut** : En cours
