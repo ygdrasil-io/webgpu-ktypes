@@ -39,3 +39,4 @@ kotlin-ide/
 .kotlin/
 .teamcity/
 .npmrc
+*.hprof
