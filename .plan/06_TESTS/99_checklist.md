@@ -35,11 +35,11 @@
 
 ### Répertoires de Test
 - [ ] Créer `src/test/kotlin/dev/gfxrs/naga/` pour tous les tests
-- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/core/` pour les tests naga-core
-- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/wgsl/` pour les tests naga-wgsl
-- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/msl/` pour les tests naga-msl
-- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/hlsl/` pour les tests naga-hlsl
-- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/glsl/` pour les tests naga-glsl
+- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/core/` pour les tests wgsl:core
+- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/wgsl/` pour les tests wgsl:wgsl
+- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/msl/` pour les tests wgsl:msl
+- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/hlsl/` pour les tests wgsl:hlsl
+- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/glsl/` pour les tests wgsl:glsl
 - [ ] Créer `src/test/kotlin/dev/gfxrs/naga/test/` pour les tests d'intégration
 - [ ] Créer `src/test/kotlin/dev/gfxrs/naga/benchmark/` pour les benchmarks
 
@@ -59,11 +59,11 @@
 
 ### Configuration Gradle
 - [ ] Configurer `build.gradle.kts` (racine) avec les plugins de test
-- [ ] Configurer `build.gradle.kts` (naga-core) pour les tests
-- [ ] Configurer `build.gradle.kts` (naga-wgsl) pour les tests
-- [ ] Configurer `build.gradle.kts` (naga-msl) pour les tests
-- [ ] Configurer `build.gradle.kts` (naga-hlsl) pour les tests
-- [ ] Configurer `build.gradle.kts` (naga-glsl) pour les tests
+- [ ] Configurer `build.gradle.kts` (wgsl:core) pour les tests
+- [ ] Configurer `build.gradle.kts` (wgsl:wgsl) pour les tests
+- [ ] Configurer `build.gradle.kts` (wgsl:msl) pour les tests
+- [ ] Configurer `build.gradle.kts` (wgsl:hlsl) pour les tests
+- [ ] Configurer `build.gradle.kts` (wgsl:glsl) pour les tests
 - [ ] Configurer JaCoCo dans tous les modules
 
 ### Configuration CI
@@ -77,7 +77,7 @@
 
 ## 🔧 Tests Unitaires
 
-### naga-core
+### wgsl:core
 
 #### Classes à Tester
 - [ ] `Handle<T>` - Tests de création, comparaison, sérialisation
@@ -128,7 +128,7 @@
 - [ ] `LocalVariable` - Tests de variables locales
 - [ ] `GlobalVariable` - Tests de variables globales
 
-### naga-wgsl
+### wgsl:wgsl
 
 #### Lexer
 - [ ] `TokenKind` - Tests de tous les types de tokens
@@ -172,7 +172,7 @@
   - [ ] Modules complets
   - [ ] Tous les fichiers golden
 
-### naga-msl
+### wgsl:msl
 
 #### Writer
 - [ ] `MslWriter` - Tests de génération MSL
@@ -193,7 +193,7 @@
   - [ ] Shaders complexes
   - [ ] Tous les types de shaders (vertex, fragment, compute)
 
-### naga-hlsl
+### wgsl:hlsl
 
 #### Writer
 - [ ] `HlslWriter` - Tests de génération HLSL
@@ -214,7 +214,7 @@
   - [ ] Shaders complexes
   - [ ] Tous les shader models (ps_5_0, ps_6_0, etc.)
 
-### naga-glsl
+### wgsl:glsl
 
 #### Writer
 - [ ] `GlslWriter` - Tests de génération GLSL
@@ -328,11 +328,11 @@
 - [ ] Configurer JaCoCo dans tous les modules
 - [ ] Définir les seuils de coverage
   - [ ] Global : 90% instructions, 85% branches
-  - [ ] naga-core : 95% instructions, 90% branches
-  - [ ] naga-wgsl : 95% instructions, 90% branches
-  - [ ] naga-msl : 90% instructions, 85% branches
-  - [ ] naga-hlsl : 90% instructions, 85% branches
-  - [ ] naga-glsl : 90% instructions, 85% branches
+  - [ ] wgsl:core : 95% instructions, 90% branches
+  - [ ] wgsl:wgsl : 95% instructions, 90% branches
+  - [ ] wgsl:msl : 90% instructions, 85% branches
+  - [ ] wgsl:hlsl : 90% instructions, 85% branches
+  - [ ] wgsl:glsl : 90% instructions, 85% branches
 - [ ] Configurer les exclusions (tests, generated code)
 
 ### Exécution
@@ -542,11 +542,11 @@ src/test/resources/
 - [ ] Documentation complète
 
 ### Pour chaque Module
-- [ ] naga-core : 95%+ coverage, tous les tests passent
-- [ ] naga-wgsl : 95%+ coverage, tous les tests passent
-- [ ] naga-msl : 90%+ coverage, tous les tests passent
-- [ ] naga-hlsl : 90%+ coverage, tous les tests passent
-- [ ] naga-glsl : 90%+ coverage, tous les tests passent
+- [ ] wgsl:core : 95%+ coverage, tous les tests passent
+- [ ] wgsl:wgsl : 95%+ coverage, tous les tests passent
+- [ ] wgsl:msl : 90%+ coverage, tous les tests passent
+- [ ] wgsl:hlsl : 90%+ coverage, tous les tests passent
+- [ ] wgsl:glsl : 90%+ coverage, tous les tests passent
 
 ### Pour chaque Type de Test
 - [ ] Tests unitaires : 500-1000 tests, tous passent
@@ -571,14 +571,14 @@ src/test/resources/
 - [ ] Implémenter les tests pour les types IR
 - [ ] Implémenter les tests pour les expressions
 - [ ] Implémenter les tests pour les statements
-- [ ] Atteindre 95%+ coverage sur naga-core
+- [ ] Atteindre 95%+ coverage sur wgsl:core
 
 ### Semaine 5-6 : Tests Unitaires (WGSL)
 - [ ] Implémenter les tests pour le lexer
 - [ ] Implémenter les tests pour le parser
 - [ ] Implémenter les tests pour le writer
 - [ ] Implémenter les tests de round-trip
-- [ ] Atteindre 95%+ coverage sur naga-wgsl
+- [ ] Atteindre 95%+ coverage sur wgsl:wgsl
 
 ### Semaine 7-8 : Tests Unitaires (Backends)
 - [ ] Implémenter les tests pour MSL writer

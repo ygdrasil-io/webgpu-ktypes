@@ -1,7 +1,7 @@
 # ✅ Phase 3.4 : Validator
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 3 - Processing  
 **Sous-Phase** : 3.4 - IR Validation  
 **Durée** : 3-4 semaines  
@@ -98,10 +98,10 @@ Sinon → Lancer ValidationException
 
 ### 1. ValidationFlags.kt (Options de validation)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/valid/ValidationFlags.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/valid/ValidationFlags.kt`
 
 ```kotlin
-package dev.gfxrs.naga.valid
+package io.ygdrasil.wgsl.valid
 
 /**
  * Flags pour contrôler quelles validations sont effectuées.
@@ -149,10 +149,10 @@ class ValidationFlags private constructor(val bits: Int) {
 
 ### 2. Capabilities.kt (Fonctionnalités supportées)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/valid/Capabilities.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/valid/Capabilities.kt`
 
 ```kotlin
-package dev.gfxrs.naga.valid
+package io.ygdrasil.wgsl.valid
 
 /**
  * Capacités supportées par le backend.
@@ -320,12 +320,12 @@ class Capabilities private constructor(val bits: Long) {
 
 ### 3. ShaderStages.kt (Étapes de shader supportées)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/valid/ShaderStages.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/valid/ShaderStages.kt`
 
 ```kotlin
-package dev.gfxrs.naga.valid
+package io.ygdrasil.wgsl.valid
 
-import dev.gfxrs.naga.ir.ShaderStage
+import io.ygdrasil.wgsl.ir.ShaderStage
 
 /**
  * Flags pour les étapes de shader supportées.
@@ -374,14 +374,14 @@ class ShaderStages private constructor(val bits: Int) {
 
 ### 4. ValidationError.kt (Erreurs de validation)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/valid/ValidationError.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/valid/ValidationError.kt`
 
 ```kotlin
-package dev.gfxrs.naga.valid
+package io.ygdrasil.wgsl.valid
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
-import dev.gfxrs.naga.span.Span
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
+import io.ygdrasil.wgsl.span.Span
 
 /**
  * Erreurs générées par le Validator.
@@ -607,14 +607,14 @@ sealed class OverrideError {
 
 ### 5. Validator.kt (Classe principale)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/valid/Validator.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/valid/Validator.kt`
 
 ```kotlin
-package dev.gfxrs.naga.valid
+package io.ygdrasil.wgsl.valid
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
-import dev.gfxrs.naga.proc.Layouter
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
+import io.ygdrasil.wgsl.proc.Layouter
 
 /**
  * Valideur de module IR.
@@ -1217,7 +1217,7 @@ class Validator(
 ## 📁 STRUCTURE DES FICHIERS
 
 ```
-naga-core/src/main/kotlin/dev/gfxrs/naga/valid/
+wgsl:core/src/main/kotlin/dev/gfxrs/naga/valid/
 ├── ValidationFlags.kt      # Flags de validation
 ├── Capabilities.kt         # Capacités supportées
 ├── ShaderStages.kt        # Étapes de shader supportées
@@ -1247,13 +1247,13 @@ naga-core/src/main/kotlin/dev/gfxrs/naga/valid/
 
 ### 1. ValidatorTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/valid/ValidatorTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/valid/ValidatorTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.valid
+package io.ygdrasil.wgsl.valid
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -1561,11 +1561,11 @@ class ValidatorTest {
 ## 🔄 DÉPENDANCES
 
 ### Dépendances Internes
-- `naga-core` : Module IR (Module, Type, Function, Expression, Statement, etc.)
+- `wgsl:core` : Module IR (Module, Type, Function, Expression, Statement, etc.)
 - `naga-proc` : Layouter, ConstantEvaluator, Typifier
-- `dev.gfxrs.naga.arena.Handle`
-- `dev.gfxrs.naga.ir.*`
-- `dev.gfxrs.naga.span.Span`
+- `io.ygdrasil.wgsl.arena.Handle`
+- `io.ygdrasil.wgsl.ir.*`
+- `io.ygdrasil.wgsl.span.Span`
 
 ### Dépendances Externes
 - Aucune (kotlin-stdlib uniquement)

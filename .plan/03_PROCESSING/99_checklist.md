@@ -1,7 +1,7 @@
 # ✅ Phase 3 : Checklist Complète - Processing
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 3 - Processing  
 **Durée totale** : 8-12 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique)  
@@ -439,7 +439,7 @@
 
 ## 📊 RÉCAPITULATIF PAR DOSSIER
 
-### `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/`
+### `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/`
 
 #### Constant Evaluator
 - [ ] ConstValue.kt
@@ -466,7 +466,7 @@
 - [ ] CaseInsensitiveKeywordSet.kt
 - [ ] Namer.kt
 
-### `naga-core/src/main/kotlin/dev/gfxrs/naga/valid/`
+### `wgsl:core/src/main/kotlin/dev/gfxrs/naga/valid/`
 
 #### Root
 - [ ] ValidationFlags.kt

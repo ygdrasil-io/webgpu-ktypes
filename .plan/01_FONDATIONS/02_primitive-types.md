@@ -1,7 +1,7 @@
 # 🔤 Phase 1.2 : Types Primitifs et Énums
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 1 - Fondations  
 **Sous-Phase** : 1.2 - Types Primitifs  
 **Durée** : 1-2 semaines  
@@ -17,7 +17,7 @@
 Implémenter **tous les types primitifs et énums** utilisés dans le système IR de Naga.  
 Ces types forment la **base** sur laquelle tous les autres types sont construits.
 
-**Livrable principal** : Tous les enums et types de base dans `naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Types.kt`
+**Livrable principal** : Tous les enums et types de base dans `wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Types.kt`
 
 ---
 
@@ -42,13 +42,13 @@ Types Primitifs (Types.kt)
 
 ### 1. Types.kt (Fichier Principal)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Types.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Types.kt`
 
 ```kotlin
-package dev.gfxrs.naga.ir
+package io.ygdrasil.wgsl.ir
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.arena.UniqueArena
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.arena.UniqueArena
 import kotlinx.serialization.Serializable
 
 // ============================================================================
@@ -706,7 +706,7 @@ sealed class ArraySize {
      * Ex: array<f32, N> où N est une variable
      */
     @Serializable
-    data class Dynamic(val expression: Handle<dev.gfxrs.naga.ir.Expression>) : ArraySize()
+    data class Dynamic(val expression: Handle<io.ygdrasil.wgsl.ir.Expression>) : ArraySize()
     
     /**
      * Taille non spécifiée.
@@ -823,22 +823,22 @@ sealed class SampleLevel {
      * Niveau de mipmap spécifique.
      */
     @Serializable
-    data class MIPMAP(val level: Handle<dev.gfxrs.naga.ir.Expression>) : SampleLevel()
+    data class MIPMAP(val level: Handle<io.ygdrasil.wgsl.ir.Expression>) : SampleLevel()
     
     /**
      * Niveau calculé à partir d'un gradient.
      */
     @Serializable
     data class GRADIENT(
-        val x: Handle<dev.gfxrs.naga.ir.Expression>,
-        val y: Handle<dev.gfxrs.naga.ir.Expression>
+        val x: Handle<io.ygdrasil.wgsl.ir.Expression>,
+        val y: Handle<io.ygdrasil.wgsl.ir.Expression>
     ) : SampleLevel()
     
     /**
      * Niveau calculé automatiquement.
      */
     @Serializable
-    data class AUTOMATIC(val level: Handle<dev.gfxrs.naga.ir.Expression>) : SampleLevel()
+    data class AUTOMATIC(val level: Handle<io.ygdrasil.wgsl.ir.Expression>) : SampleLevel()
 }
 
 // ============================================================================
@@ -1140,10 +1140,10 @@ enum class AtomicFunction {
 
 ## 📄 StorageFormat.kt (Formats de Stockage)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/ir/StorageFormat.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/StorageFormat.kt`
 
 ```kotlin
-package dev.gfxrs.naga.ir
+package io.ygdrasil.wgsl.ir
 
 import kotlinx.serialization.Serializable
 

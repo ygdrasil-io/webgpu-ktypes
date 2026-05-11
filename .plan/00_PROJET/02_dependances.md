@@ -170,7 +170,7 @@ dependencies {
 
 ## 📊 ANALYSE DES DÉPENDANCES PAR MODULE
 
-### naga-core (Module Racine)
+### core (Module Racine)
 
 | Type | Dépendance | Version | Obligatoire | Taille |
 |------|------------|---------|-------------|-------|
@@ -183,52 +183,52 @@ dependencies {
 **Total (Production) :** ~1-1.5MB  
 **Total (Test) :** ~2.5-3MB
 
-### naga-wgsl (Frontend WGSL)
+### wgsl (Frontend WGSL)
 
 | Type | Dépendance | Version | Obligatoire | Taille |
 |------|------------|---------|-------------|-------|
-| Module | naga-core | - | ✅ Oui | - |
+| Module | core | - | ✅ Oui | - |
 | Kotlin | kotlin-stdlib | 1.9.0 | ✅ Oui | Déjà inclus |
 
-**Total :** ~0KB (dépendances déjà dans naga-core)
+**Total :** ~0KB (dépendances déjà dans core)
 
-### naga-msl (Backend MSL)
+### msl (Backend MSL)
 
 | Type | Dépendance | Version | Obligatoire | Taille |
 |------|------------|---------|-------------|-------|
-| Module | naga-core | - | ✅ Oui | - |
+| Module | core | - | ✅ Oui | - |
 | Kotlin | kotlin-stdlib | 1.9.0 | ✅ Oui | Déjà inclus |
 | KotlinX | kotlinx-io | 0.3.5 | ⚠️ Optionnelle | ~100KB |
 
 **Total :** ~0-100KB
 
-### naga-hlsl (Backend HLSL)
+### hlsl (Backend HLSL)
 
 | Type | Dépendance | Version | Obligatoire | Taille |
 |------|------------|---------|-------------|-------|
-| Module | naga-core | - | ✅ Oui | - |
+| Module | core | - | ✅ Oui | - |
 | Kotlin | kotlin-stdlib | 1.9.0 | ✅ Oui | Déjà inclus |
 
 **Total :** ~0KB
 
-### naga-glsl (Backend GLSL)
+### glsl (Backend GLSL)
 
 | Type | Dépendance | Version | Obligatoire | Taille |
 |------|------------|---------|-------------|-------|
-| Module | naga-core | - | ✅ Oui | - |
+| Module | core | - | ✅ Oui | - |
 | Kotlin | kotlin-stdlib | 1.9.0 | ✅ Oui | Déjà inclus |
 
 **Total :** ~0KB
 
-### naga-cli (CLI)
+### cli (CLI)
 
 | Type | Dépendance | Version | Obligatoire | Taille |
 |------|------------|---------|-------------|-------|
-| Module | naga-core | - | ✅ Oui | - |
-| Module | naga-wgsl | - | ✅ Oui | - |
-| Module | naga-msl | - | ✅ Oui | - |
-| Module | naga-hlsl | - | ✅ Oui | - |
-| Module | naga-glsl | - | ✅ Oui | - |
+| Module | core | - | ✅ Oui | - |
+| Module | wgsl | - | ✅ Oui | - |
+| Module | msl | - | ✅ Oui | - |
+| Module | hlsl | - | ✅ Oui | - |
+| Module | glsl | - | ✅ Oui | - |
 | Kotlin | kotlin-stdlib | 1.9.0 | ✅ Oui | Déjà inclus |
 | KotlinX | kotlinx-coroutines-core | 1.7.3 | ⚠️ Optionnelle | ~200KB |
 | CLI | picocli | 4.7.4 | ⚠️ Optionnelle | ~300KB |
@@ -273,12 +273,12 @@ dependencyResolutionManagement {
 rootProject.name = "webgpu-ktypes"
 
 include(
-    "naga-core",
-    "naga-wgsl",
-    "naga-msl",
-    "naga-hlsl", 
-    "naga-glsl",
-    "naga-cli"
+    "core",
+    "wgsl",
+    "msl",
+    "hlsl", 
+    "glsl",
+    "cli"
 )
 ```
 
@@ -311,7 +311,7 @@ subprojects {
 }
 ```
 
-### naga-core/build.gradle.kts
+### core/build.gradle.kts
 
 ```kotlin
 plugins {
@@ -331,7 +331,7 @@ kotlin {
 }
 ```
 
-### naga-wgsl/build.gradle.kts
+### wgsl/build.gradle.kts
 
 ```kotlin
 plugins {
@@ -339,7 +339,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":naga-core"))
+    implementation(project(":core"))
 }
 
 kotlin {
@@ -347,7 +347,7 @@ kotlin {
 }
 ```
 
-### naga-msl/build.gradle.kts
+### msl/build.gradle.kts
 
 ```kotlin
 plugins {
@@ -355,7 +355,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":naga-core"))
+    implementation(project(":core"))
     // Optionnel pour E/S performante
     // implementation("org.jetbrains.kotlinx:kotlinx-io:0.3.5")
 }
@@ -365,7 +365,7 @@ kotlin {
 }
 ```
 
-### naga-cli/build.gradle.kts
+### hlsl/build.gradle.kts
 
 ```kotlin
 plugins {
@@ -373,11 +373,43 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":naga-core"))
-    implementation(project(":naga-wgsl"))
-    implementation(project(":naga-msl"))
-    implementation(project(":naga-hlsl"))
-    implementation(project(":naga-glsl"))
+    implementation(project(":core"))
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+```
+
+### glsl/build.gradle.kts
+
+```kotlin
+plugins {
+    kotlin("jvm")
+}
+
+dependencies {
+    implementation(project(":core"))
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+```
+
+### cli/build.gradle.kts
+
+```kotlin
+plugins {
+    kotlin("jvm")
+}
+
+dependencies {
+    implementation(project(":core"))
+    implementation(project(":wgsl"))
+    implementation(project(":msl"))
+    implementation(project(":hlsl"))
+    implementation(project(":glsl"))
     
     // Optionnel pour CLI asynchrone
     // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
@@ -399,7 +431,7 @@ tasks {
         }
         manifest {
             attributes(
-                "Main-Class" to "dev.gfxrs.naga.cli.MainKt"
+                "Main-Class" to "dev.gfxrs.wgsl.cli.MainKt"
             )
         }
     }
@@ -415,8 +447,8 @@ tasks {
 ```bash
 # Depuis la racine du projet
 ./gradlew :dependencies
-./gradlew :naga-core:dependencies
-./gradlew :naga-wgsl:dependencies
+./gradlew :core:dependencies
+./gradlew :wgsl:dependencies
 ```
 
 ### Commande pour vérifier la taille des dépendances

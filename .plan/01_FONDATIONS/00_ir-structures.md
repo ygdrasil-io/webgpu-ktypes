@@ -1,7 +1,7 @@
 # 🏗️ Phase 1 : Structures IR - Core
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 1 - Fondations  
 **Durée** : 4-6 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique)  
@@ -13,7 +13,7 @@
 
 Implémenter **toutes les structures de données** de la Représentation Intermédiaire (IR) de Naga en Kotlin.
 
-**Livrable principal** : Un module `naga-core` fonctionnel avec toutes les classes de base.
+**Livrable principal** : Un module `wgsl:core` fonctionnel avec toutes les classes de base.
 
 ---
 
@@ -43,7 +43,7 @@ pub struct Module {
 
 #### Kotlin (À Implémenter)
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Module.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Module.kt
 
 @Serializable
 data class Module(
@@ -177,7 +177,7 @@ pub enum TypeInner {
 
 #### Kotlin (À Implémenter)
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Type.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Type.kt
 
 @Serializable
 data class Type(
@@ -276,7 +276,7 @@ value class Handle<T>(val index: Int)
 #### Types Associés
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Types.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Types.kt
 
 /** Taille en bytes (1, 2, 4, 8) */
 typealias Bytes = UInt
@@ -472,7 +472,7 @@ pub enum Expression {
 #### Kotlin (À Implémenter)
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Expression.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Expression.kt
 
 @Serializable
 sealed class Expression {
@@ -831,7 +831,7 @@ pub enum Statement {
 #### Kotlin (À Implémenter)
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Statement.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Statement.kt
 
 @Serializable
 sealed class Statement {
@@ -979,7 +979,7 @@ fun Statement.accept(visitor: StatementVisitor<Nothing>): Nothing {
 #### Types Associés à Statement
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/ControlFlow.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/ControlFlow.kt
 
 @Serializable
 sealed class SwitchValue {
@@ -1038,7 +1038,7 @@ object MemoryAccess {
 #### Function (Référence : `/Users/chaos/RustroverProjects/wgpu/naga/src/ir/mod.rs` ligne 2444)
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Function.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Function.kt
 
 @Serializable
 data class Function(
@@ -1076,7 +1076,7 @@ data class LocalVariable(
 #### EntryPoint (Référence : `/Users/chaos/RustroverProjects/wgpu/naga/src/ir/mod.rs` ligne 2534)
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/EntryPoint.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/EntryPoint.kt
 
 @Serializable
 data class EntryPoint(
@@ -1127,7 +1127,7 @@ enum class MeshOutputTopology {
 ### 6. **Constant et Override**
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Constant.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Constant.kt
 
 @Serializable
 data class Constant(
@@ -1150,7 +1150,7 @@ data class Override(
 ### 7. **GlobalVariable**
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/GlobalVariable.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/GlobalVariable.kt
 
 @Serializable
 sealed class ResourceBinding {
@@ -1209,7 +1209,7 @@ enum class VariableClass {
 ### 8. **Literal** (Valeurs littérales)
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Literal.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Literal.kt
 
 @Serializable
 sealed class Literal {
@@ -1247,7 +1247,7 @@ sealed class Literal {
 ### Arena (Référence : `/Users/chaos/RustroverProjects/wgpu/naga/src/arena/mod.rs`)
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/arena/Arena.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/arena/Arena.kt
 
 /**
  * Arena pour stocker des éléments de manière efficace.
@@ -1321,7 +1321,7 @@ class Arena<T> : Iterable<T> {
 ### UniqueArena (Avec déduplication)
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/arena/UniqueArena.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/arena/UniqueArena.kt
 
 /**
  * Arena qui garantit l'unicité des éléments (dédoublonnage automatique).
@@ -1389,7 +1389,7 @@ fun Type.isEquivalentTo(other: Any): Boolean {
 ### Handle (Type-safe wrapper)
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/arena/Handle.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/arena/Handle.kt
 
 /**
  * Handle est un wrapper type-safe autour d'un Int (index dans une Arena).
@@ -1424,7 +1424,7 @@ value class Handle<T>(val index: Int) {
 ## 📍 SPAN ET DIAGNOSTICS
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Span.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Span.kt
 
 @Serializable
 data class Span(
@@ -1468,7 +1468,7 @@ interface WithSpan {
 ## 📝 SPECIAL TYPES
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/SpecialTypes.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/SpecialTypes.kt
 
 /**
  * Types spéciaux qui sont générés automatiquement et stockés ici pour accès rapide.
@@ -1521,7 +1521,7 @@ data class SpecialTypes(
 ## 📊 DOC COMMENTS
 
 ```kotlin
-// Fichier: naga-core/src/main/kotlin/dev/gfxrs/naga/ir/DocComments.kt
+// Fichier: wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/DocComments.kt
 
 /**
  * Arbre des commentaires de documentation.
@@ -1564,7 +1564,7 @@ sealed class DocCommentEntry {
 ## 📁 STRUCTURE DES FICHIERS KOTLIN
 
 ```
-naga-core/
+wgsl:core/
 ├── src/main/kotlin/dev/gfxrs/naga/
 │   ├── ir/                      # Représentation Intermédiaire
 │   │   ├── Module.kt            # Module (racine)
@@ -1670,7 +1670,7 @@ naga-core/
 
 ## 🎯 LIVRABLES
 
-1. **Module `naga-core`** compilable et testable
+1. **Module `wgsl:core`** compilable et testable
 2. **Toutes les structures IR** implémentées en Kotlin
 3. **Système Arena/Handle** fonctionnel
 4. **Visitor Pattern** pour Expression et Statement

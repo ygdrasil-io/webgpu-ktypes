@@ -152,15 +152,15 @@ use frontends::wgsl::lexer::Lexer;
 #### Kotlin
 ```kotlin
 // Structure des packages
-package dev.gfxrs.naga.frontends.wgsl
+package io.ygdrasil.wgsl.frontends.wgsl
 
 // Fichiers séparés pour parser et lexer
 // parser/Parser.kt
 // lexer/Lexer.kt
 
 // Utilisation
-import dev.gfxrs.naga.frontends.wgsl.parser.parse
-import dev.gfxrs.naga.frontends.wgsl.lexer.Lexer
+import io.ygdrasil.wgsl.frontends.wgsl.parser.parse
+import io.ygdrasil.wgsl.frontends.wgsl.lexer.Lexer
 ```
 
 | Aspect | Rust | Kotlin |

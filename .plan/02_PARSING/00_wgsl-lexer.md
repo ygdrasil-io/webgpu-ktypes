@@ -1,7 +1,7 @@
 # 🔤 Phase 2.0 : Lexer WGSL
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-wgsl`  
+**Module** : `wgsl:wgsl`  
 **Phase** : 2 - Parsing  
 **Sous-Phase** : 2.0 - Lexer WGSL  
 **Durée** : 2-3 semaines  
@@ -56,10 +56,10 @@ Les tokens WGSL incluent :
 
 ### 1. TokenKind.kt
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/TokenKind.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/TokenKind.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
 import kotlinx.serialization.Serializable
 
@@ -384,12 +384,12 @@ fun TokenKind.isShaderStage(): Boolean = when (this) {
 
 ### 2. Token.kt
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/Token.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/Token.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.ir.Span
+import io.ygdrasil.wgsl.ir.Span
 import kotlinx.serialization.Serializable
 
 /**
@@ -469,14 +469,14 @@ data class Token(
 
 ### 3. Lexer.kt (Cœur du Lexer)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/Lexer.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/Lexer.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.ir.SourceLocation
-import dev.gfxrs.naga.ir.Span
-import dev.gfxrs.naga.ir.spanOf
+import io.ygdrasil.wgsl.ir.SourceLocation
+import io.ygdrasil.wgsl.ir.Span
+import io.ygdrasil.wgsl.ir.spanOf
 
 /**
  * Lexer pour le langage WGSL.
@@ -1101,13 +1101,13 @@ class LexerException(
 
 ### LexerTest.kt
 
-**Fichier** : `naga-wgsl/src/test/kotlin/dev/gfxrs/naga/front/wgsl/LexerTest.kt`
+**Fichier** : `wgsl:wgsl/src/test/kotlin/dev/gfxrs/naga/front/wgsl/LexerTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.ir.Span
-import dev.gfxrs.naga.ir.spanOf
+import io.ygdrasil.wgsl.ir.Span
+import io.ygdrasil.wgsl.ir.spanOf
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

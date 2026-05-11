@@ -1,7 +1,7 @@
 # 🖼️ Phase 4.3 : GLSL Writer
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-glsl`  
+**Module** : `wgsl:glsl`  
 **Phase** : 4 - Backends  
 **Sous-Phase** : 4.3 - Backend GLSL  
 **Durée** : 2-3 semaines  
@@ -17,7 +17,7 @@
 
 Implémenter le backend **OpenGL Shading Language** (GLSL) pour OpenGL, OpenGL ES, et Vulkan (via SPIR-V).
 
-**Livrable** : Module `naga-glsl` capable de générer du code GLSL valide.
+**Livrable** : Module `wgsl:glsl` capable de générer du code GLSL valide.
 
 ---
 
@@ -146,7 +146,7 @@ GLSL ES nécessite des **precision qualifiers** :
 ## 📦 STRUCTURE DES FICHIERS
 
 ```
-naga-glsl/
+wgsl:glsl/
 ├── build.gradle.kts
 └── src/main/kotlin/dev/gfxrs/naga/back/glsl/
     ├── GlslOptions.kt     # Options GLSL

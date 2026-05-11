@@ -1,7 +1,7 @@
 # 🏷️ Phase 3.1 : Typifier
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 3 - Processing  
 **Sous-Phase** : 3.1 - Typifier  
 **Durée** : 2-3 semaines  
@@ -79,13 +79,13 @@ Validation ou Erreur
 
 ### 1. Typifier.kt (Classe principale)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/Typifier.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/Typifier.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 
 /**
  * Assigne et infère les types pour toutes les expressions dans un module.

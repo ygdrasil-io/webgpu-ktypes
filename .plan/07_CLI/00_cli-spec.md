@@ -47,8 +47,8 @@ Le **CLI (Command Line Interface)** de WebGPU-KTypes est un outil en ligne de co
 │                             │         └─────────────┘                │
 │                             │                                          │
 │                      ┌──────▼──────┐                                  │
-│                      │   Backend    │ ◄───── naga-msl, naga-hlsl,    │
-│                      │   Registry   │       naga-glsl, naga-wgsl    │
+│                      │   Backend    │ ◄───── wgsl:msl, wgsl:hlsl,    │
+│                      │   Registry   │       wgsl:glsl, wgsl:wgsl    │
 │                      └─────────────┘                                  │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -115,7 +115,7 @@ Le **CLI (Command Line Interface)** de WebGPU-KTypes est un outil en ligne de co
 ### Structure du Projet
 
 ```
-naga-cli/
+wgsl:cli/
 ├── build.gradle.kts                    # Configuration Gradle du module CLI
 ├── src/
 │   └── main/
@@ -678,7 +678,7 @@ CliError (sealed class)
 ```kotlin
 // src/main/kotlin/dev/gfxrs/naga/cli/error/CliError.kt
 
-package dev.gfxrs.naga.cli.error
+package io.ygdrasil.wgsl.cli.error
 
 /**
  * Base class for all CLI errors.
@@ -814,7 +814,7 @@ data class NativeCompilerError(
 ```kotlin
 // src/main/kotlin/dev/gfxrs/naga/cli/error/ErrorHandler.kt
 
-package dev.gfxrs.naga.cli.error
+package io.ygdrasil.wgsl.cli.error
 
 import java.io.PrintStream
 
@@ -1021,7 +1021,7 @@ fi
 ### Configuration Gradle
 
 ```kotlin
-// naga-cli/build.gradle.kts
+// wgsl:cli/build.gradle.kts
 
 plugins {
     id("application")
@@ -1029,18 +1029,18 @@ plugins {
 }
 
 application {
-    mainClass.set("dev.gfxrs.naga.cli.MainKt")
+    mainClass.set("io.ygdrasil.wgsl.cli.MainKt")
 }
 
 group = "dev.gfxrs"
 version = "0.1.0-SNAPSHOT"
 
 dependencies {
-    implementation(project(":naga-core"))
-    implementation(project(":naga-wgsl"))
-    implementation(project(":naga-msl"))
-    implementation(project(":naga-hlsl"))
-    implementation(project(":naga-glsl"))
+    implementation(project(":wgsl:core"))
+    implementation(project(":wgsl:wgsl"))
+    implementation(project(":wgsl:msl"))
+    implementation(project(":wgsl:hlsl"))
+    implementation(project(":wgsl:glsl"))
     
     // CLI-specific dependencies
     implementation("com.github.ajalt:clikt:4.2.0")
@@ -1060,7 +1060,7 @@ shadowJar {
     exclude("META-INF/*.DSA")
     
     // Relocalisation des dépendances
-    relocate("com.github.ajalt.clikt", "dev.gfxrs.naga.cli.clikt")
+    relocate("com.github.ajalt.clikt", "io.ygdrasil.wgsl.cli.clikt")
 }
 
 tasks {
@@ -1093,22 +1093,22 @@ tasks {
 
 ```bash
 # Builder le JAR avec toutes les dépendances
-./gradlew :naga-cli:shadowJar
+./gradlew :wgsl:cli:shadowJar
 
 # Le JAR est généré dans :
-# naga-cli/build/libs/wgpu-kt.jar
+# wgsl:cli/build/libs/wgpu-kt.jar
 
 # Exécuter le CLI
-java -jar naga-cli/build/libs/wgpu-kt.jar --help
+java -jar wgsl:cli/build/libs/wgpu-kt.jar --help
 
 # Builder un binaire natif (GraalVM requis)
-./gradlew :naga-cli:nativeImage
+./gradlew :wgsl:cli:nativeImage
 
 # Le binaire est généré dans :
-# naga-cli/build/native-image/wgpu-kt
+# wgsl:cli/build/native-image/wgpu-kt
 
 # Exécuter le binaire natif
-./naga-cli/build/native-image/wgpu-kt --help
+./wgsl:cli/build/native-image/wgpu-kt --help
 ```
 
 ### Scripts de Distribution
@@ -1121,25 +1121,25 @@ set -e
 echo "Building WebGPU-KTypes CLI..."
 
 # Builder le JAR
-./gradlew :naga-cli:shadowJar
+./gradlew :wgsl:cli:shadowJar
 
 # Créer le répertoire de distribution
 mkdir -p dist
 
 # Copier le JAR
-cp naga-cli/build/libs/wgpu-kt.jar dist/
+cp wgsl:cli/build/libs/wgpu-kt.jar dist/
 
 # Builder le binaire natif (si GraalVM disponible)
 if command -v native-image &> /dev/null; then
     echo "Building native binary..."
-    ./gradlew :naga-cli:nativeImage
+    ./gradlew :wgsl:cli:nativeImage
     
     # Copier le binaire
-    cp naga-cli/build/native-image/wgpu-kt dist/
+    cp wgsl:cli/build/native-image/wgpu-kt dist/
     
     # Copier les binaires par plateforme
     mkdir -p dist/macos dist/linux dist/windows
-    cp naga-cli/build/native-image/wgpu-kt dist/macos/wgpu-kt
+    cp wgsl:cli/build/native-image/wgpu-kt dist/macos/wgpu-kt
     # ... builder pour autres plateformes
 fi
 
@@ -1189,7 +1189,7 @@ brew upgrade webgpu-ktypes
 
 ### Checklist d'Implémentation
 
-- [ ] Créer la structure du module `naga-cli`
+- [ ] Créer la structure du module `wgsl:cli`
 - [ ] Implémenter `Main.kt` (point d'entrée)
 - [ ] Implémenter `CliApp.kt` (application principale)
 - [ ] Implémenter le système de commandes

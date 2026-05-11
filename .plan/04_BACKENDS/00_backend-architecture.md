@@ -1,7 +1,7 @@
 # 🏗️ Phase 4.0 : Architecture des Backends
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core` / `naga-msl` / `naga-hlsl` / `naga-glsl` / `naga-wgsl`  
+**Module** : `wgsl:core` / `wgsl:msl` / `wgsl:hlsl` / `wgsl:glsl` / `wgsl:wgsl`  
 **Phase** : 4 - Backends  
 **Sous-Phase** : 4.0 - Architecture Commune  
 **Durée** : 1-2 semaines  
@@ -71,7 +71,7 @@ Tous les backends partagent certains composants :
 
 ```
 naga-backends/ (ou modules séparés)
-├── naga-msl/       # Backend MSL
+├── wgsl:msl/       # Backend MSL
 │   ├── src/main/kotlin/dev/gfxrs/naga/back/msl/
 │   │   ├── Writer.kt          # Writer principal
 │   │   ├── Options.kt         # Options MSL
@@ -80,20 +80,20 @@ naga-backends/ (ou modules séparés)
 │   │   └── ...
 │   └── build.gradle.kts
 │
-├── naga-hlsl/      # Backend HLSL
+├── wgsl:hlsl/      # Backend HLSL
 │   ├── src/main/kotlin/dev/gfxrs/naga/back/hlsl/
 │   │   ├── Writer.kt
 │   │   ├── Options.kt
 │   │   └── ...
 │   └── build.gradle.kts
 │
-├── naga-glsl/      # Backend GLSL
+├── wgsl:glsl/      # Backend GLSL
 │   ├── src/main/kotlin/dev/gfxrs/naga/back/glsl/
 │   │   ├── Writer.kt
 │   │   └── ...
 │   └── build.gradle.kts
 │
-└── naga-wgsl/      # Backend WGSL (output)
+└── wgsl:wgsl/      # Backend WGSL (output)
     ├── src/main/kotlin/dev/gfxrs/naga/back/wgsl/
     │   ├── Writer.kt
     │   └── ...
@@ -144,14 +144,14 @@ class BackendWriter(
 
 ### 1. BackendOptions.kt (Options communes)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/back/BackendOptions.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/BackendOptions.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
-import dev.gfxrs.naga.valid.Capabilities
-import dev.gfxrs.naga.valid.ShaderStages
-import dev.gfxrs.naga.valid.ValidationFlags
+import io.ygdrasil.wgsl.valid.Capabilities
+import io.ygdrasil.wgsl.valid.ShaderStages
+import io.ygdrasil.wgsl.valid.ValidationFlags
 
 /**
  * Options communes à tous les backends.
@@ -289,17 +289,17 @@ enum class GlslProfile {
 
 ### 2. WriterBase.kt (Classe de base pour tous les writers)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/back/WriterBase.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/WriterBase.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
-import dev.gfxrs.naga.proc.Layouter
-import dev.gfxrs.naga.proc.Namer
-import dev.gfxrs.naga.valid.ModuleInfo
-import dev.gfxrs.naga.valid.Validator
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
+import io.ygdrasil.wgsl.proc.Layouter
+import io.ygdrasil.wgsl.proc.Namer
+import io.ygdrasil.wgsl.valid.ModuleInfo
+import io.ygdrasil.wgsl.valid.Validator
 
 /**
  * Classe de base pour tous les writers de backend.
@@ -715,13 +715,13 @@ abstract class WriterBase<T : BackendOptions>(
 
 ### 3. BackendWriter.kt (Interface commune)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/back/BackendWriter.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/BackendWriter.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
-import dev.gfxrs.naga.ir.Module
-import dev.gfxrs.naga.valid.ModuleInfo
+import io.ygdrasil.wgsl.ir.Module
+import io.ygdrasil.wgsl.valid.ModuleInfo
 
 /**
  * Interface commune pour tous les writers de backend.
@@ -756,13 +756,13 @@ interface BackendWriter<T : BackendOptions> {
 
 ### 4. BackendError.kt (Erreurs de backend)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/back/BackendError.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/BackendError.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 
 /**
  * Erreurs générées par les backends.
@@ -805,12 +805,12 @@ sealed class BackendError {
 
 ### 5. BindingMap.kt (Mapping des ressources)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/back/BindingMap.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/BindingMap.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
-import dev.gfxrs.naga.ir.ResourceBinding
+import io.ygdrasil.wgsl.ir.ResourceBinding
 
 /**
  * Mapping entre les ResourceBinding et les cibles de binding spécifiques au backend.
@@ -885,10 +885,10 @@ class BindingMap {
 
 ### 6. PipelineConstants.kt (Constantes de pipeline)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/back/PipelineConstants.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/PipelineConstants.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
 /**
  * Spécifie les valeurs des constantes de pipeline dans le module shader.
@@ -952,13 +952,13 @@ enum class BackendType {
 
 ### 7. BackendRegistry.kt (Registre des backends)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/back/BackendRegistry.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/BackendRegistry.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
-import dev.gfxrs.naga.ir.Module
-import dev.gfxrs.naga.valid.ModuleInfo
+import io.ygdrasil.wgsl.ir.Module
+import io.ygdrasil.wgsl.valid.ModuleInfo
 
 /**
  * registre de tous les backends disponibles.
@@ -1088,7 +1088,7 @@ private object WgslBackendFactory : BackendRegistry.BackendFactory {
 ## 📁 STRUCTURE DES FICHIERS
 
 ```
-naga-core/src/main/kotlin/dev/gfxrs/naga/back/
+wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/
 ├── BackendOptions.kt       # Options communes et spécifiques
 ├── BackendError.kt        # Erreurs de backend
 ├── BindingMap.kt          # Mapping des ressources
@@ -1104,10 +1104,10 @@ naga-core/src/main/kotlin/dev/gfxrs/naga/back/
 
 ### 1. BackendOptionsTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/back/BackendOptionsTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/back/BackendOptionsTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -1151,13 +1151,13 @@ class BackendOptionsTest {
 
 ### 2. BackendRegistryTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/back/BackendRegistryTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/back/BackendRegistryTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.back
+package io.ygdrasil.wgsl.back
 
-import dev.gfxrs.naga.ir.Module
-import dev.gfxrs.naga.valid.ModuleInfo
+import io.ygdrasil.wgsl.ir.Module
+import io.ygdrasil.wgsl.valid.ModuleInfo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -1296,11 +1296,11 @@ class BackendRegistryTest {
 ## 🔄 DÉPENDANCES
 
 ### Dépendances Internes
-- `naga-core` : Module IR (Module, Type, Expression, Statement, etc.)
+- `wgsl:core` : Module IR (Module, Type, Expression, Statement, etc.)
 - `naga-proc` : Layouter, Namer
 - `naga-valid` : ModuleInfo, Validator, ValidationFlags, Capabilities, ShaderStages
-- `dev.gfxrs.naga.arena.Handle`
-- `dev.gfxrs.naga.ir.*`
+- `io.ygdrasil.wgsl.arena.Handle`
+- `io.ygdrasil.wgsl.ir.*`
 
 ### Dépendances Externes
 - Aucune (kotlin-stdlib uniquement)

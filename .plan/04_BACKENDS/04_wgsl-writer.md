@@ -1,7 +1,7 @@
 # 🔄 Phase 4.4 : WGSL Writer
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-wgsl`  
+**Module** : `wgsl:wgsl`  
 **Phase** : 4 - Backends  
 **Sous-Phase** : 4.4 - Backend WGSL (Output)  
 **Durée** : 2-3 semaines  
@@ -20,7 +20,7 @@ Implémenter le backend **WGSL** qui transforme l'IR Naga en code source WGSL. C
 - Le débogage et l'inspection de l'IR
 - L'export vers d'autres outils WebGPU
 
-**Livrable** : Module `naga-wgsl` capable de générer du code WGSL valide et idiomatique.
+**Livrable** : Module `wgsl:wgsl` capable de générer du code WGSL valide et idiomatique.
 
 ---
 
@@ -92,7 +92,7 @@ Le writer doit trier les déclarations dans le bon ordre.
 ## 📦 STRUCTURE DES FICHIERS
 
 ```
-naga-wgsl/
+wgsl:wgsl/
 ├── build.gradle.kts
 └── src/main/kotlin/dev/gfxrs/naga/back/wgsl/
     ├── WgslOptions.kt     # Options WGSL

@@ -1,7 +1,7 @@
 # 📜 Phase 2.1 : Parser WGSL
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-wgsl`  
+**Module** : `wgsl:wgsl`  
 **Phase** : 2 - Parsing  
 **Sous-Phase** : 2.1 - WGSL Parser  
 **Durée** : 3-4 semaines  
@@ -92,14 +92,14 @@ Nous utilisons un **parser récursif descendant (Recursive Descent Parser)** ave
 
 ### 1. TranslationUnit (Unité de traduction)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/ast/TranslationUnit.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/ast/TranslationUnit.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl.ast
+package io.ygdrasil.wgsl.front.wgsl.ast
 
-import dev.gfxrs.naga.arena.Arena
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.span.Span
+import io.ygdrasil.wgsl.arena.Arena
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.span.Span
 
 /**
  * Unité de traduction complète pour un module WGSL.
@@ -482,18 +482,18 @@ data class Attribute(
 
 ### 1. Parser.kt
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/Parser.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/Parser.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.arena.Arena
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.front.wgsl.ast.*
-import dev.gfxrs.naga.front.wgsl.lexer.Lexer
-import dev.gfxrs.naga.front.wgsl.lexer.Token
-import dev.gfxrs.naga.front.wgsl.lexer.TokenKind
-import dev.gfxrs.naga.span.Span
+import io.ygdrasil.wgsl.arena.Arena
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.front.wgsl.ast.*
+import io.ygdrasil.wgsl.front.wgsl.lexer.Lexer
+import io.ygdrasil.wgsl.front.wgsl.lexer.Token
+import io.ygdrasil.wgsl.front.wgsl.lexer.TokenKind
+import io.ygdrasil.wgsl.span.Span
 
 /**
  * Parser WGSL principal.
@@ -1145,13 +1145,13 @@ data class ParseError(
 
 ### 2. TypeResolver.kt (Résolution de types optionnelle pendant le parsing)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/TypeResolver.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/TypeResolver.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.front.wgsl.ast.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.front.wgsl.ast.*
 
 /**
  * Résout les références de types non résolues dans l'AST.
@@ -1233,12 +1233,12 @@ class TypeResolver(private val translationUnit: TranslationUnit) {
 
 ### ParserTest.kt
 
-**Fichier** : `naga-wgsl/src/test/kotlin/dev/gfxrs/naga/front/wgsl/ParserTest.kt`
+**Fichier** : `wgsl:wgsl/src/test/kotlin/dev/gfxrs/naga/front/wgsl/ParserTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.front.wgsl.ast.*
+import io.ygdrasil.wgsl.front.wgsl.ast.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

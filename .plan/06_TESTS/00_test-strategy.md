@@ -108,7 +108,7 @@
 
 **Objectif** : Valider les composants individuels en isolation.
 
-**Cible** : Classes et fonctions dans `naga-core`
+**Cible** : Classes et fonctions dans `wgsl:core`
 
 #### Composants à Tester
 
@@ -125,7 +125,7 @@
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/core/ArenaTest.kt
 
-package dev.gfxrs.naga.core
+package io.ygdrasil.wgsl.core
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -181,7 +181,7 @@ class ArenaTest {
 
 **Objectif** : Valider que le lexer tokenise correctement le code WGSL.
 
-**Cible** : `naga-wgsl` module, classe `Lexer`
+**Cible** : `wgsl:wgsl` module, classe `Lexer`
 
 #### Catégories de Tests
 
@@ -200,7 +200,7 @@ class ArenaTest {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/wgsl/LexerTest.kt
 
-package dev.gfxrs.naga.wgsl
+package io.ygdrasil.wgsl.wgsl
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -250,7 +250,7 @@ class LexerTest {
 
 **Objectif** : Valider que le parser produit la bonne IR à partir du code WGSL.
 
-**Cible** : `naga-wgsl` module, classe `Parser`
+**Cible** : `wgsl:wgsl` module, classe `Parser`
 
 #### Catégories de Tests
 
@@ -270,9 +270,9 @@ class LexerTest {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/wgsl/ParserTest.kt
 
-package dev.gfxrs.naga.wgsl
+package io.ygdrasil.wgsl.wgsl
 
-import dev.gfxrs.naga.core.Module
+import io.ygdrasil.wgsl.core.Module
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -317,7 +317,7 @@ class ParserTest {
 
 **Objectif** : Valider que chaque backend génère du code correct.
 
-**Cible** : `naga-msl`, `naga-hlsl`, `naga-glsl`, `naga-wgsl` modules
+**Cible** : `wgsl:msl`, `wgsl:hlsl`, `wgsl:glsl`, `wgsl:wgsl` modules
 
 #### Tests par Backend
 
@@ -333,12 +333,12 @@ class ParserTest {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/msl/MslWriterTest.kt
 
-package dev.gfxrs.naga.msl
+package io.ygdrasil.wgsl.msl
 
-import dev.gfxrs.naga.core.Module
-import dev.gfxrs.naga.core.ScalarKind
-import dev.gfxrs.naga.core.VectorSize
-import dev.gfxrs.naga.wgsl.parseWgsl
+import io.ygdrasil.wgsl.core.Module
+import io.ygdrasil.wgsl.core.ScalarKind
+import io.ygdrasil.wgsl.core.VectorSize
+import io.ygdrasil.wgsl.wgsl.parseWgsl
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
@@ -387,7 +387,7 @@ class MslWriterTest {
 
 **Objectif** : Valider que WGSL → IR → WGSL préserve la sémantique.
 
-**Cible** : `naga-wgsl` module (parser + writer)
+**Cible** : `wgsl:wgsl` module (parser + writer)
 
 #### Stratégie
 - Parser le WGSL → IR
@@ -400,9 +400,9 @@ class MslWriterTest {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/wgsl/RoundTripTest.kt
 
-package dev.gfxrs.naga.wgsl
+package io.ygdrasil.wgsl.wgsl
 
-import dev.gfxrs.naga.core.Module
+import io.ygdrasil.wgsl.core.Module
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -452,7 +452,7 @@ class RoundTripTest {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/golden/GoldenTestBase.kt
 
-package dev.gfxrs.naga.test.golden
+package io.ygdrasil.wgsl.test.golden
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -499,10 +499,10 @@ abstract class GoldenTestBase {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/validator/NativeValidatorTest.kt
 
-package dev.gfxrs.naga.test.validator
+package io.ygdrasil.wgsl.test.validator
 
-import dev.gfxrs.naga.msl.writeMsl
-import dev.gfxrs.naga.wgsl.parseWgsl
+import io.ygdrasil.wgsl.msl.writeMsl
+import io.ygdrasil.wgsl.wgsl.parseWgsl
 import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.api.Test
 
@@ -564,9 +564,9 @@ class NativeValidatorTest {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/conformance/WgslConformanceTest.kt
 
-package dev.gfxrs.naga.test.conformance
+package io.ygdrasil.wgsl.test.conformance
 
-import dev.gfxrs.naga.wgsl.parseWgsl
+import io.ygdrasil.wgsl.wgsl.parseWgsl
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -651,12 +651,12 @@ class WgslConformanceTest {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/e2e/EndToEndTest.kt
 
-package dev.gfxrs.naga.test.e2e
+package io.ygdrasil.wgsl.test.e2e
 
-import dev.gfxrs.naga.core.Module
-import dev.gfxrs.naga.msl.writeMsl
-import dev.gfxrs.naga.wgsl.parseWgsl
-import dev.gfxrs.naga.wgsl.writeWgsl
+import io.ygdrasil.wgsl.core.Module
+import io.ygdrasil.wgsl.msl.writeMsl
+import io.ygdrasil.wgsl.wgsl.parseWgsl
+import io.ygdrasil.wgsl.wgsl.writeWgsl
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
@@ -723,13 +723,13 @@ class EndToEndTest {
 
 ```
 src/test/kotlin/dev/gfxrs/naga/
-├── core/                    # Tests pour naga-core
+├── core/                    # Tests pour wgsl:core
 │   ├── ArenaTest.kt
 │   ├── HandleTest.kt
 │   ├── ModuleTest.kt
 │   ├── TypeTest.kt
 │   └── ...
-├── wgsl/                   # Tests pour naga-wgsl
+├── wgsl/                   # Tests pour wgsl:wgsl
 │   ├── lexer/
 │   │   ├── LexerTest.kt
 │   │   ├── TokenTest.kt
@@ -742,14 +742,14 @@ src/test/kotlin/dev/gfxrs/naga/
 │   ├── writer/
 │   │   └── WgslWriterTest.kt
 │   └── RoundTripTest.kt
-├── msl/                    # Tests pour naga-msl
+├── msl/                    # Tests pour wgsl:msl
 │   ├── MslWriterTest.kt
 │   ├── MslExpressionTest.kt
 │   └── ...
-├── hlsl/                   # Tests pour naga-hlsl
+├── hlsl/                   # Tests pour wgsl:hlsl
 │   ├── HlslWriterTest.kt
 │   └── ...
-├── glsl/                   # Tests pour naga-glsl
+├── glsl/                   # Tests pour wgsl:glsl
 │   ├── GlslWriterTest.kt
 │   └── ...
 ├── test/                   # Tests d'intégration
@@ -890,7 +890,7 @@ jacoco {
 ```kotlin
 // src/main/kotlin/dev/gfxrs/naga/benchmark/BenchmarkConfig.kt
 
-package dev.gfxrs.naga.benchmark
+package io.ygdrasil.wgsl.benchmark
 
 import org.openjdk.jmh.annotations.Mode
 import org.openjdk.jmh.annotations.Warmup
@@ -929,15 +929,15 @@ object BenchmarkConfig {
 ./gradlew test
 
 # Exécuter un module spécifique
-./gradlew :naga-core:test
-./gradlew :naga-wgsl:test
-./gradlew :naga-msl:test
+./gradlew :wgsl:core:test
+./gradlew :wgsl:wgsl:test
+./gradlew :wgsl:msl:test
 
 # Exécuter une classe de test spécifique
-./gradlew test --tests "dev.gfxrs.naga.wgsl.LexerTest"
+./gradlew test --tests "io.ygdrasil.wgsl.wgsl.LexerTest"
 
 # Exécuter un test spécifique
-./gradlew test --tests "dev.gfxrs.naga.wgsl.LexerTest.test simple function"
+./gradlew test --tests "io.ygdrasil.wgsl.wgsl.LexerTest.test simple function"
 
 # Exécuter avec coverage
 ./gradlew test jacocoTestReport
@@ -1106,7 +1106,7 @@ src/test/resources/
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/TestUtils.kt
 
-package dev.gfxrs.naga.test
+package io.ygdrasil.wgsl.test
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -1298,9 +1298,9 @@ class BadTestExample {
 
 ### Prochaines Étapes
 
-1. Implémenter les tests unitaires pour `naga-core`
-2. Implémenter les tests de lexer pour `naga-wgsl`
-3. Implémenter les tests de parsing pour `naga-wgsl`
+1. Implémenter les tests unitaires pour `wgsl:core`
+2. Implémenter les tests de lexer pour `wgsl:wgsl`
+3. Implémenter les tests de parsing pour `wgsl:wgsl`
 4. Implémenter les tests de backend pour chaque backend
 5. Implémenter les tests d'intégration (golden, round-trip)
 6. Implémenter les tests de conformité

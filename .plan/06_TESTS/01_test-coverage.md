@@ -100,8 +100,8 @@ jacoco {
                 
                 // Exclusions
                 excludes = listOf(
-                    "dev.gfxrs.naga.benchmark.*",
-                    "dev.gfxrs.naga.generated.*",
+                    "io.ygdrasil.wgsl.benchmark.*",
+                    "io.ygdrasil.wgsl.generated.*",
                     "*Test*",
                     "*Spec*"
                 )
@@ -111,8 +111,8 @@ jacoco {
             rule {
                 element = "CLASS"
                 
-                // naga-core : 100% coverage
-                includes = listOf("dev.gfxrs.naga.core.*")
+                // wgsl:core : 100% coverage
+                includes = listOf("io.ygdrasil.wgsl.core.*")
                 limit {
                     counter = "INSTRUCTION"
                     value = "COVEREDRATIO"
@@ -123,8 +123,8 @@ jacoco {
             rule {
                 element = "CLASS"
                 
-                // naga-wgsl : 95% coverage
-                includes = listOf("dev.gfxrs.naga.wgsl.*")
+                // wgsl:wgsl : 95% coverage
+                includes = listOf("io.ygdrasil.wgsl.wgsl.*")
                 limit {
                     counter = "INSTRUCTION"
                     value = "COVEREDRATIO"
@@ -137,9 +137,9 @@ jacoco {
                 
                 // Backends : 90% coverage
                 includes = listOf(
-                    "dev.gfxrs.naga.msl.*",
-                    "dev.gfxrs.naga.hlsl.*",
-                    "dev.gfxrs.naga.glsl.*"
+                    "io.ygdrasil.wgsl.msl.*",
+                    "io.ygdrasil.wgsl.hlsl.*",
+                    "io.ygdrasil.wgsl.glsl.*"
                 )
                 limit {
                     counter = "INSTRUCTION"
@@ -263,7 +263,7 @@ subprojects {
 ### Configuration par Module
 
 ```kotlin
-// naga-core/build.gradle.kts
+// wgsl:core/build.gradle.kts
 
 plugins {
     id("jacoco")
@@ -275,7 +275,7 @@ tasks.jacocoTestReport {
     sourceDirectories.setFrom(files("src/main/kotlin"))
     classDirectories.setFrom(files(layout.buildDirectory.dir("classes/kotlin/main")))
     
-    // Cibles élevées pour naga-core
+    // Cibles élevées pour wgsl:core
     coverageVerification {
         violationRules {
             rule {
@@ -320,7 +320,7 @@ build/
 │   └── test.exec              # Données brutes de coverage
 ├── jacocoHtml/
 │   ├── index.html            # Page d'accueil
-│   ├── dev.gfxrs.naga/
+│   ├── io.ygdrasil.wgsl/
 │   │   ├── core/
 │   │   │   ├── Arena.kt.html  # Rapport par fichier
 │   │   │   └── ...
@@ -360,7 +360,7 @@ build/
             <th>Classes</th>
         </tr>
         <tr>
-            <td>naga-core</td>
+            <td>wgsl:core</td>
             <td><span class="covered">98%</span></td>
             <td><span class="partially-covered">92%</span></td>
             <td><span class="covered">99%</span></td>
@@ -368,7 +368,7 @@ build/
             <td><span class="covered">100%</span></td>
         </tr>
         <tr>
-            <td>naga-wgsl</td>
+            <td>wgsl:wgsl</td>
             <td><span class="partially-covered">94%</span></td>
             <td><span class="partially-covered">88%</span></td>
             <td><span class="partially-covered">93%</span></td>
@@ -415,7 +415,7 @@ Legend:
 
 ## Cibles par Module
 
-### naga-core
+### wgsl:core
 
 **Objectif** : 95%+ coverage (module critique)
 
@@ -432,7 +432,7 @@ Legend:
 - Branches rares dans Module (validation des capabilities)
 - Cas limites dans Expression (opérations complexes)
 
-### naga-wgsl
+### wgsl:wgsl
 
 **Objectif** : 95%+ coverage (module critique)
 
@@ -447,7 +447,7 @@ Legend:
 - Cas d'erreur dans le parser (récupération d'erreur)
 - Formatage complexe dans le writer
 
-### naga-msl
+### wgsl:msl
 
 **Objectif** : 90%+ coverage
 
@@ -461,7 +461,7 @@ Legend:
 - Types avancés (textures, samplers)
 - Optimisations spécifiques Metal
 
-### naga-hlsl
+### wgsl:hlsl
 
 **Objectif** : 90%+ coverage
 
@@ -474,7 +474,7 @@ Legend:
 - Fonctions builtin spécifiques HLSL
 - Types spécifiques DirectX (StructuredBuffer, etc.)
 
-### naga-glsl
+### wgsl:glsl
 
 **Objectif** : 90%+ coverage
 
@@ -832,7 +832,7 @@ fun generateCoverageProgressReport() {
 ./gradlew jacocoCoverageVerification
 
 # Générer un rapport pour un module spécifique
-./gradlew :naga-core:jacocoTestReport
+./gradlew :wgsl:core:jacocoTestReport
 
 # Ouvrir le rapport HTML
 open build/jacocoHtml/index.html

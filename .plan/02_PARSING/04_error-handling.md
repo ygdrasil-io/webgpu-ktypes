@@ -1,7 +1,7 @@
 # ⚠️ Phase 2.4 : Gestion des Erreurs
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-wgsl`  
+**Module** : `wgsl:wgsl`  
 **Phase** : 2 - Parsing  
 **Sous-Phase** : 2.4 - Error Handling  
 **Durée** : 1-2 semaines  
@@ -71,12 +71,12 @@ enum class Severity {
 
 ### 1. Diagnostic.kt (Structure de base des diagnostics)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/Diagnostic.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/Diagnostic.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.span.Span
+import io.ygdrasil.wgsl.span.Span
 
 /**
  * Niveau de sévérité d'un diagnostic.
@@ -265,13 +265,13 @@ class DiagnosticCollection {
 
 ### 2. ParseError.kt (Erreurs spécifiques au parsing)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/ParseError.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/ParseError.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.span.Span
-import dev.gfxrs.naga.front.wgsl.lexer.TokenKind
+import io.ygdrasil.wgsl.span.Span
+import io.ygdrasil.wgsl.front.wgsl.lexer.TokenKind
 
 /**
  * Erreur de parsing avec contexte additionnel.
@@ -424,13 +424,13 @@ class TooManyErrorsException(
 
 ### 3. ErrorRecovery.kt (Récupération d'erreurs dans le parser)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/ErrorRecovery.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/ErrorRecovery.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.front.wgsl.lexer.Token
-import dev.gfxrs.naga.front.wgsl.lexer.TokenKind
+import io.ygdrasil.wgsl.front.wgsl.lexer.Token
+import io.ygdrasil.wgsl.front.wgsl.lexer.TokenKind
 
 /**
  * Stratégies de récupération d'erreurs pour le parser.
@@ -804,12 +804,12 @@ class ParseException(val diagnostic: Diagnostic) : RuntimeException(diagnostic.m
 
 ### 5. PrettyPrintError.kt (Affichage joli des erreurs)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/PrettyPrintError.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/PrettyPrintError.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.span.Span
+import io.ygdrasil.wgsl.span.Span
 
 /**
  * Extensions pour un affichage joli des erreurs.

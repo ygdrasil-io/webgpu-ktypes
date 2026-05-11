@@ -1,7 +1,7 @@
 # 🧮 Phase 3.0 : Évaluateur de Constantes
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 3 - Processing  
 **Sous-Phase** : 3.0 - Constant Evaluator  
 **Durée** : 2-3 semaines  
@@ -92,12 +92,12 @@ Utilisation :
 
 ### 1. ConstValue.kt (Valeurs constantes)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/ir/ConstValue.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/ConstValue.kt`
 
 ```kotlin
-package dev.gfxrs.naga.ir
+package io.ygdrasil.wgsl.ir
 
-import dev.gfxrs.naga.arena.Handle
+import io.ygdrasil.wgsl.arena.Handle
 import kotlinx.serialization.Serializable
 
 /**
@@ -223,14 +223,14 @@ fun ConstValue?.isConstOrNull(): Boolean = this?.isConst() ?: false
 
 ### 2. ConstantEvaluator.kt (Évaluateur principal)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/ConstantEvaluator.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/ConstantEvaluator.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
-import dev.gfxrs.naga.span.Span
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
+import io.ygdrasil.wgsl.span.Span
 
 /**
  * Évalue les expressions constantes dans l'IR.

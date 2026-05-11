@@ -1,7 +1,7 @@
 # ✅ Phase 1 : Checklist Complète - Fondations IR
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 1 - Fondations  
 **Durée** : 4-6 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique)  
@@ -265,7 +265,7 @@
 ## 📁 STRUCTURE DES FICHIERS PHASE 1
 
 ```
-naga-core/
+wgsl:core/
 ├── src/main/kotlin/dev/gfxrs/naga/
 │   ├── ir/                      # Représentation Intermédiaire
 │   │   ├── Module.kt            # [1.0] Module + Builder
@@ -417,7 +417,7 @@ Pour que la **Phase 1 soit considérée comme complète**, tous les critères su
 
 ### 2. Tests
 - [ ] Tous les tests unitaires passent
-- [ ] Couverture de test > 90% pour le module naga-core
+- [ ] Couverture de test > 90% pour le module wgsl:core
 - [ ] Tests de sérialisation/désérialisation passent
 
 ### 3. Documentation
@@ -426,7 +426,7 @@ Pour que la **Phase 1 soit considérée comme complète**, tous les critères su
 - [ ] Exemples d'utilisation dans la documentation
 
 ### 4. Validation
-- [ ] Le module `naga-core` compile sans erreurs
+- [ ] Le module `wgsl:core` compile sans erreurs
 - [ ] Tous les tests passent
 - [ ] La sérialisation fonctionne pour tous les types
 - [ ] Validation manuelle avec des exemples simples
@@ -435,7 +435,7 @@ Pour que la **Phase 1 soit considérée comme complète**, tous les critères su
 
 ## 🎯 LIVRABLES PHASE 1
 
-1. **Module `naga-core`** complet et fonctionnel
+1. **Module `wgsl:core`** complet et fonctionnel
 2. **19 fichiers Kotlin** implémentés
 3. **60-80 tests unitaires** passant
 4. **Documentation KDoc** complète

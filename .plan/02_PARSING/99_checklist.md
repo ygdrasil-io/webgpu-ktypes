@@ -1,7 +1,7 @@
 # ✅ Phase 2 : Checklist Complète - Parsing
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-wgsl`  
+**Module** : `wgsl:wgsl`  
 **Phase** : 2 - Parsing  
 **Durée totale** : 10-12 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique)
@@ -29,7 +29,7 @@ Cette checklist couvre toutes les tâches nécessaires pour compléter la **Phas
 ## ✅ CHECKLIST GLOBALE PHASE 2
 
 ### 📁 Structure du Module
-- [ ] Créer le module Gradle `naga-wgsl`
+- [ ] Créer le module Gradle `wgsl:wgsl`
 - [ ] Configurer les dépendances (`kotlinx-serialization`)
 - [ ] Configurer les sources et tests
 - [ ] Intégrer dans le build principal
@@ -510,7 +510,7 @@ Cette checklist couvre toutes les tâches nécessaires pour compléter la **Phas
 ### 📦 Build et CI
 
 #### Configuration Gradle
-- [ ] Module naga-wgsl dans settings.gradle.kts
+- [ ] Module wgsl:wgsl dans settings.gradle.kts
 - [ ] Dépendances dans build.gradle.kts
 - [ ] Configuration Kotlin
 - [ ] Configuration Serialization
@@ -569,7 +569,7 @@ Cette checklist couvre toutes les tâches nécessaires pour compléter la **Phas
 ## 🎯 LIVRABLES FINAUX PHASE 2
 
 ### Modules Gradle
-- ✅ `naga-wgsl` module complètement fonctionnel
+- ✅ `wgsl:wgsl` module complètement fonctionnel
 
 ### Code Source
 - ✅ `TokenKind.kt`

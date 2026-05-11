@@ -1,7 +1,7 @@
 # 📍 Phase 1.3 : Span, Diagnostics et Types Utilitaires
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 1 - Fondations  
 **Sous-Phase** : 1.3 - Span et Diagnostics  
 **Durée** : 1 semaine  
@@ -56,10 +56,10 @@ Il est utilisé pour :
 
 ### 1. Span.kt
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/ir/Span.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/ir/Span.kt`
 
 ```kotlin
-package dev.gfxrs.naga.ir
+package io.ygdrasil.wgsl.ir
 
 import kotlinx.serialization.Serializable
 
@@ -234,12 +234,12 @@ fun spanOf(
 
 ### 2. Diagnostic.kt
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/common/Diagnostic.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/common/Diagnostic.kt`
 
 ```kotlin
-package dev.gfxrs.naga.common
+package io.ygdrasil.wgsl.common
 
-import dev.gfxrs.naga.ir.Span
+import io.ygdrasil.wgsl.ir.Span
 import kotlinx.serialization.Serializable
 
 /**
@@ -545,12 +545,12 @@ fun warningDiagnostic(
 
 ### 3. DiagnosticFilter.kt
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/common/DiagnosticFilter.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/common/DiagnosticFilter.kt`
 
 ```kotlin
-package dev.gfxrs.naga.common
+package io.ygdrasil.wgsl.common
 
-import dev.gfxrs.naga.ir.Span
+import io.ygdrasil.wgsl.ir.Span
 import kotlinx.serialization.Serializable
 
 /**
@@ -712,15 +712,15 @@ fun List<DiagnosticFilterNode>.apply(diagnostics: List<Diagnostic>): List<Diagno
 
 ### 4. Error.kt (Gestion des Erreurs)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/Error.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/Error.kt`
 
 ```kotlin
-package dev.gfxrs.naga
+package io.ygdrasil.wgsl
 
-import dev.gfxrs.naga.common.Diagnostic
-import dev.gfxrs.naga.common.DiagnosticCode
-import dev.gfxrs.naga.common.DiagnosticSeverity
-import dev.gfxrs.naga.ir.Span
+import io.ygdrasil.wgsl.common.Diagnostic
+import io.ygdrasil.wgsl.common.DiagnosticCode
+import io.ygdrasil.wgsl.common.DiagnosticSeverity
+import io.ygdrasil.wgsl.ir.Span
 
 /**
  * Exception de base pour les erreurs Naga.
@@ -923,14 +923,14 @@ fun nagaErr(message: String, span: Span = Span.DEFAULT): NagaResult<Nothing> {
 
 ### 5. Namer.kt (Génération de Noms)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/Namer.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/Namer.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Arena
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Arena
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 
 /**
  * Génère des noms uniques pour les variables temporaires.
@@ -1019,10 +1019,10 @@ sealed class NameKey {
 
 ### SpanTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/ir/SpanTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/ir/SpanTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.ir
+package io.ygdrasil.wgsl.ir
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -1163,13 +1163,13 @@ class SpanTest {
 
 ### DiagnosticTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/common/DiagnosticTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/common/DiagnosticTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.common
+package io.ygdrasil.wgsl.common
 
-import dev.gfxrs.naga.ir.SourceLocation
-import dev.gfxrs.naga.ir.spanOf
+import io.ygdrasil.wgsl.ir.SourceLocation
+import io.ygdrasil.wgsl.ir.spanOf
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -1252,16 +1252,16 @@ class DiagnosticTest {
 
 ### ErrorTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/ErrorTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/ErrorTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga
+package io.ygdrasil.wgsl
 
-import dev.gfxrs.naga.common.Diagnostic
-import dev.gfxrs.naga.common.DiagnosticCode
-import dev.gfxrs.naga.common.DiagnosticSeverity
-import dev.gfxrs.naga.ir.Span
-import dev.gfxrs.naga.ir.spanOf
+import io.ygdrasil.wgsl.common.Diagnostic
+import io.ygdrasil.wgsl.common.DiagnosticCode
+import io.ygdrasil.wgsl.common.DiagnosticSeverity
+import io.ygdrasil.wgsl.ir.Span
+import io.ygdrasil.wgsl.ir.spanOf
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

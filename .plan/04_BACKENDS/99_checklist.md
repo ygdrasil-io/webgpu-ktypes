@@ -117,8 +117,8 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour naga-msl
-- [ ] Package `dev.gfxrs.naga.back.msl`
+- [ ] build.gradle.kts pour wgsl:msl
+- [ ] Package `io.ygdrasil.wgsl.back.msl`
 
 #### Configuration
 - [ ] MslOptions.kt (héritant de BackendOptions)
@@ -224,8 +224,8 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour naga-hlsl
-- [ ] Package `dev.gfxrs.naga.back.hlsl`
+- [ ] build.gradle.kts pour wgsl:hlsl
+- [ ] Package `io.ygdrasil.wgsl.back.hlsl`
 
 #### Configuration
 - [ ] HlslOptions.kt
@@ -280,8 +280,8 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour naga-glsl
-- [ ] Package `dev.gfxrs.naga.back.glsl`
+- [ ] build.gradle.kts pour wgsl:glsl
+- [ ] Package `io.ygdrasil.wgsl.back.glsl`
 
 #### Configuration
 - [ ] GlslOptions.kt
@@ -348,8 +348,8 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour naga-wgsl
-- [ ] Package `dev.gfxrs.naga.back.wgsl`
+- [ ] build.gradle.kts pour wgsl:wgsl
+- [ ] Package `io.ygdrasil.wgsl.back.wgsl`
 
 #### Configuration
 - [ ] WgslOptions.kt
@@ -414,7 +414,7 @@
 
 ## 📊 RÉCAPITULATIF PAR DOSSIER
 
-### `naga-core/src/main/kotlin/dev/gfxrs/naga/back/`
+### `wgsl:core/src/main/kotlin/dev/gfxrs/naga/back/`
 - [ ] BackendOptions.kt
 - [ ] BackendError.kt
 - [ ] BindingMap.kt
@@ -423,7 +423,7 @@
 - [ ] BackendWriter.kt
 - [ ] BackendRegistry.kt
 
-### `naga-msl/src/main/kotlin/dev/gfxrs/naga/back/msl/`
+### `wgsl:msl/src/main/kotlin/dev/gfxrs/naga/back/msl/`
 - [ ] MslOptions.kt
 - [ ] BindTarget.kt
 - [ ] Keywords.kt
@@ -433,7 +433,7 @@
 - [ ] writer/Helpers.kt
 - [ ] writer/ExternalTexture.kt
 
-### `naga-hlsl/src/main/kotlin/dev/gfxrs/naga/back/hlsl/`
+### `wgsl:hlsl/src/main/kotlin/dev/gfxrs/naga/back/hlsl/`
 - [ ] HlslOptions.kt
 - [ ] BindTarget.kt
 - [ ] Keywords.kt
@@ -446,7 +446,7 @@
 - [ ] writer/StorageBuffer.kt
 - [ ] writer/ExternalTexture.kt
 
-### `naga-glsl/src/main/kotlin/dev/gfxrs/naga/back/glsl/`
+### `wgsl:glsl/src/main/kotlin/dev/gfxrs/naga/back/glsl/`
 - [ ] GlslOptions.kt
 - [ ] BindTarget.kt
 - [ ] Keywords.kt
@@ -460,7 +460,7 @@
 - [ ] writer/Helpers.kt
 - [ ] writer/SeparateSamplers.kt
 
-### `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/back/wgsl/`
+### `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/back/wgsl/`
 - [ ] WgslOptions.kt
 - [ ] WgslCapabilities.kt
 - [ ] WgslWriter.kt
@@ -544,7 +544,7 @@
 
 ### Phase 4 Complète
 - [ ] Tous les fichiers de plan sont créés et complets
-- [ ] Tous les modules Gradle sont configurés (naga-msl, naga-hlsl, naga-glsl, naga-wgsl)
+- [ ] Tous les modules Gradle sont configurés (wgsl:msl, wgsl:hlsl, wgsl:glsl, wgsl:wgsl)
 - [ ] Tous les fichiers source Kotlin sont implémentés
 - [ ] Tous les tests unitaires passent
 - [ ] L'intégration avec les autres phases fonctionne
@@ -660,11 +660,11 @@ Phase 4.4 : WGSL Writer   (peut être en parallèle avec les autres)
 
 ## 🎯 LIVRABLES DE LA PHASE 4
 
-1. **Module `naga-core/back`** : Architecture commune pour tous les backends
-2. **Module `naga-msl`** : Backend MSL complet
-3. **Module `naga-hlsl`** : Backend HLSL complet
-4. **Module `naga-glsl`** : Backend GLSL complet
-5. **Module `naga-wgsl`** : Backend WGSL avec round-trip validation
+1. **Module `wgsl:core/back`** : Architecture commune pour tous les backends
+2. **Module `wgsl:msl`** : Backend MSL complet
+3. **Module `wgsl:hlsl`** : Backend HLSL complet
+4. **Module `wgsl:glsl`** : Backend GLSL complet
+5. **Module `wgsl:wgsl`** : Backend WGSL avec round-trip validation
 6. **Tests unitaires** : Couverture > 90% pour tous les modules
 7. **Documentation** : Documentation complète pour toutes les APIs publiques
 8. **Exemples** : Exemples d'utilisation pour chaque backend

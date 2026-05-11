@@ -1,7 +1,7 @@
 # 🍎 Phase 4.1 : MSL Writer
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-msl`  
+**Module** : `wgsl:msl`  
 **Phase** : 4 - Backends  
 **Sous-Phase** : 4.1 - Backend MSL  
 **Durée** : 3-4 semaines  
@@ -17,7 +17,7 @@
 
 Implémenter le backend **Metal Shading Language** (MSL) qui transforme l'IR Naga en code source MSL pour les plateformes Apple (macOS, iOS, tvOS, watchOS).
 
-**Livrable** : Module `naga-msl` capable de générer du code MSL valide.
+**Livrable** : Module `wgsl:msl` capable de générer du code MSL valide.
 
 ---
 
@@ -96,7 +96,7 @@ Pour `BoundsCheckPolicy::ReadZeroSkipWrite` sur les pointeurs:
 ## 📦 STRUCTURE DES FICHIERS
 
 ```
-naga-msl/
+wgsl:msl/
 ├── build.gradle.kts
 └── src/main/kotlin/dev/gfxrs/naga/back/msl/
     ├── MslOptions.kt      # Options MSL

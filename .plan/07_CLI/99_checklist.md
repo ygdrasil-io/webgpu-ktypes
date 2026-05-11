@@ -36,14 +36,14 @@
 ## 📁 Structure des Répertoires
 
 ### Module CLI
-- [ ] Créer `naga-cli/` module Gradle
-- [ ] Configurer `naga-cli/build.gradle.kts`
+- [ ] Créer `wgsl:cli/` module Gradle
+- [ ] Configurer `wgsl:cli/build.gradle.kts`
 - [ ] Créer `src/main/kotlin/dev/gfxrs/naga/cli/`
 - [ ] Créer `src/test/kotlin/dev/gfxrs/naga/cli/`
 
 ### Répertoires Source
 ```
-naga-cli/
+wgsl:cli/
 ├── build.gradle.kts
 └── src/
     └── main/
@@ -85,7 +85,7 @@ naga-cli/
 ```
 
 ### Répertoires de Ressources
-- [ ] Créer `naga-cli/src/main/resources/`
+- [ ] Créer `wgsl:cli/src/main/resources/`
 - [ ] Créer `version.properties` pour la version
 - [ ] Créer les templates d'aide
 
@@ -94,7 +94,7 @@ naga-cli/
 ## 📄 Fichiers de Configuration
 
 ### Configuration Gradle
-- [ ] Créer `naga-cli/build.gradle.kts`
+- [ ] Créer `wgsl:cli/build.gradle.kts`
   - [ ] Configurer le plugin `application`
   - [ ] Configurer le plugin `shadow` pour le JAR fat
   - [ ] Ajouter les dépendances CLI
@@ -102,17 +102,17 @@ naga-cli/
   - [ ] Configurer la tâche `nativeImage` (optionnel)
 
 ### Dépendances
-- [ ] Ajouter la dépendance à `naga-core`
-- [ ] Ajouter la dépendance à `naga-wgsl`
-- [ ] Ajouter la dépendance à `naga-msl`
-- [ ] Ajouter la dépendance à `naga-hlsl`
-- [ ] Ajouter la dépendance à `naga-glsl`
+- [ ] Ajouter la dépendance à `wgsl:core`
+- [ ] Ajouter la dépendance à `wgsl:wgsl`
+- [ ] Ajouter la dépendance à `wgsl:msl`
+- [ ] Ajouter la dépendance à `wgsl:hlsl`
+- [ ] Ajouter la dépendance à `wgsl:glsl`
 - [ ] Ajouter `clikt` pour le parsing des arguments
 - [ ] Ajouter `jansi` pour la coloration
 - [ ] Ajouter `kotlinx-serialization` pour le JSON
 
 ### Configuration du Build
-- [ ] Configurer `settings.gradle.kts` pour inclure `naga-cli`
+- [ ] Configurer `settings.gradle.kts` pour inclure `wgsl:cli`
 - [ ] Configurer la version du projet
 - [ ] Configurer les tâches de distribution
 
@@ -129,7 +129,7 @@ naga-cli/
 ```kotlin
 // src/main/kotlin/dev/gfxrs/naga/cli/Main.kt
 
-package dev.gfxrs.naga.cli
+package io.ygdrasil.wgsl.cli
 
 /**
  * Point d'entrée principal du CLI.
@@ -160,12 +160,12 @@ fun main(args: Array<String>) {
 ```kotlin
 // src/main/kotlin/dev/gfxrs/naga/cli/CliApp.kt
 
-package dev.gfxrs.naga.cli
+package io.ygdrasil.wgsl.cli
 
-import dev.gfxrs.naga.cli.command.HelpCommand
-import dev.gfxrs.naga.cli.error.CliError
-import dev.gfxrs.naga.cli.error.ErrorHandler
-import dev.gfxrs.naga.cli.parser.CommandParser
+import io.ygdrasil.wgsl.cli.command.HelpCommand
+import io.ygdrasil.wgsl.cli.error.CliError
+import io.ygdrasil.wgsl.cli.error.ErrorHandler
+import io.ygdrasil.wgsl.cli.parser.CommandParser
 
 /**
  * Application CLI principale.
@@ -214,7 +214,7 @@ class CliApp {
     }
     
     private fun executeCommand(
-        command: dev.gfxrs.naga.cli.command.Command,
+        command: io.ygdrasil.wgsl.cli.command.Command,
         context: CliContext
     ): Int {
         return try {

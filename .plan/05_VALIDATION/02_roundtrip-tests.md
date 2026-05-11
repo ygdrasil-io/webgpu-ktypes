@@ -117,10 +117,10 @@ src/test/kotlin/dev/gfxrs/naga/test/roundtrip/
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/RoundTripTestBase.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
-import dev.gfxrs.naga.backends.wgsl.writeWgsl
-import dev.gfxrs.naga.frontends.wgsl.parseWgsl
+import io.ygdrasil.wgsl.backends.wgsl.writeWgsl
+import io.ygdrasil.wgsl.frontends.wgsl.parseWgsl
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.exists
@@ -236,7 +236,7 @@ data class RoundTripResult(
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/WgslNormalizer.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
 /**
  * Normalizes WGSL code for comparison.
@@ -347,7 +347,7 @@ class WgslNormalizer {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/DifferenceAnalyzer.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
 /**
  * Analyzes differences between source and generated WGSL.
@@ -525,10 +525,10 @@ data class Difference(
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/RoundTripValidator.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
-import dev.gfxrs.naga.test.validator.BackendType
-import dev.gfxrs.naga.test.validator.BackendValidator
+import io.ygdrasil.wgsl.test.validator.BackendType
+import io.ygdrasil.wgsl.test.validator.BackendValidator
 
 /**
  * Validates round-trip consistency for WGSL.
@@ -618,9 +618,9 @@ class RoundTripValidator : BackendValidator {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/RoundTripTests.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
-import dev.gfxrs.naga.test.GoldenTestBase
+import io.ygdrasil.wgsl.test.GoldenTestBase
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -672,7 +672,7 @@ class RoundTripTests : RoundTripTestBase() {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/TargetedRoundTripTests.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -788,12 +788,12 @@ class TargetedRoundTripTests : RoundTripTestBase() {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/CrossBackendConsistencyTests.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
-import dev.gfxrs.naga.backends.msl.writeMsl
-import dev.gfxrs.naga.backends.hlsl.writeHlsl
-import dev.gfxrs.naga.backends.glsl.writeGlsl
-import dev.gfxrs.naga.frontends.wgsl.parseWgsl
+import io.ygdrasil.wgsl.backends.msl.writeMsl
+import io.ygdrasil.wgsl.backends.hlsl.writeHlsl
+import io.ygdrasil.wgsl.backends.glsl.writeGlsl
+import io.ygdrasil.wgsl.frontends.wgsl.parseWgsl
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -879,7 +879,7 @@ class CrossBackendConsistencyTests {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/RoundTripConfig.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
 /**
  * Configuration for round-trip tests.
@@ -1025,13 +1025,13 @@ jobs:
           distribution: 'temurin'
       
       - name: Run Round-Trip Tests
-        run: ./gradlew test --tests "dev.gfxrs.naga.test.roundtrip.*"
+        run: ./gradlew test --tests "io.ygdrasil.wgsl.test.roundtrip.*"
       
       - name: Generate Round-Trip Report
         if: failure()
         run: |
           # Generate a report of all failures
-          ./gradlew test --tests "dev.gfxrs.naga.test.roundtrip.*" --info 2>&1 | \
+          ./gradlew test --tests "io.ygdrasil.wgsl.test.roundtrip.*" --info 2>&1 | \
           grep -E "(FAILED|Round-trip validation)" > roundtrip-report.txt
           
           # Upload as artifact
@@ -1051,7 +1051,7 @@ jobs:
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/RoundTripReport.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
 import java.io.File
 import java.time.LocalDateTime
@@ -1219,7 +1219,7 @@ class RoundTripReport(private val result: RoundTripResult) {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/RoundTripMetrics.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
 /**
  * Collects metrics for round-trip tests.
@@ -1299,7 +1299,7 @@ data class RoundTripStatistics(
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/roundtrip/RoundTripTestListener.kt
 
-package dev.gfxrs.naga.test.roundtrip
+package io.ygdrasil.wgsl.test.roundtrip
 
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.launcher.TestExecutionListener
@@ -1387,13 +1387,13 @@ src/test/kotlin/dev/gfxrs/naga/test/roundtrip/
 
 ```bash
 # Exécuter tous les tests de round-trip
-./gradlew test --tests "dev.gfxrs.naga.test.roundtrip.*"
+./gradlew test --tests "io.ygdrasil.wgsl.test.roundtrip.*"
 
 # Exécuter un test spécifique
-./gradlew test --tests "dev.gfxrs.naga.test.roundtrip.RoundTripTests.test round-trip:const-exprs"
+./gradlew test --tests "io.ygdrasil.wgsl.test.roundtrip.RoundTripTests.test round-trip:const-exprs"
 
 # Générer un rapport
-./gradlew test --tests "dev.gfxrs.naga.test.roundtrip.*" --info 2>&1 | grep -E "(FAILED|PASSED|Round-trip)"
+./gradlew test --tests "io.ygdrasil.wgsl.test.roundtrip.*" --info 2>&1 | grep -E "(FAILED|PASSED|Round-trip)"
 ```
 
 ---

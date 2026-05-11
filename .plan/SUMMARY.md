@@ -199,13 +199,13 @@
 
 | Phase | Livrable Principal | Validation |
 |-------|-------------------|------------|
-| Phase 1 | `naga-core` module | Tests unitaires IR |
-| Phase 2 | `naga-wgsl` module | WGSL → IR → validation manuelle |
+| Phase 1 | `wgsl:core` module | Tests unitaires IR |
+| Phase 2 | `wgsl:wgsl` module | WGSL → IR → validation manuelle |
 | Phase 3 | `naga-proc` module | IR traité → validation sémantique |
-| Phase 4 | `naga-msl`, `naga-hlsl` modules | IR → MSL/HLSL → validation natifs |
+| Phase 4 | `wgsl:msl`, `wgsl:hlsl` modules | IR → MSL/HLSL → validation natifs |
 | Phase 5 | Pipeline de validation complet | Tous golden files passent |
 | Phase 6 | Suite de tests complète | Couverture > 80% |
-| Phase 7 | `naga-cli` outil | CLI fonctionnel avec toutes les options |
+| Phase 7 | `wgsl:cli` outil | CLI fonctionnel avec toutes les options |
 | Phase 8 | Version 1.0 | Benchmark, documentation, release |
 
 ---

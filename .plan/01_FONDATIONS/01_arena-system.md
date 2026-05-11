@@ -1,7 +1,7 @@
 # 📦 Phase 1.1 : Système Arena/Handle
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 1 - Fondations  
 **Sous-Phase** : 1.1 - Arena System  
 **Durée** : 1-2 semaines  
@@ -43,10 +43,10 @@ Ce système permet une **gestion efficace de la mémoire** sans GC overhead (en 
 
 ### 1. Handle.kt
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/arena/Handle.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/arena/Handle.kt`
 
 ```kotlin
-package dev.gfxrs.naga.arena
+package io.ygdrasil.wgsl.arena
 
 import kotlin.jvm.JvmInline
 import kotlinx.serialization.KSerializer
@@ -142,10 +142,10 @@ fun <T> Handle<T>?.isValidOrNull(): Boolean = this?.isValid() ?: false
 
 ### 2. Arena.kt
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/arena/Arena.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/arena/Arena.kt`
 
 ```kotlin
-package dev.gfxrs.naga.arena
+package io.ygdrasil.wgsl.arena
 
 import kotlinx.serialization.Serializable
 
@@ -473,10 +473,10 @@ fun <T> arenaOf(collection: Iterable<T>): Arena<T> {
 
 ### 3. UniqueArena.kt
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/arena/UniqueArena.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/arena/UniqueArena.kt`
 
 ```kotlin
-package dev.gfxrs.naga.arena
+package io.ygdrasil.wgsl.arena
 
 import kotlinx.serialization.Serializable
 
@@ -644,10 +644,10 @@ fun <T> uniqueArenaOf(collection: Iterable<T>): UniqueArena<T> where T : Equatab
 
 ### 4. Range.kt (Pour Emit)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/arena/Range.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/arena/Range.kt`
 
 ```kotlin
-package dev.gfxrs.naga.arena
+package io.ygdrasil.wgsl.arena
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.KSerializer
@@ -749,10 +749,10 @@ fun <T> rangeOf(elements: List<Handle<T>>): Range<T> {
 
 ### ArenaTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/arena/ArenaTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/arena/ArenaTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.arena
+package io.ygdrasil.wgsl.arena
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -906,14 +906,14 @@ class ArenaTest {
 
 ### UniqueArenaTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/arena/UniqueArenaTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/arena/UniqueArenaTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.arena
+package io.ygdrasil.wgsl.arena
 
-import dev.gfxrs.naga.ir.Type
-import dev.gfxrs.naga.ir.TypeInner
-import dev.gfxrs.naga.ir.ScalarKind
+import io.ygdrasil.wgsl.ir.Type
+import io.ygdrasil.wgsl.ir.TypeInner
+import io.ygdrasil.wgsl.ir.ScalarKind
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -1022,10 +1022,10 @@ class UniqueArenaTest {
 
 ### HandleTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/arena/HandleTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/arena/HandleTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.arena
+package io.ygdrasil.wgsl.arena
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -1083,10 +1083,10 @@ class HandleTest {
 
 ### RangeTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/arena/RangeTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/arena/RangeTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.arena
+package io.ygdrasil.wgsl.arena
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

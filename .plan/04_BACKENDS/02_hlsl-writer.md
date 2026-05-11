@@ -1,7 +1,7 @@
 # 🎮 Phase 4.2 : HLSL Writer
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-hlsl`  
+**Module** : `wgsl:hlsl`  
 **Phase** : 4 - Backends  
 **Sous-Phase** : 4.2 - Backend HLSL  
 **Durée** : 3-4 semaines  
@@ -17,7 +17,7 @@
 
 Implémenter le backend **High-Level Shading Language** (HLSL) pour les APIs DirectX (D3D11, D3D12).
 
-**Livrable** : Module `naga-hlsl` capable de générer du code HLSL valide.
+**Livrable** : Module `wgsl:hlsl` capable de générer du code HLSL valide.
 
 ---
 
@@ -101,7 +101,7 @@ WGSL supporte les `storage` buffers avec accès arbitrary. HLSL utilise :
 ## 📦 STRUCTURE DES FICHIERS
 
 ```
-naga-hlsl/
+wgsl:hlsl/
 ├── build.gradle.kts
 └── src/main/kotlin/dev/gfxrs/naga/back/hlsl/
     ├── HlslOptions.kt     # Options HLSL

@@ -230,7 +230,7 @@ ERROR: 0:12: 'struct' : syntax error
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/validator/GlslValidator.kt
 
-package dev.gfxrs.naga.test.validator
+package io.ygdrasil.wgsl.test.validator
 
 import java.io.BufferedReader
 import java.io.File
@@ -421,7 +421,7 @@ error: Metal compiler failed with 1 error
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/validator/MetalValidator.kt
 
-package dev.gfxrs.naga.test.validator
+package io.ygdrasil.wgsl.test.validator
 
 import java.io.BufferedReader
 import java.io.File
@@ -656,7 +656,7 @@ file.hlsl(12,45): error X3000: syntax error: unexpected token ';'
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/validator/HlslValidator.kt
 
-package dev.gfxrs.naga.test.validator
+package io.ygdrasil.wgsl.test.validator
 
 import java.io.BufferedReader
 import java.io.File
@@ -830,7 +830,7 @@ class HlslValidator : BackendValidator {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/validator/BackendValidator.kt
 
-package dev.gfxrs.naga.test.validator
+package io.ygdrasil.wgsl.test.validator
 
 import java.io.File
 
@@ -1013,12 +1013,12 @@ class SpirvValidator : BackendValidator {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/validator/NativeValidatorTests.kt
 
-package dev.gfxrs.naga.test.validator
+package io.ygdrasil.wgsl.test.validator
 
-import dev.gfxrs.naga.backends.msl.writeMsl
-import dev.gfxrs.naga.backends.hlsl.writeHlsl
-import dev.gfxrs.naga.backends.glsl.writeGlsl
-import dev.gfxrs.naga.frontends.wgsl.parseWgsl
+import io.ygdrasil.wgsl.backends.msl.writeMsl
+import io.ygdrasil.wgsl.backends.hlsl.writeHlsl
+import io.ygdrasil.wgsl.backends.glsl.writeGlsl
+import io.ygdrasil.wgsl.frontends.wgsl.parseWgsl
 import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -1182,7 +1182,7 @@ jobs:
         run: brew install glslang
       
       - name: Run Validation Tests
-        run: ./gradlew test --tests "dev.gfxrs.naga.test.validator.*"
+        run: ./gradlew test --tests "io.ygdrasil.wgsl.test.validator.*"
         env:
           # Metal compiler is pre-installed on macOS runners
           VULKAN_SDK: /usr/local/share/vulkan
@@ -1215,7 +1215,7 @@ jobs:
           vulkan-sdk-version: '1.3.268.0'
       
       - name: Run Validation Tests
-        run: .\gradlew test --tests "dev.gfxrs.naga.test.validator.*"
+        run: .\gradlew test --tests "io.ygdrasil.wgsl.test.validator.*"
         env:
           VULKAN_SDK: ${{ env.VULKAN_SDK }}
 ```
@@ -1247,7 +1247,7 @@ jobs:
           sudo apt-get install -y vulkan-tools glslang-tools spirv-tools
       
       - name: Run Validation Tests
-        run: ./gradlew test --tests "dev.gfxrs.naga.test.validator.*"
+        run: ./gradlew test --tests "io.ygdrasil.wgsl.test.validator.*"
 ```
 
 ---
@@ -1277,7 +1277,7 @@ jobs:
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/validator/ValidationLogger.kt
 
-package dev.gfxrs.naga.test.validator
+package io.ygdrasil.wgsl.test.validator
 
 import java.io.File
 import java.time.LocalDateTime

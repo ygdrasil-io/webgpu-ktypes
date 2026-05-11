@@ -1,7 +1,7 @@
 # 🏷️ Phase 3.3 : Namer
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 3 - Processing  
 **Sous-Phase** : 3.3 - Name Resolution & Mangling  
 **Durée** : 2-3 semaines  
@@ -99,13 +99,13 @@ Utilisation par :
 
 ### 1. NameKey.kt (Clé d'identification)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/NameKey.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/NameKey.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 
 /**
  * Clé pour identifier une entité à nommer.
@@ -170,10 +170,10 @@ sealed class ExternalTextureNameKey {
 
 ### 2. KeywordSet.kt (Gestion des mots-clés)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/KeywordSet.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/KeywordSet.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
 /**
  * Ensemble de mots-clés pour un langage cible.
@@ -302,13 +302,13 @@ class CaseInsensitiveKeywordSet(private val keywords: Set<String>) {
 
 ### 3. Namer.kt (Classe principale)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/Namer.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/Namer.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 
 /**
  * Processeur qui assigne des noms à toutes les entités d'un module.
@@ -665,7 +665,7 @@ class Namer {
 ## 📁 STRUCTURE DES FICHIERS
 
 ```
-naga-core/src/main/kotlin/dev/gfxrs/naga/proc/
+wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/
 ├── NameKey.kt              # Clé d'identification des entités
 ├── KeywordSet.kt           # Gestion des mots-clés par langage
 ├── Namer.kt                # Classe principale Namer
@@ -679,13 +679,13 @@ naga-core/src/main/kotlin/dev/gfxrs/naga/proc/
 
 ### 1. NamerTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/proc/NamerTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/proc/NamerTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -955,9 +955,9 @@ class NamerTest {
 ## 🔄 DÉPENDANCES
 
 ### Dépendances Internes
-- `naga-core` : Module IR (Module, Type, Function, etc.)
-- `dev.gfxrs.naga.arena.Handle`
-- `dev.gfxrs.naga.ir.*`
+- `wgsl:core` : Module IR (Module, Type, Function, etc.)
+- `io.ygdrasil.wgsl.arena.Handle`
+- `io.ygdrasil.wgsl.ir.*`
 
 ### Dépendances Externes
 - Aucune (kotlin-stdlib uniquement)

@@ -117,7 +117,7 @@ webgpu-ktypes/
 ├── gradle.properties            # Propriétés Gradle
 ├── .plan/                       # Ce plan (NE PAS COMMITER)
 │
-├── naga-core/                   # Module IR + Processing
+├── wgsl:core/                   # Module IR + Processing
 │   ├── build.gradle.kts
 │   └── src/main/kotlin/
 │       └── dev/gfxrs/naga/
@@ -126,27 +126,27 @@ webgpu-ktypes/
 │           ├── proc/           # Processing
 │           └── valid/          # Validation
 │
-├── naga-wgsl/                   # Frontend WGSL
+├── wgsl:wgsl/                   # Frontend WGSL
 │   ├── build.gradle.kts
 │   └── src/main/kotlin/
 │       └── dev/gfxrs/naga/front/wgsl/
 │
-├── naga-msl/                    # Backend MSL
+├── wgsl:msl/                    # Backend MSL
 │   ├── build.gradle.kts
 │   └── src/main/kotlin/
 │       └── dev/gfxrs/naga/back/msl/
 │
-├── naga-hlsl/                   # Backend HLSL
+├── wgsl:hlsl/                   # Backend HLSL
 │   ├── build.gradle.kts
 │   └── src/main/kotlin/
 │       └── dev/gfxrs/naga/back/hlsl/
 │
-├── naga-glsl/                   # Backend GLSL
+├── wgsl:glsl/                   # Backend GLSL
 │   ├── build.gradle.kts
 │   └── src/main/kotlin/
 │       └── dev/gfxrs/naga/back/glsl/
 │
-├── naga-cli/                    # Outil CLI
+├── wgsl:cli/                    # Outil CLI
 │   ├── build.gradle.kts
 │   └── src/main/kotlin/
 │
@@ -161,7 +161,7 @@ webgpu-ktypes/
 
 | Type | Convention | Exemple |
 |------|------------|---------|
-| Package | lowercase, séparés par points | `dev.gfxrs.naga.ir` |
+| Package | lowercase, séparés par points | `io.ygdrasil.wgsl.ir` |
 | Class | PascalCase | `Module`, `Type`, `Expression` |
 | Interface | PascalCase | `ExpressionVisitor` |
 | Sealed Class | PascalCase | `Expression` |
@@ -194,7 +194,7 @@ class Binary(val op: BinaryOperator, val left: Handle<Expression>, val right: Ha
 **Règles :**
 - [ ] **120 colonnes max** par ligne
 - [ ] **4 espaces** pour l'indentation (pas de tabs)
-- [ ] **Pas de wildcards imports** (`import dev.gfxrs.naga.*`)
+- [ ] **Pas de wildcards imports** (`import io.ygdrasil.wgsl.*`)
 - [ ] **Ordre des imports** : Kotlin stdlib → 3rd party → Local
 - [ ] **Documentation** : KDoc pour toutes les classes/fonctions publiques
 
@@ -308,7 +308,7 @@ class Binary(val op: BinaryOperator, val left: Handle<Expression>, val right: Ha
 
 ## 🎯 CONTRAINTES SPÉCIFIQUES PAR MODULE
 
-### naga-core
+### wgsl:core
 
 | Contrainte | Valeur |
 |-----------|--------|
@@ -317,43 +317,43 @@ class Binary(val op: BinaryOperator, val left: Handle<Expression>, val right: Ha
 | Couverture tests | > 90% |
 | Performance | Critique |
 
-### naga-wgsl
+### wgsl:wgsl
 
 | Contrainte | Valeur |
 |-----------|--------|
-| Dépendances | naga-core |
+| Dépendances | wgsl:core |
 | Taille estimée | 3-5k lignes |
 | Couverture tests | > 85% |
 | Performance | Élevée |
 
-### naga-msl
+### wgsl:msl
 
 | Contrainte | Valeur |
 |-----------|--------|
-| Dépendances | naga-core |
+| Dépendances | wgsl:core |
 | Taille estimée | 2-3k lignes |
 | Couverture tests | > 80% |
 | Performance | Élevée |
 
-### naga-hlsl
+### wgsl:hlsl
 
 | Contrainte | Valeur |
 |-----------|--------|
-| Dépendances | naga-core |
+| Dépendances | wgsl:core |
 | Taille estimée | 2-3k lignes |
 | Couverture tests | > 80% |
 | Performance | Élevée |
 
-### naga-glsl
+### wgsl:glsl
 
 | Contrainte | Valeur |
 |-----------|--------|
-| Dépendances | naga-core |
+| Dépendances | wgsl:core |
 | Taille estimée | 2-3k lignes |
 | Couverture tests | > 80% |
 | Performance | Moyenne |
 
-### naga-cli
+### wgsl:cli
 
 | Contrainte | Valeur |
 |-----------|--------|

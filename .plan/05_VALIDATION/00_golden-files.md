@@ -157,14 +157,14 @@ dependencies {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/GoldenTestBase.kt
 
-package dev.gfxrs.naga.test
+package io.ygdrasil.wgsl.test
 
-import dev.gfxrs.naga.backends.msl.writeMsl
-import dev.gfxrs.naga.backends.hlsl.writeHlsl
-import dev.gfxrs.naga.backends.glsl.writeGlsl
-import dev.gfxrs.naga.backends.wgsl.writeWgsl
-import dev.gfxrs.naga.frontends.wgsl.parseWgsl
-import dev.gfxrs.naga serializeIrToJson
+import io.ygdrasil.wgsl.backends.msl.writeMsl
+import io.ygdrasil.wgsl.backends.hlsl.writeHlsl
+import io.ygdrasil.wgsl.backends.glsl.writeGlsl
+import io.ygdrasil.wgsl.backends.wgsl.writeWgsl
+import io.ygdrasil.wgsl.frontends.wgsl.parseWgsl
+import io.ygdrasil.wgsl serializeIrToJson
 import kotlinx.serialization.json.Json
 import java.nio.file.Files
 import java.nio.file.Path
@@ -309,10 +309,10 @@ abstract class GoldenTestBase {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/golden/IrGoldenTests.kt
 
-package dev.gfxrs.naga.test.golden
+package io.ygdrasil.wgsl.test.golden
 
-import dev.gfxrs.naga.test.GoldenTestBase
-import dev.gfxrs.naga.test.GoldenTestBase.BackendType.IR
+import io.ygdrasil.wgsl.test.GoldenTestBase
+import io.ygdrasil.wgsl.test.GoldenTestBase.BackendType.IR
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -347,10 +347,10 @@ class IrGoldenTests : GoldenTestBase() {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/golden/MslGoldenTests.kt
 
-package dev.gfxrs.naga.test.golden
+package io.ygdrasil.wgsl.test.golden
 
-import dev.gfxrs.naga.test.GoldenTestBase
-import dev.gfxrs.naga.test.GoldenTestBase.BackendType.MSL
+import io.ygdrasil.wgsl.test.GoldenTestBase
+import io.ygdrasil.wgsl.test.GoldenTestBase.BackendType.MSL
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -382,10 +382,10 @@ class MslGoldenTests : GoldenTestBase() {
 ```kotlin
 // src/test/kotlin/dev/gfxrs/naga/test/golden/WgslRoundTripTests.kt
 
-package dev.gfxrs.naga.test.golden
+package io.ygdrasil.wgsl.test.golden
 
-import dev.gfxrs.naga.test.GoldenTestBase
-import dev.gfxrs.naga.test.GoldenTestBase.BackendType.WGSL
+import io.ygdrasil.wgsl.test.GoldenTestBase
+import io.ygdrasil.wgsl.test.GoldenTestBase.BackendType.WGSL
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -436,11 +436,11 @@ Exécuter les tests avec `GOLDEN_UPDATE=true` pour générer les fichiers de ré
 
 ```bash
 # macOS/Linux
-GOLDEN_UPDATE=true ./gradlew test --tests "dev.gfxrs.naga.test.golden.*"
+GOLDEN_UPDATE=true ./gradlew test --tests "io.ygdrasil.wgsl.test.golden.*"
 
 # Windows (PowerShell)
 $env:GOLDEN_UPDATE="true"
-./gradlew test --tests "dev.gfxrs.naga.test.golden.*"
+./gradlew test --tests "io.ygdrasil.wgsl.test.golden.*"
 ```
 
 ### Mise à Jour des Snapshots
@@ -508,12 +508,12 @@ jobs:
           distribution: 'temurin'
       
       - name: Run Golden Tests
-        run: ./gradlew test --tests "dev.gfxrs.naga.test.golden.*"
+        run: ./gradlew test --tests "io.ygdrasil.wgsl.test.golden.*"
       
       - name: Update Golden Files (if changed)
         if: github.ref == 'refs/heads/main'
         run: |
-          GOLDEN_UPDATE=true ./gradlew test --tests "dev.gfxrs.naga.test.golden.*"
+          GOLDEN_UPDATE=true ./gradlew test --tests "io.ygdrasil.wgsl.test.golden.*"
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add tests/golden/outputs/
@@ -536,7 +536,7 @@ jobs:
 
 3. **Générer les golden files** :
    ```bash
-   GOLDEN_UPDATE=true ./gradlew test --tests "dev.gfxrs.naga.test.golden.*" -k "{name}"
+   GOLDEN_UPDATE=true ./gradlew test --tests "io.ygdrasil.wgsl.test.golden.*" -k "{name}"
    ```
 
 4. **Valider les résultats** :
@@ -574,7 +574,7 @@ cp "$RUST_DIR"/*.wgsl "$KTYPE_DIR/"
 
 ```bash
 # Exécuter un test spécifique
-./gradlew test --tests "dev.gfxrs.naga.test.golden.MslGoldenTests.test MSL generation:matrix"
+./gradlew test --tests "io.ygdrasil.wgsl.test.golden.MslGoldenTests.test MSL generation:matrix"
 ```
 
 ---

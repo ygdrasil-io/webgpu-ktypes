@@ -1,7 +1,7 @@
 # 🏗️ Phase 2.2 : Construction de l'AST
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-wgsl`  
+**Module** : `wgsl:wgsl`  
 **Phase** : 2 - Parsing  
 **Sous-Phase** : 2.2 - AST Building  
 **Durée** : 2-3 semaines  
@@ -64,17 +64,17 @@ val locals: Arena<Local>               // Variables locales (par fonction)
 
 ### 1. AstBuilder.kt (Builder principal)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/AstBuilder.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/AstBuilder.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.arena.Arena
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.front.wgsl.ast.*
-import dev.gfxrs.naga.front.wgsl.lexer.Token
-import dev.gfxrs.naga.front.wgsl.lexer.TokenKind
-import dev.gfxrs.naga.span.Span
+import io.ygdrasil.wgsl.arena.Arena
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.front.wgsl.ast.*
+import io.ygdrasil.wgsl.front.wgsl.lexer.Token
+import io.ygdrasil.wgsl.front.wgsl.lexer.TokenKind
+import io.ygdrasil.wgsl.span.Span
 
 /**
  * Builder pour construire l'AST à partir des tokens.

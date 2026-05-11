@@ -1,7 +1,7 @@
 # 📏 Phase 3.2 : Layouter
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-core`  
+**Module** : `wgsl:core`  
 **Phase** : 3 - Processing  
 **Sous-Phase** : 3.2 - Layout Assignment  
 **Durée** : 2-3 semaines  
@@ -82,10 +82,10 @@ Utilisation par :
 
 ### 1. Alignment.kt (Alignement mémoire)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/Alignment.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/Alignment.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
 import kotlin.jvm.JvmInline
 
@@ -152,13 +152,13 @@ value class Alignment(val bytes: Int) : Comparable<Alignment> {
 
 ### 2. TypeLayout.kt (Layout de type)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/TypeLayout.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/TypeLayout.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.Type
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.Type
 
 /**
  * Informations de taille et d'alignement pour un type.
@@ -183,10 +183,10 @@ data class TypeLayout(
 
 ### 3. StructMemberLayout.kt (Layout des membres de struct)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/StructMemberLayout.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/StructMemberLayout.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
 /**
  * Layout d'un membre de struct avec son offset.
@@ -201,13 +201,13 @@ data class StructMemberLayout(
 
 ### 4. Layouter.kt (Classe principale)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/Layouter.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/Layouter.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 
 /**
  * Processeur qui calcule les layouts de tous les types dans un module.
@@ -386,13 +386,13 @@ class Layouter {
 
 ### 5. LayoutError.kt (Erreurs de layout)
 
-**Fichier** : `naga-core/src/main/kotlin/dev/gfxrs/naga/proc/LayoutError.kt`
+**Fichier** : `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/LayoutError.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.Type
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.Type
 
 /**
  * Erreurs générées par le Layouter.
@@ -431,7 +431,7 @@ fun LayoutError.message(): String {
 ## 📁 STRUCTURE DES FICHIERS
 
 ```
-naga-core/src/main/kotlin/dev/gfxrs/naga/proc/
+wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/
 ├── Alignment.kt          # Classe Alignment avec opérations
 ├── TypeLayout.kt         # Data class TypeLayout
 ├── StructMemberLayout.kt # Data class StructMemberLayout  
@@ -445,10 +445,10 @@ naga-core/src/main/kotlin/dev/gfxrs/naga/proc/
 
 ### 1. AlignmentTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/proc/AlignmentTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/proc/AlignmentTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -513,13 +513,13 @@ class AlignmentTest {
 
 ### 2. LayouterTest.kt
 
-**Fichier** : `naga-core/src/test/kotlin/dev/gfxrs/naga/proc/LayouterTest.kt`
+**Fichier** : `wgsl:core/src/test/kotlin/dev/gfxrs/naga/proc/LayouterTest.kt`
 
 ```kotlin
-package dev.gfxrs.naga.proc
+package io.ygdrasil.wgsl.proc
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.ir.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.ir.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -771,9 +771,9 @@ class LayouterTest {
 ## 🔄 DÉPENDANCES
 
 ### Dépendances Internes
-- `naga-core` : Module IR (types, Module, Arena)
-- `dev.gfxrs.naga.arena.Handle`
-- `dev.gfxrs.naga.ir.*`
+- `wgsl:core` : Module IR (types, Module, Arena)
+- `io.ygdrasil.wgsl.arena.Handle`
+- `io.ygdrasil.wgsl.ir.*`
 
 ### Dépendances Externes
 - Aucune (kotlin-stdlib uniquement)

@@ -1,7 +1,7 @@
 # 🔍 Phase 2.3 : Résolution de Types
 
 **Projet** : WebGPU-KTypes Shader Transpiler  
-**Module** : `naga-wgsl`  
+**Module** : `wgsl:wgsl`  
 **Phase** : 2 - Parsing  
 **Sous-Phase** : 2.3 - Type Resolution  
 **Durée** : 1-2 semaines  
@@ -83,13 +83,13 @@ WGSL permet les **forward references**, donc on doit réordonner le module.
 
 ### 1. TypeIndex.kt (Index des types)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/TypeIndex.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/TypeIndex.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.front.wgsl.ast.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.front.wgsl.ast.*
 
 /**
  * Index de tous les types déclarés dans un module.
@@ -302,13 +302,13 @@ class TypeIndex(private val translationUnit: TranslationUnit) {
 
 ### 2. ModuleIndexer.kt (Ordonnancement du module)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/ModuleIndexer.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/ModuleIndexer.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.front.wgsl.ast.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.front.wgsl.ast.*
 
 /**
  * Ordonnance les déclarations d'un module pour garantir que
@@ -629,13 +629,13 @@ class ModuleIndexer(private val translationUnit: TranslationUnit) {
 
 ### 3. TypeResolver.kt (Résolution finale des types)
 
-**Fichier** : `naga-wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/TypeResolver.kt`
+**Fichier** : `wgsl:wgsl/src/main/kotlin/dev/gfxrs/naga/front/wgsl/TypeResolver.kt`
 
 ```kotlin
-package dev.gfxrs.naga.front.wgsl
+package io.ygdrasil.wgsl.front.wgsl
 
-import dev.gfxrs.naga.arena.Handle
-import dev.gfxrs.naga.front.wgsl.ast.*
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.front.wgsl.ast.*
 
 /**
  * Résout toutes les références de types dans un module.
