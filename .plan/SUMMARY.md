@@ -59,21 +59,21 @@
 │   └── 99_checklist.md                 ← Checklist Phase 5
 │
 ├── 06_TESTS/                           ← Phase 6 : Infrastructure de test (2 semaines)
-│   ├── 00_unit-tests.md                 ← Tests unitaires par module
-│   ├── 01_integration-tests.md          ← Tests d'intégration
-│   ├── 02_snapshot-tests.md             ← Tests par snapshots
+│   ├── 00_test-strategy.md              ← Tests unitaires par module
+│   ├── 01_test-coverage.md              ← Tests d'intégration
 │   └── 99_checklist.md                 ← Checklist Phase 6
 │
 ├── 07_CLI/                             ← Phase 7 : Outil CLI (1-2 semaines)
-│   ├── 00_cli-design.md                 ← Design de l'interface CLI
-│   ├── 01_implementation.md              ← Implémentation avec Clikt
+│   ├── 00_cli-spec.md                   ← Design de l'interface CLI
+│   ├── 01_cli-commands.md               ← Implémentation avec Clikt
 │   └── 99_checklist.md                 ← Checklist Phase 7
 │
 └── 99_ANNEXES/                         ← Documentation complémentaire
-    ├── 00_algorithms.md                 ← Algorithmes clés à porter
-    ├── 01_rust-kotlin-mapping.md        ← Mapping Rust → Kotlin
-    ├── 02_performance-notes.md          ← Notes sur les optimisations
-    └── 03_glossary.md                   ← Glossaire des termes
+    ├── 00_glossary.md                   ← Glossaire des termes
+    ├── 01_comparison-rust-kotlin.md     ← Mapping Rust → Kotlin
+    ├── 02_references.md                 ← Références et liens utiles
+    ├── 03_performance-notes.md          ← Notes sur les optimisations
+    └── 99_checklist.md                  ← Checklist des annexes
 ```
 
 ---
@@ -124,13 +124,13 @@
 - [ ] Intégrer DXC/FXC pour HLSL
 - [ ] **Livrable** : Pipeline de validation complet
 
-### 🔵 **Phase 6 : Tests (2 semaines)**
+### 🟢 **Phase 6 : Tests (2 semaines)**
 - [ ] Implémenter tests unitaires
 - [ ] Implémenter tests d'intégration
 - [ ] Implémenter tests de snapshot
 - [ ] **Livrable** : Couverture de test > 80%
 
-### 🔵 **Phase 7 : CLI (1-2 semaines)**
+### 🟢 **Phase 7 : CLI (1-2 semaines)**
 - [ ] Designer l'interface CLI
 - [ ] Implémenter avec Clikt
 - [ ] **Livrable** : Outil CLI fonctionnel
@@ -199,13 +199,13 @@
 
 | Phase | Livrable Principal | Validation |
 |-------|-------------------|------------|
-| Phase 1 | `wgsl:core` module | Tests unitaires IR |
-| Phase 2 | `wgsl:wgsl` module | WGSL → IR → validation manuelle |
-| Phase 3 | `naga-proc` module | IR traité → validation sémantique |
-| Phase 4 | `wgsl:msl`, `wgsl:hlsl` modules | IR → MSL/HLSL → validation natifs |
-| Phase 5 | Pipeline de validation complet | Tous golden files passent |
+| Phase 1 | Module IR fonctionnel | Tests unitaires IR |
+| Phase 2 | Parser WGSL fonctionnel | WGSL → IR → validation manuelle |
+| Phase 3 | Traitement IR complet | IR traité → validation sémantique |
+| Phase 4 | Backends fonctionnels | IR → MSL/HLSL/GLSL → validation natifs |
+| Phase 5 | Pipeline de validation | Tous golden files passent |
 | Phase 6 | Suite de tests complète | Couverture > 80% |
-| Phase 7 | `wgsl:cli` outil | CLI fonctionnel avec toutes les options |
+| Phase 7 | Outil CLI | CLI fonctionnel avec toutes les options |
 | Phase 8 | Version 1.0 | Benchmark, documentation, release |
 
 ---

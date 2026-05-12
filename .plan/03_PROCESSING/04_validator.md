@@ -1562,7 +1562,7 @@ class ValidatorTest {
 
 ### Dépendances Internes
 - `wgsl:core` : Module IR (Module, Type, Function, Expression, Statement, etc.)
-- `naga-proc` : Layouter, ConstantEvaluator, Typifier
+- `wgsl:core (proc)` : Layouter, ConstantEvaluator, Typifier
 - `io.ygdrasil.wgsl.arena.Handle`
 - `io.ygdrasil.wgsl.ir.*`
 - `io.ygdrasil.wgsl.span.Span`

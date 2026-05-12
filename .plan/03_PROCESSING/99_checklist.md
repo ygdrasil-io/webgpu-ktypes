@@ -673,8 +673,8 @@ Phase 3.4 : Validator (dépend de tout)
 
 ## 🎯 LIVRABLES DE LA PHASE 3
 
-1. **Module `naga-proc`** : Contient ConstantEvaluator, Typifier, Layouter, Namer
-2. **Module `naga-valid`** : Contient Validator et toutes les classes d'erreur
+1. **Module `wgsl:core (proc)`** : Contient ConstantEvaluator, Typifier, Layouter, Namer
+2. **Module `wgsl:core (valid)`** : Contient Validator et toutes les classes d'erreur
 3. **Tests unitaires** : Couverture > 90% pour tous les modules
 4. **Documentation** : Documentation complète pour toutes les APIs publiques
 5. **Exemples** : Exemples d'utilisation de chaque composant

@@ -70,7 +70,7 @@ Tous les backends partagent certains composants :
 ### 5. Architecture Modulaire
 
 ```
-naga-backends/ (ou modules séparés)
+wgsl backends/ (ou modules séparés)
 ├── wgsl:msl/       # Backend MSL
 │   ├── src/main/kotlin/dev/gfxrs/naga/back/msl/
 │   │   ├── Writer.kt          # Writer principal
@@ -1297,8 +1297,8 @@ class BackendRegistryTest {
 
 ### Dépendances Internes
 - `wgsl:core` : Module IR (Module, Type, Expression, Statement, etc.)
-- `naga-proc` : Layouter, Namer
-- `naga-valid` : ModuleInfo, Validator, ValidationFlags, Capabilities, ShaderStages
+- `wgsl:core (proc)` : Layouter, Namer
+- `wgsl:core (valid)` : ModuleInfo, Validator, ValidationFlags, Capabilities, ShaderStages
 - `io.ygdrasil.wgsl.arena.Handle`
 - `io.ygdrasil.wgsl.ir.*`
 
