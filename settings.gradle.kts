@@ -29,9 +29,8 @@ include("webgpu-ktypes-descriptors")
 include("webgpu-ktypes-web")
 include("webgpu-ktypes-specifications")
 
-/*include(":wgsl:core")
-include(":wgsl:wgsl")
-include(":wgsl:msl")
-include(":wgsl:hlsl")
-include(":wgsl:glsl")
-include(":wgsl:cli")*/
+// WGSL Shader Transpiler modules
+listOf("core", "wgsl", "msl", "hlsl", "glsl", "cli").forEach { project ->
+    include(":wgsl:$project")
+    project(":wgsl:$project").projectDir = file("wgsl/$project")
+}
