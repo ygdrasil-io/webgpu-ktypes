@@ -73,6 +73,9 @@
     ├── 01_comparison-rust-kotlin.md     ← Mapping Rust → Kotlin
     ├── 02_references.md                 ← Références et liens utiles
     ├── 03_performance-notes.md          ← Notes sur les optimisations
+    ├── 04_qodana-guide.md               ← Guide récupération/analyse Qodana
+    ├── PR_PROCESS.md                    ← Processus de PR standardisé
+    ├── CODE_REVIEW.md                   ← Rapport d'analyse de code
     └── 99_checklist.md                  ← Checklist des annexes
 ```
 
@@ -256,6 +259,15 @@
 3. **Minimalisme** : Éviter les dépendances externes sauf kotlinx.serialization et coroutines
 4. **Performance** : Optimiser uniquement après avoir une version fonctionnelle
 5. **Documentation** : Documenter chaque module avec des exemples d'utilisation
+
+---
+
+## 🔧 OUTILS DE QUALITÉ DE CODE
+
+- **Qodana** : Analyse statique via GitHub Actions (Workflow: `.github/workflows/qodana_code_quality.yml`)
+  - **Guide de récupération** : Voir [`.plan/QODANA_GUIDE.md`](./QODANA_GUIDE.md) pour extraire et analyser les rapports
+  - **Configuration** : `upload-result: true` activé pour récupérer les artifacts
+  - **Artifacts** : `qodana.sarif.json`, `report/index.html`, `qodana-report/`
 
 ---
 
