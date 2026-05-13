@@ -205,6 +205,7 @@ Avant de créer une PR, vérifier :
 - [ ] `./gradlew compileKotlinJvm` passe
 - [ ] `./gradlew compileKotlinJs` passe (si applicable)
 - [ ] `./gradlew compileKotlinNative` passe (si applicable)
+- [ ] `./gradlew updateKotlinAbi` lancé et changes commités (si ABI modifiée)
 - [ ] Pas d'avertissements du compilateur
 - [ ] Pas de `TODO` ou `FIXME` non justifiés
 
@@ -248,6 +249,12 @@ gh pr create \
 ```bash
 # Compilation complète
 ./gradlew clean build
+
+# Mise à jour du référentiel ABI (OBLIGATOIRE si signatures modifiées)
+./gradlew updateKotlinAbi
+# ⚠️  Si des fichiers sont modifiés par cette commande, les commiter :
+#     git add .
+#     git commit -m "🔧 [Phase N] Mettre à jour référentiel ABI"
 
 # Tests avec couverture
 ./gradlew jvmTest --info
