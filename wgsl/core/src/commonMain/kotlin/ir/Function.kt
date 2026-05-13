@@ -1,6 +1,7 @@
 package io.ygdrasil.wgsl.ir
 
 import io.ygdrasil.wgsl.arena.Arena
+import io.ygdrasil.wgsl.arena.Equatable
 import io.ygdrasil.wgsl.arena.Handle
 import io.ygdrasil.wgsl.arena.Range
 import kotlinx.serialization.Serializable
@@ -119,7 +120,6 @@ enum class BuiltinValue {
     SampleMask,
     SamplePosition,
     ViewIndex,
-    viewport_index,
     HelperInvocation,
 }
 
@@ -232,7 +232,7 @@ data class Case(
  * A selector for a case in a switch statement.
  */
 @Serializable
-sealed class CaseSelector : io.ygdrasil.wgsl.arena.Equatable {
+sealed class CaseSelector : Equatable {
     class Value(val value: ScalarValue) : CaseSelector()
     class Default : CaseSelector()
     

@@ -37,7 +37,7 @@ data class Type(
  * The inner definition of a type.
  */
 @Serializable
-sealed class TypeInner : io.ygdrasil.wgsl.arena.Equatable {
+sealed class TypeInner : Equatable {
     
     // Scalar types
     data class Scalar(val kind: ScalarKind, val width: Int) : TypeInner()
@@ -102,9 +102,9 @@ data class StructMember(
  * The size of an array.
  */
 @Serializable
-sealed class ArraySize : io.ygdrasil.wgsl.arena.Equatable {
+sealed class ArraySize : Equatable {
     class Constant(val value: Int) : ArraySize()
-    data class Dynamic(val expression: Handle<Expression>) : ArraySize()
+    class Dynamic(val expression: Handle<Expression>) : ArraySize()
     
     override fun isEquivalentTo(other: Any): Boolean {
         if (this === other) return true

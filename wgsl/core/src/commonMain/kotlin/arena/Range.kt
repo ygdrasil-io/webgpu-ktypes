@@ -56,7 +56,7 @@ value class Range<T>(val indices: IntRange) {
         /**
          * Empty range.
          */
-        fun <U> empty(): Range<U> = Range(0..-1)
+        fun <U> empty(): Range<U> = Range(IntRange.EMPTY)
     }
 }
 
@@ -88,8 +88,8 @@ fun <T> rangeOf(element: Handle<T>): Range<T> = Range(element.index..element.ind
  * Creates a Range from multiple Handles.
  */
 fun <T> rangeOf(elements: List<Handle<T>>): Range<T> {
-    if (elements.isEmpty()) return Range.from<T>(0, -1)
+    if (elements.isEmpty()) return Range.empty()
     val start = elements.first().index
     val end = elements.last().index
-    return Range.from<T>(start, end)
+    return Range.from(start, end)
 }
