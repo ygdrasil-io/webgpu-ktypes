@@ -75,7 +75,6 @@
     ├── 03_performance-notes.md          ← Notes sur les optimisations
     ├── 04_qodana-guide.md               ← Guide récupération/analyse Qodana
     ├── PR_PROCESS.md                    ← Processus de PR standardisé
-    ├── CODE_REVIEW.md                   ← Rapport d'analyse de code
     └── 99_checklist.md                  ← Checklist des annexes
 ```
 
