@@ -12,32 +12,34 @@
 
 Cette checklist couvre toutes les tâches nécessaires pour compléter la **Phase 2 : Parsing** du projet WebGPU-KTypes. Cette phase transformera le code source WGSL en un AST (Abstract Syntax Tree) complètement parsed et résolu.
 
+**Progression globale Phase 2** : **~75%**
+
 ---
 
 ## 🎯 SOUS-PHASES
 
 | Sous-Phase | Fichier | Durée | Statut |
 |------------|--------|-------|--------|
-| 2.0 - Lexer WGSL | [`00_wgsl-lexer.md`](00_wgsl-lexer.md) | 2-3 semaines | [ ] |
-| 2.1 - Parser WGSL | [`01_wgsl-parser.md`](01_wgsl-parser.md) | 3-4 semaines | [ ] |
-| 2.2 - AST Building | [`02_ast-building.md`](02_ast-building.md) | 2-3 semaines | [ ] |
-| 2.3 - Type Resolution | [`03_type-resolution.md`](03_type-resolution.md) | 1-2 semaines | [ ] |
-| 2.4 - Error Handling | [`04_error-handling.md`](04_error-handling.md) | 1-2 semaines | [ ] |
+| 2.0 - Lexer WGSL | [`00_wgsl-lexer.md`](00_wgsl-lexer.md) | 2-3 semaines | ✅ **95%** |
+| 2.1 - Parser WGSL | [`01_wgsl-parser.md`](01_wgsl-parser.md) | 3-4 semaines | 🟡 **75%** |
+| 2.2 - AST Building | [`02_ast-building.md`](02_ast-building.md) | 2-3 semaines | ⬜ **0%** |
+| 2.3 - Type Resolution | [`03_type-resolution.md`](03_type-resolution.md) | 1-2 semaines | ⬜ **0%** |
+| 2.4 - Error Handling | [`04_error-handling.md`](04_error-handling.md) | 1-2 semaines | ⬜ **5%** |
 
 ---
 
 ## ✅ CHECKLIST GLOBALE PHASE 2
 
 ### 📁 Structure du Module
-- [ ] Créer le module Gradle `wgsl:wgsl`
-- [ ] Configurer les dépendances (`kotlinx-serialization`)
-- [ ] Configurer les sources et tests
-- [ ] Intégrer dans le build principal
+- [x] Créer le module Gradle `wgsl:wgsl`
+- [x] Configurer les dépendances (`kotlinx-serialization`)
+- [x] Configurer les sources et tests
+- [x] Intégrer dans le build principal
 
 ### 🔤 Lexer (Sous-phase 2.0)
 
 #### Structure Token
-- [ ] `TokenKind.kt` - Toutes les catégories de tokens
+- [x] `TokenKind.kt` - Toutes les catégories de tokens (80+ variants)
   - [ ] EOF
   - [ ] Mots-clés WGSL (fn, let, const, var, struct, type, if, else, for, while, loop, break, continue, return, discard, switch, case, default, etc.)
   - [ ] Identifiants

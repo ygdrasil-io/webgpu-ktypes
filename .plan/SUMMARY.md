@@ -96,10 +96,10 @@
 - [x] **Livrable** : Module IR fonctionnel, tests unitaires basiques (36 tests)
 
 ### 🟡 **Phase 2 : Parser WGSL (6-8 semaines)**
-- [ ] Implémenter le lexer WGSL manuel
-- [ ] Implémenter le parser récursif descendant
-- [ ] Construire l'AST IR à partir du parse tree
-- [ ] Gérer la résolution de types
+- [x] Implémenter le lexer WGSL manuel (~95% complet)
+- [x] Implémenter le parser récursif descendant (~75% complet)
+- [ ] Construire l'AST IR à partir du parse tree (AstBuilder manquant)
+- [ ] Gérer la résolution de types (TypeIndex/ModuleIndexer/TypeResolver manquants)
 - [ ] **Livrable** : WGSL → IR fonctionnel, validation avec golden files
 
 ### 🟡 **Phase 3 : Traitement IR (4-6 semaines)**
@@ -127,7 +127,8 @@
 - [ ] **Livrable** : Pipeline de validation complet
 
 ### 🟢 **Phase 6 : Tests (2 semaines)**
-- [ ] Implémenter tests unitaires
+- [x] Implémenter tests unitaires (Phase 1 : ArenaTest, DiagnosticTest, SpanTest)
+- [x] Implémenter tests unitaires (Phase 2 Lexer : 50+ tests)
 - [ ] Implémenter tests d'intégration
 - [ ] Implémenter tests de snapshot
 - [ ] **Livrable** : Couverture de test > 80%
