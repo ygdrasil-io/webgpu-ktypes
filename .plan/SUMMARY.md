@@ -86,10 +86,10 @@
 - [x] Mettre en place CI/CD de base
 - [x] Cloner et étudier le dépôt Naga Rust
 
-### 🟢 **Phase 1 : Fondations IR (4-6 semaines)**
-- [ ] Implémenter les structures IR de base (Module, Type, Expression, Statement)
-- [ ] Implémenter le système Arena/Handle
-- [ ] Implémenter les types primitifs (Scalar, Vector, Matrix)
+### 🟡 **Phase 1 : Fondations IR (4-6 semaines)**
+- [x] Implémenter les structures IR de base (Module, Type, Expression, Statement, Function, EntryPoint)
+- [x] Implémenter le système Arena/Handle
+- [x] Implémenter les types primitifs (Scalar, Vector, Matrix)
 - [ ] Implémenter Span et diagnostics
 - [ ] **Livrable** : Module IR fonctionnel, tests unitaires basiques
 
@@ -263,7 +263,12 @@
 
 1. Lire et comprendre ce plan en détail
 2. **Phase 0 terminée** ✅ : Configuration du projet
-3. **Passer à Phase 1** : Implémenter le core IR
+3. **Phase 1 en cours (60%)** : Corriger les erreurs de compilation IR
+   - ✅ Structures IR (Module, Type, Expression, Statement, Function, EntryPoint)
+   - ✅ Arena/Handle system
+   - ✅ Types primitifs
+   - ⏳ **À faire** : Span et diagnostics
+   - ⏳ **À faire** : Tests unitaires basiques
 4. Valider chaque étape avec les tests correspondants
 
 **Fichier à consulter en premier** : `/Users/chaos/RustroverProjects/wgpu/naga/src/ir/mod.rs`

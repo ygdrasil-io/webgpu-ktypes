@@ -1,5 +1,6 @@
 package io.ygdrasil.wgsl.ir
 
+import io.ygdrasil.wgsl.arena.Arena
 import io.ygdrasil.wgsl.arena.Handle
 import io.ygdrasil.wgsl.arena.Range
 import kotlinx.serialization.Serializable
@@ -231,9 +232,9 @@ data class Case(
  * A selector for a case in a switch statement.
  */
 @Serializable
-sealed class CaseSelector : Equatable {
-    data class Value(val value: ScalarValue) : CaseSelector()
-    data class Default : CaseSelector()
+sealed class CaseSelector : io.ygdrasil.wgsl.arena.Equatable {
+    class Value(val value: ScalarValue) : CaseSelector()
+    class Default : CaseSelector()
     
     override fun isEquivalentTo(other: Any): Boolean {
         if (this === other) return true
