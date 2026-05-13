@@ -28,8 +28,8 @@ sealed class ExpressionKind {
     data class Literal(val value: LiteralValue) : ExpressionKind()
     
     // Variable access
-    data class Variable(val var: Handle<GlobalVariable>) : ExpressionKind()
-    data class LocalVariable(val var: Handle<LocalVariable>) : ExpressionKind()
+    data class Variable(val variable: Handle<GlobalVariable>) : ExpressionKind()
+    data class LocalVariable(val variable: Handle<LocalVariable>) : ExpressionKind()
     data class FunctionArgument(val index: Int) : ExpressionKind()
     
     // Type constructors
@@ -121,8 +121,8 @@ sealed class ExpressionKind {
  * Sample level for texture sampling.
  */
 @Serializable
-sealed class SampleLevel : Equatable {
-    data class Zero : SampleLevel()
+sealed class SampleLevel : io.ygdrasil.wgsl.arena.Equatable {
+    class Zero : SampleLevel()
     data class MIPMAP(val level: Handle<Expression>) : SampleLevel()
     data class AUTOMATIC(val level: Handle<Expression>) : SampleLevel()
     

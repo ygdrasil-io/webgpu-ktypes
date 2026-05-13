@@ -7,6 +7,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlin.jvm.JvmInline
 
 /**
  * Range represents a range of expressions in an Arena<Expression>.
@@ -50,12 +51,12 @@ value class Range<T>(val indices: IntRange) {
         /**
          * Creates a Range from a start and end.
          */
-        fun from(start: Int, end: Int): Range<T> = Range(start..end)
+        fun <U> from(start: Int, end: Int): Range<U> = Range(start..end)
         
         /**
          * Empty range.
          */
-        val EMPTY: Range<T> = Range(0..-1)
+        fun <U> empty(): Range<U> = Range(IntRange.EMPTY)
     }
 }
 
@@ -74,7 +75,7 @@ object RangeSerializer : KSerializer<Range<*>> {
     override fun deserialize(decoder: Decoder): Range<*> {
         val start = decoder.decodeInt()
         val end = decoder.decodeInt()
-        return Range(start..end)
+        return Range.from<Any>(start, end)
     }
 }
 
@@ -87,8 +88,8 @@ fun <T> rangeOf(element: Handle<T>): Range<T> = Range(element.index..element.ind
  * Creates a Range from multiple Handles.
  */
 fun <T> rangeOf(elements: List<Handle<T>>): Range<T> {
-    if (elements.isEmpty()) return Range.EMPTY
+    if (elements.isEmpty()) return Range.empty()
     val start = elements.first().index
     val end = elements.last().index
-    return Range(start..end)
+    return Range.from(start, end)
 }

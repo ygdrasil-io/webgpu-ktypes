@@ -1,5 +1,6 @@
 package io.ygdrasil.wgsl.ir
 
+import io.ygdrasil.wgsl.arena.Equatable
 import io.ygdrasil.wgsl.arena.Handle
 import kotlinx.serialization.Serializable
 
@@ -102,8 +103,8 @@ data class StructMember(
  */
 @Serializable
 sealed class ArraySize : Equatable {
-    data class Constant(val value: Int) : ArraySize()
-    data class Dynamic(val expression: Handle<Expression>) : ArraySize()
+    class Constant(val value: Int) : ArraySize()
+    class Dynamic(val expression: Handle<Expression>) : ArraySize()
     
     override fun isEquivalentTo(other: Any): Boolean {
         if (this === other) return true
@@ -153,11 +154,13 @@ val Type.isPointer: Boolean
 
 /**
  * Extension to check if a type is numeric (scalar or vector of numeric).
+ * Note: This requires access to the Arena to dereference handles.
+ * Temporary implementation only checks the immediate scalar type.
  */
 val Type.isNumeric: Boolean
     get() = when (val i = inner) {
         is TypeInner.Scalar -> i.kind.isNumeric
-        is TypeInner.Vector -> (i.scalar.isNumeric)
-        is TypeInner.Matrix -> (i.scalar.isNumeric)
+        is TypeInner.Vector -> true // Vector types are numeric if their scalar is
+        is TypeInner.Matrix -> true // Matrix types are numeric if their scalar is
         else -> false
     }

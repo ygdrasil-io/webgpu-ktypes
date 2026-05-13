@@ -73,6 +73,8 @@
     ├── 01_comparison-rust-kotlin.md     ← Mapping Rust → Kotlin
     ├── 02_references.md                 ← Références et liens utiles
     ├── 03_performance-notes.md          ← Notes sur les optimisations
+    ├── 04_qodana-guide.md               ← Guide récupération/analyse Qodana
+    ├── PR_PROCESS.md                    ← Processus de PR standardisé
     └── 99_checklist.md                  ← Checklist des annexes
 ```
 
@@ -86,12 +88,12 @@
 - [x] Mettre en place CI/CD de base
 - [x] Cloner et étudier le dépôt Naga Rust
 
-### 🟢 **Phase 1 : Fondations IR (4-6 semaines)**
-- [ ] Implémenter les structures IR de base (Module, Type, Expression, Statement)
-- [ ] Implémenter le système Arena/Handle
-- [ ] Implémenter les types primitifs (Scalar, Vector, Matrix)
-- [ ] Implémenter Span et diagnostics
-- [ ] **Livrable** : Module IR fonctionnel, tests unitaires basiques
+### ✅ **Phase 1 : Fondations IR (4-6 semaines)**
+- [x] Implémenter les structures IR de base (Module, Type, Expression, Statement, Function, EntryPoint)
+- [x] Implémenter le système Arena/Handle
+- [x] Implémenter les types primitifs (Scalar, Vector, Matrix)
+- [x] Implémenter Span et diagnostics (Span, SourceLocation, Diagnostic, DiagnosticSeverity)
+- [x] **Livrable** : Module IR fonctionnel, tests unitaires basiques (36 tests)
 
 ### 🟡 **Phase 2 : Parser WGSL (6-8 semaines)**
 - [ ] Implémenter le lexer WGSL manuel
@@ -259,11 +261,28 @@
 
 ---
 
+## 🔧 OUTILS DE QUALITÉ DE CODE
+
+- **Qodana** : Analyse statique via GitHub Actions (Workflow: `.github/workflows/qodana_code_quality.yml`)
+  - **Guide de récupération** : Voir [`.plan/QODANA_GUIDE.md`](./QODANA_GUIDE.md) pour extraire et analyser les rapports
+  - **Configuration** : `upload-result: true` activé pour récupérer les artifacts
+  - **Artifacts** : `qodana.sarif.json`, `report/index.html`, `qodana-report/`
+
+---
+
 ## 🔄 PROCHAINES ÉTAPES
 
 1. Lire et comprendre ce plan en détail
 2. **Phase 0 terminée** ✅ : Configuration du projet
-3. **Passer à Phase 1** : Implémenter le core IR
-4. Valider chaque étape avec les tests correspondants
+3. **Phase 1 terminée ✅** : Fondations IR complètes
+   - ✅ Structures IR (Module, Type, Expression, Statement, Function, EntryPoint)
+   - ✅ Arena/Handle system
+   - ✅ Types primitifs (Scalar, Vector, Matrix, etc.)
+   - ✅ Span et diagnostics (Span, SourceLocation, Diagnostic, ShaderError)
+   - ✅ Tests unitaires (36 tests passant)
+4. **Phase 2** : Parser WGSL (lexer, parser, AST building)
+5. Valider chaque étape avec les tests correspondants
 
-**Fichier à consulter en premier** : `/Users/chaos/RustroverProjects/wgpu/naga/src/ir/mod.rs`
+**Fichier à consulter en premier** : `/Users/chaos/RustroverProjects/wgpu/naga/src/front/wgsl/mod.rs`
+
+**Processus de PR** : Voir [`.plan/PR_PROCESS.md`](./PR_PROCESS.md) pour les conventions de contributeur.

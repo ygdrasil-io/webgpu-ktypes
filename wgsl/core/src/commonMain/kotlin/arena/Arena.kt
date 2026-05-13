@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
     
-    private val data: MutableList<T> = mutableListOf()
+    internal val data: MutableList<T> = mutableListOf()
     
     /**
      * Number of elements in the Arena.
@@ -31,7 +31,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
     fun append(value: T): Handle<T> {
         val index = data.size
         data.add(value)
-        return Handle.fromIndex(index)
+        return Handle.fromIndex<T>(index)
     }
     
     /**
@@ -43,7 +43,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
     fun appendAll(values: Iterable<T>): List<Handle<T>> {
         val startIndex = data.size
         data.addAll(values)
-        return (startIndex until data.size).map { Handle.fromIndex<Any>(it) as Handle<T> }
+        return (startIndex until data.size).map { Handle.fromIndex<T>(it) }
     }
     
     /**
@@ -92,37 +92,37 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
     /**
      * Returns an iterator over all elements.
      */
-    override fun iterator(): Iterator<T> = data.iterator()
+    override fun iterator(): MutableIterator<T> = data.iterator()
     
     /**
      * Applies an action to each element with its Handle.
      *
      * @param action Action to apply (Handle<T>, T) -> Unit
      */
-    inline fun forEachWithHandle(action: (Handle<T>, T) -> Unit) {
+    fun forEachWithHandle(action: (Handle<T>, T) -> Unit) {
         data.forEachIndexed { index, value ->
-            action(Handle.fromIndex(index), value)
+            action(Handle.fromIndex<T>(index), value)
         }
     }
     
     /**
      * Applies an action to each element with its index.
      */
-    inline fun forEachIndexed(action: (Int, T) -> Unit) {
+    fun forEachIndexed(action: (Int, T) -> Unit) {
         data.forEachIndexed(action)
     }
     
     /**
      * Transforms each element.
      */
-    inline fun <R> map(transform: (T) -> R): List<R> = data.map(transform)
+    fun <R> map(transform: (T) -> R): List<R> = data.map(transform)
     
     /**
      * Transforms each element with its Handle.
      */
-    inline fun <R> mapWithHandle(transform: (Handle<T>, T) -> R): List<R> {
+    fun <R> mapWithHandle(transform: (Handle<T>, T) -> R): List<R> {
         return data.mapIndexed { index, value ->
-            transform(Handle.fromIndex(index), value)
+            transform(Handle.fromIndex<T>(index), value)
         }
     }
     
@@ -136,7 +136,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
      */
     fun filterWithHandle(predicate: (Handle<T>, T) -> Boolean): List<T> {
         return data.filterIndexed { index, value ->
-            predicate(Handle.fromIndex(index), value)
+            predicate(Handle.fromIndex<T>(index), value)
         }
     }
     
@@ -150,7 +150,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
      */
     fun findHandle(predicate: (T) -> Boolean): Handle<T>? {
         data.forEachIndexed { index, value ->
-            if (predicate(value)) return Handle.fromIndex(index)
+            if (predicate(value)) return Handle.fromIndex<T>(index)
         }
         return null
     }
@@ -160,7 +160,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
      */
     fun findEntry(predicate: (T) -> Boolean): Pair<Handle<T>, T>? {
         data.forEachIndexed { index, value ->
-            if (predicate(value)) return Handle.fromIndex(index) to value
+            if (predicate(value)) return Handle.fromIndex<T>(index) to value
         }
         return null
     }
@@ -230,13 +230,13 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
      */
     fun handleOf(element: T): Handle<T>? {
         val index = data.indexOf(element)
-        return if (index >= 0) Handle.fromIndex(index) else null
+        return if (index >= 0) Handle.fromIndex<T>(index) else null
     }
     
     /**
      * Clears the Arena.
      */
-    fun clear() {
+    override fun clear() {
         data.clear()
     }
     

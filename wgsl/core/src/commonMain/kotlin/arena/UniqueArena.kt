@@ -16,8 +16,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 class UniqueArena<T> where T : Equatable {
     
-    private val data: MutableList<T> = mutableListOf()
-    private val indexMap: MutableMap<T, Int> = mutableMapOf()
+    internal val data: MutableList<T> = mutableListOf()
+    internal val indexMap: MutableMap<T, Int> = mutableMapOf()
     
     /**
      * Number of unique elements in the Arena.
@@ -35,7 +35,7 @@ class UniqueArena<T> where T : Equatable {
             val index = data.size
             data.add(value)
             index
-        }.let { Handle.fromIndex(it) }
+        }.let { Handle.fromIndex<T>(it) }
     }
     
     /**
@@ -73,7 +73,7 @@ class UniqueArena<T> where T : Equatable {
      * Finds the Handle of an existing element.
      */
     fun findHandle(value: T): Handle<T>? {
-        return indexMap[value]?.let { Handle.fromIndex(it) }
+        return indexMap[value]?.let { Handle.fromIndex<T>(it) }
     }
     
     /**
@@ -84,9 +84,9 @@ class UniqueArena<T> where T : Equatable {
     /**
      * Applies an action to each element with its Handle.
      */
-    inline fun forEachWithHandle(action: (Handle<T>, T) -> Unit) {
+    fun forEachWithHandle(action: (Handle<T>, T) -> Unit) {
         data.forEachIndexed { index, value ->
-            action(Handle.fromIndex(index), value)
+            action(Handle.fromIndex<T>(index), value)
         }
     }
     

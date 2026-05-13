@@ -1,5 +1,7 @@
 package io.ygdrasil.wgsl.ir
 
+import io.ygdrasil.wgsl.arena.Arena
+import io.ygdrasil.wgsl.arena.Equatable
 import io.ygdrasil.wgsl.arena.Handle
 import io.ygdrasil.wgsl.arena.Range
 import kotlinx.serialization.Serializable
@@ -118,7 +120,6 @@ enum class BuiltinValue {
     SampleMask,
     SamplePosition,
     ViewIndex,
-    viewport_index,
     HelperInvocation,
 }
 
@@ -232,8 +233,8 @@ data class Case(
  */
 @Serializable
 sealed class CaseSelector : Equatable {
-    data class Value(val value: ScalarValue) : CaseSelector()
-    data class Default : CaseSelector()
+    class Value(val value: ScalarValue) : CaseSelector()
+    class Default : CaseSelector()
     
     override fun isEquivalentTo(other: Any): Boolean {
         if (this === other) return true

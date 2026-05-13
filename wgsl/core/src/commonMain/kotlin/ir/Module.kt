@@ -207,16 +207,7 @@ sealed class DiagnosticFilterNode {
     data class Severity(val severity: DiagnosticSeverity, val children: List<Handle<DiagnosticFilterNode>>) : DiagnosticFilterNode()
 }
 
-/**
- * Diagnostic severity levels.
- */
-@Serializable
-enum class DiagnosticSeverity {
-    Off,
-    Error,
-    Warning,
-    Info,
-}
+
 
 /**
  * Documentation comments.

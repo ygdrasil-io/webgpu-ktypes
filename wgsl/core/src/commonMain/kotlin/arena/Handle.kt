@@ -34,6 +34,8 @@ value class Handle<T>(val index: Int) {
          * Used internally by Arena.
          */
         internal fun <T> fromIndex(index: Int): Handle<T> = Handle(index)
+        
+        internal fun <U> create(index: Int): Handle<U> = Handle(index)
     }
     
     /**
@@ -75,7 +77,7 @@ object HandleSerializer : KSerializer<Handle<*>> {
     }
     
     override fun deserialize(decoder: Decoder): Handle<*> {
-        return Handle(decoder.decodeInt())
+        return Handle.create<Any>(decoder.decodeInt())
     }
 }
 
