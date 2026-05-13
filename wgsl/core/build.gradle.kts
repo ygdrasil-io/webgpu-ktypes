@@ -8,6 +8,7 @@ plugins {
     publish
     kotlin("multiplatform")
     alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotest)
     alias(libs.plugins.ksp)
 }
@@ -71,6 +72,12 @@ kotlin {
     }
 
     sourceSets {
+
+        commonMain {
+            dependencies {
+                implementation(libs.kotlinx.serialization.json)
+            }
+        }
 
         commonTest {
             dependencies {
