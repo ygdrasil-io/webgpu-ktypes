@@ -273,3 +273,5 @@
 5. Valider chaque étape avec les tests correspondants
 
 **Fichier à consulter en premier** : `/Users/chaos/RustroverProjects/wgpu/naga/src/front/wgsl/mod.rs`
+
+**Processus de PR** : Voir [`.plan/PR_PROCESS.md`](./PR_PROCESS.md) pour les conventions de contributeur.
