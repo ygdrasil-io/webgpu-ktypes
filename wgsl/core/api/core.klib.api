@@ -206,7 +206,6 @@ final enum class io.ygdrasil.wgsl.ir/BuiltinValue : kotlin/Enum<io.ygdrasil.wgsl
     enum entry ViewportIndex // io.ygdrasil.wgsl.ir/BuiltinValue.ViewportIndex|null[0]
     enum entry WorkgroupId // io.ygdrasil.wgsl.ir/BuiltinValue.WorkgroupId|null[0]
     enum entry WorkgroupSize // io.ygdrasil.wgsl.ir/BuiltinValue.WorkgroupSize|null[0]
-    enum entry viewport_index // io.ygdrasil.wgsl.ir/BuiltinValue.viewport_index|null[0]
 
     final val entries // io.ygdrasil.wgsl.ir/BuiltinValue.entries|#static{}entries[0]
         final fun <get-entries>(): kotlin.enums/EnumEntries<io.ygdrasil.wgsl.ir/BuiltinValue> // io.ygdrasil.wgsl.ir/BuiltinValue.entries.<get-entries>|<get-entries>#static(){}[0]
@@ -1277,12 +1276,6 @@ sealed class io.ygdrasil.wgsl.ir/ArraySize : io.ygdrasil.wgsl.arena/Equatable { 
 
         final val expression // io.ygdrasil.wgsl.ir/ArraySize.Dynamic.expression|{}expression[0]
             final fun <get-expression>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/ArraySize.Dynamic.expression.<get-expression>|<get-expression>(){}[0]
-
-        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/ArraySize.Dynamic.component1|component1(){}[0]
-        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> = ...): io.ygdrasil.wgsl.ir/ArraySize.Dynamic // io.ygdrasil.wgsl.ir/ArraySize.Dynamic.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ArraySize.Dynamic.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ArraySize.Dynamic.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ArraySize.Dynamic.toString|toString(){}[0]
     }
 
     final object Companion : kotlinx.serialization.internal/SerializerFactory { // io.ygdrasil.wgsl.ir/ArraySize.Companion|null[0]
