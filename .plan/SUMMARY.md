@@ -80,11 +80,11 @@
 
 ## 📅 JALONS PRINCIPAUX
 
-### 🟢 **Phase 0 : Préparation (1 semaine)**
-- [ ] Finaliser ce plan et obtenir validation
-- [ ] Configurer projet Gradle Kotlin multi-module
-- [ ] Mettre en place CI/CD de base
-- [ ] Cloner et étudier le dépôt Naga Rust
+### ✅ **Phase 0 : Préparation (1 semaine)**
+- [x] Finaliser ce plan et obtenir validation
+- [x] Configurer projet Gradle Kotlin multi-module
+- [x] Mettre en place CI/CD de base
+- [x] Cloner et étudier le dépôt Naga Rust
 
 ### 🟢 **Phase 1 : Fondations IR (4-6 semaines)**
 - [ ] Implémenter les structures IR de base (Module, Type, Expression, Statement)
@@ -262,8 +262,8 @@
 ## 🔄 PROCHAINES ÉTAPES
 
 1. Lire et comprendre ce plan en détail
-2. Commencer par **Phase 0** : Configuration du projet
-3. Passer à **Phase 1** : Implémenter le core IR
+2. **Phase 0 terminée** ✅ : Configuration du projet
+3. **Passer à Phase 1** : Implémenter le core IR
 4. Valider chaque étape avec les tests correspondants
 
 **Fichier à consulter en premier** : `/Users/chaos/RustroverProjects/wgpu/naga/src/ir/mod.rs`
