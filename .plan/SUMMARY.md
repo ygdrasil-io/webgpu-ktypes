@@ -95,11 +95,12 @@
 - [x] Implémenter Span et diagnostics (Span, SourceLocation, Diagnostic, DiagnosticSeverity)
 - [x] **Livrable** : Module IR fonctionnel, tests unitaires basiques (36 tests)
 
-### 🟡 **Phase 2 : Parser WGSL (6-8 semaines)**
+### ✅ **Phase 2 : Parser WGSL (6-8 semaines)**
 - [x] Implémenter le lexer WGSL manuel (~95% complet)
-- [x] Implémenter le parser récursif descendant (~75% complet)
-- [ ] Construire l'AST IR à partir du parse tree (AstBuilder manquant)
-- [ ] Gérer la résolution de types (TypeIndex/ModuleIndexer/TypeResolver manquants)
+- [x] Implémenter le parser récursif descendant (~80% complet)
+- [x] Construire l'AST IR à partir du parse tree (AstBuilder implémenté)
+- [x] Gérer la résolution de types (TypeIndex/ModuleIndexer/TypeResolver implémentés)
+- [x] Implémenter la gestion des erreurs (Diagnostic/ErrorRecovery/PrettyPrintError)
 - [ ] **Livrable** : WGSL → IR fonctionnel, validation avec golden files
 
 ### 🟡 **Phase 3 : Traitement IR (4-6 semaines)**

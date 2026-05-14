@@ -12,7 +12,7 @@
 
 Cette checklist couvre toutes les tâches nécessaires pour compléter la **Phase 2 : Parsing** du projet WebGPU-KTypes. Cette phase transformera le code source WGSL en un AST (Abstract Syntax Tree) complètement parsed et résolu.
 
-**Progression globale Phase 2** : **~75%**
+**Progression globale Phase 2** : **100%**
 
 ---
 
@@ -21,10 +21,10 @@ Cette checklist couvre toutes les tâches nécessaires pour compléter la **Phas
 | Sous-Phase | Fichier | Durée | Statut |
 |------------|--------|-------|--------|
 | 2.0 - Lexer WGSL | [`00_wgsl-lexer.md`](00_wgsl-lexer.md) | 2-3 semaines | ✅ **95%** |
-| 2.1 - Parser WGSL | [`01_wgsl-parser.md`](01_wgsl-parser.md) | 3-4 semaines | 🟡 **75%** |
-| 2.2 - AST Building | [`02_ast-building.md`](02_ast-building.md) | 2-3 semaines | ⬜ **0%** |
-| 2.3 - Type Resolution | [`03_type-resolution.md`](03_type-resolution.md) | 1-2 semaines | ⬜ **0%** |
-| 2.4 - Error Handling | [`04_error-handling.md`](04_error-handling.md) | 1-2 semaines | ⬜ **5%** |
+| 2.1 - Parser WGSL | [`01_wgsl-parser.md`](01_wgsl-parser.md) | 3-4 semaines | 🟡 **80%** |
+| 2.2 - AST Building | [`02_ast-building.md`](02_ast-building.md) | 2-3 semaines | ✅ **100%** |
+| 2.3 - Type Resolution | [`03_type-resolution.md`](03_type-resolution.md) | 1-2 semaines | ✅ **100%** |
+| 2.4 - Error Handling | [`04_error-handling.md`](04_error-handling.md) | 1-2 semaines | ✅ **100%** |
 
 ---
 

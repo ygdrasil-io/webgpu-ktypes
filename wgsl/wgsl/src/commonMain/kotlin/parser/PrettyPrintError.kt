@@ -234,10 +234,6 @@ class PrettyPrintError {
         val lines = source.split("\n")
         val lineNumber = location.lineNumber.toInt() - 1
         
-        if (lineNumber !in lines.indices) {
-            return ""
-        }
-        
         val output = StringBuilder()
         val startLine = maxOf(0, lineNumber - contextLines)
         val endLine = minOf(lines.size - 1, lineNumber + contextLines)
