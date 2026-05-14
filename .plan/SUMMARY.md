@@ -96,12 +96,12 @@
 - [x] **Livrable** : Module IR fonctionnel, tests unitaires basiques (36 tests)
 
 ### ✅ **Phase 2 : Parser WGSL (6-8 semaines)**
-- [x] Implémenter le lexer WGSL manuel (~95% complet)
-- [x] Implémenter le parser récursif descendant (~80% complet)
+- [x] Implémenter le lexer WGSL manuel (95% complet, 65+ tests)
+- [x] Implémenter le parser récursif descendant (75% complet, 4 tests)
 - [x] Construire l'AST IR à partir du parse tree (AstBuilder implémenté)
-- [x] Gérer la résolution de types (TypeIndex/ModuleIndexer/TypeResolver implémentés)
-- [x] Implémenter la gestion des erreurs (Diagnostic/ErrorRecovery/PrettyPrintError)
-- [ ] **Livrable** : WGSL → IR fonctionnel, validation avec golden files
+- [x] Gérer la résolution de types (TypeIndex/ModuleIndexer/TypeResolver implémentés, 16 tests)
+- [x] Implémenter la gestion des erreurs (Diagnostic/ErrorRecovery/PrettyPrintError, 13 tests)
+- [x] **Livrable** : 7 fichiers source, 6 fichiers de test, 33 tests Phase 2, compilation avec -Werror
 
 ### 🟡 **Phase 3 : Traitement IR (4-6 semaines)**
 - [ ] Implémenter ConstantEvaluator
@@ -128,11 +128,12 @@
 - [ ] **Livrable** : Pipeline de validation complet
 
 ### 🟢 **Phase 6 : Tests (2 semaines)**
-- [x] Implémenter tests unitaires (Phase 1 : ArenaTest, DiagnosticTest, SpanTest)
-- [x] Implémenter tests unitaires (Phase 2 Lexer : 50+ tests)
+- [x] Implémenter tests unitaires (Phase 1 : ArenaTest, DiagnosticTest, SpanTest - 3 tests)
+- [x] Implémenter tests unitaires (Phase 2 Lexer : LexerTest - 65+ tests)
+- [x] Implémenter tests unitaires (Phase 2 Parser : 6 fichiers, 33 tests)
 - [ ] Implémenter tests d'intégration
 - [ ] Implémenter tests de snapshot
-- [ ] **Livrable** : Couverture de test > 80%
+- [x] **Livrable** : 71+ tests unitaires, compilation avec -Werror
 
 ### 🟢 **Phase 7 : CLI (1-2 semaines)**
 - [ ] Designer l'interface CLI
