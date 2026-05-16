@@ -23,64 +23,65 @@ data class Expression(
  */
 @Serializable
 sealed class ExpressionKind {
-    
+
     // Literal values
     data class Literal(val value: LiteralValue) : ExpressionKind()
-    
+
     // Variable access
     data class Variable(val variable: Handle<GlobalVariable>) : ExpressionKind()
     data class LocalVariable(val variable: Handle<LocalVariable>) : ExpressionKind()
     data class FunctionArgument(val index: Int) : ExpressionKind()
-    
+
     // Type constructors
     data class TypeConstructor(val type: Handle<Type>, val arguments: List<Handle<Expression>>) : ExpressionKind()
-    
+
     // Unary operations
     data class Unary(val operator: UnaryOperator, val expr: Handle<Expression>) : ExpressionKind()
-    
+
     // Binary operations
-    data class Binary(val operator: BinaryOperator, val left: Handle<Expression>, val right: Handle<Expression>) : ExpressionKind()
-    
+    data class Binary(val operator: BinaryOperator, val left: Handle<Expression>, val right: Handle<Expression>) :
+        ExpressionKind()
+
     // Ternary operation
     data class Select(
         val condition: Handle<Expression>,
         val accept: Handle<Expression>,
         val reject: Handle<Expression>
     ) : ExpressionKind()
-    
+
     // Function calls
     data class Call(
         val function: Handle<Function>,
         val arguments: List<Handle<Expression>>
     ) : ExpressionKind()
-    
+
     // Built-in function calls
     data class BuiltinCall(
         val function: BuiltinFunction,
         val arguments: List<Handle<Expression>>
     ) : ExpressionKind()
-    
+
     // Constant access
     data class Constant(val constant: Handle<Constant>) : ExpressionKind()
-    
+
     // Load from pointer
     data class Load(val pointer: Handle<Expression>) : ExpressionKind()
-    
+
     // Store to pointer
     data class Store(val pointer: Handle<Expression>, val value: Handle<Expression>) : ExpressionKind()
-    
+
     // Access index
     data class AccessIndex(
         val expr: Handle<Expression>,
         val index: Int
     ) : ExpressionKind()
-    
+
     // Access member
     data class Access(
         val expr: Handle<Expression>,
         val index: Int
     ) : ExpressionKind()
-    
+
     // Texture sampling
     data class Sample(
         val texture: Handle<Expression>,
@@ -89,30 +90,30 @@ sealed class ExpressionKind {
         val level: SampleLevel? = null,
         val depthRef: Handle<Expression>? = null
     ) : ExpressionKind()
-    
+
     // Texture query
     data class TextureQuery(val texture: Handle<Expression>, val query: TextureQueryKind) : ExpressionKind()
-    
+
     // Array length
     data class ArrayLength(val expr: Handle<Expression>) : ExpressionKind()
-    
+
     // Cast operations
     data class As(val expr: Handle<Expression>, val target: Handle<Type>) : ExpressionKind()
     data class Bitcast(val expr: Handle<Expression>) : ExpressionKind()
-    
+
     // Relational operations
     data class Relational(val fun_: RelationalFunction, val arguments: List<Handle<Expression>>) : ExpressionKind()
-    
+
     // Atomic operations
     data class Atomic(
         val pointer: Handle<Expression>,
         val fun_: AtomicFunction,
         val arguments: List<Handle<Expression>>
     ) : ExpressionKind()
-    
+
     // Value pointer
     data class ValuePointer(val base: Handle<Expression>) : ExpressionKind()
-    
+
     // Ray query
     data class RayQuery(val query: RayQueryKind, val arguments: List<Handle<Expression>>) : ExpressionKind()
 }
@@ -125,7 +126,7 @@ sealed class SampleLevel : io.ygdrasil.wgsl.arena.Equatable {
     class Zero : SampleLevel()
     data class MIPMAP(val level: Handle<Expression>) : SampleLevel()
     data class AUTOMATIC(val level: Handle<Expression>) : SampleLevel()
-    
+
     override fun isEquivalentTo(other: Any): Boolean {
         if (this === other) return true
         if (other !is SampleLevel) return false

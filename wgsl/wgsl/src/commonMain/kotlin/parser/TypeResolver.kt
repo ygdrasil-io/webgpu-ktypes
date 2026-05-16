@@ -69,7 +69,7 @@ class TypeResolver(
     private val typeIndex: TypeIndex = TypeIndex(),
     private val moduleIndexer: ModuleIndexer = ModuleIndexer()
 ) {
-    
+
     /**
      * Results of type resolution.
      */
@@ -85,13 +85,13 @@ class TypeResolver(
             fun success(unit: TranslationUnit): ResolutionResult {
                 return ResolutionResult(unit, emptyList(), true)
             }
-            
+
             fun failure(errors: List<UnresolvedReferenceError>): ResolutionResult {
                 return ResolutionResult(TranslationUnit.empty(), errors, false)
             }
         }
     }
-    
+
     /**
      * Error for unresolved references.
      */
@@ -105,9 +105,9 @@ class TypeResolver(
             TYPE, VALUE, FUNCTION
         }
     }
-    
+
     // ========== Main Resolution Methods ==========
-    
+
     /**
      * Resolve all references in a translation unit.
      * 
@@ -123,42 +123,44 @@ class TypeResolver(
     fun resolve(unit: TranslationUnit): ResolutionResult {
         // First, index all declarations
         typeIndex.index(unit)
-        
+
         // Build the set of all declared names
         val allNames = typeIndex.getAllDeclaredNames()
-        
+
         // Reorder declarations to handle forward references
         val reorderedUnit = try {
             moduleIndexer.reorderDeclarations(unit)
         } catch (e: CycleDetectedException) {
             return ResolutionResult.failure(
-                listOf(UnresolvedReferenceError(
-                    name = "cycle",
-                    kind = UnresolvedReferenceError.ReferenceKind.VALUE,
-                    span = Span.UNDEFINED,
-                    message = e.message ?: "Cycle detected in dependencies"
-                ))
+                listOf(
+                    UnresolvedReferenceError(
+                        name = "cycle",
+                        kind = UnresolvedReferenceError.ReferenceKind.VALUE,
+                        span = Span.UNDEFINED,
+                        message = e.message ?: "Cycle detected in dependencies"
+                    )
+                )
             )
         }
-        
+
         // Now resolve all references in the reordered unit
         val unresolved = mutableListOf<UnresolvedReferenceError>()
         val resolvedDeclarations = mutableListOf<GlobalDecl>()
-        
+
         for (decl in reorderedUnit.declarations) {
             val resolvedDecl = resolveDeclaration(decl, unresolved)
             resolvedDeclarations.add(resolvedDecl)
         }
-        
+
         val resolvedUnit = TranslationUnit(resolvedDeclarations, reorderedUnit.span)
-        
+
         return if (unresolved.isEmpty()) {
             ResolutionResult.success(resolvedUnit)
         } else {
             ResolutionResult(resolvedUnit, unresolved, false)
         }
     }
-    
+
     /**
      * Resolve a single declaration and its children.
      */
@@ -175,9 +177,9 @@ class TypeResolver(
             is ConstAssertDecl -> resolveConstAssertDecl(decl, unresolved)
         }
     }
-    
+
     // ========== Declaration Resolution ==========
-    
+
     private fun resolveFunctionDecl(
         decl: FunctionDecl,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -185,14 +187,14 @@ class TypeResolver(
         val resolvedParams = decl.parameters.map { resolveParam(it, unresolved) }
         val resolvedReturnType = decl.returnType?.let { resolveTypeDecl(it, unresolved) }
         val resolvedBody = decl.body?.let { resolveBlockStatement(it, unresolved) }
-        
+
         return decl.copy(
             parameters = resolvedParams,
             returnType = resolvedReturnType,
             body = resolvedBody
         )
     }
-    
+
     private fun resolveStructDecl(
         decl: StructDecl,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -200,7 +202,7 @@ class TypeResolver(
         val resolvedMembers = decl.members.map { resolveStructMember(it, unresolved) }
         return decl.copy(members = resolvedMembers)
     }
-    
+
     private fun resolveVariableDecl(
         decl: VariableDecl,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -209,7 +211,7 @@ class TypeResolver(
         val resolvedInitializer = decl.initializer?.let { resolveExpression(it, unresolved) }
         return decl.copy(type = resolvedType, initializer = resolvedInitializer)
     }
-    
+
     private fun resolveTypeAliasDecl(
         decl: TypeAliasDecl,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -217,7 +219,7 @@ class TypeResolver(
         val resolvedType = resolveTypeDecl(decl.type, unresolved)
         return decl.copy(type = resolvedType)
     }
-    
+
     private fun resolveOverrideDecl(
         decl: OverrideDecl,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -225,7 +227,7 @@ class TypeResolver(
         val resolvedFunction = resolveFunctionDecl(decl.function, unresolved)
         return decl.copy(function = resolvedFunction)
     }
-    
+
     private fun resolveConstAssertDecl(
         decl: ConstAssertDecl,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -233,9 +235,9 @@ class TypeResolver(
         val resolvedExpr = resolveExpression(decl.expression, unresolved)
         return decl.copy(expression = resolvedExpr)
     }
-    
+
     // ========== Type Resolution ==========
-    
+
     /**
      * Resolve a type declaration, replacing NamedType references with concrete types.
      */
@@ -249,15 +251,18 @@ class TypeResolver(
                 val resolvedElement = resolveTypeDecl(type.elementType, unresolved)
                 type.copy(elementType = resolvedElement)
             }
+
             is MatrixType -> {
                 val resolvedElement = resolveTypeDecl(type.elementType, unresolved)
                 type.copy(elementType = resolvedElement)
             }
+
             is ArrayType -> {
                 val resolvedElement = resolveTypeDecl(type.elementType, unresolved)
                 val resolvedLength = type.length?.let { resolveExpression(it, unresolved) }
                 type.copy(elementType = resolvedElement, length = resolvedLength)
             }
+
             is StructType -> {
                 // Try to resolve struct reference
                 val structDecl = typeIndex.findStruct(type.name)
@@ -268,26 +273,32 @@ class TypeResolver(
                     // This is actually a scalar type misrepresented as StructType
                     typeIndex.getBuiltinScalarType(type.name) ?: type
                 } else {
-                    unresolved.add(UnresolvedReferenceError(
-                        name = type.name,
-                        kind = UnresolvedReferenceError.ReferenceKind.TYPE,
-                        span = type.span,
-                        message = "Unknown struct type: ${type.name}"
-                    ))
+                    unresolved.add(
+                        UnresolvedReferenceError(
+                            name = type.name,
+                            kind = UnresolvedReferenceError.ReferenceKind.TYPE,
+                            span = type.span,
+                            message = "Unknown struct type: ${type.name}"
+                        )
+                    )
                     type
                 }
             }
+
             is NamedType -> {
                 resolveNamedType(type, unresolved)
             }
+
             is PointerType -> {
                 val resolvedElement = resolveTypeDecl(type.elementType, unresolved)
                 type.copy(elementType = resolvedElement)
             }
+
             is ReferenceType -> {
                 val resolvedElement = resolveTypeDecl(type.elementType, unresolved)
                 type.copy(elementType = resolvedElement)
             }
+
             is TemplateType -> {
                 // For template types, we need to substitute the template parameters
                 // For now, we'll keep them as-is since full template resolution is complex
@@ -296,7 +307,7 @@ class TypeResolver(
             }
         }
     }
-    
+
     /**
      * Resolve a NamedType to its concrete type.
      */
@@ -305,12 +316,12 @@ class TypeResolver(
         unresolved: MutableList<UnresolvedReferenceError>
     ): TypeDecl {
         val name = type.name
-        
+
         // Check if it's a built-in scalar type
         if (typeIndex.isBuiltinScalarType(name)) {
             return typeIndex.getBuiltinScalarType(name) ?: type
         }
-        
+
         // Check if it's a built-in vector type (vec2, vec3, vec4)
         if (typeIndex.isBuiltinVectorType(name)) {
             val parsed = typeIndex.parseBuiltinVectorType(name)
@@ -319,18 +330,20 @@ class TypeResolver(
                 val elementType = if (typeIndex.isBuiltinScalarType(elementTypeName)) {
                     typeIndex.getBuiltinScalarType(elementTypeName)!!
                 } else {
-                    unresolved.add(UnresolvedReferenceError(
-                        name = elementTypeName,
-                        kind = UnresolvedReferenceError.ReferenceKind.TYPE,
-                        span = type.span,
-                        message = "Unknown element type in vector: $elementTypeName"
-                    ))
+                    unresolved.add(
+                        UnresolvedReferenceError(
+                            name = elementTypeName,
+                            kind = UnresolvedReferenceError.ReferenceKind.TYPE,
+                            span = type.span,
+                            message = "Unknown element type in vector: $elementTypeName"
+                        )
+                    )
                     ScalarType(ScalarKind.F32, type.span)
                 }
                 return VectorType(size, elementType, type.span)
             }
         }
-        
+
         // Check if it's a built-in matrix type (matCxR)
         if (typeIndex.isBuiltinMatrixType(name)) {
             val parsed = typeIndex.parseBuiltinMatrixType(name)
@@ -339,43 +352,47 @@ class TypeResolver(
                 val elementType = if (typeIndex.isBuiltinScalarType(elementTypeName)) {
                     typeIndex.getBuiltinScalarType(elementTypeName)!!
                 } else {
-                    unresolved.add(UnresolvedReferenceError(
-                        name = elementTypeName,
-                        kind = UnresolvedReferenceError.ReferenceKind.TYPE,
-                        span = type.span,
-                        message = "Unknown element type in matrix: $elementTypeName"
-                    ))
+                    unresolved.add(
+                        UnresolvedReferenceError(
+                            name = elementTypeName,
+                            kind = UnresolvedReferenceError.ReferenceKind.TYPE,
+                            span = type.span,
+                            message = "Unknown element type in matrix: $elementTypeName"
+                        )
+                    )
                     ScalarType(ScalarKind.F32, type.span)
                 }
                 return MatrixType(cols, rows, elementType, type.span)
             }
         }
-        
+
         // Check if it's a user-defined type alias
         val typeAlias = typeIndex.findTypeAlias(name)
         if (typeAlias != null) {
             // Return a copy of the aliased type (already resolved during indexing)
             return resolveTypeDecl(typeAlias.type, unresolved)
         }
-        
+
         // Check if it's a user-defined struct
         val structDecl = typeIndex.findStruct(name)
         if (structDecl != null) {
             return StructType(name, type.span)
         }
-        
+
         // Unknown type
-        unresolved.add(UnresolvedReferenceError(
-            name = name,
-            kind = UnresolvedReferenceError.ReferenceKind.TYPE,
-            span = type.span,
-            message = "Unknown type: $name"
-        ))
+        unresolved.add(
+            UnresolvedReferenceError(
+                name = name,
+                kind = UnresolvedReferenceError.ReferenceKind.TYPE,
+                span = type.span,
+                message = "Unknown type: $name"
+            )
+        )
         return type
     }
-    
+
     // ========== Expression Resolution ==========
-    
+
     /**
      * Resolve an expression, replacing IdentExpr references with resolved identifiers.
      */
@@ -394,20 +411,24 @@ class TypeResolver(
                 val resolvedObject = resolveExpression(expr.objectExpr, unresolved)
                 expr.copy(objectExpr = resolvedObject)
             }
+
             is IndexExpr -> {
                 val resolvedObject = resolveExpression(expr.objectExpr, unresolved)
                 val resolvedIndex = resolveExpression(expr.index, unresolved)
                 expr.copy(objectExpr = resolvedObject, index = resolvedIndex)
             }
+
             is UnaryExpr -> {
                 val resolvedOperand = resolveExpression(expr.operand, unresolved)
                 expr.copy(operand = resolvedOperand)
             }
+
             is BinaryExpr -> {
                 val resolvedLeft = resolveExpression(expr.left, unresolved)
                 val resolvedRight = resolveExpression(expr.right, unresolved)
                 expr.copy(left = resolvedLeft, right = resolvedRight)
             }
+
             is TernaryExpr -> {
                 val resolvedCondition = resolveExpression(expr.condition, unresolved)
                 val resolvedTrue = resolveExpression(expr.trueExpr, unresolved)
@@ -418,18 +439,20 @@ class TypeResolver(
                     falseExpr = resolvedFalse
                 )
             }
+
             is TypeCastExpr -> {
                 val resolvedExpr = resolveExpression(expr.expr, unresolved)
                 val resolvedType = resolveTypeDecl(expr.type, unresolved)
                 expr.copy(expr = resolvedExpr, type = resolvedType)
             }
+
             is SwizzleExpr -> {
                 val resolvedObject = resolveExpression(expr.objectExpr, unresolved)
                 expr.copy(objectExpr = resolvedObject)
             }
         }
     }
-    
+
     /**
      * Resolve an identifier expression to its actual reference.
      */
@@ -438,7 +461,7 @@ class TypeResolver(
         unresolved: MutableList<UnresolvedReferenceError>
     ): Expression {
         val name = expr.name
-        
+
         // Check if it's a built-in value
         if (typeIndex.isBuiltinValue(name)) {
             return when (name) {
@@ -447,35 +470,37 @@ class TypeResolver(
                 else -> expr
             }
         }
-        
+
         // Check if it's a global constant
         val globalConst = typeIndex.findGlobalConstant(name)
         if (globalConst != null) {
             return expr // Keep as IdentExpr but it's resolved
         }
-        
+
         // Check if it's a global variable
         val globalVar = typeIndex.findGlobalVariable(name)
         if (globalVar != null) {
             return expr // Keep as IdentExpr but it's resolved
         }
-        
+
         // Check if it's a function
         val function = typeIndex.findFunction(name)
         if (function != null) {
             return expr // Keep as IdentExpr but it's resolved
         }
-        
+
         // Unknown identifier
-        unresolved.add(UnresolvedReferenceError(
-            name = name,
-            kind = UnresolvedReferenceError.ReferenceKind.VALUE,
-            span = expr.span,
-            message = "Unknown identifier: $name"
-        ))
+        unresolved.add(
+            UnresolvedReferenceError(
+                name = name,
+                kind = UnresolvedReferenceError.ReferenceKind.VALUE,
+                span = expr.span,
+                message = "Unknown identifier: $name"
+            )
+        )
         return expr
     }
-    
+
     /**
      * Resolve a call expression.
      */
@@ -492,9 +517,9 @@ class TypeResolver(
             templateArgs = resolvedTemplateArgs
         )
     }
-    
+
     // ========== Other Resolution Methods ==========
-    
+
     private fun resolveParam(
         param: Param,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -503,7 +528,7 @@ class TypeResolver(
         val resolvedDefault = param.defaultValue?.let { resolveExpression(it, unresolved) }
         return param.copy(type = resolvedType, defaultValue = resolvedDefault)
     }
-    
+
     private fun resolveStructMember(
         member: StructMember,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -512,7 +537,7 @@ class TypeResolver(
         val resolvedDefault = member.defaultValue?.let { resolveExpression(it, unresolved) }
         return member.copy(type = resolvedType, defaultValue = resolvedDefault)
     }
-    
+
     private fun resolveBlockStatement(
         block: BlockStatement,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -520,7 +545,7 @@ class TypeResolver(
         val resolvedStatements = block.statements.map { resolveStatement(it, unresolved) }
         return block.copy(statements = resolvedStatements)
     }
-    
+
     private fun resolveStatement(
         stmt: Statement,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -537,16 +562,19 @@ class TypeResolver(
                     elseBranch = resolvedElse
                 )
             }
+
             is SwitchStatement -> {
                 val resolvedExpr = resolveExpression(stmt.expression, unresolved)
                 val resolvedBody = resolveSwitchBody(stmt.body, unresolved)
                 stmt.copy(expression = resolvedExpr, body = resolvedBody)
             }
+
             is LoopStatement -> {
                 val resolvedBody = resolveBlockStatement(stmt.body, unresolved)
                 val resolvedContinuing = stmt.continuing?.let { resolveBlockStatement(it, unresolved) }
                 stmt.copy(body = resolvedBody, continuing = resolvedContinuing)
             }
+
             is WhileStatement -> {
                 val resolvedCondition = resolveExpression(stmt.condition, unresolved)
                 val resolvedBody = resolveBlockStatement(stmt.body, unresolved)
@@ -557,6 +585,7 @@ class TypeResolver(
                     continuing = resolvedContinuing
                 )
             }
+
             is ForStatement -> {
                 val resolvedInit = stmt.init?.let { resolveStatement(it, unresolved) }
                 val resolvedCondition = stmt.condition?.let { resolveExpression(it, unresolved) }
@@ -569,34 +598,39 @@ class TypeResolver(
                     body = resolvedBody
                 )
             }
+
             is BreakStatement -> stmt
             is ContinueStatement -> stmt
             is ReturnStatement -> {
                 val resolvedValue = stmt.value?.let { resolveExpression(it, unresolved) }
                 stmt.copy(value = resolvedValue)
             }
+
             is DiscardStatement -> stmt
             is VariableDeclStatement -> {
                 val resolvedType = stmt.type?.let { resolveTypeDecl(it, unresolved) }
                 val resolvedInitializer = stmt.initializer?.let { resolveExpression(it, unresolved) }
                 stmt.copy(type = resolvedType, initializer = resolvedInitializer)
             }
+
             is AssignmentStatement -> {
                 val resolvedLhs = resolveExpression(stmt.lhs, unresolved)
                 val resolvedRhs = resolveExpression(stmt.rhs, unresolved)
                 stmt.copy(lhs = resolvedLhs, rhs = resolvedRhs)
             }
+
             is IncDecStatement -> {
                 val resolvedExpr = resolveExpression(stmt.expr, unresolved)
                 stmt.copy(expr = resolvedExpr)
             }
+
             is ExpressionStatement -> {
                 val resolvedExpr = resolveExpression(stmt.expr, unresolved)
                 stmt.copy(expr = resolvedExpr)
             }
         }
     }
-    
+
     private fun resolveSwitchBody(
         body: SwitchBody,
         unresolved: MutableList<UnresolvedReferenceError>
@@ -608,6 +642,7 @@ class TypeResolver(
                     val resolvedBody = resolveBlockStatement(case.body, unresolved)
                     case.copy(value = resolvedValue, body = resolvedBody)
                 }
+
                 is DefaultCase -> {
                     val resolvedBody = resolveBlockStatement(case.body, unresolved)
                     case.copy(body = resolvedBody)
@@ -616,9 +651,9 @@ class TypeResolver(
         }
         return body.copy(cases = resolvedCases)
     }
-    
+
     // ========== Validation ==========
-    
+
     /**
      * Validate that all references in a resolved translation unit are valid.
      */
@@ -627,7 +662,7 @@ class TypeResolver(
         validateTranslationUnit(unit, errors)
         return errors
     }
-    
+
     private fun validateTranslationUnit(
         unit: TranslationUnit,
         errors: MutableList<UnresolvedReferenceError>
@@ -636,7 +671,7 @@ class TypeResolver(
             validateDeclaration(decl, errors)
         }
     }
-    
+
     private fun validateDeclaration(
         decl: GlobalDecl,
         errors: MutableList<UnresolvedReferenceError>
@@ -650,7 +685,7 @@ class TypeResolver(
             is ConstAssertDecl -> validateConstAssertDecl(decl, errors)
         }
     }
-    
+
     private fun validateFunctionDecl(
         decl: FunctionDecl,
         errors: MutableList<UnresolvedReferenceError>
@@ -662,7 +697,7 @@ class TypeResolver(
         decl.returnType?.let { validateTypeDecl(it, errors) }
         decl.body?.let { validateBlockStatement(it, errors) }
     }
-    
+
     private fun validateStructDecl(
         decl: StructDecl,
         errors: MutableList<UnresolvedReferenceError>
@@ -672,7 +707,7 @@ class TypeResolver(
             member.defaultValue?.let { validateExpression(it, errors) }
         }
     }
-    
+
     private fun validateVariableDecl(
         decl: VariableDecl,
         errors: MutableList<UnresolvedReferenceError>
@@ -680,28 +715,28 @@ class TypeResolver(
         decl.type?.let { validateTypeDecl(it, errors) }
         decl.initializer?.let { validateExpression(it, errors) }
     }
-    
+
     private fun validateTypeAliasDecl(
         decl: TypeAliasDecl,
         errors: MutableList<UnresolvedReferenceError>
     ) {
         validateTypeDecl(decl.type, errors)
     }
-    
+
     private fun validateOverrideDecl(
         decl: OverrideDecl,
         errors: MutableList<UnresolvedReferenceError>
     ) {
         validateFunctionDecl(decl.function, errors)
     }
-    
+
     private fun validateConstAssertDecl(
         decl: ConstAssertDecl,
         errors: MutableList<UnresolvedReferenceError>
     ) {
         validateExpression(decl.expression, errors)
     }
-    
+
     private fun validateTypeDecl(
         type: TypeDecl,
         errors: MutableList<UnresolvedReferenceError>
@@ -714,36 +749,45 @@ class TypeResolver(
                 validateTypeDecl(type.elementType, errors)
                 type.length?.let { validateExpression(it, errors) }
             }
+
             is StructType -> {
                 if (!typeIndex.isKnownType(type.name)) {
-                    errors.add(UnresolvedReferenceError(
-                        name = type.name,
-                        kind = UnresolvedReferenceError.ReferenceKind.TYPE,
-                        span = type.span,
-                        message = "Unresolved struct type: ${type.name}"
-                    ))
+                    errors.add(
+                        UnresolvedReferenceError(
+                            name = type.name,
+                            kind = UnresolvedReferenceError.ReferenceKind.TYPE,
+                            span = type.span,
+                            message = "Unresolved struct type: ${type.name}"
+                        )
+                    )
                 }
             }
+
             is NamedType -> {
                 if (!typeIndex.isKnownType(type.name)) {
-                    errors.add(UnresolvedReferenceError(
-                        name = type.name,
-                        kind = UnresolvedReferenceError.ReferenceKind.TYPE,
-                        span = type.span,
-                        message = "Unresolved type: ${type.name}"
-                    ))
+                    errors.add(
+                        UnresolvedReferenceError(
+                            name = type.name,
+                            kind = UnresolvedReferenceError.ReferenceKind.TYPE,
+                            span = type.span,
+                            message = "Unresolved type: ${type.name}"
+                        )
+                    )
                 }
             }
+
             is PointerType -> validateTypeDecl(type.elementType, errors)
             is ReferenceType -> validateTypeDecl(type.elementType, errors)
             is TemplateType -> {
                 if (!typeIndex.isDeclared(type.name)) {
-                    errors.add(UnresolvedReferenceError(
-                        name = type.name,
-                        kind = UnresolvedReferenceError.ReferenceKind.TYPE,
-                        span = type.span,
-                        message = "Unresolved template type: ${type.name}"
-                    ))
+                    errors.add(
+                        UnresolvedReferenceError(
+                            name = type.name,
+                            kind = UnresolvedReferenceError.ReferenceKind.TYPE,
+                            span = type.span,
+                            message = "Unresolved template type: ${type.name}"
+                        )
+                    )
                 }
                 for (arg in type.args) {
                     validateTypeDecl(arg, errors)
@@ -751,7 +795,7 @@ class TypeResolver(
             }
         }
     }
-    
+
     private fun validateExpression(
         expr: Expression,
         errors: MutableList<UnresolvedReferenceError>
@@ -763,14 +807,17 @@ class TypeResolver(
             is StringLiteral -> {}
             is IdentExpr -> {
                 if (!typeIndex.isKnownValue(expr.name) && !typeIndex.isBuiltinValue(expr.name)) {
-                    errors.add(UnresolvedReferenceError(
-                        name = expr.name,
-                        kind = UnresolvedReferenceError.ReferenceKind.VALUE,
-                        span = expr.span,
-                        message = "Unresolved identifier: ${expr.name}"
-                    ))
+                    errors.add(
+                        UnresolvedReferenceError(
+                            name = expr.name,
+                            kind = UnresolvedReferenceError.ReferenceKind.VALUE,
+                            span = expr.span,
+                            message = "Unresolved identifier: ${expr.name}"
+                        )
+                    )
                 }
             }
+
             is CallExpr -> {
                 validateExpression(expr.callee, errors)
                 for (arg in expr.args) {
@@ -778,29 +825,34 @@ class TypeResolver(
                 }
                 expr.templateArgs?.forEach { validateTypeDecl(it, errors) }
             }
+
             is MemberAccessExpr -> validateExpression(expr.objectExpr, errors)
             is IndexExpr -> {
                 validateExpression(expr.objectExpr, errors)
                 validateExpression(expr.index, errors)
             }
+
             is UnaryExpr -> validateExpression(expr.operand, errors)
             is BinaryExpr -> {
                 validateExpression(expr.left, errors)
                 validateExpression(expr.right, errors)
             }
+
             is TernaryExpr -> {
                 validateExpression(expr.condition, errors)
                 validateExpression(expr.trueExpr, errors)
                 validateExpression(expr.falseExpr, errors)
             }
+
             is TypeCastExpr -> {
                 validateExpression(expr.expr, errors)
                 validateTypeDecl(expr.type, errors)
             }
+
             is SwizzleExpr -> validateExpression(expr.objectExpr, errors)
         }
     }
-    
+
     private fun validateBlockStatement(
         block: BlockStatement,
         errors: MutableList<UnresolvedReferenceError>
@@ -809,7 +861,7 @@ class TypeResolver(
             validateStatement(stmt, errors)
         }
     }
-    
+
     private fun validateStatement(
         stmt: Statement,
         errors: MutableList<UnresolvedReferenceError>
@@ -821,25 +873,30 @@ class TypeResolver(
                 validateStatement(stmt.thenBranch, errors)
                 stmt.elseBranch?.let { validateStatement(it, errors) }
             }
+
             is SwitchStatement -> {
                 validateExpression(stmt.expression, errors)
                 validateSwitchBody(stmt.body, errors)
             }
+
             is LoopStatement -> {
                 validateBlockStatement(stmt.body, errors)
                 stmt.continuing?.let { validateBlockStatement(it, errors) }
             }
+
             is WhileStatement -> {
                 validateExpression(stmt.condition, errors)
                 validateBlockStatement(stmt.body, errors)
                 stmt.continuing?.let { validateBlockStatement(it, errors) }
             }
+
             is ForStatement -> {
                 stmt.init?.let { validateStatement(it, errors) }
                 stmt.condition?.let { validateExpression(it, errors) }
                 stmt.update?.let { validateExpression(it, errors) }
                 validateBlockStatement(stmt.body, errors)
             }
+
             is BreakStatement -> {}
             is ContinueStatement -> {}
             is ReturnStatement -> stmt.value?.let { validateExpression(it, errors) }
@@ -848,15 +905,17 @@ class TypeResolver(
                 stmt.type?.let { validateTypeDecl(it, errors) }
                 stmt.initializer?.let { validateExpression(it, errors) }
             }
+
             is AssignmentStatement -> {
                 validateExpression(stmt.lhs, errors)
                 validateExpression(stmt.rhs, errors)
             }
+
             is IncDecStatement -> validateExpression(stmt.expr, errors)
             is ExpressionStatement -> validateExpression(stmt.expr, errors)
         }
     }
-    
+
     private fun validateSwitchBody(
         body: SwitchBody,
         errors: MutableList<UnresolvedReferenceError>
@@ -867,6 +926,7 @@ class TypeResolver(
                     validateExpression(case.value, errors)
                     validateBlockStatement(case.body, errors)
                 }
+
                 is DefaultCase -> validateBlockStatement(case.body, errors)
             }
         }

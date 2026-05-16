@@ -16,43 +16,43 @@ import kotlin.jvm.JvmInline
 @Serializable(RangeSerializer::class)
 @JvmInline
 value class Range<T>(val indices: IntRange) {
-    
+
     /**
      * Start of the range (inclusive).
      */
     val start: Int get() = indices.start
-    
+
     /**
      * End of the range (inclusive).
      */
     val endInclusive: Int get() = indices.endInclusive
-    
+
     /**
      * Number of elements in the range.
      */
     val count: Int get() = indices.count()
-    
+
     /**
      * Checks if the range is empty.
      */
     fun isEmpty(): Boolean = indices.isEmpty()
-    
+
     /**
      * Checks if the range contains an index.
      */
     fun contains(index: Int): Boolean = index in indices
-    
+
     /**
      * Returns the range as a list of indices.
      */
     fun toList(): List<Int> = indices.toList()
-    
+
     companion object {
         /**
          * Creates a Range from a start and end.
          */
         fun <U> from(start: Int, end: Int): Range<U> = Range(start..end)
-        
+
         /**
          * Empty range.
          */
@@ -64,14 +64,14 @@ value class Range<T>(val indices: IntRange) {
  * Serializer for Range.
  */
 object RangeSerializer : KSerializer<Range<*>> {
-    override val descriptor: SerialDescriptor = 
+    override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("Range", PrimitiveKind.INT)
-    
+
     override fun serialize(encoder: Encoder, value: Range<*>) {
         encoder.encodeInt(value.start)
         encoder.encodeInt(value.endInclusive)
     }
-    
+
     override fun deserialize(decoder: Decoder): Range<*> {
         val start = decoder.decodeInt()
         val end = decoder.decodeInt()

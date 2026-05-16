@@ -14,14 +14,14 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
-    
+
     internal val data: MutableList<T> = mutableListOf()
-    
+
     /**
      * Number of elements in the Arena.
      */
     override val size: Int get() = data.size
-    
+
     /**
      * Adds an element to the Arena and returns its Handle.
      *
@@ -33,7 +33,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
         data.add(value)
         return Handle.fromIndex<T>(index)
     }
-    
+
     /**
      * Adds multiple elements to the Arena.
      *
@@ -45,7 +45,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
         data.addAll(values)
         return (startIndex until data.size).map { Handle.fromIndex<T>(it) }
     }
-    
+
     /**
      * Retrieves an element by its Handle.
      *
@@ -57,7 +57,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
         require(handle.isValid()) { "Invalid handle: ${handle.index}" }
         return data[handle.index]
     }
-    
+
     /**
      * Retrieves an element by its Handle, or null if invalid.
      */
@@ -68,32 +68,32 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
             null
         }
     }
-    
+
     /**
      * Retrieves an element by index.
      */
     operator fun get(index: Int): T = data[index]
-    
+
     /**
      * Checks if the Arena is empty.
      */
     override fun isEmpty(): Boolean = data.isEmpty()
-    
+
     /**
      * Checks if the Arena contains an element.
      */
     override fun contains(element: T): Boolean = data.contains(element)
-    
+
     /**
      * Checks if the Arena contains all elements.
      */
     override fun containsAll(elements: Collection<T>): Boolean = data.containsAll(elements)
-    
+
     /**
      * Returns an iterator over all elements.
      */
     override fun iterator(): MutableIterator<T> = data.iterator()
-    
+
     /**
      * Applies an action to each element with its Handle.
      *
@@ -104,19 +104,19 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
             action(Handle.fromIndex<T>(index), value)
         }
     }
-    
+
     /**
      * Applies an action to each element with its index.
      */
     fun forEachIndexed(action: (Int, T) -> Unit) {
         data.forEachIndexed(action)
     }
-    
+
     /**
      * Transforms each element.
      */
     fun <R> map(transform: (T) -> R): List<R> = data.map(transform)
-    
+
     /**
      * Transforms each element with its Handle.
      */
@@ -125,12 +125,12 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
             transform(Handle.fromIndex<T>(index), value)
         }
     }
-    
+
     /**
      * Filters the elements.
      */
     fun filter(predicate: (T) -> Boolean): List<T> = data.filter(predicate)
-    
+
     /**
      * Filters the elements with their Handle.
      */
@@ -139,12 +139,12 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
             predicate(Handle.fromIndex<T>(index), value)
         }
     }
-    
+
     /**
      * Finds the first element matching the predicate.
      */
     fun find(predicate: (T) -> Boolean): T? = data.find(predicate)
-    
+
     /**
      * Finds the Handle of the first element matching the predicate.
      */
@@ -154,7 +154,7 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
         }
         return null
     }
-    
+
     /**
      * Finds the Handle and element matching the predicate.
      */
@@ -164,67 +164,67 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
         }
         return null
     }
-    
+
     /**
      * Checks if a predicate is true for all elements.
      */
     fun all(predicate: (T) -> Boolean): Boolean = data.all(predicate)
-    
+
     /**
      * Checks if a predicate is true for at least one element.
      */
     fun any(predicate: (T) -> Boolean): Boolean = data.any(predicate)
-    
+
     /**
      * Counts the number of elements matching the predicate.
      */
     fun count(predicate: (T) -> Boolean): Int = data.count(predicate)
-    
+
     /**
      * Sorts the elements.
      */
     fun sortedWith(comparator: Comparator<in T>): List<T> = data.sortedWith(comparator)
-    
+
     /**
      * Returns a sublist.
      */
     fun slice(indices: IntRange): List<T> = data.slice(indices)
-    
+
     /**
      * Returns the last element.
      */
     fun last(): T = data.last()
-    
+
     /**
      * Returns the last element or null if empty.
      */
     fun lastOrNull(): T? = data.lastOrNull()
-    
+
     /**
      * Returns the first element.
      */
     fun first(): T = data.first()
-    
+
     /**
      * Returns the first element or null if empty.
      */
     fun firstOrNull(): T? = data.firstOrNull()
-    
+
     /**
      * Returns the element at the given index.
      */
     fun elementAt(index: Int): T = data.elementAt(index)
-    
+
     /**
      * Returns the element at the given index or null.
      */
     fun elementAtOrNull(index: Int): T? = data.elementAtOrNull(index)
-    
+
     /**
      * Returns the index of an element.
      */
     fun indexOf(element: T): Int = data.indexOf(element)
-    
+
     /**
      * Returns the Handle of an element.
      */
@@ -232,14 +232,14 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
         val index = data.indexOf(element)
         return if (index >= 0) Handle.fromIndex<T>(index) else null
     }
-    
+
     /**
      * Clears the Arena.
      */
     override fun clear() {
         data.clear()
     }
-    
+
     /**
      * Creates a copy of the Arena.
      */
@@ -248,46 +248,46 @@ class Arena<T> : Iterable<T>, Collection<T>, MutableCollection<T> {
         copy.data.addAll(data)
         return copy
     }
-    
+
     /**
      * Converts to list.
      */
     fun toList(): List<T> = data.toList()
-    
+
     // ===== Collection Implementation =====
-    
+
     override fun add(element: T): Boolean {
         data.add(element)
         return true
     }
-    
+
     override fun addAll(elements: Collection<T>): Boolean {
         return data.addAll(elements)
     }
-    
+
     override fun remove(element: T): Boolean {
         return data.remove(element)
     }
-    
+
     override fun removeAll(elements: Collection<T>): Boolean {
         return data.removeAll(elements)
     }
-    
+
     override fun retainAll(elements: Collection<T>): Boolean {
         return data.retainAll(elements)
     }
-    
+
     // ===== Operators =====
-    
+
     operator fun set(handle: Handle<T>, value: T) {
         require(handle.isValid()) { "Invalid handle: ${handle.index}" }
         data[handle.index] = value
     }
-    
+
     operator fun plusAssign(value: T) {
         append(value)
     }
-    
+
     operator fun plusAssign(values: Iterable<T>) {
         appendAll(values)
     }

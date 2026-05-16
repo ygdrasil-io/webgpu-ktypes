@@ -73,13 +73,13 @@ import io.ygdrasil.wgsl.ir.Span
  * managing arenas, and tracking statistics.
  */
 class AstBuilder {
-    
+
     /** Statistics tracking */
     private var _declarationCount: Int = 0
     private var _expressionCount: Int = 0
     private var _typeCount: Int = 0
     private var _statementCount: Int = 0
-    
+
     /** Reset all statistics */
     fun reset() {
         _declarationCount = 0
@@ -87,28 +87,28 @@ class AstBuilder {
         _typeCount = 0
         _statementCount = 0
     }
-    
+
     // ========== Statistic Getters ==========
-    
+
     val declarationCount: Int get() = _declarationCount
     val expressionCount: Int get() = _expressionCount
     val typeCount: Int get() = _typeCount
     val statementCount: Int get() = _statementCount
-    
+
     val totalCount: Int get() = _declarationCount + _expressionCount + _typeCount + _statementCount
-    
+
     // ========== TranslationUnit ==========
-    
-    fun TranslationUnit( 
+
+    fun TranslationUnit(
         declarations: List<GlobalDecl>,
         span: Span = Span.UNDEFINED
     ): TranslationUnit {
         return TranslationUnit(declarations, span)
     }
-    
+
     // ========== Global Declarations ==========
-    
-    fun FunctionDecl( 
+
+    fun FunctionDecl(
         attributes: List<Attribute> = emptyList(),
         name: String,
         templateParams: List<TemplateParam> = emptyList(),
@@ -120,8 +120,8 @@ class AstBuilder {
         _declarationCount++
         return FunctionDecl(attributes, name, templateParams, parameters, returnType, body, span)
     }
-    
-    fun StructDecl( 
+
+    fun StructDecl(
         attributes: List<Attribute> = emptyList(),
         name: String,
         templateParams: List<TemplateParam> = emptyList(),
@@ -131,8 +131,8 @@ class AstBuilder {
         _declarationCount++
         return StructDecl(attributes, name, templateParams, members, span)
     }
-    
-    fun VariableDecl( 
+
+    fun VariableDecl(
         kind: VariableDeclKind,
         attributes: List<Attribute> = emptyList(),
         name: String,
@@ -143,8 +143,8 @@ class AstBuilder {
         _declarationCount++
         return VariableDecl(kind, attributes, name, type, initializer, span)
     }
-    
-    fun TypeAliasDecl( 
+
+    fun TypeAliasDecl(
         attributes: List<Attribute> = emptyList(),
         name: String,
         templateParams: List<TemplateParam> = emptyList(),
@@ -154,8 +154,8 @@ class AstBuilder {
         _declarationCount++
         return TypeAliasDecl(attributes, name, templateParams, type, span)
     }
-    
-    fun OverrideDecl( 
+
+    fun OverrideDecl(
         attributes: List<Attribute> = emptyList(),
         entryPoint: EntryPointAttribute,
         function: FunctionDecl,
@@ -164,26 +164,26 @@ class AstBuilder {
         _declarationCount++
         return OverrideDecl(attributes, entryPoint, function, span)
     }
-    
-    fun ConstAssertDecl( 
+
+    fun ConstAssertDecl(
         expression: Expression,
         span: Span = Span.UNDEFINED
     ): ConstAssertDecl {
         _declarationCount++
         return ConstAssertDecl(expression, span)
     }
-    
+
     // ========== Types ==========
-    
-    fun scalarType( 
+
+    fun scalarType(
         kind: ScalarKind,
         span: Span = Span.UNDEFINED
     ): ScalarType {
         _typeCount++
         return ScalarType(kind, span)
     }
-    
-    fun vectorType( 
+
+    fun vectorType(
         size: Int,
         elementType: TypeDecl,
         span: Span = Span.UNDEFINED
@@ -191,8 +191,8 @@ class AstBuilder {
         _typeCount++
         return VectorType(size, elementType, span)
     }
-    
-    fun matrixType( 
+
+    fun matrixType(
         columns: Int,
         rows: Int,
         elementType: TypeDecl,
@@ -201,8 +201,8 @@ class AstBuilder {
         _typeCount++
         return MatrixType(columns, rows, elementType, span)
     }
-    
-    fun ArrayType( 
+
+    fun ArrayType(
         elementType: TypeDecl,
         length: Expression? = null,
         stride: Int? = null,
@@ -211,24 +211,24 @@ class AstBuilder {
         _typeCount++
         return ArrayType(elementType, length, stride, span)
     }
-    
-    fun StructType( 
+
+    fun StructType(
         name: String,
         span: Span = Span.UNDEFINED
     ): StructType {
         _typeCount++
         return StructType(name, span)
     }
-    
-    fun NamedType( 
+
+    fun NamedType(
         name: String,
         span: Span = Span.UNDEFINED
     ): NamedType {
         _typeCount++
         return NamedType(name, span)
     }
-    
-    fun PointerType( 
+
+    fun PointerType(
         storageClass: StorageClass,
         elementType: TypeDecl,
         span: Span = Span.UNDEFINED
@@ -236,8 +236,8 @@ class AstBuilder {
         _typeCount++
         return PointerType(storageClass, elementType, span)
     }
-    
-    fun ReferenceType( 
+
+    fun ReferenceType(
         storageClass: StorageClass,
         elementType: TypeDecl,
         span: Span = Span.UNDEFINED
@@ -245,8 +245,8 @@ class AstBuilder {
         _typeCount++
         return ReferenceType(storageClass, elementType, span)
     }
-    
-    fun TemplateType( 
+
+    fun TemplateType(
         name: String,
         args: List<TypeDecl> = emptyList(),
         span: Span = Span.UNDEFINED
@@ -254,10 +254,10 @@ class AstBuilder {
         _typeCount++
         return TemplateType(name, args, span)
     }
-    
+
     // ========== Expressions ==========
-    
-    fun IntLiteral( 
+
+    fun IntLiteral(
         value: Long,
         suffix: String? = null,
         span: Span = Span.UNDEFINED
@@ -265,8 +265,8 @@ class AstBuilder {
         _expressionCount++
         return IntLiteral(value, suffix, span)
     }
-    
-    fun FloatLiteral( 
+
+    fun FloatLiteral(
         value: Double,
         suffix: String? = null,
         span: Span = Span.UNDEFINED
@@ -274,32 +274,32 @@ class AstBuilder {
         _expressionCount++
         return FloatLiteral(value, suffix, span)
     }
-    
-    fun BoolLiteral( 
+
+    fun BoolLiteral(
         value: Boolean,
         span: Span = Span.UNDEFINED
     ): BoolLiteral {
         _expressionCount++
         return BoolLiteral(value, span)
     }
-    
-    fun StringLiteral( 
+
+    fun StringLiteral(
         value: String,
         span: Span = Span.UNDEFINED
     ): StringLiteral {
         _expressionCount++
         return StringLiteral(value, span)
     }
-    
-    fun IdentExpr( 
+
+    fun IdentExpr(
         name: String,
         span: Span = Span.UNDEFINED
     ): IdentExpr {
         _expressionCount++
         return IdentExpr(name, span)
     }
-    
-    fun CallExpr( 
+
+    fun CallExpr(
         callee: Expression,
         args: List<Expression> = emptyList(),
         templateArgs: List<TypeDecl>? = null,
@@ -308,8 +308,8 @@ class AstBuilder {
         _expressionCount++
         return CallExpr(callee, args, templateArgs, span)
     }
-    
-    fun MemberAccessExpr( 
+
+    fun MemberAccessExpr(
         objectExpr: Expression,
         member: String,
         span: Span = Span.UNDEFINED
@@ -317,8 +317,8 @@ class AstBuilder {
         _expressionCount++
         return MemberAccessExpr(objectExpr, member, span)
     }
-    
-    fun IndexExpr( 
+
+    fun IndexExpr(
         objectExpr: Expression,
         index: Expression,
         span: Span = Span.UNDEFINED
@@ -326,8 +326,8 @@ class AstBuilder {
         _expressionCount++
         return IndexExpr(objectExpr, index, span)
     }
-    
-    fun UnaryExpr( 
+
+    fun UnaryExpr(
         op: UnaryOperator,
         operand: Expression,
         span: Span = Span.UNDEFINED
@@ -335,8 +335,8 @@ class AstBuilder {
         _expressionCount++
         return UnaryExpr(op, operand, span)
     }
-    
-    fun BinaryExpr( 
+
+    fun BinaryExpr(
         left: Expression,
         op: BinaryOperator,
         right: Expression,
@@ -345,8 +345,8 @@ class AstBuilder {
         _expressionCount++
         return BinaryExpr(left, op, right, span)
     }
-    
-    fun TernaryExpr( 
+
+    fun TernaryExpr(
         condition: Expression,
         trueExpr: Expression,
         falseExpr: Expression,
@@ -355,8 +355,8 @@ class AstBuilder {
         _expressionCount++
         return TernaryExpr(condition, trueExpr, falseExpr, span)
     }
-    
-    fun TypeCastExpr( 
+
+    fun TypeCastExpr(
         expr: Expression,
         type: TypeDecl,
         span: Span = Span.UNDEFINED
@@ -364,8 +364,8 @@ class AstBuilder {
         _expressionCount++
         return TypeCastExpr(expr, type, span)
     }
-    
-    fun SwizzleExpr( 
+
+    fun SwizzleExpr(
         objectExpr: Expression,
         components: List<String>,
         span: Span = Span.UNDEFINED
@@ -373,18 +373,18 @@ class AstBuilder {
         _expressionCount++
         return SwizzleExpr(objectExpr, components, span)
     }
-    
+
     // ========== Statements ==========
-    
-    fun BlockStatement( 
+
+    fun BlockStatement(
         statements: List<Statement> = emptyList(),
         span: Span = Span.UNDEFINED
     ): BlockStatement {
         _statementCount++
         return BlockStatement(statements, span)
     }
-    
-    fun IfStatement( 
+
+    fun IfStatement(
         condition: Expression,
         thenBranch: Statement,
         elseBranch: Statement? = null,
@@ -393,8 +393,8 @@ class AstBuilder {
         _statementCount++
         return IfStatement(condition, thenBranch, elseBranch, span)
     }
-    
-    fun SwitchStatement( 
+
+    fun SwitchStatement(
         expression: Expression,
         body: SwitchBody,
         span: Span = Span.UNDEFINED
@@ -402,30 +402,30 @@ class AstBuilder {
         _statementCount++
         return SwitchStatement(expression, body, span)
     }
-    
-    fun SwitchBody( 
+
+    fun SwitchBody(
         cases: List<SwitchCase> = emptyList(),
         span: Span = Span.UNDEFINED
     ): SwitchBody {
         return SwitchBody(cases, span)
     }
-    
-    fun Case( 
+
+    fun Case(
         value: Expression,
         body: BlockStatement,
         span: Span = Span.UNDEFINED
     ): Case {
         return Case(value, body, span)
     }
-    
-    fun DefaultCase( 
+
+    fun DefaultCase(
         body: BlockStatement,
         span: Span = Span.UNDEFINED
     ): DefaultCase {
         return DefaultCase(body, span)
     }
-    
-    fun LoopStatement( 
+
+    fun LoopStatement(
         body: BlockStatement,
         continuing: BlockStatement? = null,
         span: Span = Span.UNDEFINED
@@ -433,8 +433,8 @@ class AstBuilder {
         _statementCount++
         return LoopStatement(body, continuing, span)
     }
-    
-    fun WhileStatement( 
+
+    fun WhileStatement(
         condition: Expression,
         body: BlockStatement,
         continuing: BlockStatement? = null,
@@ -443,8 +443,8 @@ class AstBuilder {
         _statementCount++
         return WhileStatement(condition, body, continuing, span)
     }
-    
-    fun ForStatement( 
+
+    fun ForStatement(
         init: Statement? = null,
         condition: Expression? = null,
         update: Expression? = null,
@@ -454,37 +454,37 @@ class AstBuilder {
         _statementCount++
         return ForStatement(init, condition, update, body, span)
     }
-    
-    fun BreakStatement( 
+
+    fun BreakStatement(
         span: Span = Span.UNDEFINED
     ): BreakStatement {
         _statementCount++
         return BreakStatement(span)
     }
-    
-    fun ContinueStatement( 
+
+    fun ContinueStatement(
         span: Span = Span.UNDEFINED
     ): ContinueStatement {
         _statementCount++
         return ContinueStatement(span)
     }
-    
-    fun ReturnStatement( 
+
+    fun ReturnStatement(
         value: Expression? = null,
         span: Span = Span.UNDEFINED
     ): ReturnStatement {
         _statementCount++
         return ReturnStatement(value, span)
     }
-    
-    fun DiscardStatement( 
+
+    fun DiscardStatement(
         span: Span = Span.UNDEFINED
     ): DiscardStatement {
         _statementCount++
         return DiscardStatement(span)
     }
-    
-    fun VariableDeclStatement( 
+
+    fun VariableDeclStatement(
         kind: VariableDeclKind,
         name: String,
         type: TypeDecl? = null,
@@ -494,8 +494,8 @@ class AstBuilder {
         _statementCount++
         return VariableDeclStatement(kind, name, type, initializer, span)
     }
-    
-    fun AssignmentStatement( 
+
+    fun AssignmentStatement(
         lhs: Expression,
         rhs: Expression,
         op: BinaryOperator? = null,
@@ -504,8 +504,8 @@ class AstBuilder {
         _statementCount++
         return AssignmentStatement(lhs, rhs, op, span)
     }
-    
-    fun IncDecStatement( 
+
+    fun IncDecStatement(
         expr: Expression,
         isIncrement: Boolean,
         span: Span = Span.UNDEFINED
@@ -513,26 +513,26 @@ class AstBuilder {
         _statementCount++
         return IncDecStatement(expr, isIncrement, span)
     }
-    
-    fun ExpressionStatement( 
+
+    fun ExpressionStatement(
         expr: Expression,
         span: Span = Span.UNDEFINED
     ): ExpressionStatement {
         _statementCount++
         return ExpressionStatement(expr, span)
     }
-    
+
     // ========== Miscellaneous ==========
-    
-    fun Attribute( 
+
+    fun Attribute(
         name: String,
         args: List<Expression> = emptyList(),
         span: Span = Span.UNDEFINED
     ): Attribute {
         return Attribute(name, args, span)
     }
-    
-    fun Param( 
+
+    fun Param(
         attributes: List<Attribute> = emptyList(),
         name: String,
         type: TypeDecl,
@@ -541,16 +541,16 @@ class AstBuilder {
     ): Param {
         return Param(attributes, name, type, defaultValue, span)
     }
-    
-    fun TemplateParam( 
+
+    fun TemplateParam(
         name: String,
         constraint: TypeDecl? = null,
         span: Span = Span.UNDEFINED
     ): TemplateParam {
         return TemplateParam(name, constraint, span)
     }
-    
-    fun StructMember( 
+
+    fun StructMember(
         attributes: List<Attribute> = emptyList(),
         name: String,
         type: TypeDecl,
@@ -559,23 +559,23 @@ class AstBuilder {
     ): StructMember {
         return StructMember(attributes, name, type, defaultValue, span)
     }
-    
+
     fun entryPointCompute(): EntryPointAttribute.Compute {
         return EntryPointAttribute.Compute
     }
-    
+
     fun entryPointFragment(
         inputs: List<FragmentInput> = emptyList()
     ): EntryPointAttribute.Fragment {
         return EntryPointAttribute.Fragment(inputs)
     }
-    
+
     fun entryPointVertex(
         outputs: List<VertexOutput> = emptyList()
     ): EntryPointAttribute.Vertex {
         return EntryPointAttribute.Vertex(outputs)
     }
-    
+
     fun fragmentInput(
         location: Int? = null,
         builtin: BuiltinValue? = null,
@@ -583,7 +583,7 @@ class AstBuilder {
     ): FragmentInput {
         return FragmentInput(location, builtin, type)
     }
-    
+
     fun vertexOutput(
         location: Int? = null,
         builtin: BuiltinValue? = null,

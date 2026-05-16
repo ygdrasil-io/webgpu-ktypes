@@ -15,10 +15,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 1
         (result.resolvedUnit.declarations[0] as FunctionDecl).name shouldBe "main"
@@ -29,10 +29,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 0
     }
@@ -42,13 +42,13 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 1
-        
+
         val varDecl = result.resolvedUnit.declarations[0] as VariableDecl
         varDecl.name shouldBe "myConst"
         varDecl.kind shouldBe VariableDeclKind.LET
@@ -62,10 +62,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 2
     }
@@ -75,10 +75,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 1
         val func = result.resolvedUnit.declarations[0] as FunctionDecl
@@ -91,10 +91,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe false
         result.unresolvedReferences shouldHaveSize 1
         result.unresolvedReferences[0].name shouldBe "UnknownType"
@@ -105,10 +105,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 1
         val varDecl = result.resolvedUnit.declarations[0] as VariableDecl
@@ -121,10 +121,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 1
         val varDecl = result.resolvedUnit.declarations[0] as VariableDecl
@@ -137,10 +137,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 1
     }
@@ -150,10 +150,10 @@ class IntegrationTest : FunSpec({
         val lexer = Lexer(source)
         val parser = Parser(lexer)
         val unit = parser.parse()
-        
+
         val resolver = TypeResolver()
         val result = resolver.resolve(unit)
-        
+
         result.isSuccess shouldBe true
         result.resolvedUnit.declarations shouldHaveSize 1
         val struct = result.resolvedUnit.declarations[0] as StructDecl

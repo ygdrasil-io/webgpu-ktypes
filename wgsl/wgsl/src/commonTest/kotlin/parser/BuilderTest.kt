@@ -37,7 +37,7 @@ class BuilderTest : FunSpec({
         builder.scalarType(ScalarKind.I32, Span.UNDEFINED)
         builder.scalarType(ScalarKind.F32, Span.UNDEFINED)
         builder.scalarType(ScalarKind.U32, Span.UNDEFINED)
-        
+
         builder.typeCount shouldBe 3
     }
 
@@ -46,7 +46,7 @@ class BuilderTest : FunSpec({
         val scalar = builder.scalarType(ScalarKind.I32, Span.UNDEFINED)
         val vec2 = builder.vectorType(2, scalar, Span.UNDEFINED)
         val vec3 = builder.vectorType(3, vec2, Span.UNDEFINED)
-        
+
         vec3.size shouldBe 3
         vec3.elementType shouldBe vec2
         builder.typeCount shouldBe 3
@@ -57,7 +57,7 @@ class BuilderTest : FunSpec({
         val scalar = builder.scalarType(ScalarKind.F32, Span.UNDEFINED)
         val vec = builder.vectorType(4, scalar, Span.UNDEFINED)
         val mat = builder.matrixType(4, 4, vec, Span.UNDEFINED)
-        
+
         mat.columns shouldBe 4
         mat.rows shouldBe 4
         mat.elementType shouldBe vec
@@ -69,11 +69,11 @@ class BuilderTest : FunSpec({
         builder.scalarType(ScalarKind.I32, Span.UNDEFINED)
         builder.scalarType(ScalarKind.F32, Span.UNDEFINED)
         builder.vectorType(2, ScalarType(ScalarKind.I32, Span.UNDEFINED), Span.UNDEFINED)
-        
+
         builder.typeCount shouldBe 3
-        
+
         builder.reset()
-        
+
         builder.typeCount shouldBe 0
         builder.expressionCount shouldBe 0
         builder.declarationCount shouldBe 0
@@ -85,7 +85,7 @@ class BuilderTest : FunSpec({
         builder.scalarType(ScalarKind.I32, Span.UNDEFINED)
         builder.scalarType(ScalarKind.F32, Span.UNDEFINED)
         builder.vectorType(2, ScalarType(ScalarKind.I32, Span.UNDEFINED), Span.UNDEFINED)
-        
+
         builder.totalCount shouldBe 3
     }
 
@@ -93,7 +93,7 @@ class BuilderTest : FunSpec({
         val builder = AstBuilder()
         val type1 = builder.scalarType(ScalarKind.I32, Span.UNDEFINED)
         val type2 = builder.scalarType(ScalarKind.I32, Span.UNDEFINED)
-        
+
         type1 shouldBe ScalarType(ScalarKind.I32, Span.UNDEFINED)
         type2 shouldBe ScalarType(ScalarKind.I32, Span.UNDEFINED)
         type1 shouldBe type2

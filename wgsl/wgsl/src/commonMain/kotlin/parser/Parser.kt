@@ -74,13 +74,13 @@ class Parser(
 ) {
     /** The current token. */
     private var currentToken: Token = lexer.next() ?: Token.eof(Span.UNDEFINED)
-    
+
     /** The previous token (for error recovery). */
     private var previousToken: Token? = null
-    
+
     /** true if we've seen an error during parsing. */
     private var hasError: Boolean = false
-    
+
     /** The list of errors encountered during parsing. */
     private val errors: MutableList<ParseError> = mutableListOf()
 
@@ -166,15 +166,15 @@ class Parser(
      */
     fun parse(): TranslationUnit {
         val declarations = mutableListOf<GlobalDecl>()
-        
+
         while (!isAtEnd()) {
             declarations.add(parseTopLevelDecl())
         }
-        
+
         val start = declarations.firstOrNull()?.span?.start ?: 0u
         val end = declarations.lastOrNull()?.span?.end ?: 0u
         val span = Span(start, end)
-        
+
         return TranslationUnit(declarations, span)
     }
 
@@ -193,6 +193,7 @@ class Parser(
                 advance() // consume @
                 parseAttributeOrGroup()
             }
+
             else -> {
                 // Try to recover
                 error("Unexpected token ${currentKind()} at top level")
@@ -208,16 +209,16 @@ class Parser(
      */
     private fun parseFunctionDecl(): FunctionDecl {
         val start = currentToken.span
-        
+
         // Consume 'fn'
         expectOrError(TokenKind.FN, "Expected 'fn'")
-        
+
         // Parse attributes (if any)
         val attributes = mutableListOf<Attribute>()
         while (currentKind() == TokenKind.AT) {
             attributes.add(parseAttribute())
         }
-        
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -226,18 +227,18 @@ class Parser(
             error("Expected function name")
             ""
         }
-        
+
         // Parse template parameters (if any)
         val templateParams = mutableListOf<TemplateParam>()
         if (currentKind() == TokenKind.LEFT_ANGLE) {
             templateParams.addAll(parseTemplateParamList())
         }
-        
+
         // Parse parameters
         expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
         val parameters = parseParameterList()
         expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
-        
+
         // Parse return type (if any)
         val returnType = if (currentKind() == TokenKind.ARROW) {
             advance() // consume ->
@@ -245,14 +246,14 @@ class Parser(
         } else {
             null
         }
-        
+
         // Parse body (if any)
         val body = if (currentKind() == TokenKind.LEFT_BRACE) {
             parseBlockStatement()
         } else {
             null
         }
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return FunctionDecl(
             attributes = attributes,
@@ -270,10 +271,10 @@ class Parser(
      */
     private fun parseStructDecl(): StructDecl {
         val start = currentToken.span
-        
+
         // Consume 'struct'
         expectOrError(TokenKind.STRUCT, "Expected 'struct'")
-        
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -282,13 +283,13 @@ class Parser(
             error("Expected struct name")
             ""
         }
-        
+
         // Parse template parameters (if any)
         val templateParams = mutableListOf<TemplateParam>()
         if (currentKind() == TokenKind.LEFT_ANGLE) {
             templateParams.addAll(parseTemplateParamList())
         }
-        
+
         // Parse members
         expectOrError(TokenKind.LEFT_BRACE, "Expected '{'")
         val members = mutableListOf<StructMember>()
@@ -296,7 +297,7 @@ class Parser(
             members.add(parseStructMember())
         }
         expectOrError(TokenKind.RIGHT_BRACE, "Expected '}'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return StructDecl(
             attributes = emptyList(), // TODO: parse attributes
@@ -312,13 +313,13 @@ class Parser(
      */
     private fun parseStructMember(): StructMember {
         val start = currentToken.span
-        
+
         // Parse attributes (if any)
         val attributes = mutableListOf<Attribute>()
         while (currentKind() == TokenKind.AT) {
             attributes.add(parseAttribute())
         }
-        
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -327,11 +328,11 @@ class Parser(
             error("Expected member name")
             ""
         }
-        
+
         // Parse type
         expectOrError(TokenKind.COLON, "Expected ':'")
         val type = parseTypeDecl()
-        
+
         // Parse default value (if any)
         val defaultValue = if (currentKind() == TokenKind.ASSIGN) {
             advance()
@@ -339,9 +340,9 @@ class Parser(
         } else {
             null
         }
-        
+
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return StructMember(
             attributes = attributes,
@@ -357,7 +358,7 @@ class Parser(
      */
     private fun parseVariableDecl(): VariableDecl {
         val start = currentToken.span
-        
+
         // Parse kind (let, const, var)
         val kind = when (currentKind()) {
             TokenKind.LET -> VariableDeclKind.LET
@@ -369,7 +370,7 @@ class Parser(
             }
         }
         advance()
-        
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -378,7 +379,7 @@ class Parser(
             error("Expected variable name")
             ""
         }
-        
+
         // Parse type annotation (if any)
         val type = if (currentKind() == TokenKind.COLON) {
             advance()
@@ -386,7 +387,7 @@ class Parser(
         } else {
             null
         }
-        
+
         // Parse initializer (required for const)
         val initializer = if (currentKind() == TokenKind.ASSIGN) {
             advance()
@@ -394,14 +395,14 @@ class Parser(
         } else {
             null
         }
-        
+
         // For const, initializer is required
         if (kind == VariableDeclKind.CONST && initializer == null) {
             error("Const declarations must have an initializer")
         }
-        
+
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return VariableDecl(
             kind = kind,
@@ -418,10 +419,10 @@ class Parser(
      */
     private fun parseTypeAliasDecl(): TypeAliasDecl {
         val start = currentToken.span
-        
+
         // Consume 'type'
         expectOrError(TokenKind.TYPE, "Expected 'type'")
-        
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -430,19 +431,19 @@ class Parser(
             error("Expected type alias name")
             ""
         }
-        
+
         // Parse template parameters (if any)
         val templateParams = mutableListOf<TemplateParam>()
         if (currentKind() == TokenKind.LEFT_ANGLE) {
             templateParams.addAll(parseTemplateParamList())
         }
-        
+
         // Parse '=' and type
         expectOrError(TokenKind.ASSIGN, "Expected '='")
         val type = parseTypeDecl()
-        
+
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return TypeAliasDecl(
             attributes = emptyList(), // TODO: parse attributes
@@ -458,16 +459,17 @@ class Parser(
      */
     private fun parseOverrideDecl(): OverrideDecl {
         val start = currentToken.span
-        
+
         // Consume 'override'
         expectOrError(TokenKind.OVERRIDE, "Expected 'override'")
-        
+
         // Parse entry point attribute
         val entryPoint = when (currentKind()) {
             TokenKind.COMPUTE -> {
                 advance()
                 EntryPointAttribute.Compute
             }
+
             TokenKind.FRAGMENT -> {
                 advance()
                 val inputs = mutableListOf<FragmentInput>()
@@ -483,6 +485,7 @@ class Parser(
                 }
                 EntryPointAttribute.Fragment(inputs)
             }
+
             TokenKind.VERTEX -> {
                 advance()
                 val outputs = mutableListOf<VertexOutput>()
@@ -498,15 +501,16 @@ class Parser(
                 }
                 EntryPointAttribute.Vertex(outputs)
             }
+
             else -> {
                 error("Expected entry point attribute (compute, fragment, vertex)")
                 EntryPointAttribute.Compute
             }
         }
-        
+
         // Parse function
         val function = parseFunctionDecl()
-        
+
         val end = function.span.end
         return OverrideDecl(
             attributes = emptyList(), // TODO: parse attributes
@@ -521,16 +525,16 @@ class Parser(
      */
     private fun parseConstAssertDecl(): ConstAssertDecl {
         val start = currentToken.span
-        
+
         // Consume 'const_assert'
         expectOrError(TokenKind.CONST_ASSERT, "Expected 'const_assert'")
         expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
-        
+
         val expression = parseExpression()
-        
+
         expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return ConstAssertDecl(
             expression = expression,
@@ -543,10 +547,10 @@ class Parser(
      */
     private fun parseAttribute(): Attribute {
         val start = currentToken.span
-        
+
         // Consume '@'
         expectOrError(TokenKind.AT, "Expected '@'")
-        
+
         // Parse attribute name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -555,7 +559,7 @@ class Parser(
             error("Expected attribute name")
             ""
         }
-        
+
         // Parse arguments (if any)
         val args = mutableListOf<Expression>()
         if (currentKind() == TokenKind.LEFT_PAREN) {
@@ -568,7 +572,7 @@ class Parser(
             }
             expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
         }
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return Attribute(
             name = name,
@@ -593,18 +597,18 @@ class Parser(
      */
     private fun parseTemplateParamList(): List<TemplateParam> {
         val params = mutableListOf<TemplateParam>()
-        
+
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
-        
+
         while (currentKind() != TokenKind.RIGHT_ANGLE && !isAtEnd()) {
             params.add(parseTemplateParam())
             if (currentKind() == TokenKind.COMMA) {
                 advance()
             }
         }
-        
+
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
-        
+
         return params
     }
 
@@ -613,7 +617,7 @@ class Parser(
      */
     private fun parseTemplateParam(): TemplateParam {
         val start = currentToken.span
-        
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -622,7 +626,7 @@ class Parser(
             error("Expected template parameter name")
             ""
         }
-        
+
         // Parse constraint (if any)
         val constraint = if (currentKind() == TokenKind.COLON) {
             advance()
@@ -630,7 +634,7 @@ class Parser(
         } else {
             null
         }
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return TemplateParam(
             name = name,
@@ -644,14 +648,14 @@ class Parser(
      */
     private fun parseParameterList(): List<Param> {
         val params = mutableListOf<Param>()
-        
+
         while (currentKind() != TokenKind.RIGHT_PAREN && !isAtEnd()) {
             params.add(parseParameter())
             if (currentKind() == TokenKind.COMMA) {
                 advance()
             }
         }
-        
+
         return params
     }
 
@@ -660,13 +664,13 @@ class Parser(
      */
     private fun parseParameter(): Param {
         val start = currentToken.span
-        
+
         // Parse attributes (if any)
         val attributes = mutableListOf<Attribute>()
         while (currentKind() == TokenKind.AT) {
             attributes.add(parseAttribute())
         }
-        
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -675,11 +679,11 @@ class Parser(
             error("Expected parameter name")
             ""
         }
-        
+
         // Parse type
         expectOrError(TokenKind.COLON, "Expected ':'")
         val type = parseTypeDecl()
-        
+
         // Parse default value (if any)
         val defaultValue = if (currentKind() == TokenKind.ASSIGN) {
             advance()
@@ -687,7 +691,7 @@ class Parser(
         } else {
             null
         }
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return Param(
             attributes = attributes,
@@ -703,72 +707,88 @@ class Parser(
      */
     private fun parseTypeDecl(): TypeDecl {
         val start = currentToken.span
-        
+
         when (currentKind()) {
             TokenKind.BOOL -> {
                 advance()
                 return ScalarType(ScalarKind.BOOL, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.I8 -> {
                 advance()
                 return ScalarType(ScalarKind.I8, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.U8 -> {
                 advance()
                 return ScalarType(ScalarKind.U8, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.I16 -> {
                 advance()
                 return ScalarType(ScalarKind.I16, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.U16 -> {
                 advance()
                 return ScalarType(ScalarKind.U16, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.I32 -> {
                 advance()
                 return ScalarType(ScalarKind.I32, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.U32 -> {
                 advance()
                 return ScalarType(ScalarKind.U32, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.I64 -> {
                 advance()
                 return ScalarType(ScalarKind.I64, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.U64 -> {
                 advance()
                 return ScalarType(ScalarKind.U64, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.F16 -> {
                 advance()
                 return ScalarType(ScalarKind.F16, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.F32 -> {
                 advance()
                 return ScalarType(ScalarKind.F32, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.F64 -> {
                 advance()
                 return ScalarType(ScalarKind.F64, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.VEC -> {
                 advance()
                 return parseVectorType(start)
             }
+
             TokenKind.MAT -> {
                 advance()
                 return parseMatrixType(start)
             }
+
             TokenKind.ARRAY -> {
                 advance()
                 return parseArrayType(start)
             }
+
             TokenKind.IDENTIFIER -> {
                 val nameToken = advance()
                 return NamedType(nameToken.literal ?: "", nameToken.span)
             }
+
             else -> {
                 error("Expected a type")
                 return NamedType("", start)
@@ -787,11 +807,11 @@ class Parser(
             error("Expected vector size")
             2
         }
-        
+
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
         val elementType = parseTypeDecl()
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return VectorType(size, elementType, Span(start.start, end))
     }
@@ -807,9 +827,9 @@ class Parser(
             error("Expected matrix column count")
             2
         }
-        
+
         expectOrError(TokenKind.IDENTIFIER, "Expected 'x'")
-        
+
         val rows = if (currentKind() == TokenKind.INT_LITERAL) {
             val rowToken = advance()
             rowToken.literal?.toIntOrNull() ?: 2
@@ -817,11 +837,11 @@ class Parser(
             error("Expected matrix row count")
             2
         }
-        
+
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
         val elementType = parseTypeDecl()
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return MatrixType(columns, rows, elementType, Span(start.start, end))
     }
@@ -831,17 +851,17 @@ class Parser(
      */
     private fun parseArrayType(start: Span): ArrayType {
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
-        
+
         val elementType = parseTypeDecl()
-        
+
         // Parse length (if present)
         var length: Expression? = null
         var stride: Int? = null
-        
+
         if (currentKind() == TokenKind.COMMA) {
             advance()
             length = parseExpression()
-            
+
             if (currentKind() == TokenKind.COMMA) {
                 advance()
                 if (currentKind() == TokenKind.INT_LITERAL) {
@@ -850,9 +870,9 @@ class Parser(
                 }
             }
         }
-        
+
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return ArrayType(elementType, length, stride, Span(start.start, end))
     }
@@ -863,7 +883,7 @@ class Parser(
     private fun parseFragmentInput(): FragmentInput {
         var location: Int? = null
         var builtin: BuiltinValue? = null
-        
+
         if (currentKind() == TokenKind.AT) {
             advance()
             if (currentKind() == TokenKind.LOCATION) {
@@ -886,10 +906,10 @@ class Parser(
                 }
             }
         }
-        
+
         expectOrError(TokenKind.COLON, "Expected ':'")
         val type = parseTypeDecl()
-        
+
         return FragmentInput(location, builtin, type)
     }
 
@@ -899,7 +919,7 @@ class Parser(
     private fun parseVertexOutput(): VertexOutput {
         var location: Int? = null
         var builtin: BuiltinValue? = null
-        
+
         if (currentKind() == TokenKind.AT) {
             advance()
             if (currentKind() == TokenKind.LOCATION) {
@@ -922,10 +942,10 @@ class Parser(
                 }
             }
         }
-        
+
         expectOrError(TokenKind.COLON, "Expected ':'")
         val type = parseTypeDecl()
-        
+
         return VertexOutput(location, builtin, type)
     }
 
@@ -934,24 +954,78 @@ class Parser(
      */
     private fun parseBuiltinValue(): BuiltinValue {
         when (currentKind()) {
-            TokenKind.POSITION -> { advance(); return BuiltinValue.POSITION }
-            TokenKind.VERTEX_INDEX -> { advance(); return BuiltinValue.VERTEX_INDEX }
-            TokenKind.INSTANCE_INDEX -> { advance(); return BuiltinValue.INSTANCE_INDEX }
-            TokenKind.FRONT_FACING -> { advance(); return BuiltinValue.FRONT_FACING }
-            TokenKind.PRIMITIVE_INDEX -> { advance(); return BuiltinValue.PRIMITIVE_INDEX }
-            TokenKind.SAMPLE_INDEX -> { advance(); return BuiltinValue.SAMPLE_INDEX }
-            TokenKind.SAMPLE_MASK -> { advance(); return BuiltinValue.SAMPLE_MASK }
-            TokenKind.VIEWPORT_INDEX -> { advance(); return BuiltinValue.VIEWPORT_INDEX }
-            TokenKind.POINTSIZE -> { advance(); return BuiltinValue.POINTSIZE }
-            TokenKind.CLIP_DISTANCES -> { advance(); return BuiltinValue.CLIP_DISTANCES }
-            TokenKind.CULL_DISTANCES -> { advance(); return BuiltinValue.CULL_DISTANCES }
-            TokenKind.DEVICE_INDEX -> { advance(); return BuiltinValue.DEVICE_INDEX }
-            TokenKind.VIEW_INDEX -> { advance(); return BuiltinValue.VIEW_INDEX }
-            TokenKind.WORKGROUP_ID -> { advance(); return BuiltinValue.WORKGROUP_ID }
-            TokenKind.NUM_WORKGROUPS -> { advance(); return BuiltinValue.NUM_WORKGROUPS }
-            TokenKind.GLOBAL_INVOCATION_ID -> { advance(); return BuiltinValue.GLOBAL_INVOCATION_ID }
-            TokenKind.LOCAL_INVOCATION_ID -> { advance(); return BuiltinValue.LOCAL_INVOCATION_ID }
-            TokenKind.LOCAL_INVOCATION_INDEX -> { advance(); return BuiltinValue.LOCAL_INVOCATION_INDEX }
+            TokenKind.POSITION -> {
+                advance(); return BuiltinValue.POSITION
+            }
+
+            TokenKind.VERTEX_INDEX -> {
+                advance(); return BuiltinValue.VERTEX_INDEX
+            }
+
+            TokenKind.INSTANCE_INDEX -> {
+                advance(); return BuiltinValue.INSTANCE_INDEX
+            }
+
+            TokenKind.FRONT_FACING -> {
+                advance(); return BuiltinValue.FRONT_FACING
+            }
+
+            TokenKind.PRIMITIVE_INDEX -> {
+                advance(); return BuiltinValue.PRIMITIVE_INDEX
+            }
+
+            TokenKind.SAMPLE_INDEX -> {
+                advance(); return BuiltinValue.SAMPLE_INDEX
+            }
+
+            TokenKind.SAMPLE_MASK -> {
+                advance(); return BuiltinValue.SAMPLE_MASK
+            }
+
+            TokenKind.VIEWPORT_INDEX -> {
+                advance(); return BuiltinValue.VIEWPORT_INDEX
+            }
+
+            TokenKind.POINTSIZE -> {
+                advance(); return BuiltinValue.POINTSIZE
+            }
+
+            TokenKind.CLIP_DISTANCES -> {
+                advance(); return BuiltinValue.CLIP_DISTANCES
+            }
+
+            TokenKind.CULL_DISTANCES -> {
+                advance(); return BuiltinValue.CULL_DISTANCES
+            }
+
+            TokenKind.DEVICE_INDEX -> {
+                advance(); return BuiltinValue.DEVICE_INDEX
+            }
+
+            TokenKind.VIEW_INDEX -> {
+                advance(); return BuiltinValue.VIEW_INDEX
+            }
+
+            TokenKind.WORKGROUP_ID -> {
+                advance(); return BuiltinValue.WORKGROUP_ID
+            }
+
+            TokenKind.NUM_WORKGROUPS -> {
+                advance(); return BuiltinValue.NUM_WORKGROUPS
+            }
+
+            TokenKind.GLOBAL_INVOCATION_ID -> {
+                advance(); return BuiltinValue.GLOBAL_INVOCATION_ID
+            }
+
+            TokenKind.LOCAL_INVOCATION_ID -> {
+                advance(); return BuiltinValue.LOCAL_INVOCATION_ID
+            }
+
+            TokenKind.LOCAL_INVOCATION_INDEX -> {
+                advance(); return BuiltinValue.LOCAL_INVOCATION_INDEX
+            }
+
             else -> {
                 error("Expected builtin value")
                 return BuiltinValue.POSITION
@@ -975,18 +1049,18 @@ class Parser(
      */
     private fun parseTernaryExpression(): Expression {
         val left = parseLogicalOrExpression()
-        
+
         if (currentKind() == TokenKind.QUESTION) {
             advance()
             val trueExpr = parseExpression()
             expectOrError(TokenKind.COLON, "Expected ':' after ternary true expression")
             val falseExpr = parseExpression()
-            
+
             val start = left.span.start
             val end = previousToken?.span?.end ?: currentToken.span.end
             return TernaryExpr(left, trueExpr, falseExpr, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -995,16 +1069,16 @@ class Parser(
      */
     private fun parseLogicalOrExpression(): Expression {
         var left = parseLogicalAndExpression()
-        
+
         while (currentKind() == TokenKind.OR) {
             advance()
             val right = parseLogicalAndExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, BinaryOperator.LOGICAL_OR, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1013,16 +1087,16 @@ class Parser(
      */
     private fun parseLogicalAndExpression(): Expression {
         var left = parseBitwiseOrExpression()
-        
+
         while (currentKind() == TokenKind.AND) {
             advance()
             val right = parseBitwiseOrExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, BinaryOperator.LOGICAL_AND, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1031,16 +1105,16 @@ class Parser(
      */
     private fun parseBitwiseOrExpression(): Expression {
         var left = parseBitwiseXorExpression()
-        
+
         while (currentKind() == TokenKind.PIPE) {
             advance()
             val right = parseBitwiseXorExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, BinaryOperator.BITWISE_OR, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1049,16 +1123,16 @@ class Parser(
      */
     private fun parseBitwiseXorExpression(): Expression {
         var left = parseBitwiseAndExpression()
-        
+
         while (currentKind() == TokenKind.CARET) {
             advance()
             val right = parseBitwiseAndExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, BinaryOperator.BITWISE_XOR, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1067,16 +1141,16 @@ class Parser(
      */
     private fun parseBitwiseAndExpression(): Expression {
         var left = parseEqualityExpression()
-        
+
         while (currentKind() == TokenKind.AMPERSAND) {
             advance()
             val right = parseEqualityExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, BinaryOperator.BITWISE_AND, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1085,17 +1159,17 @@ class Parser(
      */
     private fun parseEqualityExpression(): Expression {
         var left = parseRelationalExpression()
-        
+
         while (currentKind() == TokenKind.EQ || currentKind() == TokenKind.NEQ) {
             val op = if (currentKind() == TokenKind.EQ) BinaryOperator.EQ else BinaryOperator.NEQ
             advance()
             val right = parseRelationalExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, op, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1104,9 +1178,10 @@ class Parser(
      */
     private fun parseRelationalExpression(): Expression {
         var left = parseShiftExpression()
-        
+
         while (currentKind() == TokenKind.LT || currentKind() == TokenKind.LTE ||
-               currentKind() == TokenKind.GT || currentKind() == TokenKind.GTE) {
+            currentKind() == TokenKind.GT || currentKind() == TokenKind.GTE
+        ) {
             val op = when (currentKind()) {
                 TokenKind.LT -> BinaryOperator.LT
                 TokenKind.LTE -> BinaryOperator.LTE
@@ -1116,12 +1191,12 @@ class Parser(
             }
             advance()
             val right = parseShiftExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, op, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1130,17 +1205,18 @@ class Parser(
      */
     private fun parseShiftExpression(): Expression {
         var left = parseAdditiveExpression()
-        
+
         while (currentKind() == TokenKind.LEFT_SHIFT || currentKind() == TokenKind.RIGHT_SHIFT) {
-            val op = if (currentKind() == TokenKind.LEFT_SHIFT) BinaryOperator.LEFT_SHIFT else BinaryOperator.RIGHT_SHIFT
+            val op =
+                if (currentKind() == TokenKind.LEFT_SHIFT) BinaryOperator.LEFT_SHIFT else BinaryOperator.RIGHT_SHIFT
             advance()
             val right = parseAdditiveExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, op, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1149,17 +1225,17 @@ class Parser(
      */
     private fun parseAdditiveExpression(): Expression {
         var left = parseMultiplicativeExpression()
-        
+
         while (currentKind() == TokenKind.PLUS || currentKind() == TokenKind.MINUS) {
             val op = if (currentKind() == TokenKind.PLUS) BinaryOperator.ADD else BinaryOperator.SUBTRACT
             advance()
             val right = parseMultiplicativeExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, op, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1168,7 +1244,7 @@ class Parser(
      */
     private fun parseMultiplicativeExpression(): Expression {
         var left = parseUnaryExpression()
-        
+
         while (currentKind() == TokenKind.STAR || currentKind() == TokenKind.SLASH || currentKind() == TokenKind.PERCENT) {
             val op = when (currentKind()) {
                 TokenKind.STAR -> BinaryOperator.MULTIPLY
@@ -1178,12 +1254,12 @@ class Parser(
             }
             advance()
             val right = parseUnaryExpression()
-            
+
             val start = left.span.start
             val end = right.span.end
             left = BinaryExpr(left, op, right, Span(start, end))
         }
-        
+
         return left
     }
 
@@ -1197,21 +1273,25 @@ class Parser(
                 val operand = parseUnaryExpression()
                 return UnaryExpr(UnaryOperator.MINUS, operand, operand.span)
             }
+
             TokenKind.PLUS -> {
                 advance()
                 val operand = parseUnaryExpression()
                 return UnaryExpr(UnaryOperator.PLUS, operand, operand.span)
             }
+
             TokenKind.NOT -> {
                 advance()
                 val operand = parseUnaryExpression()
                 return UnaryExpr(UnaryOperator.NOT, operand, operand.span)
             }
+
             TokenKind.TILDE -> {
                 advance()
                 val operand = parseUnaryExpression()
                 return UnaryExpr(UnaryOperator.BITWISE_NOT, operand, operand.span)
             }
+
             else -> return parsePostfixExpression()
         }
     }
@@ -1221,7 +1301,7 @@ class Parser(
      */
     private fun parsePostfixExpression(): Expression {
         var left = parsePrimaryExpression()
-        
+
         while (true) {
             when (currentKind()) {
                 TokenKind.DOT -> {
@@ -1237,6 +1317,7 @@ class Parser(
                         break
                     }
                 }
+
                 TokenKind.LEFT_BRACKET -> {
                     advance()
                     val index = parseExpression()
@@ -1245,6 +1326,7 @@ class Parser(
                     val end = previousToken?.span?.end ?: currentToken.span.end
                     left = IndexExpr(left, index, Span(start, end))
                 }
+
                 TokenKind.INCREMENT -> {
                     advance()
                     // Postfix increment
@@ -1254,6 +1336,7 @@ class Parser(
                     // TODO: proper increment expression
                     left = left
                 }
+
                 TokenKind.DECREMENT -> {
                     advance()
                     // Postfix decrement
@@ -1263,10 +1346,11 @@ class Parser(
                     // TODO: proper decrement expression
                     left = left
                 }
+
                 else -> break
             }
         }
-        
+
         return left
     }
 
@@ -1275,38 +1359,45 @@ class Parser(
      */
     private fun parsePrimaryExpression(): Expression {
         val start = currentToken.span
-        
+
         return when (currentKind()) {
             TokenKind.INT_LITERAL -> {
                 val token = advance()
                 IntLiteral(token.literal?.toLongOrNull() ?: 0, null, token.span)
             }
+
             TokenKind.UINT_LITERAL -> {
                 val token = advance()
                 IntLiteral(token.literal?.toLongOrNull() ?: 0, "u", token.span)
             }
+
             TokenKind.FLOAT_LITERAL -> {
                 val token = advance()
                 FloatLiteral(token.literal?.toDoubleOrNull() ?: 0.0, null, token.span)
             }
+
             TokenKind.TRUE -> {
                 advance()
                 BoolLiteral(true, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.FALSE -> {
                 advance()
                 BoolLiteral(false, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.STRING_LITERAL -> {
                 val token = advance()
                 // Remove quotes from literal
                 val value = token.literal?.removeSurrounding("\"") ?: ""
                 StringLiteral(value, token.span)
             }
+
             TokenKind.IDENTIFIER -> {
                 val token = advance()
                 IdentExpr(token.literal ?: "", token.span)
             }
+
             TokenKind.LEFT_PAREN -> {
                 advance()
                 val expr = parseExpression()
@@ -1314,6 +1405,7 @@ class Parser(
                 val end = previousToken?.span?.end ?: currentToken.span.end
                 expr // Return the expression inside parentheses
             }
+
             else -> {
                 error("Expected a primary expression")
                 IdentExpr("", start)
@@ -1330,16 +1422,16 @@ class Parser(
      */
     private fun parseBlockStatement(): BlockStatement {
         val start = currentToken.span
-        
+
         expectOrError(TokenKind.LEFT_BRACE, "Expected '{'")
-        
+
         val statements = mutableListOf<Statement>()
         while (currentKind() != TokenKind.RIGHT_BRACE && !isAtEnd()) {
             statements.add(parseStatement())
         }
-        
+
         expectOrError(TokenKind.RIGHT_BRACE, "Expected '}'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return BlockStatement(statements, Span(start.start, end))
     }
@@ -1349,7 +1441,7 @@ class Parser(
      */
     private fun parseStatement(): Statement {
         val start = currentToken.span
-        
+
         return when (currentKind()) {
             TokenKind.LEFT_BRACE -> parseBlockStatement()
             TokenKind.IF -> parseIfStatement()
@@ -1362,11 +1454,13 @@ class Parser(
                 expectOrError(TokenKind.SEMICOLON, "Expected ';'")
                 BreakStatement(Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.CONTINUE -> {
                 advance()
                 expectOrError(TokenKind.SEMICOLON, "Expected ';'")
                 ContinueStatement(Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.RETURN -> {
                 advance()
                 val value = if (currentKind() != TokenKind.SEMICOLON) {
@@ -1377,11 +1471,13 @@ class Parser(
                 expectOrError(TokenKind.SEMICOLON, "Expected ';'")
                 ReturnStatement(value, Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.DISCARD -> {
                 advance()
                 expectOrError(TokenKind.SEMICOLON, "Expected ';'")
                 DiscardStatement(Span(start.start, previousToken?.span?.end ?: start.end))
             }
+
             TokenKind.LET, TokenKind.CONST, TokenKind.VAR -> parseVariableDeclStatement()
             else -> {
                 // Expression statement
@@ -1397,21 +1493,21 @@ class Parser(
      */
     private fun parseIfStatement(): IfStatement {
         val start = currentToken.span
-        
+
         expectOrError(TokenKind.IF, "Expected 'if'")
         expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
         val condition = parseExpression()
         expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
-        
+
         val thenBranch = parseStatement()
-        
+
         val elseBranch = if (currentKind() == TokenKind.ELSE) {
             advance()
             parseStatement()
         } else {
             null
         }
-        
+
         val end = elseBranch?.span?.end ?: thenBranch.span.end
         return IfStatement(condition, thenBranch, elseBranch, Span(start.start, end))
     }
@@ -1421,14 +1517,14 @@ class Parser(
      */
     private fun parseSwitchStatement(): SwitchStatement {
         val start = currentToken.span
-        
+
         expectOrError(TokenKind.SWITCH, "Expected 'switch'")
         expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
         val expression = parseExpression()
         expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
-        
+
         val body = parseSwitchBody()
-        
+
         val end = body.span.end
         return SwitchStatement(expression, body, Span(start.start, end))
     }
@@ -1438,16 +1534,16 @@ class Parser(
      */
     private fun parseSwitchBody(): SwitchBody {
         val start = currentToken.span
-        
+
         expectOrError(TokenKind.LEFT_BRACE, "Expected '{'")
-        
+
         val cases = mutableListOf<SwitchCase>()
         while (currentKind() != TokenKind.RIGHT_BRACE && !isAtEnd()) {
             cases.add(parseSwitchCase())
         }
-        
+
         expectOrError(TokenKind.RIGHT_BRACE, "Expected '}'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return SwitchBody(cases, Span(start.start, end))
     }
@@ -1474,18 +1570,18 @@ class Parser(
      */
     private fun parseLoopStatement(): LoopStatement {
         val start = currentToken.span
-        
+
         expectOrError(TokenKind.LOOP, "Expected 'loop'")
-        
+
         val body = parseBlockStatement()
-        
+
         val continuing = if (currentKind() == TokenKind.CONTINUING) {
             advance()
             parseBlockStatement()
         } else {
             null
         }
-        
+
         val end = continuing?.span?.end ?: body.span.end
         return LoopStatement(body, continuing, Span(start.start, end))
     }
@@ -1495,21 +1591,21 @@ class Parser(
      */
     private fun parseWhileStatement(): WhileStatement {
         val start = currentToken.span
-        
+
         expectOrError(TokenKind.WHILE, "Expected 'while'")
         expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
         val condition = parseExpression()
         expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
-        
+
         val body = parseBlockStatement()
-        
+
         val continuing = if (currentKind() == TokenKind.CONTINUING) {
             advance()
             parseBlockStatement()
         } else {
             null
         }
-        
+
         val end = continuing?.span?.end ?: body.span.end
         return WhileStatement(condition, body, continuing, Span(start.start, end))
     }
@@ -1519,10 +1615,10 @@ class Parser(
      */
     private fun parseForStatement(): ForStatement {
         val start = currentToken.span
-        
+
         expectOrError(TokenKind.FOR, "Expected 'for'")
         expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
-        
+
         // Parse init
         val init = if (currentKind() != TokenKind.SEMICOLON) {
             val stmt = parseVariableDeclStatement()
@@ -1532,7 +1628,7 @@ class Parser(
             advance()
             null
         }
-        
+
         // Parse condition
         val condition = if (currentKind() != TokenKind.SEMICOLON) {
             parseExpression()
@@ -1540,7 +1636,7 @@ class Parser(
             null
         }
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
-        
+
         // Parse update
         val update = if (currentKind() != TokenKind.RIGHT_PAREN) {
             parseExpression()
@@ -1548,9 +1644,9 @@ class Parser(
             null
         }
         expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
-        
+
         val body = parseBlockStatement()
-        
+
         val end = body.span.end
         return ForStatement(init, condition, update, body, Span(start.start, end))
     }
@@ -1560,7 +1656,7 @@ class Parser(
      */
     private fun parseVariableDeclStatement(): VariableDeclStatement {
         val start = currentToken.span
-        
+
         // Parse kind (let, const, var)
         val kind = when (currentKind()) {
             TokenKind.LET -> VariableDeclKind.LET
@@ -1572,7 +1668,7 @@ class Parser(
             }
         }
         advance()
-        
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -1581,7 +1677,7 @@ class Parser(
             error("Expected variable name")
             ""
         }
-        
+
         // Parse type annotation (if any)
         val type = if (currentKind() == TokenKind.COLON) {
             advance()
@@ -1589,7 +1685,7 @@ class Parser(
         } else {
             null
         }
-        
+
         // Parse initializer
         val initializer = if (currentKind() == TokenKind.ASSIGN) {
             advance()
@@ -1597,9 +1693,9 @@ class Parser(
         } else {
             null
         }
-        
+
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
-        
+
         val end = previousToken?.span?.end ?: currentToken.span.end
         return VariableDeclStatement(kind, name, type, initializer, Span(start.start, end))
     }

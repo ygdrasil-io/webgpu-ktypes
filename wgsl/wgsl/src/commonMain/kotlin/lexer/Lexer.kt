@@ -26,13 +26,13 @@ class Lexer(
 ) : TokenStream {
     /** Current position in the source. */
     private var position: SourcePosition = SourcePosition.START
-    
+
     /** Current index in the source string. */
     private var index: Int = 0
-    
+
     /** The next token, cached for peek(). */
     private var peeked: Token? = null
-    
+
     /** true if we've reached the end of the source. */
     private val isAtEnd: Boolean get() = index >= source.length
 
@@ -123,14 +123,14 @@ class Lexer(
      * Creates a span from the start position to the current position.
      * Span uses start (inclusive) and end (exclusive) byte indices.
      */
-    private fun spanFrom(start: SourcePosition): Span = 
+    private fun spanFrom(start: SourcePosition): Span =
         Span(start.offset.toUInt(), position.offset.toUInt())
 
     /**
      * Creates a span from the start index to the current index.
      * Span uses start (inclusive) and end (exclusive) byte indices.
      */
-    private fun spanFrom(startIndex: Int): Span = 
+    private fun spanFrom(startIndex: Int): Span =
         Span(startIndex.toUInt(), index.toUInt())
 
     /**
@@ -139,7 +139,7 @@ class Lexer(
     private fun nextToken(): Token {
         // Skip whitespace
         skipWhitespace()
-        
+
         if (isAtEnd) {
             return Token.eof(spanFrom(position))
         }
@@ -157,20 +157,20 @@ class Lexer(
                     Token.simple(TokenKind.SLASH, spanFrom(start))
                 }
             }
-            
+
             // Identifiers and keywords
             in 'a'..'z', in 'A'..'Z', '_' -> lexIdentifierOrKeyword(start)
-            
+
             // Numeric literals
             in '0'..'9' -> lexNumericLiteral(start)
-            
+
             // String literals
             '"' -> lexStringLiteral(start)
-            
+
             // Operators and punctuation
-            '+', '-', '*', '%', '&', '|', '^', '~', '<', '>', '!', '=', ':', '.' -> 
+            '+', '-', '*', '%', '&', '|', '^', '~', '<', '>', '!', '=', ':', '.' ->
                 lexOperatorOrPunctuation(char, start)
-            
+
             // Single-character punctuation
             '(', ')', '{', '}', '[', ']', ',', ';', '?', '#' -> {
                 consume()
@@ -189,13 +189,13 @@ class Lexer(
                 }
                 Token.simple(kind, spanFrom(start))
             }
-            
+
             // At symbol
             '@' -> {
                 consume()
                 Token.simple(TokenKind.AT, spanFrom(start))
             }
-            
+
             // Underscore
             '_' -> {
                 consume()
@@ -207,7 +207,7 @@ class Lexer(
                     Token.simple(TokenKind.UNDERSCORE, spanFrom(start))
                 }
             }
-            
+
             else -> {
                 // Unknown character - consume and return as error
                 consume()
@@ -235,12 +235,12 @@ class Lexer(
         // Consume //
         consume()
         consume()
-        
+
         val isDocComment = expect('/')
-        
+
         // Consume until newline or end
         consumeWhile { it != '\n' && it != '\r' }
-        
+
         val kind = if (isDocComment) TokenKind.DOC_COMMENT else TokenKind.SINGLE_LINE_COMMENT
         return Token.simple(kind, spanFrom(start))
     }
@@ -252,7 +252,7 @@ class Lexer(
         // Consume /*
         consume()
         consume()
-        
+
         // Doc comments start with /** (one or more stars after /)
         val isDocComment = peekChar() == '*'
         if (isDocComment) {
@@ -262,7 +262,7 @@ class Lexer(
                 consume()
             }
         }
-        
+
         // Consume until */ or end
         while (!isAtEnd) {
             if (peekChar() == '*' && peekChar(1) == '/') {
@@ -272,7 +272,7 @@ class Lexer(
             }
             consume()
         }
-        
+
         val kind = if (isDocComment) TokenKind.DOC_COMMENT else TokenKind.MULTI_LINE_COMMENT
         return Token.simple(kind, spanFrom(start))
     }
@@ -282,16 +282,16 @@ class Lexer(
      */
     private fun lexIdentifierOrKeyword(start: SourcePosition): Token {
         val startIndex = index
-        
+
         // Consume the first character (letter or underscore)
         consume()
-        
+
         // Consume the rest of the identifier
         consumeWhile { it in 'a'..'z' || it in 'A'..'Z' || it == '_' || it in '0'..'9' }
-        
+
         val text = source.substring(startIndex, index)
         val kind = keywordFor(text) ?: TokenKind.IDENTIFIER
-        
+
         return if (kind == TokenKind.IDENTIFIER) {
             Token.identifier(text, spanFrom(start))
         } else {
@@ -305,14 +305,14 @@ class Lexer(
     private fun lexNumericLiteral(start: SourcePosition): Token {
         val startIndex = index
         val firstChar = peekChar()!!
-        
+
         // Check for hexadecimal
         val isHex = firstChar == '0' && peekChar(1)?.let { it in "xX" } ?: false
-        
+
         if (isHex) {
             return lexHexLiteral(start, startIndex)
         }
-        
+
         // Decimal literal
         return lexDecimalLiteral(start, startIndex)
     }
@@ -324,19 +324,19 @@ class Lexer(
         // Consume 0x or 0X
         consume()
         consume()
-        
+
         // Consume hex digits
         consumeWhile { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }
-        
+
         var isFloat = false
-        
+
         // Optional fractional part
         if (peekChar() == '.') {
             isFloat = true
             consume()
             consumeWhile { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }
         }
-        
+
         // Optional exponent part
         if (peekChar()?.let { it in "pP" } == true) {
             isFloat = true
@@ -346,7 +346,7 @@ class Lexer(
             }
             consumeWhile { it in '0'..'9' }
         }
-        
+
         // Suffixes
         if (isFloat) {
             if (peekChar()?.let { it in "fFhH" } == true) {
@@ -363,7 +363,7 @@ class Lexer(
                 consume()
             }
         }
-        
+
         val text = source.substring(startIndex, index)
         return if (isFloat) {
             Token.floatLiteral(text, spanFrom(start))
@@ -380,22 +380,25 @@ class Lexer(
     private fun lexDecimalLiteral(start: SourcePosition, startIndex: Int): Token {
         // Consume digits
         consumeWhile { it in '0'..'9' }
-        
+
         // Check for float parts
         val hasDot = peekChar() == '.'
         val hasExp = peekChar()?.let { it in "eE" } ?: false
         val hasSuffix = peekChar()?.let { it in "fFuU" } ?: false
-        
+
         if (hasDot || hasExp) {
             return lexFloatLiteral(start, startIndex)
         }
-        
+
         // Check for integer suffixes
         val nextChar = peekChar()?.lowercaseChar()
         if (nextChar == 'u' || nextChar == 'i') {
             consume()
             val text = source.substring(startIndex, index)
-            return if (nextChar == 'u') Token.uintLiteral(text, spanFrom(start)) else Token.intLiteral(text, spanFrom(start))
+            return if (nextChar == 'u') Token.uintLiteral(text, spanFrom(start)) else Token.intLiteral(
+                text,
+                spanFrom(start)
+            )
         } else if (nextChar == 'l' && (peekChar(1)?.lowercaseChar() == 'u' || peekChar(1)?.lowercaseChar() == 'i')) {
             val isUnsigned = peekChar(1)?.lowercaseChar() == 'u'
             consume()
@@ -403,7 +406,7 @@ class Lexer(
             val text = source.substring(startIndex, index)
             return if (isUnsigned) Token.uintLiteral(text, spanFrom(start)) else Token.intLiteral(text, spanFrom(start))
         }
-        
+
         // Check for float suffixes without dot/exp
         if (nextChar == 'f' || nextChar == 'h') {
             consume()
@@ -415,7 +418,7 @@ class Lexer(
             val text = source.substring(startIndex, index)
             return Token.floatLiteral(text, spanFrom(start))
         }
-        
+
         val text = source.substring(startIndex, index)
         return Token.intLiteral(text, spanFrom(start))
     }
@@ -425,13 +428,13 @@ class Lexer(
      */
     private fun lexFloatLiteral(start: SourcePosition, startIndex: Int): Token {
         // We've already consumed the integer part
-        
+
         // Consume fractional part
         if (peekChar() == '.') {
             consume()
             consumeWhile { it in '0'..'9' }
         }
-        
+
         // Consume exponent part
         if (peekChar()?.let { it in "eE" } == true) {
             consume()
@@ -440,7 +443,7 @@ class Lexer(
             }
             consumeWhile { it in '0'..'9' }
         }
-        
+
         // Check for float suffixes
         val nextChar = peekChar()?.lowercaseChar()
         if (nextChar == 'f' || nextChar == 'h') {
@@ -449,7 +452,7 @@ class Lexer(
             consume()
             consume()
         }
-        
+
         val text = source.substring(startIndex, index)
         return Token.floatLiteral(text, spanFrom(start))
     }
@@ -460,9 +463,9 @@ class Lexer(
     private fun lexStringLiteral(start: SourcePosition): Token {
         // Consume opening quote
         consume()
-        
+
         val startIndex = index
-        
+
         // Consume until closing quote or end
         while (!isAtEnd) {
             when (peekChar()!!) {
@@ -470,6 +473,7 @@ class Lexer(
                     consume()
                     break
                 }
+
                 '\\' -> {
                     // Handle escape sequences
                     consume()
@@ -477,14 +481,16 @@ class Lexer(
                         consume() // Consume the escaped character
                     }
                 }
+
                 '\n', '\r' -> {
                     // Unterminated string literal - still consume for error recovery
                     consume()
                 }
+
                 else -> consume()
             }
         }
-        
+
         val text = source.substring(startIndex - 1, index) // Include quotes
         return Token.stringLiteral(text, spanFrom(start))
     }
@@ -494,96 +500,200 @@ class Lexer(
      */
     private fun lexOperatorOrPunctuation(firstChar: Char, start: SourcePosition): Token {
         val startIndex = index
-        
+
         return when (firstChar) {
             '+' -> when (peekChar(1)) {
-                '+' -> { consume(); consume(); Token.simple(TokenKind.INCREMENT, spanFrom(start)) }
-                '=' -> { consume(); consume(); Token.simple(TokenKind.PLUS_ASSIGN, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.PLUS, spanFrom(start)) }
+                '+' -> {
+                    consume(); consume(); Token.simple(TokenKind.INCREMENT, spanFrom(start))
+                }
+
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.PLUS_ASSIGN, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.PLUS, spanFrom(start))
+                }
             }
-            
+
             '-' -> when (peekChar(1)) {
-                '-' -> { consume(); consume(); Token.simple(TokenKind.DECREMENT, spanFrom(start)) }
-                '=' -> { consume(); consume(); Token.simple(TokenKind.MINUS_ASSIGN, spanFrom(start)) }
-                '>' -> { consume(); consume(); Token.simple(TokenKind.ARROW, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.MINUS, spanFrom(start)) }
+                '-' -> {
+                    consume(); consume(); Token.simple(TokenKind.DECREMENT, spanFrom(start))
+                }
+
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.MINUS_ASSIGN, spanFrom(start))
+                }
+
+                '>' -> {
+                    consume(); consume(); Token.simple(TokenKind.ARROW, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.MINUS, spanFrom(start))
+                }
             }
-            
+
             '*' -> when (peekChar(1)) {
-                '=' -> { consume(); consume(); Token.simple(TokenKind.STAR_ASSIGN, spanFrom(start)) }
-                '.' -> { consume(); consume(); Token.simple(TokenKind.DOT_STAR, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.STAR, spanFrom(start)) }
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.STAR_ASSIGN, spanFrom(start))
+                }
+
+                '.' -> {
+                    consume(); consume(); Token.simple(TokenKind.DOT_STAR, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.STAR, spanFrom(start))
+                }
             }
-            
+
             '%' -> when (peekChar(1)) {
-                '=' -> { consume(); consume(); Token.simple(TokenKind.PERCENT_ASSIGN, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.PERCENT, spanFrom(start)) }
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.PERCENT_ASSIGN, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.PERCENT, spanFrom(start))
+                }
             }
-            
+
             '&' -> when (peekChar(1)) {
-                '&' -> { consume(); consume(); Token.simple(TokenKind.AND, spanFrom(start)) }
-                '=' -> { consume(); consume(); Token.simple(TokenKind.AND_ASSIGN, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.AMPERSAND, spanFrom(start)) }
+                '&' -> {
+                    consume(); consume(); Token.simple(TokenKind.AND, spanFrom(start))
+                }
+
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.AND_ASSIGN, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.AMPERSAND, spanFrom(start))
+                }
             }
-            
+
             '|' -> when (peekChar(1)) {
-                '|' -> { consume(); consume(); Token.simple(TokenKind.OR, spanFrom(start)) }
-                '=' -> { consume(); consume(); Token.simple(TokenKind.OR_ASSIGN, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.PIPE, spanFrom(start)) }
+                '|' -> {
+                    consume(); consume(); Token.simple(TokenKind.OR, spanFrom(start))
+                }
+
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.OR_ASSIGN, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.PIPE, spanFrom(start))
+                }
             }
-            
+
             '^' -> when (peekChar(1)) {
-                '=' -> { consume(); consume(); Token.simple(TokenKind.XOR_ASSIGN, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.CARET, spanFrom(start)) }
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.XOR_ASSIGN, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.CARET, spanFrom(start))
+                }
             }
-            
-            '~' -> { consume(); Token.simple(TokenKind.TILDE, spanFrom(start)) }
-            
+
+            '~' -> {
+                consume(); Token.simple(TokenKind.TILDE, spanFrom(start))
+            }
+
             '<' -> when (peekChar(1)) {
                 '<' -> when (peekChar(2)) {
-                    '=' -> { consume(); consume(); consume(); Token.simple(TokenKind.LEFT_SHIFT_ASSIGN, spanFrom(start)) }
-                    else -> { consume(); consume(); Token.simple(TokenKind.LEFT_SHIFT, spanFrom(start)) }
+                    '=' -> {
+                        consume(); consume(); consume(); Token.simple(TokenKind.LEFT_SHIFT_ASSIGN, spanFrom(start))
+                    }
+
+                    else -> {
+                        consume(); consume(); Token.simple(TokenKind.LEFT_SHIFT, spanFrom(start))
+                    }
                 }
-                '=' -> { consume(); consume(); Token.simple(TokenKind.LTE, spanFrom(start)) }
-                '>' -> { consume(); consume(); Token.simple(TokenKind.LEFT_ANGLE_RIGHT_ANGLE, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.LT, spanFrom(start)) }
+
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.LTE, spanFrom(start))
+                }
+
+                '>' -> {
+                    consume(); consume(); Token.simple(TokenKind.LEFT_ANGLE_RIGHT_ANGLE, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.LT, spanFrom(start))
+                }
             }
-            
+
             '>' -> when (peekChar(1)) {
                 '>' -> when (peekChar(2)) {
-                    '=' -> { consume(); consume(); consume(); Token.simple(TokenKind.RIGHT_SHIFT_ASSIGN, spanFrom(start)) }
-                    else -> { consume(); consume(); Token.simple(TokenKind.RIGHT_SHIFT, spanFrom(start)) }
+                    '=' -> {
+                        consume(); consume(); consume(); Token.simple(TokenKind.RIGHT_SHIFT_ASSIGN, spanFrom(start))
+                    }
+
+                    else -> {
+                        consume(); consume(); Token.simple(TokenKind.RIGHT_SHIFT, spanFrom(start))
+                    }
                 }
-                '=' -> { consume(); consume(); Token.simple(TokenKind.GTE, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.GT, spanFrom(start)) }
+
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.GTE, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.GT, spanFrom(start))
+                }
             }
-            
+
             '!' -> when (peekChar(1)) {
-                '=' -> { consume(); consume(); Token.simple(TokenKind.NEQ, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.NOT, spanFrom(start)) }
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.NEQ, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.NOT, spanFrom(start))
+                }
             }
-            
+
             '=' -> when (peekChar(1)) {
-                '>' -> { consume(); consume(); Token.simple(TokenKind.FAT_ARROW, spanFrom(start)) }
-                '=' -> { consume(); consume(); Token.simple(TokenKind.EQ, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.ASSIGN, spanFrom(start)) }
+                '>' -> {
+                    consume(); consume(); Token.simple(TokenKind.FAT_ARROW, spanFrom(start))
+                }
+
+                '=' -> {
+                    consume(); consume(); Token.simple(TokenKind.EQ, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.ASSIGN, spanFrom(start))
+                }
             }
-            
+
             ':' -> when (peekChar(1)) {
-                ':' -> { consume(); consume(); Token.simple(TokenKind.COLON_COLON, spanFrom(start)) }
-                else -> { consume(); Token.simple(TokenKind.COLON, spanFrom(start)) }
+                ':' -> {
+                    consume(); consume(); Token.simple(TokenKind.COLON_COLON, spanFrom(start))
+                }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.COLON, spanFrom(start))
+                }
             }
-            
+
             '.' -> when (peekChar(1)) {
-                '*' -> { consume(); consume(); Token.simple(TokenKind.DOT_STAR, spanFrom(start)) }
+                '*' -> {
+                    consume(); consume(); Token.simple(TokenKind.DOT_STAR, spanFrom(start))
+                }
+
                 in '0'..'9' -> {
                     // This is a float literal starting with .
                     // Don't consume the '.' - let lexFloatLiteral handle it
                     lexFloatLiteral(start, startIndex)
                 }
-                else -> { consume(); Token.simple(TokenKind.DOT, spanFrom(start)) }
+
+                else -> {
+                    consume(); Token.simple(TokenKind.DOT, spanFrom(start))
+                }
             }
-            
+
             else -> {
                 consume()
                 Token.simple(TokenKind.IDENTIFIER, spanFrom(start))
@@ -609,7 +719,7 @@ class Lexer(
         "return" -> TokenKind.RETURN
         "discard" -> TokenKind.DISCARD
         "continuing" -> TokenKind.CONTINUING
-        
+
         // Declarations
         "fn" -> TokenKind.FN
         "let" -> TokenKind.LET
@@ -618,19 +728,19 @@ class Lexer(
         "type" -> TokenKind.TYPE
         "struct" -> TokenKind.STRUCT
         "const_assert" -> TokenKind.CONST_ASSERT
-        
+
         // Type constructors
         "array" -> TokenKind.ARRAY
         "mat" -> TokenKind.MAT
         "vec" -> TokenKind.VEC
-        
+
         // Storage classes
         "uniform" -> TokenKind.UNIFORM
         "storage" -> TokenKind.STORAGE
         "workgroup" -> TokenKind.WORKGROUP
         "private" -> TokenKind.PRIVATE
         "function" -> TokenKind.FUNCTION
-        
+
         // Attributes
         "location" -> TokenKind.LOCATION
         "builtin" -> TokenKind.BUILTIN
@@ -643,7 +753,7 @@ class Lexer(
         "compute" -> TokenKind.COMPUTE
         "fragment" -> TokenKind.FRAGMENT
         "vertex" -> TokenKind.VERTEX
-        
+
         // Built-in types
         "bool" -> TokenKind.BOOL
         "i8" -> TokenKind.I8
@@ -672,7 +782,7 @@ class Lexer(
         "texture_depth_multisampled_2d" -> TokenKind.TEXTURE_DEPTH_MULTISAMPLED_2D
         "texture_external" -> TokenKind.TEXTURE_EXTERNAL
         "handle" -> TokenKind.HANDLE
-        
+
         // Built-in values
         "true" -> TokenKind.TRUE
         "false" -> TokenKind.FALSE
@@ -694,7 +804,7 @@ class Lexer(
         "global_invocation_id" -> TokenKind.GLOBAL_INVOCATION_ID
         "local_invocation_id" -> TokenKind.LOCAL_INVOCATION_ID
         "local_invocation_index" -> TokenKind.LOCAL_INVOCATION_INDEX
-        
+
         else -> null
     }
 

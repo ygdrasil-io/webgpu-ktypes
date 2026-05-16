@@ -18,11 +18,11 @@ import io.ygdrasil.wgsl.lexer.TokenKind
  * to parse the rest of the source file, enabling better error reporting.
  */
 class ErrorRecovery {
-    
+
     companion object {
         /** Maximum number of errors before stopping. */
         const val DEFAULT_MAX_ERRORS = 100
-        
+
         /** Tokens that can start a new statement. */
         private val STATEMENT_START_TOKENS = setOf(
             TokenKind.LET,
@@ -40,7 +40,7 @@ class ErrorRecovery {
             TokenKind.LEFT_BRACE,
             TokenKind.SEMICOLON
         )
-        
+
         /** Tokens that can start a new top-level declaration. */
         private val DECLARATION_START_TOKENS = setOf(
             TokenKind.FN,
@@ -52,14 +52,14 @@ class ErrorRecovery {
             TokenKind.OVERRIDE,
             TokenKind.AT
         )
-        
+
         /** Tokens that can end a statement. */
         private val STATEMENT_END_TOKENS = setOf(
             TokenKind.SEMICOLON,
             TokenKind.RIGHT_BRACE
         )
     }
-    
+
     /**
      * State for error recovery.
      */
@@ -77,17 +77,17 @@ class ErrorRecovery {
     ) {
         /** Check if we should stop parsing. */
         fun shouldStop(): Boolean = errorCount >= maxErrors
-        
+
         /** Check if we are at a synchronization point. */
         fun isAtSynchronizationPoint(token: Token): Boolean {
             return STATEMENT_START_TOKENS.contains(token.kind) ||
-                   STATEMENT_END_TOKENS.contains(token.kind) ||
-                   token.isEof
+                    STATEMENT_END_TOKENS.contains(token.kind) ||
+                    token.isEof
         }
     }
-    
+
     // ========== Recovery Strategies ==========
-    
+
     /**
      * Recover to the next statement.
      * 
@@ -105,29 +105,29 @@ class ErrorRecovery {
     ): Token {
         state.isRecovering = true
         var token = currentToken
-        
+
         while (!token.isEof && !state.shouldStop()) {
             if (STATEMENT_START_TOKENS.contains(token.kind)) {
                 // Found the start of a new statement
                 state.isRecovering = false
                 return token
             }
-            
+
             if (STATEMENT_END_TOKENS.contains(token.kind)) {
                 // Found the end of a statement
                 token = advance()
                 state.isRecovering = false
                 return token
             }
-            
+
             // Skip this token
             token = advance()
         }
-        
+
         state.isRecovering = false
         return token
     }
-    
+
     /**
      * Recover to the next top-level declaration.
      * 
@@ -145,20 +145,20 @@ class ErrorRecovery {
     ): Token {
         state.isRecovering = true
         var token = currentToken
-        
+
         while (!token.isEof && !state.shouldStop()) {
             if (DECLARATION_START_TOKENS.contains(token.kind)) {
                 state.isRecovering = false
                 return token
             }
-            
+
             token = advance()
         }
-        
+
         state.isRecovering = false
         return token
     }
-    
+
     /**
      * Recover to a specific token kind.
      * 
@@ -176,20 +176,20 @@ class ErrorRecovery {
     ): Token {
         state.isRecovering = true
         var token = currentToken
-        
+
         while (!token.isEof && !state.shouldStop()) {
             if (token.kind == targetKind) {
                 state.isRecovering = false
                 return token
             }
-            
+
             token = advance()
         }
-        
+
         state.isRecovering = false
         return token
     }
-    
+
     /**
      * Recover to one of several token kinds.
      * 
@@ -208,22 +208,22 @@ class ErrorRecovery {
         state.isRecovering = true
         var token = currentToken
         val targets = targetKinds.toSet()
-        
+
         while (!token.isEof && !state.shouldStop()) {
             if (targets.contains(token.kind)) {
                 state.isRecovering = false
                 return token
             }
-            
+
             token = advance()
         }
-        
+
         state.isRecovering = false
         return token
     }
-    
+
     // ========== Token Insertion/Replacement ==========
-    
+
     /**
      * Data class for virtual token insertion.
      * 
@@ -235,7 +235,7 @@ class ErrorRecovery {
         val text: String,
         val span: Span
     )
-    
+
     /**
      * Try to insert a virtual token and continue parsing.
      * 
@@ -256,7 +256,7 @@ class ErrorRecovery {
         }
         return null
     }
-    
+
     /**
      * Try to replace the current token with a different kind.
      * 
@@ -275,9 +275,9 @@ class ErrorRecovery {
         }
         return null
     }
-    
+
     // ========== Helper Methods ==========
-    
+
     /**
      * Skip tokens until we find a token of the given kind.
      * 
@@ -292,17 +292,17 @@ class ErrorRecovery {
         targetKind: TokenKind
     ): Token {
         var token = currentToken
-        
+
         while (!token.isEof) {
             if (token.kind == targetKind) {
                 return token
             }
             token = advance()
         }
-        
+
         return token
     }
-    
+
     /**
      * Skip tokens until we find one of the given kinds.
      * 
@@ -318,17 +318,17 @@ class ErrorRecovery {
     ): Token {
         var token = currentToken
         val targets = targetKinds.toSet()
-        
+
         while (!token.isEof) {
             if (targets.contains(token.kind)) {
                 return token
             }
             token = advance()
         }
-        
+
         return token
     }
-    
+
     /**
      * Check if we should attempt recovery after an error.
      * 
@@ -338,7 +338,7 @@ class ErrorRecovery {
     fun shouldAttemptRecovery(state: RecoveryState): Boolean {
         return !state.shouldStop() && !state.isRecovering
     }
-    
+
     /**
      * Create a dummy statement for error recovery.
      * 
@@ -349,7 +349,7 @@ class ErrorRecovery {
         // Return an empty block as a dummy
         return BlockStatement(emptyList(), span)
     }
-    
+
     /**
      * Create a dummy expression for error recovery.
      * 
@@ -360,7 +360,7 @@ class ErrorRecovery {
         // Return a boolean literal as a dummy
         return BoolLiteral(false, span)
     }
-    
+
     /**
      * Create a dummy type for error recovery.
      */
@@ -368,27 +368,32 @@ class ErrorRecovery {
         // Return a bool type as a dummy
         return ScalarType(ScalarKind.BOOL, span)
     }
-    
+
     // ========== Recovery Context ==========
-    
+
     /**
      * Context for error recovery that tracks what we're currently parsing.
      */
     enum class RecoveryContext {
         /** Parsing a top-level declaration. */
         DECLARATION,
+
         /** Parsing a function. */
         FUNCTION,
+
         /** Parsing a struct. */
         STRUCT,
+
         /** Parsing a statement. */
         STATEMENT,
+
         /** Parsing an expression. */
         EXPRESSION,
+
         /** Parsing a type. */
         TYPE
     }
-    
+
     /**
      * Get the appropriate recovery strategy for a context.
      */
@@ -402,17 +407,20 @@ class ErrorRecovery {
             RecoveryContext.TYPE -> RecoveryStrategy.TYPE
         }
     }
-    
+
     /**
      * Recovery strategy to use in different contexts.
      */
     enum class RecoveryStrategy {
         /** Recover to the next declaration. */
         DECLARATION,
+
         /** Recover to the next statement. */
         STATEMENT,
+
         /** Recover to the next expression boundary. */
         EXPRESSION,
+
         /** Recover to the next type boundary. */
         TYPE
     }

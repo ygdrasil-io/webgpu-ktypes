@@ -16,20 +16,20 @@ data class Type(
      */
     val inner: TypeInner,
 ) : Equatable {
-    
+
     override fun isEquivalentTo(other: Any): Boolean {
         if (other !is Type) return false
         return this.inner == other.inner
     }
-    
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Type) return false
         return inner == other.inner
     }
-    
+
     override fun hashCode(): Int = inner.hashCode()
-    
+
     override fun toString(): String = inner.toString()
 }
 
@@ -38,37 +38,37 @@ data class Type(
  */
 @Serializable
 sealed class TypeInner : Equatable {
-    
+
     // Scalar types
     data class Scalar(val kind: ScalarKind, val width: Int) : TypeInner()
-    
+
     // Vector types
     data class Vector(val size: VectorSize, val scalar: Handle<Type>) : TypeInner()
-    
+
     // Matrix types
     data class Matrix(val columns: VectorSize, val rows: VectorSize, val scalar: Handle<Type>) : TypeInner()
-    
+
     // Array types
     data class Array(val element: Handle<Type>, val size: ArraySize) : TypeInner()
-    
+
     // Struct types
     data class Struct(val members: List<StructMember>) : TypeInner()
-    
+
     // Pointer types
     data class Pointer(val base: Handle<Type>, val addressSpace: AddressSpace) : TypeInner()
-    
+
     // Value pointer types (WGSL extension)
     data class ValuePointer(val base: Handle<Type>) : TypeInner()
-    
+
     // Opaque types (for external types like textures, samplers)
     data class Opaque(val name: String) : TypeInner()
-    
+
     // Error type (for type errors)
     object Error : TypeInner()
-    
+
     // Abstract types
     data class Abstract(val scalar: ScalarKind) : TypeInner()
-    
+
     override fun isEquivalentTo(other: Any): Boolean {
         if (this === other) return true
         if (other !is TypeInner) return false
@@ -105,7 +105,7 @@ data class StructMember(
 sealed class ArraySize : Equatable {
     class Constant(val value: Int) : ArraySize()
     class Dynamic(val expression: Handle<Expression>) : ArraySize()
-    
+
     override fun isEquivalentTo(other: Any): Boolean {
         if (this === other) return true
         if (other !is ArraySize) return false

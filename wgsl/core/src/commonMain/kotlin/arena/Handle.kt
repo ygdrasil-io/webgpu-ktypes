@@ -21,33 +21,33 @@ import kotlin.jvm.JvmInline
 @Serializable(HandleSerializer::class)
 @JvmInline
 value class Handle<T>(val index: Int) {
-    
+
     /**
      * Invalid handle, used as default or sentinel value.
      */
     companion object {
         /** Invalid handle (index = -1) */
         val INVALID: Handle<Nothing> = Handle(-1)
-        
+
         /**
          * Creates a Handle from an index.
          * Used internally by Arena.
          */
         internal fun <T> fromIndex(index: Int): Handle<T> = Handle(index)
-        
+
         internal fun <U> create(index: Int): Handle<U> = Handle(index)
     }
-    
+
     /**
      * Checks if this Handle is valid (index >= 0).
      */
     fun isValid(): Boolean = index >= 0
-    
+
     /**
      * Checks if this Handle is invalid.
      */
     fun isInvalid(): Boolean = !isValid()
-    
+
     /**
      * Compares two Handles ignoring their generic type.
      * Useful for checking if two Handles point to the same element.
@@ -55,12 +55,12 @@ value class Handle<T>(val index: Int) {
     inline fun <reified U> equalsIgnoreType(other: Handle<U>): Boolean {
         return this.index == other.index
     }
-    
+
     /**
      * Converts this Handle to Handle<Any> for generic comparison.
      */
     fun toUntyped(): Handle<Any> = Handle(index)
-    
+
     override fun toString(): String = "Handle(${index})"
 }
 
@@ -69,13 +69,13 @@ value class Handle<T>(val index: Int) {
  * Handles are serialized as simple integers.
  */
 object HandleSerializer : KSerializer<Handle<*>> {
-    override val descriptor: SerialDescriptor = 
+    override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("Handle", PrimitiveKind.INT)
-    
+
     override fun serialize(encoder: Encoder, value: Handle<*>) {
         encoder.encodeInt(value.index)
     }
-    
+
     override fun deserialize(decoder: Decoder): Handle<*> {
         return Handle.create<Any>(decoder.decodeInt())
     }

@@ -9,13 +9,13 @@ package io.ygdrasil.wgsl.lexer
 enum class TokenKind {
     // End of file
     EOF,
-    
+
     // Whitespace and comments (typically skipped but available for full fidelity parsing)
     WHITESPACE,
     SINGLE_LINE_COMMENT,
     MULTI_LINE_COMMENT,
     DOC_COMMENT,
-    
+
     // Literals
     IDENTIFIER,
     INT_LITERAL,
@@ -23,7 +23,7 @@ enum class TokenKind {
     FLOAT_LITERAL,
     BOOL_LITERAL,
     STRING_LITERAL,
-    
+
     // Keywords - Control flow
     IF,
     ELSE,
@@ -37,7 +37,7 @@ enum class TokenKind {
     CONTINUE,
     RETURN,
     DISCARD,
-    
+
     // Keywords - Function and variable declarations
     FN,
     LET,
@@ -46,19 +46,19 @@ enum class TokenKind {
     TYPE,
     STRUCT,
     CONST_ASSERT,
-    
+
     // Keywords - Type constructors
     ARRAY,
     MAT,
     VEC,
-    
+
     // Keywords - Storage classes
     UNIFORM,
     STORAGE,
     WORKGROUP,
     PRIVATE,
     FUNCTION,
-    
+
     // Keywords - Attribute-related
     AT,
     LOCATION,
@@ -72,7 +72,7 @@ enum class TokenKind {
     COMPUTE,
     FRAGMENT,
     VERTEX,
-    
+
     // Keywords - Built-in scalar types
     BOOL,
     I8,
@@ -86,7 +86,7 @@ enum class TokenKind {
     F16,
     F32,
     F64,
-    
+
     // Keywords - Built-in texture and sampler types
     SAMPLER,
     TEXTURE_1D,
@@ -102,17 +102,17 @@ enum class TokenKind {
     TEXTURE_DEPTH_CUBE_ARRAY,
     TEXTURE_DEPTH_MULTISAMPLED_2D,
     TEXTURE_EXTERNAL,
-    
+
     // Keywords - Address spaces
     HANDLE,
-    
+
     // Operators - Arithmetic
     PLUS,
     MINUS,
     STAR,
     SLASH,
     PERCENT,
-    
+
     // Operators - Bitwise
     AMPERSAND,
     PIPE,
@@ -120,7 +120,7 @@ enum class TokenKind {
     TILDE,
     LEFT_SHIFT,
     RIGHT_SHIFT,
-    
+
     // Operators - Comparison
     EQ,
     NEQ,
@@ -128,15 +128,15 @@ enum class TokenKind {
     LTE,
     GT,
     GTE,
-    
+
     // Operators - Logical
     AND,
     OR,
     NOT,
-    
+
     // Keywords - Control flow additions
     CONTINUING,
-    
+
     // Operators - Assignment
     ASSIGN,
     PLUS_ASSIGN,
@@ -149,11 +149,11 @@ enum class TokenKind {
     XOR_ASSIGN,
     LEFT_SHIFT_ASSIGN,
     RIGHT_SHIFT_ASSIGN,
-    
+
     // Operators - Increment/Decrement
     INCREMENT,
     DECREMENT,
-    
+
     // Punctuation - Single character
     LEFT_PAREN,
     RIGHT_PAREN,
@@ -165,25 +165,25 @@ enum class TokenKind {
     DOT,
     COLON,
     SEMICOLON,
-    
+
     // Punctuation - Multi-character
     COLON_COLON,
     DOT_STAR,
     ARROW,
     FAT_ARROW,
-    
+
     // Template-related
     LEFT_ANGLE,
     RIGHT_ANGLE,
     LEFT_ANGLE_RIGHT_ANGLE,
-    
+
     // Special identifiers
     UNDERSCORE,
-    
+
     // Built-in boolean values
     TRUE,
     FALSE,
-    
+
     // Built-in values (used in @builtin attribute)
     POSITION,
     VERTEX_INDEX,
@@ -203,7 +203,7 @@ enum class TokenKind {
     GLOBAL_INVOCATION_ID,
     LOCAL_INVOCATION_ID,
     LOCAL_INVOCATION_INDEX,
-    
+
     // Ternary conditional operator
     QUESTION,
 
@@ -217,8 +217,8 @@ enum class TokenKind {
 val TokenKind.isKeyword: Boolean
     get() = when (this) {
         // Control flow
-        TokenKind.IF, TokenKind.ELSE, TokenKind.SWITCH, TokenKind.CASE, TokenKind.DEFAULT, 
-        TokenKind.LOOP, TokenKind.WHILE, TokenKind.FOR, TokenKind.BREAK, TokenKind.CONTINUE, 
+        TokenKind.IF, TokenKind.ELSE, TokenKind.SWITCH, TokenKind.CASE, TokenKind.DEFAULT,
+        TokenKind.LOOP, TokenKind.WHILE, TokenKind.FOR, TokenKind.BREAK, TokenKind.CONTINUE,
         TokenKind.RETURN, TokenKind.DISCARD, TokenKind.CONTINUING -> true
         // Declarations
         TokenKind.FN, TokenKind.LET, TokenKind.CONST, TokenKind.VAR, TokenKind.TYPE, TokenKind.STRUCT, TokenKind.CONST_ASSERT -> true
@@ -227,25 +227,27 @@ val TokenKind.isKeyword: Boolean
         // Storage classes
         TokenKind.UNIFORM, TokenKind.STORAGE, TokenKind.WORKGROUP, TokenKind.PRIVATE, TokenKind.FUNCTION -> true
         // Attributes
-        TokenKind.AT, TokenKind.LOCATION, TokenKind.BUILTIN, TokenKind.ENABLE, TokenKind.REQUIRES, 
-        TokenKind.INTERPOLATE, TokenKind.INVARIANT, TokenKind.MUST_USE, TokenKind.OVERRIDE, 
+        TokenKind.AT, TokenKind.LOCATION, TokenKind.BUILTIN, TokenKind.ENABLE, TokenKind.REQUIRES,
+        TokenKind.INTERPOLATE, TokenKind.INVARIANT, TokenKind.MUST_USE, TokenKind.OVERRIDE,
         TokenKind.COMPUTE, TokenKind.FRAGMENT, TokenKind.VERTEX -> true
         // Built-in types
-        TokenKind.BOOL, TokenKind.I8, TokenKind.U8, TokenKind.I16, TokenKind.U16, TokenKind.I32, 
+        TokenKind.BOOL, TokenKind.I8, TokenKind.U8, TokenKind.I16, TokenKind.U16, TokenKind.I32,
         TokenKind.U32, TokenKind.I64, TokenKind.U64, TokenKind.F16, TokenKind.F32, TokenKind.F64 -> true
-        TokenKind.TEXTURE_1D, TokenKind.TEXTURE_2D, TokenKind.TEXTURE_2D_ARRAY, TokenKind.TEXTURE_3D, 
+
+        TokenKind.TEXTURE_1D, TokenKind.TEXTURE_2D, TokenKind.TEXTURE_2D_ARRAY, TokenKind.TEXTURE_3D,
         TokenKind.TEXTURE_CUBE, TokenKind.TEXTURE_CUBE_ARRAY, TokenKind.TEXTURE_MULTISAMPLED_2D,
         TokenKind.TEXTURE_DEPTH_2D, TokenKind.TEXTURE_DEPTH_2D_ARRAY, TokenKind.TEXTURE_DEPTH_CUBE,
         TokenKind.TEXTURE_DEPTH_CUBE_ARRAY, TokenKind.TEXTURE_DEPTH_MULTISAMPLED_2D,
         TokenKind.TEXTURE_EXTERNAL, TokenKind.SAMPLER, TokenKind.HANDLE -> true
         // Built-in values
-        TokenKind.TRUE, TokenKind.FALSE, TokenKind.POSITION, TokenKind.VERTEX_INDEX, 
-        TokenKind.INSTANCE_INDEX, TokenKind.FRONT_FACING, TokenKind.PRIMITIVE_INDEX, 
-        TokenKind.SAMPLE_INDEX, TokenKind.SAMPLE_MASK, TokenKind.VIEWPORT_INDEX, 
-        TokenKind.POINTSIZE, TokenKind.CLIP_DISTANCES, TokenKind.CULL_DISTANCES, 
-        TokenKind.DEVICE_INDEX, TokenKind.VIEW_INDEX, TokenKind.WORKGROUP_ID, 
-        TokenKind.NUM_WORKGROUPS, TokenKind.GLOBAL_INVOCATION_ID, TokenKind.LOCAL_INVOCATION_ID, 
+        TokenKind.TRUE, TokenKind.FALSE, TokenKind.POSITION, TokenKind.VERTEX_INDEX,
+        TokenKind.INSTANCE_INDEX, TokenKind.FRONT_FACING, TokenKind.PRIMITIVE_INDEX,
+        TokenKind.SAMPLE_INDEX, TokenKind.SAMPLE_MASK, TokenKind.VIEWPORT_INDEX,
+        TokenKind.POINTSIZE, TokenKind.CLIP_DISTANCES, TokenKind.CULL_DISTANCES,
+        TokenKind.DEVICE_INDEX, TokenKind.VIEW_INDEX, TokenKind.WORKGROUP_ID,
+        TokenKind.NUM_WORKGROUPS, TokenKind.GLOBAL_INVOCATION_ID, TokenKind.LOCAL_INVOCATION_ID,
         TokenKind.LOCAL_INVOCATION_INDEX -> true
+
         else -> false
     }
 
@@ -254,8 +256,9 @@ val TokenKind.isKeyword: Boolean
  */
 val TokenKind.isLiteral: Boolean
     get() = when (this) {
-        TokenKind.IDENTIFIER, TokenKind.INT_LITERAL, TokenKind.UINT_LITERAL, 
+        TokenKind.IDENTIFIER, TokenKind.INT_LITERAL, TokenKind.UINT_LITERAL,
         TokenKind.FLOAT_LITERAL, TokenKind.BOOL_LITERAL, TokenKind.STRING_LITERAL -> true
+
         else -> false
     }
 
@@ -267,16 +270,16 @@ val TokenKind.isOperator: Boolean
         // Arithmetic
         TokenKind.PLUS, TokenKind.MINUS, TokenKind.STAR, TokenKind.SLASH, TokenKind.PERCENT -> true
         // Bitwise
-        TokenKind.AMPERSAND, TokenKind.PIPE, TokenKind.CARET, TokenKind.TILDE, 
+        TokenKind.AMPERSAND, TokenKind.PIPE, TokenKind.CARET, TokenKind.TILDE,
         TokenKind.LEFT_SHIFT, TokenKind.RIGHT_SHIFT -> true
         // Comparison
         TokenKind.EQ, TokenKind.NEQ, TokenKind.LT, TokenKind.LTE, TokenKind.GT, TokenKind.GTE -> true
         // Logical
         TokenKind.AND, TokenKind.OR, TokenKind.NOT -> true
         // Assignment
-        TokenKind.ASSIGN, TokenKind.PLUS_ASSIGN, TokenKind.MINUS_ASSIGN, TokenKind.STAR_ASSIGN, 
-        TokenKind.SLASH_ASSIGN, TokenKind.PERCENT_ASSIGN, TokenKind.AND_ASSIGN, 
-        TokenKind.OR_ASSIGN, TokenKind.XOR_ASSIGN, TokenKind.LEFT_SHIFT_ASSIGN, 
+        TokenKind.ASSIGN, TokenKind.PLUS_ASSIGN, TokenKind.MINUS_ASSIGN, TokenKind.STAR_ASSIGN,
+        TokenKind.SLASH_ASSIGN, TokenKind.PERCENT_ASSIGN, TokenKind.AND_ASSIGN,
+        TokenKind.OR_ASSIGN, TokenKind.XOR_ASSIGN, TokenKind.LEFT_SHIFT_ASSIGN,
         TokenKind.RIGHT_SHIFT_ASSIGN -> true
         // Increment/Decrement
         TokenKind.INCREMENT, TokenKind.DECREMENT -> true
@@ -293,10 +296,11 @@ val TokenKind.isOperator: Boolean
 val TokenKind.isPunctuation: Boolean
     get() = when (this) {
         TokenKind.LEFT_PAREN, TokenKind.RIGHT_PAREN, TokenKind.LEFT_BRACE, TokenKind.RIGHT_BRACE,
-        TokenKind.LEFT_BRACKET, TokenKind.RIGHT_BRACKET, TokenKind.COMMA, TokenKind.DOT, 
+        TokenKind.LEFT_BRACKET, TokenKind.RIGHT_BRACKET, TokenKind.COMMA, TokenKind.DOT,
         TokenKind.COLON, TokenKind.SEMICOLON,
         TokenKind.COLON_COLON, TokenKind.DOT_STAR, TokenKind.ARROW, TokenKind.FAT_ARROW,
         TokenKind.LEFT_ANGLE, TokenKind.RIGHT_ANGLE, TokenKind.LEFT_ANGLE_RIGHT_ANGLE -> true
+
         else -> false
     }
 
@@ -307,51 +311,51 @@ val TokenKind.isPunctuation: Boolean
 fun TokenKind.precedence(): Int = when (this) {
     // Primary expressions (highest precedence)
     TokenKind.LEFT_PAREN, TokenKind.DOT, TokenKind.LEFT_BRACKET -> 15
-    
+
     // Postfix operators
     TokenKind.INCREMENT, TokenKind.DECREMENT -> 14
-    
+
     // Unary operators
     TokenKind.NOT, TokenKind.TILDE, TokenKind.MINUS, TokenKind.PLUS -> 13
-    
+
     // Multiplicative
     TokenKind.STAR, TokenKind.SLASH, TokenKind.PERCENT -> 12
-    
+
     // Additive
     TokenKind.PLUS, TokenKind.MINUS -> 11
-    
+
     // Shift
     TokenKind.LEFT_SHIFT, TokenKind.RIGHT_SHIFT -> 10
-    
+
     // Relational
     TokenKind.LT, TokenKind.LTE, TokenKind.GT, TokenKind.GTE -> 9
-    
+
     // Equality
     TokenKind.EQ, TokenKind.NEQ -> 8
-    
+
     // Bitwise AND
     TokenKind.AMPERSAND -> 7
-    
+
     // Bitwise XOR
     TokenKind.CARET -> 6
-    
+
     // Bitwise OR
     TokenKind.PIPE -> 5
-    
+
     // Logical AND
     TokenKind.AND -> 4
-    
+
     // Logical OR
     TokenKind.OR -> 3
-    
+
     // Ternary conditional
     TokenKind.QUESTION -> 2
-    
+
     // Assignment (lowest precedence)
     TokenKind.ASSIGN, TokenKind.PLUS_ASSIGN, TokenKind.MINUS_ASSIGN, TokenKind.STAR_ASSIGN, TokenKind.SLASH_ASSIGN,
     TokenKind.PERCENT_ASSIGN, TokenKind.AND_ASSIGN, TokenKind.OR_ASSIGN, TokenKind.XOR_ASSIGN,
     TokenKind.LEFT_SHIFT_ASSIGN, TokenKind.RIGHT_SHIFT_ASSIGN -> 1
-    
+
     // Non-operators
     else -> 0
 }
@@ -369,6 +373,7 @@ val TokenKind.isBinaryOperator: Boolean
         TokenKind.ASSIGN, TokenKind.PLUS_ASSIGN, TokenKind.MINUS_ASSIGN, TokenKind.STAR_ASSIGN, TokenKind.SLASH_ASSIGN,
         TokenKind.PERCENT_ASSIGN, TokenKind.AND_ASSIGN, TokenKind.OR_ASSIGN, TokenKind.XOR_ASSIGN,
         TokenKind.LEFT_SHIFT_ASSIGN, TokenKind.RIGHT_SHIFT_ASSIGN -> true
+
         else -> false
     }
 
@@ -391,5 +396,6 @@ val TokenKind.isRightAssociative: Boolean
         TokenKind.LEFT_SHIFT_ASSIGN, TokenKind.RIGHT_SHIFT_ASSIGN,
         TokenKind.INCREMENT, TokenKind.DECREMENT,
         TokenKind.QUESTION -> true
+
         else -> false
     }

@@ -18,9 +18,9 @@ import io.ygdrasil.wgsl.ast.VariableDeclKind
  * including built-in WGSL types (scalar, vector, matrix types).
  */
 class TypeIndex {
-    
+
     // ========== Built-in WGSL Types ==========
-    
+
     private val builtinScalarTypes: Map<String, ScalarType> = mapOf(
         "bool" to ScalarType(ScalarKind.BOOL, io.ygdrasil.wgsl.ir.Span.UNDEFINED),
         "i8" to ScalarType(ScalarKind.I8, io.ygdrasil.wgsl.ir.Span.UNDEFINED),
@@ -35,17 +35,17 @@ class TypeIndex {
         "f32" to ScalarType(ScalarKind.F32, io.ygdrasil.wgsl.ir.Span.UNDEFINED),
         "f64" to ScalarType(ScalarKind.F64, io.ygdrasil.wgsl.ir.Span.UNDEFINED),
     )
-    
+
     // ========== User-Declared Types ==========
-    
+
     private val structs: MutableMap<String, StructDecl> = mutableMapOf()
     private val typeAliases: MutableMap<String, TypeAliasDecl> = mutableMapOf()
     private val functions: MutableMap<String, FunctionDecl> = mutableMapOf()
     private val globalVariables: MutableMap<String, VariableDecl> = mutableMapOf()
     private val globalConstants: MutableMap<String, VariableDecl> = mutableMapOf()
-    
+
     // ========== Indexing ==========
-    
+
     /**
      * Index all declarations in a translation unit.
      * 
@@ -57,7 +57,7 @@ class TypeIndex {
             indexDeclaration(declaration)
         }
     }
-    
+
     /**
      * Index a single declaration.
      */
@@ -69,18 +69,20 @@ class TypeIndex {
             is VariableDecl -> {
                 when (declaration.kind) {
                     VariableDeclKind.CONST -> globalConstants[declaration.name] = declaration
-                    VariableDeclKind.LET, VariableDeclKind.VAR -> 
+                    VariableDeclKind.LET, VariableDeclKind.VAR ->
                         globalVariables[declaration.name] = declaration
                 }
             }
+
             is OverrideDecl -> {
                 // Index the function inside the override
                 functions[declaration.function.name] = declaration.function
             }
+
             else -> {}
         }
     }
-    
+
     /**
      * Reset all indexes (clear user-declared types, keep built-ins).
      */
@@ -91,124 +93,123 @@ class TypeIndex {
         globalVariables.clear()
         globalConstants.clear()
     }
-    
+
     // ========== Lookup Methods ==========
-    
+
     /**
      * Check if a type name is known (builtin or user-declared).
      */
     fun isKnownType(name: String): Boolean {
         return builtinScalarTypes.containsKey(name) ||
-               structs.containsKey(name) ||
-               typeAliases.containsKey(name)
+                structs.containsKey(name) ||
+                typeAliases.containsKey(name)
     }
-    
+
     /**
      * Check if a value name is known (function, variable, constant).
      */
     fun isKnownValue(name: String): Boolean {
         return functions.containsKey(name) ||
-               globalVariables.containsKey(name) ||
-               globalConstants.containsKey(name) ||
-               isBuiltinValue(name)
+                globalVariables.containsKey(name) ||
+                globalConstants.containsKey(name) ||
+                isBuiltinValue(name)
     }
-    
+
     /**
      * Check if a name is a builtin value (true, false, etc.).
      */
     fun isBuiltinValue(name: String): Boolean {
         return name == "true" || name == "false"
     }
-    
+
     /**
      * Find a struct declaration by name.
      */
     fun findStruct(name: String): StructDecl? = structs[name]
-    
+
     /**
      * Find a type alias declaration by name.
      */
     fun findTypeAlias(name: String): TypeAliasDecl? = typeAliases[name]
-    
+
     /**
      * Find a function declaration by name.
      */
     fun findFunction(name: String): FunctionDecl? = functions[name]
-    
+
     /**
      * Find a global variable by name.
      */
     fun findGlobalVariable(name: String): VariableDecl? = globalVariables[name]
-    
+
     /**
      * Find a global constant by name.
      */
     fun findGlobalConstant(name: String): VariableDecl? = globalConstants[name]
-    
+
     /**
      * Find any declaration by name (type or value).
      */
     fun findDeclaration(name: String): GlobalDecl? {
-        return structs[name] ?: typeAliases[name] ?: functions[name] ?:
-               globalVariables[name] ?: globalConstants[name]
+        return structs[name] ?: typeAliases[name] ?: functions[name] ?: globalVariables[name] ?: globalConstants[name]
     }
-    
+
     /**
      * Get all struct declarations.
      */
     fun getAllStructs(): Collection<StructDecl> = structs.values
-    
+
     /**
      * Get all type alias declarations.
      */
     fun getAllTypeAliases(): Collection<TypeAliasDecl> = typeAliases.values
-    
+
     /**
      * Get all function declarations.
      */
     fun getAllFunctions(): Collection<FunctionDecl> = functions.values
-    
+
     /**
      * Get all global variable declarations.
      */
     fun getAllGlobalVariables(): Collection<VariableDecl> = globalVariables.values
-    
+
     /**
      * Get all global constant declarations.
      */
     fun getAllGlobalConstants(): Collection<VariableDecl> = globalConstants.values
-    
+
     // ========== Type Resolution Helpers ==========
-    
+
     /**
      * Get the ScalarType for a builtin scalar type name.
      */
     fun getBuiltinScalarType(name: String): ScalarType? = builtinScalarTypes[name]
-    
+
     /**
      * Get the ScalarKind for a builtin scalar type name.
      */
     fun getBuiltinScalarKind(name: String): ScalarKind? = builtinScalarTypes[name]?.kind
-    
+
     /**
      * Check if a name is a builtin scalar type.
      */
     fun isBuiltinScalarType(name: String): Boolean = builtinScalarTypes.containsKey(name)
-    
+
     /**
      * Check if a name is a builtin vector type (vec2, vec3, vec4).
      */
     fun isBuiltinVectorType(name: String): Boolean {
         return name.startsWith("vec") && (name.endsWith("2") || name.endsWith("3") || name.endsWith("4"))
     }
-    
+
     /**
      * Check if a name is a builtin matrix type (matCxR).
      */
     fun isBuiltinMatrixType(name: String): Boolean {
         return name.startsWith("mat")
     }
-    
+
     /**
      * Parse a builtin vector type name (e.g., "vec2<f32>") into its components.
      * Returns (size, elementTypeName) or null if not a vector type.
@@ -225,7 +226,7 @@ class TypeIndex {
         }
         return null
     }
-    
+
     /**
      * Parse a builtin matrix type name (e.g., "mat2x3<f32>") into its components.
      * Returns (columns, rows, elementTypeName) or null if not a matrix type.
@@ -243,7 +244,7 @@ class TypeIndex {
         }
         return null
     }
-    
+
     /**
      * Get all declared names (types and values).
      */
@@ -256,7 +257,7 @@ class TypeIndex {
         names.addAll(globalConstants.keys)
         return names
     }
-    
+
     /**
      * Check if a name is already declared.
      */

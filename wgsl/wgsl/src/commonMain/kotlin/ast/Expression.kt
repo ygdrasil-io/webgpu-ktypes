@@ -145,14 +145,14 @@ enum class BinaryOperator {
     MULTIPLY,
     DIVIDE,
     MODULO,
-    
+
     // Bitwise
     BITWISE_AND,
     BITWISE_OR,
     BITWISE_XOR,
     LEFT_SHIFT,
     RIGHT_SHIFT,
-    
+
     // Comparison
     EQ,
     NEQ,
@@ -160,11 +160,11 @@ enum class BinaryOperator {
     LTE,
     GT,
     GTE,
-    
+
     // Logical
     LOGICAL_AND,
     LOGICAL_OR,
-    
+
     // Other
     DOT,
     ARROW,

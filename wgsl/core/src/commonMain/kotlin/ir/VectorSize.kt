@@ -11,12 +11,12 @@ enum class VectorSize {
      * 2-element vector.
      */
     Bi,
-    
+
     /**
      * 3-element vector.
      */
     Tri,
-    
+
     /**
      * 4-element vector.
      */

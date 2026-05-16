@@ -88,7 +88,7 @@ data class Token(
          * @param span The span in source
          * @return A boolean literal token
          */
-        fun boolLiteral(value: Boolean, span: Span): Token = 
+        fun boolLiteral(value: Boolean, span: Span): Token =
             Token(TokenKind.BOOL_LITERAL, span, value.toString())
 
         /**
@@ -117,10 +117,11 @@ data class Token(
     val isWhitespace: Boolean get() = kind == TokenKind.WHITESPACE
 
     /** Returns true if this is a comment token. */
-    val isComment: Boolean get() = 
-        kind == TokenKind.SINGLE_LINE_COMMENT || 
-        kind == TokenKind.MULTI_LINE_COMMENT || 
-        kind == TokenKind.DOC_COMMENT
+    val isComment: Boolean
+        get() =
+            kind == TokenKind.SINGLE_LINE_COMMENT ||
+                    kind == TokenKind.MULTI_LINE_COMMENT ||
+                    kind == TokenKind.DOC_COMMENT
 
     /** Returns true if this is a keyword token. */
     val isKeyword: Boolean get() = kind.isKeyword
@@ -157,13 +158,13 @@ data class Token(
 interface TokenStream {
     /** Returns the next token, or null if at end of stream. */
     fun next(): Token?
-    
+
     /** Returns the next token without consuming it, or null if at end of stream. */
     fun peek(): Token?
-    
+
     /** Returns the current position in the source. */
     fun position(): SourcePosition
-    
+
     /** Returns true if we've reached the end of the stream. */
     fun isEof(): Boolean = peek()?.isEof ?: true
 }
@@ -186,7 +187,7 @@ data class SourcePosition(
         /**
          * Creates a source position.
          */
-        fun of(line: Int, column: Int, offset: Int): SourcePosition = 
+        fun of(line: Int, column: Int, offset: Int): SourcePosition =
             SourcePosition(line, column, offset)
     }
 
@@ -205,7 +206,7 @@ data class SourcePosition(
     /**
      * Returns a new position advanced by the given number of columns.
      */
-    fun advanceColumns(count: Int): SourcePosition = 
+    fun advanceColumns(count: Int): SourcePosition =
         SourcePosition(line, column + count, offset + count)
 
     override fun toString(): String = "${line + 1}:${column + 1}"

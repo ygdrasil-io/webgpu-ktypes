@@ -8,10 +8,13 @@ import io.ygdrasil.wgsl.ir.Span
 enum class DiagnosticSeverity {
     /** An error that prevents compilation. */
     ERROR,
+
     /** A warning that doesn't prevent compilation but indicates a potential issue. */
     WARNING,
+
     /** An informational message. */
     INFO,
+
     /** A debug message. */
     DEBUG
 }
@@ -26,7 +29,7 @@ enum class ErrorCode(val code: String, val description: String) {
     UNTERMINATED_STRING("E0003", "Unterminated string literal"),
     UNTERMINATED_COMMENT("E0004", "Unterminated comment"),
     INVALID_ESCAPE("E0005", "Invalid escape sequence"),
-    
+
     // Parser errors
     UNEXPECTED_TOKEN("E0010", "Unexpected token"),
     EXPECTED_TOKEN("E0011", "Expected token"),
@@ -40,13 +43,13 @@ enum class ErrorCode(val code: String, val description: String) {
     MISSING_PAREN("E0019", "Missing parenthesis"),
     MISSING_BRACKET("E0020", "Missing bracket"),
     INVALID_SYNTAX("E0021", "Invalid syntax"),
-    
+
     // Type errors
     UNKNOWN_TYPE("E0100", "Unknown type"),
     TYPE_MISMATCH("E0101", "Type mismatch"),
     INVALID_TYPE_ARGUMENT("E0102", "Invalid type argument"),
     INVALID_CAST("E0103", "Invalid type cast"),
-    
+
     // Semantic errors
     UNDECLARED_IDENTIFIER("E0200", "Undeclared identifier"),
     DUPLICATE_DECLARATION("E0201", "Duplicate declaration"),
@@ -54,14 +57,14 @@ enum class ErrorCode(val code: String, val description: String) {
     INVALID_CALL("E0203", "Invalid function call"),
     INVALID_MEMBER_ACCESS("E0204", "Invalid member access"),
     INVALID_INDEX("E0205", "Invalid index"),
-    
+
     // Forward reference errors
     FORWARD_REFERENCE("E0300", "Forward reference not allowed"),
     CYCLIC_DEPENDENCY("E0301", "Cyclic dependency detected"),
-    
+
     // Generic errors
     INTERNAL_ERROR("E9999", "Internal compiler error");
-    
+
     override fun toString(): String = code
 }
 
@@ -84,10 +87,10 @@ data class Diagnostic(
 ) {
     /** Check if this is an error. */
     val isError: Boolean get() = severity == DiagnosticSeverity.ERROR
-    
+
     /** Check if this is a warning. */
     val isWarning: Boolean get() = severity == DiagnosticSeverity.WARNING
-    
+
     override fun toString(): String {
         val severityStr = when (severity) {
             DiagnosticSeverity.ERROR -> "error"
@@ -97,7 +100,7 @@ data class Diagnostic(
         }
         return "[$severityStr:${code.code}] ${message} at ${span}"
     }
-    
+
     companion object {
         /** Create an error diagnostic. */
         fun error(
@@ -108,7 +111,7 @@ data class Diagnostic(
         ): Diagnostic {
             return Diagnostic(DiagnosticSeverity.ERROR, code, span, message, suggestions)
         }
-        
+
         /** Create a warning diagnostic. */
         fun warning(
             code: ErrorCode,
@@ -118,7 +121,7 @@ data class Diagnostic(
         ): Diagnostic {
             return Diagnostic(DiagnosticSeverity.WARNING, code, span, message, suggestions)
         }
-        
+
         /** Create an info diagnostic. */
         fun info(
             code: ErrorCode,
@@ -135,35 +138,35 @@ data class Diagnostic(
  */
 class DiagnosticCollection {
     private val diagnostics: MutableList<Diagnostic> = mutableListOf()
-    
+
     /** Number of diagnostics in this collection. */
     val size: Int get() = diagnostics.size
-    
+
     /** Whether this collection is empty. */
     val isEmpty: Boolean get() = diagnostics.isEmpty()
-    
+
     /** Whether this collection contains any errors. */
     val hasErrors: Boolean get() = diagnostics.any { it.isError }
-    
+
     /** Whether this collection contains any warnings. */
     val hasWarnings: Boolean get() = diagnostics.any { it.isWarning }
-    
+
     /** Number of errors in this collection. */
     val errorCount: Int get() = diagnostics.count { it.isError }
-    
+
     /** Number of warnings in this collection. */
     val warningCount: Int get() = diagnostics.count { it.isWarning }
-    
+
     /** Add a diagnostic to this collection. */
     fun add(diagnostic: Diagnostic) {
         diagnostics.add(diagnostic)
     }
-    
+
     /** Add all diagnostics from another collection. */
     fun addAll(other: DiagnosticCollection) {
         diagnostics.addAll(other.diagnostics)
     }
-    
+
     /** Add a diagnostic with builder syntax. */
     fun diagnostic(
         severity: DiagnosticSeverity,
@@ -174,7 +177,7 @@ class DiagnosticCollection {
     ) {
         diagnostics.add(Diagnostic(severity, code, span, message, suggestions))
     }
-    
+
     /** Add an error diagnostic. */
     fun error(
         code: ErrorCode,
@@ -184,7 +187,7 @@ class DiagnosticCollection {
     ) {
         diagnostics.add(Diagnostic.error(code, span, message, suggestions))
     }
-    
+
     /** Add a warning diagnostic. */
     fun warning(
         code: ErrorCode,
@@ -194,38 +197,38 @@ class DiagnosticCollection {
     ) {
         diagnostics.add(Diagnostic.warning(code, span, message, suggestions))
     }
-    
+
     /** Get all diagnostics. */
     fun getAll(): List<Diagnostic> = diagnostics.toList()
-    
+
     /** Get all errors. */
     fun getErrors(): List<Diagnostic> = diagnostics.filter { it.isError }
-    
+
     /** Get all warnings. */
     fun getWarnings(): List<Diagnostic> = diagnostics.filter { it.isWarning }
-    
+
     /** Get diagnostics for a specific span. */
     fun getForSpan(span: Span): List<Diagnostic> = diagnostics.filter { it.span == span }
-    
+
     /** Sort diagnostics by span (position in source). */
     fun sortBySpan(): DiagnosticCollection {
         val sorted = diagnostics.sortedBy { it.span.start }
         return DiagnosticCollection().apply { diagnostics.addAll(sorted) }
     }
-    
+
     /** Group diagnostics by severity. */
     fun groupBySeverity(): Map<DiagnosticSeverity, List<Diagnostic>> {
         return diagnostics.groupBy { it.severity }
     }
-    
+
     /** Clear all diagnostics. */
     fun clear() {
         diagnostics.clear()
     }
-    
+
     /** Check if this collection contains a diagnostic with the given code. */
     fun hasCode(code: ErrorCode): Boolean = diagnostics.any { it.code == code }
-    
+
     /** Merge with another collection. */
     fun merge(other: DiagnosticCollection): DiagnosticCollection {
         return DiagnosticCollection().apply {
@@ -233,24 +236,24 @@ class DiagnosticCollection {
             diagnostics.addAll(other.diagnostics)
         }
     }
-    
+
     override fun toString(): String {
         return "DiagnosticCollection($errorCount errors, $warningCount warnings)"
     }
-    
+
     companion object {
         /** Create an empty diagnostic collection. */
         fun empty(): DiagnosticCollection = DiagnosticCollection()
-        
+
         /** Create a collection with a single diagnostic. */
         fun of(diagnostic: Diagnostic): DiagnosticCollection {
             return DiagnosticCollection().apply { add(diagnostic) }
         }
-        
+
         /** Create a collection with multiple diagnostics. */
         fun of(vararg diagnostics: Diagnostic): DiagnosticCollection {
-            return DiagnosticCollection().apply { 
-                this.diagnostics.addAll(diagnostics) 
+            return DiagnosticCollection().apply {
+                this.diagnostics.addAll(diagnostics)
             }
         }
     }

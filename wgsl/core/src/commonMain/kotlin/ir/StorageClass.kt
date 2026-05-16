@@ -11,27 +11,27 @@ enum class StorageClass {
      * Function-local storage.
      */
     Function,
-    
+
     /**
      * Private storage (only accessible within the shader).
      */
     Private,
-    
+
     /**
      * Workgroup storage (shared within a workgroup).
      */
     Workgroup,
-    
+
     /**
      * Uniform storage (read-only, constant across all invocations).
      */
     Uniform,
-    
+
     /**
      * Storage storage (mutable storage buffers).
      */
     Storage,
-    
+
     /**
      * Push-constant storage.
      */
