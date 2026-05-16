@@ -45,9 +45,9 @@
   - [X] `tests/golden/outputs/` pour les fichiers de sortie générés
     - [ ] `tests/golden/outputs/ir/` pour la sérialisation IR
     - [X] `tests/golden/outputs/msl/` pour le code MSL
-    - [ ] `tests/golden/outputs/hlsl/` pour le code HLSL
-    - [ ] `tests/golden/outputs/glsl/` pour le code GLSL
-    - [ ] `tests/golden/outputs/wgsl/` pour le round-trip WGSL
+- [X] `tests/golden/outputs/hlsl/` pour le code HLSL
+    - [X] `tests/golden/outputs/glsl/` pour le code GLSL
+    - [X] `tests/golden/outputs/wgsl/` pour le round-trip WGSL
   - [ ] `tests/golden/reports/` pour les rapports de validation
 
 - [ ] Créer `tests/roundtrip/` pour les tests de round-trip
@@ -299,9 +299,9 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 ### Tests des Golden Files
 - [ ] Créer `IrGoldenTests.kt` pour les tests IR
 - [X] Créer `MslGoldenTests.kt` pour les tests MSL
-- [ ] Créer `HlslGoldenTests.kt` pour les tests HLSL
-- [ ] Créer `GlslGoldenTests.kt` pour les tests GLSL
-- [ ] Créer `WgslRoundTripTests.kt` pour les tests de round-trip
+- [X] Créer `HlslGoldenTests.kt` pour les tests HLSL
+- [X] Créer `GlslGoldenTests.kt` pour les tests GLSL
+- [X] Créer `WgslRoundTripTests.kt` pour les tests de round-trip
 
 ### Tests des Composants
 - [ ] Tester `WgslNormalizer` avec différents cas
@@ -441,10 +441,10 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 | 00_golden-files.md | ✅ | 2024-XX-XX | Complété |
 | 01_native-validators.md | ✅ | 2024-XX-XX | Complété |
 | 02_roundtrip-tests.md | ✅ | 2024-XX-XX | Complété |
-| 99_checklist.md | ✅ | 2024-XX-XX | En cours |
-| Structure des répertoires | ⬜ | - | À créer |
-| Fichiers WGSL importés | ⬜ | - | À importer |
-| Validateurs natifs | ⬜ | - | À implémenter |
+| 99_checklist.md | ✅ | 2026-05-16 | Mise à jour infrastructure |
+| Structure des répertoires | ✅ | 2026-05-16 | Créé (inputs/outputs) |
+| Fichiers WGSL importés | [/] | 2026-05-16 | Partiel (empty/simple) |
+| Validateurs natifs | ⬜ | - | Documentés, à implémenter |
 | Tests de round-trip | ⬜ | - | À implémenter |
 | Intégration CI | ⬜ | - | À configurer |
 
