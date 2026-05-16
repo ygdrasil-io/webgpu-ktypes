@@ -206,6 +206,9 @@ enum class TokenKind {
     
     // Ternary conditional operator
     QUESTION,
+
+    // Unknown character
+    UNKNOWN,
 }
 
 /**

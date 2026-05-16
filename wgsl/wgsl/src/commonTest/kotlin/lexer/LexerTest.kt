@@ -177,6 +177,34 @@ class LexerTest : FunSpec({
             tokens[0].kind shouldBe TokenKind.FLOAT_LITERAL
             tokens[0].literal shouldBe ".5"
         }
+
+        test("hex float literal") {
+            val tokens = tokenizeSignificant("0x1.0p1")
+            tokens shouldHaveSize 1
+            tokens[0].kind shouldBe TokenKind.FLOAT_LITERAL
+            tokens[0].literal shouldBe "0x1.0p1"
+        }
+
+        test("integer with suffixes") {
+            val source = "42i 42u 42li 42lu"
+            val tokens = tokenizeSignificant(source)
+            tokens shouldHaveSize 4
+            tokens[0].kind shouldBe TokenKind.INT_LITERAL
+            tokens[0].literal shouldBe "42i"
+            tokens[1].kind shouldBe TokenKind.UINT_LITERAL
+            tokens[1].literal shouldBe "42u"
+            tokens[2].kind shouldBe TokenKind.INT_LITERAL
+            tokens[2].literal shouldBe "42li"
+            tokens[3].kind shouldBe TokenKind.UINT_LITERAL
+            tokens[3].literal shouldBe "42lu"
+        }
+
+        test("float with suffixes") {
+            val source = "3.14f 3.14h 3.14lf"
+            val tokens = tokenizeSignificant(source)
+            tokens shouldHaveSize 3
+            tokens.forEach { it.kind shouldBe TokenKind.FLOAT_LITERAL }
+        }
     }
 
     context("Boolean literals") {
@@ -272,12 +300,11 @@ class LexerTest : FunSpec({
             tokens[0].kind shouldBe TokenKind.STAR
         }
 
-        // TODO: Debug infinite loop issue
-        // test("slash operator") {
-        //     val tokens = tokenizeSignificant("/")
-        //     tokens shouldHaveSize 1
-        //     tokens[0].kind shouldBe TokenKind.SLASH
-        // }
+        test("slash operator") {
+            val tokens = tokenizeSignificant("/")
+            tokens shouldHaveSize 1
+            tokens[0].kind shouldBe TokenKind.SLASH
+        }
 
         test("percent operator") {
             val tokens = tokenizeSignificant("%")

@@ -152,7 +152,10 @@ class Lexer(
             '/' -> when (peekChar(1)) {
                 '/' -> lexSingleLineComment(start)
                 '*' -> lexMultiLineComment(start)
-                else -> Token.simple(TokenKind.SLASH, spanFrom(start))
+                else -> {
+                    consume()
+                    Token.simple(TokenKind.SLASH, spanFrom(start))
+                }
             }
             
             // Identifiers and keywords
@@ -181,7 +184,7 @@ class Lexer(
                     ',' -> TokenKind.COMMA
                     ';' -> TokenKind.SEMICOLON
                     '?' -> TokenKind.QUESTION
-                    '#' -> TokenKind.UNDERSCORE // # is not valid in WGSL, treat as error
+                    '#' -> TokenKind.UNKNOWN
                     else -> error("Unexpected character: $char")
                 }
                 Token.simple(kind, spanFrom(start))
@@ -208,7 +211,7 @@ class Lexer(
             else -> {
                 // Unknown character - consume and return as error
                 consume()
-                Token.simple(TokenKind.IDENTIFIER, spanFrom(start))
+                Token.simple(TokenKind.UNKNOWN, spanFrom(start))
             }
         }
     }
@@ -325,22 +328,46 @@ class Lexer(
         // Consume hex digits
         consumeWhile { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }
         
-        // Check for unsigned suffix
-        val isUnsigned = peekChar()?.let { it in "uU" } ?: false
-        if (isUnsigned) {
+        var isFloat = false
+        
+        // Optional fractional part
+        if (peekChar() == '.') {
+            isFloat = true
             consume()
+            consumeWhile { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }
         }
         
-        // Check for float suffix
-        val isFloat = !isUnsigned && peekChar()?.let { it in "fF" } ?: false
-        if (isFloat) {
+        // Optional exponent part
+        if (peekChar()?.let { it in "pP" } == true) {
+            isFloat = true
             consume()
+            if (peekChar()?.let { it in "+-" } == true) {
+                consume()
+            }
+            consumeWhile { it in '0'..'9' }
+        }
+        
+        // Suffixes
+        if (isFloat) {
+            if (peekChar()?.let { it in "fFhH" } == true) {
+                consume()
+            } else if (peekChar()?.lowercaseChar() == 'l' && peekChar(1)?.lowercaseChar() == 'f') {
+                consume()
+                consume()
+            }
+        } else {
+            if (peekChar()?.let { it in "iIuU" } == true) {
+                consume()
+            } else if (peekChar()?.lowercaseChar() == 'l' && (peekChar(1)?.lowercaseChar() == 'i' || peekChar(1)?.lowercaseChar() == 'u')) {
+                consume()
+                consume()
+            }
         }
         
         val text = source.substring(startIndex, index)
         return if (isFloat) {
             Token.floatLiteral(text, spanFrom(start))
-        } else if (isUnsigned) {
+        } else if (text.endsWith('u', ignoreCase = true) || text.endsWith("lu", ignoreCase = true)) {
             Token.uintLiteral(text, spanFrom(start))
         } else {
             Token.intLiteral(text, spanFrom(start))
@@ -363,11 +390,30 @@ class Lexer(
             return lexFloatLiteral(start, startIndex)
         }
         
-        // Check for unsigned suffix
-        if (peekChar()?.let { it in "uU" } == true) {
+        // Check for integer suffixes
+        val nextChar = peekChar()?.lowercaseChar()
+        if (nextChar == 'u' || nextChar == 'i') {
             consume()
             val text = source.substring(startIndex, index)
-            return Token.uintLiteral(text, spanFrom(start))
+            return if (nextChar == 'u') Token.uintLiteral(text, spanFrom(start)) else Token.intLiteral(text, spanFrom(start))
+        } else if (nextChar == 'l' && (peekChar(1)?.lowercaseChar() == 'u' || peekChar(1)?.lowercaseChar() == 'i')) {
+            val isUnsigned = peekChar(1)?.lowercaseChar() == 'u'
+            consume()
+            consume()
+            val text = source.substring(startIndex, index)
+            return if (isUnsigned) Token.uintLiteral(text, spanFrom(start)) else Token.intLiteral(text, spanFrom(start))
+        }
+        
+        // Check for float suffixes without dot/exp
+        if (nextChar == 'f' || nextChar == 'h') {
+            consume()
+            val text = source.substring(startIndex, index)
+            return Token.floatLiteral(text, spanFrom(start))
+        } else if (nextChar == 'l' && peekChar(1)?.lowercaseChar() == 'f') {
+            consume()
+            consume()
+            val text = source.substring(startIndex, index)
+            return Token.floatLiteral(text, spanFrom(start))
         }
         
         val text = source.substring(startIndex, index)
@@ -395,8 +441,12 @@ class Lexer(
             consumeWhile { it in '0'..'9' }
         }
         
-        // Check for float suffix
-        if (peekChar()?.let { it in "fF" } == true) {
+        // Check for float suffixes
+        val nextChar = peekChar()?.lowercaseChar()
+        if (nextChar == 'f' || nextChar == 'h') {
+            consume()
+        } else if (nextChar == 'l' && peekChar(1)?.lowercaseChar() == 'f') {
+            consume()
             consume()
         }
         
