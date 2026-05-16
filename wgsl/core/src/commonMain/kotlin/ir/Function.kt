@@ -284,6 +284,7 @@ enum class BuiltinFunction {
     Fma,
     Fract,
     Frexp,
+    InverseSqrt,
     Ldexp,
     Length,
     Ln,

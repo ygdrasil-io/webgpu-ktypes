@@ -207,9 +207,26 @@ class MslWriter(
         level: SampleLevel?,
         depthRef: Handle<Expression>?
     ): String {
-        val method = if (sampler != null) "sample($sampler, $coordinate)" else "read($coordinate)"
-        // TODO: handle level and depthRef
-        return "$texture.$method"
+        val args = mutableListOf<String>()
+        args.add(sampler ?: "/* error */")
+        args.add(coordinate)
+        
+        when (level) {
+            is SampleLevel.Zero -> args.add("level(0)")
+            is SampleLevel.MIPMAP -> {
+                val l = writeExpression(level.level)
+                args.add("level($l)")
+            }
+            else -> {}
+        }
+        
+        if (depthRef != null) {
+            val d = writeExpression(depthRef)
+            args.add("compare_value($d)")
+        }
+        
+        val method = if (depthRef != null) "sample_compare" else "sample"
+        return "$texture.$method(${args.joinToString()})"
     }
 
     override fun writeTextureQuery(texture: String, query: TextureQueryKind): String {
@@ -260,6 +277,9 @@ class MslWriter(
         BuiltinFunction.Modf -> "modf"
         BuiltinFunction.Frexp -> "frexp"
         BuiltinFunction.Ldexp -> "ldexp"
+        BuiltinFunction.InverseSqrt -> "rsqrt"
+        BuiltinFunction.Log2 -> "log2"
+        BuiltinFunction.Fma -> "fma"
         else -> super.getBuiltinFunctionName(function)
     }
 
@@ -352,6 +372,11 @@ class MslWriter(
                 when {
                     inner.name == "sampler" -> "sampler"
                     inner.name == "comparison_sampler" -> "sampler"
+                    inner.name == "external_texture" -> "/* expanded external_texture */ void"
+                    inner.name == "texture_2d<f32>" -> "texture2d<float>"
+                    inner.name == "texture_2d<u32>" -> "texture2d<uint>"
+                    inner.name == "texture_2d<i32>" -> "texture2d<int>"
+                    inner.name.startsWith("texture_depth") -> "depth2d<float>"
                     inner.name.startsWith("texture") -> {
                          // Very simple mapping for now
                          "texture2d<float>" 

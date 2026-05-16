@@ -80,36 +80,97 @@ class HlslWriter(
 
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
         writeLine()
+        val inputStructName = writeInputStruct(ep)
+        val outputStructName = writeOutputStruct(ep)
+
+        val stageAttr = when (ep.stage) {
+            ShaderStage.Vertex -> "[numthreads(1, 1, 1)]" // Default for VS in some contexts, but not needed
+            ShaderStage.Fragment -> ""
+            ShaderStage.Compute -> "[numthreads(1, 1, 1)]" // Default
+        }
+        
+        if (ep.stage == ShaderStage.Compute) {
+            writeLine(stageAttr)
+        }
+
         val func = module.functions[ep.function]
-        val returnType = func.returnType?.let { getTypeName(it) } ?: "void"
+        val returnType = outputStructName ?: (func.returnType?.let { getTypeName(it) } ?: "void")
         
         write("$returnType ${ep.name}(")
         
         val args = mutableListOf<String>()
-        
+        if (inputStructName != null) {
+            args.add("$inputStructName stage_in")
+        }
+
+        // Built-ins that are not in stage_in (if any, like compute built-ins)
         ep.bindings.forEach { attr ->
-            when (attr) {
-                is BindingAttribute.Builtin -> {
-                    val hlslSemantic = getHlslSemantic(attr.builtin)
-                    val typeName = getHlslBuiltinType(attr.builtin)
-                    val name = attr.builtin.name.lowercase()
-                    args.add("$typeName $name : $hlslSemantic")
-                }
-                is BindingAttribute.Location -> {
-                    val typeName = "float4" 
-                    val name = "loc_${attr.location}"
-                    args.add("$typeName $name : TEXCOORD${attr.location}")
-                }
-                else -> {}
+            if (attr is BindingAttribute.Builtin && ep.stage == ShaderStage.Compute) {
+                val hlslSemantic = getHlslSemantic(attr.builtin)
+                val typeName = getHlslBuiltinType(attr.builtin)
+                val name = attr.builtin.name.lowercase()
+                args.add("$typeName $name : $hlslSemantic")
             }
         }
 
         write(args.joinToString(", "))
         writeLine(") {")
         indent {
+            if (outputStructName != null) {
+                writeLine("$outputStructName stage_out;")
+            }
             writeBlock(func.body)
+            if (outputStructName != null) {
+                writeLine("return stage_out;")
+            }
         }
         writeLine("}")
+    }
+
+    protected fun writeInputStruct(ep: EntryPoint): String? {
+        val members = mutableListOf<String>()
+        
+        ep.bindings.forEach { attr ->
+            when (attr) {
+                is BindingAttribute.Builtin -> {
+                    if (ep.stage != ShaderStage.Compute) {
+                        val hlslSemantic = getHlslSemantic(attr.builtin)
+                        val typeName = getHlslBuiltinType(attr.builtin)
+                        val name = attr.builtin.name.lowercase()
+                        members.add("$typeName $name : $hlslSemantic;")
+                    }
+                }
+                is BindingAttribute.Location -> {
+                    val typeName = "float4" 
+                    val name = "loc_${attr.location}"
+                    members.add("$typeName $name : TEXCOORD${attr.location};")
+                }
+                else -> {}
+            }
+        }
+
+        if (members.isEmpty()) return null
+
+        val structName = "${ep.name}_Input"
+        writeLine("struct $structName {")
+        indent {
+            members.forEach { writeLine(it) }
+        }
+        writeLine("};")
+        return structName
+    }
+
+    protected fun writeOutputStruct(ep: EntryPoint): String? {
+        if (ep.stage != ShaderStage.Vertex) return null
+        
+        val structName = "${ep.name}_Output"
+        writeLine("struct $structName {")
+        indent {
+            writeLine("float4 position : SV_Position;")
+            // TODO: other outputs (locations)
+        }
+        writeLine("};")
+        return structName
     }
 
     override fun writeLiteralValue(value: LiteralValue): String {
@@ -137,9 +198,22 @@ class HlslWriter(
         level: SampleLevel?,
         depthRef: Handle<Expression>?
     ): String {
-        val method = "Sample($sampler, $coordinate)"
-        // TODO: handle level and depthRef
-        return "$texture.$method"
+        return when (level) {
+            is SampleLevel.Zero -> "$texture.SampleLevel($sampler, $coordinate, 0)"
+            is SampleLevel.MIPMAP -> {
+                val l = writeExpression(level.level)
+                "$texture.SampleLevel($sampler, $coordinate, $l)"
+            }
+            is SampleLevel.AUTOMATIC -> "$texture.Sample($sampler, $coordinate)"
+            null -> {
+                if (depthRef != null) {
+                    val d = writeExpression(depthRef)
+                    "$texture.SampleCmp($sampler, $coordinate, $d)"
+                } else {
+                    "$texture.Sample($sampler, $coordinate)"
+                }
+            }
+        }
     }
 
     override fun writeTextureQuery(texture: String, query: TextureQueryKind): String {
@@ -266,6 +340,36 @@ class HlslWriter(
         BuiltinFunction.Normalize -> "normalize"
         BuiltinFunction.Reflect -> "reflect"
         BuiltinFunction.Refract -> "refract"
+        BuiltinFunction.Pow -> "pow"
+        BuiltinFunction.Exp -> "exp"
+        BuiltinFunction.Exp2 -> "exp2"
+        BuiltinFunction.Log2 -> "log2"
+        BuiltinFunction.Sqrt -> "sqrt"
+        BuiltinFunction.InverseSqrt -> "rsqrt"
+        BuiltinFunction.Floor -> "floor"
+        BuiltinFunction.Ceil -> "ceil"
+        BuiltinFunction.Round -> "round"
+        BuiltinFunction.Trunc -> "trunc"
+        BuiltinFunction.Sin -> "sin"
+        BuiltinFunction.Cos -> "cos"
+        BuiltinFunction.Tan -> "tan"
+        BuiltinFunction.Asin -> "asin"
+        BuiltinFunction.Acos -> "acos"
+        BuiltinFunction.Atan -> "atan"
+        BuiltinFunction.Sinh -> "sinh"
+        BuiltinFunction.Cosh -> "cosh"
+        BuiltinFunction.Tanh -> "tanh"
+        BuiltinFunction.Asinh -> "asinh"
+        BuiltinFunction.Acosh -> "acosh"
+        BuiltinFunction.Atanh -> "atanh"
+        BuiltinFunction.Abs -> "abs"
+        BuiltinFunction.Min -> "min"
+        BuiltinFunction.Max -> "max"
+        BuiltinFunction.Clamp -> "clamp"
+        BuiltinFunction.Step -> "step"
+        BuiltinFunction.Smoothstep -> "smoothstep"
+        BuiltinFunction.Fma -> "mad"
+        BuiltinFunction.Determinant -> "determinant"
         else -> super.getBuiltinFunctionName(function)
     }
 }

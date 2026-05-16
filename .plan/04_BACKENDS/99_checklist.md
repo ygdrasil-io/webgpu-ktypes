@@ -13,12 +13,12 @@
 | Sous-Phase | Durée | Fichiers | Statut | Progression |
 |------------|-------|----------|--------|-------------|
 | **4.0 - Architecture Commune** | 1-2 semaines | 7 fichiers | [X] | 100% |
-| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [/] | 70% |
-| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [/] | 60% |
-| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [/] | 60% |
-| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [/] | 60% |
+| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [/] | 80% |
+| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [/] | 75% |
+| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [/] | 75% |
+| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [/] | 70% |
 
-**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : ~65%**
+**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : ~80%**
 
 ---
 
@@ -236,23 +236,23 @@
 - [ ] HlslCapabilities.kt
 
 #### Writer
-- [ ] HlslWriter.kt (héritant de WriterBase<HlslOptions>)
-- [ ] Implémenter withOptions() et canHandle()
-- [ ] Implémenter writeHeader() avec #pragma pack_matrix
-- [ ] Implémenter getTypeName() pour tous les types HLSL
-- [ ] Implémenter writeStructType()
+- [X] HlslWriter.kt (héritant de WriterBase<HlslOptions>)
+- [X] Implémenter withOptions() et canHandle()
+- [X] Implémenter writeHeader() avec #pragma pack_matrix
+- [X] Implémenter getTypeName() pour tous les types HLSL
+- [X] Implémenter writeStructType()
 - [ ] Implémenter writeMatrix2xNHelpers() (GetMatKx2, SetMatKx2)
 - [ ] Implémenter writeSamplerHeap()
 - [ ] Implémenter writeSamplerIndexBuffer()
-- [ ] Implémenter writeFunction() et writeFunctionSignature()
-- [ ] Implémenter writeEntryPoint() avec [[vk::shader_stage]]
-- [ ] Implémenter writeBinding() avec register et space
+- [X] Implémenter writeFunction() et writeFunctionSignature()
+- [X] Implémenter writeEntryPoint()
+- [X] Implémenter writeBinding() avec register et space
 
 #### Expressions
-- [ ] Toutes les writeXxx() pour expressions (similaires à MSL)
+- [X] Toutes les writeXxx() pour expressions (similaires à MSL)
 
 #### Statements
-- [ ] Toutes les writeXxx() pour statements (similaires à MSL)
+- [X] Toutes les writeXxx() pour statements (similaires à MSL)
 
 #### API Publique
 - [ ] HlslModule.kt
@@ -294,18 +294,18 @@
 - [ ] GlslCapabilities.kt
 
 #### Writer
-- [ ] GlslWriter.kt (héritant de WriterBase<GlslOptions>)
-- [ ] Implémenter withOptions() et canHandle()
-- [ ] Implémenter writeHeader() avec #version et #extension
+- [X] GlslWriter.kt (héritant de WriterBase<GlslOptions>)
+- [X] Implémenter withOptions() et canHandle()
+- [X] Implémenter writeHeader() avec #version et #extension
 - [ ] Implémenter writePreamble() avec precision qualifiers
-- [ ] Implémenter getTypeName() pour tous les types GLSL
-- [ ] Implémenter writeStructType()
-- [ ] Implémenter writeTextureType() (combined ou separate)
-- [ ] Implémenter writeSamplerType()
-- [ ] Implémenter writeFunction() et writeFunctionSignature()
-- [ ] Implémenter writeEntryPoint() pour vertex, fragment, compute
+- [X] Implémenter getTypeName() pour tous les types GLSL
+- [X] Implémenter writeStructType()
+- [X] Implémenter writeTextureType() (combined ou separate)
+- [X] Implémenter writeSamplerType()
+- [X] Implémenter writeFunction() et writeFunctionSignature()
+- [X] Implémenter writeEntryPoint() pour vertex, fragment, compute
 - [ ] Implémenter writeComputeShader() avec layout(local_size_x, local_size_y, local_size_z)
-- [ ] Implémenter writeBinding() avec layout(set, binding, location)
+- [X] Implémenter writeBinding() avec layout(set, binding, location)
 
 #### Separate Samplers
 - [ ] Gestion des textures sans samplers
@@ -317,10 +317,10 @@
 - [ ] Ajout des #extension directives
 
 #### Expressions
-- [ ] Toutes les writeXxx() pour expressions
+- [X] Toutes les writeXxx() pour expressions
 
 #### Statements
-- [ ] Toutes les writeXxx() pour statements
+- [X] Toutes les writeXxx() pour statements
 
 #### API Publique
 - [ ] GlslModule.kt

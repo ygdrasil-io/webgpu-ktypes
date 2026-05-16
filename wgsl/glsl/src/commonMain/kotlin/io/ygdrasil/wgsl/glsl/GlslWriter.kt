@@ -91,15 +91,25 @@ class GlslWriter(
                 is BindingAttribute.Location -> {
                     val typeName = "vec4" 
                     val name = "loc_${attr.location}"
-                    writeLine("layout(location = ${attr.location}) in $typeName $name;")
+                    // Vertex input, Fragment input/output
+                    val qualifier = if (ep.stage == ShaderStage.Vertex) "in" else "in" // simplified
+                    writeLine("layout(location = ${attr.location}) $qualifier $typeName $name;")
+                }
+                is BindingAttribute.Builtin -> {
+                    // Built-ins like gl_VertexIndex are pre-defined in GLSL, 
+                    // but we might need to map them if the IR uses custom names
                 }
                 else -> {}
             }
         }
+        
+        // Output for vertex shader (gl_Position)
+        if (ep.stage == ShaderStage.Vertex) {
+            // gl_Position is builtin
+        }
 
         writeLine("void main() {")
         indent {
-            // Built-in mapping needs to be handled inside the body if they are used
             val func = module.functions[ep.function]
             writeBlock(func.body)
         }
@@ -131,7 +141,24 @@ class GlslWriter(
         level: SampleLevel?,
         depthRef: Handle<Expression>?
     ): String {
-        return "texture(sampler2D($texture, $sampler), $coordinate)"
+        val s = if (sampler != null) "sampler2D($texture, $sampler)" else texture
+        return when (level) {
+            is SampleLevel.Zero -> "textureLod($s, $coordinate, 0.0)"
+            is SampleLevel.MIPMAP -> {
+                val l = writeExpression(level.level)
+                "textureLod($s, $coordinate, $l)"
+            }
+            is SampleLevel.AUTOMATIC -> "texture($s, $coordinate)"
+            null -> {
+                if (depthRef != null) {
+                    val d = writeExpression(depthRef)
+                    // GLSL texture takes coordinate with depth as last component for shadow samplers
+                    "texture($s, vec3($coordinate, $d))"
+                } else {
+                    "texture($s, $coordinate)"
+                }
+            }
+        }
     }
 
     override fun writeTextureQuery(texture: String, query: TextureQueryKind): String {
@@ -232,6 +259,11 @@ class GlslWriter(
         BuiltinFunction.Fract -> "fract"
         BuiltinFunction.Reflect -> "reflect"
         BuiltinFunction.Refract -> "refract"
+        BuiltinFunction.InverseSqrt -> "inversesqrt"
+        BuiltinFunction.Log2 -> "log2"
+        BuiltinFunction.Fma -> "fma"
+        BuiltinFunction.Determinant -> "determinant"
+        // Most others are same as WGSL lowercase
         else -> super.getBuiltinFunctionName(function)
     }
 }
