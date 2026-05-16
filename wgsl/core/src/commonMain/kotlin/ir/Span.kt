@@ -17,24 +17,24 @@ data class Span(
     companion object {
         /** Undefined/unknown span */
         val UNDEFINED: Span = Span(0u, 0u)
-        
+
         /** Creates a new Span from a range of byte indices */
         fun new(start: UInt, end: UInt): Span = Span(start, end)
     }
-    
+
     /** Returns a new Span starting at this and ending at other */
     fun until(other: Span): Span = Span(start, other.end)
-    
+
     /** Check whether this span was defined or is a default/unknown span */
     fun isDefined(): Boolean = this != UNDEFINED
-    
+
     /** Returns the span as a Kotlin IntRange if defined */
     fun toRange(): IntRange? = if (isDefined()) {
         start.toInt()..end.toInt()
     } else {
         null
     }
-    
+
     /** Subsumes another span, returning the smallest span that contains both */
     fun subsume(other: Span): Span = if (!isDefined()) {
         other
@@ -46,7 +46,7 @@ data class Span(
             end = end.coerceAtLeast(other.end)
         )
     }
-    
+
     /** Returns a SourceLocation for this span in the provided source */
     fun location(source: String): SourceLocation {
         val startInt = start.toInt()
@@ -56,7 +56,7 @@ data class Span(
         val lineStart = prefix.lastIndexOf('\n').let { if (it == -1) 0 else it + 1 }
         val linePosition = (startInt - lineStart + 1).toUInt()
         val length = (endInt - startInt).toUInt()
-        
+
         return SourceLocation(
             lineNumber = lineNumber,
             linePosition = linePosition,

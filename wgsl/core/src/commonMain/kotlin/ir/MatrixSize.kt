@@ -12,42 +12,42 @@ enum class MatrixSize {
      * 2x2 matrix.
      */
     Mat2x2,
-    
+
     /**
      * 2x3 matrix.
      */
     Mat2x3,
-    
+
     /**
      * 2x4 matrix.
      */
     Mat2x4,
-    
+
     /**
      * 3x2 matrix.
      */
     Mat3x2,
-    
+
     /**
      * 3x3 matrix.
      */
     Mat3x3,
-    
+
     /**
      * 3x4 matrix.
      */
     Mat3x4,
-    
+
     /**
      * 4x2 matrix.
      */
     Mat4x2,
-    
+
     /**
      * 4x3 matrix.
      */
     Mat4x3,
-    
+
     /**
      * 4x4 matrix.
      */

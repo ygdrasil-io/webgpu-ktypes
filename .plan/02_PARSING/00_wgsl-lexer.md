@@ -6,7 +6,7 @@
 **Sous-Phase** : 2.0 - Lexer WGSL  
 **Durée** : 2-3 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique - Premier pas du parsing)  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété
+**Statut** : [x] Complété
 
 > **Référence Rust** : `/Users/chaos/RustroverProjects/wgpu/naga/src/front/wgsl/lexer.rs` (~800 lignes)
 

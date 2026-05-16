@@ -11,67 +11,67 @@ enum class ScalarKind {
      * Boolean type (true/false).
      */
     Bool,
-    
+
     /**
      * Signed 8-bit integer.
      */
     Sint,
-    
+
     /**
      * Unsigned 8-bit integer.
      */
     Uint,
-    
+
     /**
      * Signed 16-bit integer.
      */
     S16,
-    
+
     /**
      * Unsigned 16-bit integer.
      */
     U16,
-    
+
     /**
      * Signed 32-bit integer.
      */
     S32,
-    
+
     /**
      * Unsigned 32-bit integer.
      */
     U32,
-    
+
     /**
      * Signed 64-bit integer.
      */
     S64,
-    
+
     /**
      * Unsigned 64-bit integer.
      */
     U64,
-    
+
     /**
      * 16-bit floating point.
      */
     F16,
-    
+
     /**
      * 32-bit floating point.
      */
     F32,
-    
+
     /**
      * 64-bit floating point.
      */
     F64,
-    
+
     /**
      * Abstract integer type (no fixed bit width).
      */
     AbstractInt,
-    
+
     /**
      * Abstract float type (no fixed bit width).
      */
@@ -108,6 +108,7 @@ val ScalarKind.isInteger: Boolean
         ScalarKind.Sint, ScalarKind.Uint, ScalarKind.S16, ScalarKind.U16,
         ScalarKind.S32, ScalarKind.U32, ScalarKind.S64, ScalarKind.U64,
         ScalarKind.AbstractInt -> true
+
         else -> false
     }
 
@@ -118,6 +119,7 @@ val ScalarKind.isSigned: Boolean
     get() = when (this) {
         ScalarKind.Sint, ScalarKind.S16, ScalarKind.S32, ScalarKind.S64,
         ScalarKind.AbstractInt -> true
+
         else -> false
     }
 

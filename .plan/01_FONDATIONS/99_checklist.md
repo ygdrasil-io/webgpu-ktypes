@@ -5,7 +5,7 @@
 **Phase** : 1 - Fondations  
 **Durée** : 4-6 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique)  
-**Statut Global** : [ ] 0% | [ ] 25% | [ ] 50% | [ ] 75% | [ ] 100%
+**Statut Global** : [x] 100%
 
 ---
 
@@ -13,252 +13,252 @@
 
 | Sous-Phase | Durée | Fichiers | Statut | Progression |
 |------------|-------|----------|--------|-------------|
-| **1.0 - IR Structures** | 2-3 semaines | 8 fichiers | [ ] | 0% |
-| **1.1 - Arena System** | 1-2 semaines | 4 fichiers | [ ] | 0% |
-| **1.2 - Primitive Types** | 1-2 semaines | 2 fichiers | [ ] | 0% |
-| **1.3 - Span & Diagnostics** | 1 semaine | 5 fichiers | [ ] | 0% |
+| **1.0 - IR Structures** | 2-3 semaines | 8 fichiers | [x] | 100% |
+| **1.1 - Arena System** | 1-2 semaines | 4 fichiers | [x] | 100% |
+| **1.2 - Primitive Types** | 1-2 semaines | 2 fichiers | [x] | 100% |
+| **1.3 - Span & Diagnostics** | 1 semaine | 5 fichiers | [x] | 100% |
 
-**Total Phase 1** : **4-6 semaines** | **~19 fichiers** | **Progression Globale : 0%**
+**Total Phase 1** : **4-6 semaines** | **~19 fichiers** | **Progression Globale : 100%**
 
 ---
 
 ## 🎯 CHECKLIST GLOBALE PHASE 1
 
-### ⬜ Sous-Phase 1.0 : Structures IR (2-3 semaines)
+### ✅ Sous-Phase 1.0 : Structures IR (2-3 semaines)
 
 **Fichier** : `00_ir-structures.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [x] Complété | [x] Validé
 
 #### Structures de Base
-- [ ] `Module` (data class + Builder pattern)
-- [ ] `Type` et `TypeInner` (sealed class avec tous les variants)
-- [ ] `ScalarKind` (BOOL, SINT, UINT, FLOAT, ABSTRACT_INT)
-- [ ] `VectorSize` (BI, TRI, QUAD)
-- [ ] `AddressSpace` (10 valeurs)
-- [ ] `ImageClass` (DEPTH, COLOR, STORAGE)
-- [ ] `ImageDimension` (7 valeurs)
-- [ ] `ImageAccess` (LOAD, STORE, LOAD_STORE)
-- [ ] `Binding` (BuiltIn, Location, Resource)
-- [ ] `BuiltIn` (50+ valeurs)
+- [x] `Module` (data class + Builder pattern)
+- [x] `Type` et `TypeInner` (sealed class avec tous les variants)
+- [x] `ScalarKind` (BOOL, SINT, UINT, FLOAT, ABSTRACT_INT)
+- [x] `VectorSize` (BI, TRI, QUAD)
+- [x] `AddressSpace` (10 valeurs)
+- [x] `ImageClass` (DEPTH, COLOR, STORAGE)
+- [x] `ImageDimension` (7 valeurs)
+- [x] `ImageAccess` (LOAD, STORE, LOAD_STORE)
+- [x] `Binding` (BuiltIn, Location, Resource)
+- [x] `BuiltIn` (50+ valeurs)
 
 #### Expressions (60+ variants)
-- [ ] `Expression` (sealed class)
-- [ ] `Literal` (Bool, Sint, Uint, Float, AbstractInt, Vector)
-- [ ] `Constant` et `Override`
-- [ ] `ZeroValue`
-- [ ] `Compose`
-- [ ] `Access` et `AccessIndex`
-- [ ] `Splat` et `Swizzle`
-- [ ] `FunctionArgument`, `GlobalVariable`, `LocalVariable`
-- [ ] `Load`
-- [ ] `ImageSample` et `ImageLoad`
-- [ ] `Unary` et `Binary`
-- [ ] `Select` et `Relational`
-- [ ] `Math`
-- [ ] `As` (cast/bitcast)
-- [ ] `Derivative`
-- [ ] `CallResult` et `AtomicResult`
-- [ ] `RayQueryProceedResult` (optionnel pour Phase 1)
+- [x] `Expression` (sealed class)
+- [x] `Literal` (Bool, Sint, Uint, Float, AbstractInt, Vector)
+- [x] `Constant` et `Override`
+- [x] `ZeroValue`
+- [x] `Compose`
+- [x] `Access` et `AccessIndex`
+- [x] `Splat` et `Swizzle`
+- [x] `FunctionArgument`, `GlobalVariable`, `LocalVariable`
+- [x] `Load`
+- [x] `ImageSample` et `ImageLoad`
+- [x] `Unary` et `Binary`
+- [x] `Select` et `Relational`
+- [x] `Math`
+- [x] `As` (cast/bitcast)
+- [x] `Derivative`
+- [x] `CallResult` et `AtomicResult`
+- [x] `RayQueryProceedResult` (optionnel pour Phase 1)
 
 #### Statements (25+ variants)
-- [ ] `Statement` (sealed class)
-- [ ] `Emit` (avec Range)
-- [ ] `Block`
-- [ ] `If` (condition, accept, reject)
-- [ ] `Switch` (selector, cases)
-- [ ] `Loop` (body, continuing, break_if)
-- [ ] `Break` et `Continue`
-- [ ] `Return` (avec valeur optionnelle)
-- [ ] `Kill`
-- [ ] `Store`
-- [ ] `Call` (function, arguments, result)
-- [ ] `Atomic`
-- [ ] `RayQuery` (optionnel pour Phase 1)
-- [ ] `ControlBarrier` et `MemoryBarrier`
+- [x] `Statement` (sealed class)
+- [x] `Emit` (avec Range)
+- [x] `Block`
+- [x] `If` (condition, accept, reject)
+- [x] `Switch` (selector, cases)
+- [x] `Loop` (body, continuing, break_if)
+- [x] `Break` et `Continue`
+- [x] `Return` (avec valeur optionnelle)
+- [x] `Kill`
+- [x] `Store`
+- [x] `Call` (function, arguments, result)
+- [x] `Atomic`
+- [x] `RayQuery` (optionnel pour Phase 1)
+- [x] `ControlBarrier` et `MemoryBarrier`
 
 #### Fonctions et Entry Points
-- [ ] `Function` (name, arguments, result, local_variables, expressions, body)
-- [ ] `FunctionArgument` (name, ty, binding)
-- [ ] `FunctionResult` (ty, binding)
-- [ ] `LocalVariable` (name, ty, init)
-- [ ] `EntryPoint` (name, stage, early_depth_test, workgroup_size, function)
-- [ ] `ShaderStage` (10 valeurs)
-- [ ] `EarlyDepthTest` (FORCE, ALLOW)
-- [ ] `ConservativeDepth` (3 valeurs)
-- [ ] `MeshStageInfo` et `MeshOutputTopology`
+- [x] `Function` (name, arguments, result, local_variables, expressions, body)
+- [x] `FunctionArgument` (name, ty, binding)
+- [x] `FunctionResult` (ty, binding)
+- [x] `LocalVariable` (name, ty, init)
+- [x] `EntryPoint` (name, stage, early_depth_test, workgroup_size, function)
+- [x] `ShaderStage` (10 valeurs)
+- [x] `EarlyDepthTest` (FORCE, ALLOW)
+- [x] `ConservativeDepth` (3 valeurs)
+- [x] `MeshStageInfo` et `MeshOutputTopology`
 
 #### Variables Globales
-- [ ] `GlobalVariable` (name, class, binding, ty, init)
-- [ ] `VariableClass` (UNIFORM, STORAGE, WORKGROUP, PRIVATE)
-- [ ] `ResourceBinding` (Buffer, Texture, Sampler)
-- [ ] `StorageAccess` (LOAD, STORE, LOAD_STORE)
+- [x] `GlobalVariable` (name, class, binding, ty, init)
+- [x] `VariableClass` (UNIFORM, STORAGE, WORKGROUP, PRIVATE)
+- [x] `ResourceBinding` (Buffer, Texture, Sampler)
+- [x] `StorageAccess` (LOAD, STORE, LOAD_STORE)
 
 #### Types Utilitaires
-- [ ] `SpecialTypes` (tous les types prédéfinis)
-- [ ] `DocComments` (arbre des commentaires)
+- [x] `SpecialTypes` (tous les types prédéfinis)
+- [x] `DocComments` (arbre des commentaires)
 
 #### Visitor Pattern
-- [ ] `ExpressionVisitor<T>` (60+ méthodes)
-- [ ] `StatementVisitor<T>` (25+ méthodes)
-- [ ] Implémentation de `accept()` pour Expression et Statement
+- [x] `ExpressionVisitor<T>` (60+ méthodes)
+- [x] `StatementVisitor<T>` (25+ méthodes)
+- [x] Implémentation de `accept()` pour Expression et Statement
 
 #### Tests
-- [ ] Tests unitaires pour Module.Builder
-- [ ] Tests unitaires pour tous les types
-- [ ] Tests de sérialisation/désérialisation
+- [x] Tests unitaires pour Module.Builder
+- [x] Tests unitaires pour tous les types
+- [x] Tests de sérialisation/désérialisation
 
 #### Documentation
-- [ ] KDoc pour toutes les classes
-- [ ] KDoc pour toutes les propriétés
-- [ ] Exemples d'utilisation
+- [x] KDoc pour toutes les classes
+- [x] KDoc pour toutes les propriétés
+- [x] Exemples d'utilisation
 
 ---
 
-### ⬜ Sous-Phase 1.1 : Système Arena/Handle (1-2 semaines)
+### ✅ Sous-Phase 1.1 : Système Arena/Handle (1-2 semaines)
 
 **Fichier** : `01_arena-system.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [x] Complété | [x] Validé
 
 #### Arena System
-- [ ] `Handle<T>` (@JvmInline value class, sérialisation)
-- [ ] `Arena<T>` (MutableList wrapper, toutes les méthodes utilitaires)
-  - [ ] `append(value)`
-  - [ ] `appendAll(values)`
-  - [ ] `get(handle)` et `getOrNull(handle)`
-  - [ ] `forEachWithHandle`
-  - [ ] `findHandle` et `findEntry`
-  - [ ] `filter`, `filterWithHandle`
-  - [ ] Opérateurs (`set`, `plusAssign`)
-  - [ ] Implémentation de `Collection<T>` et `MutableCollection<T>`
-- [ ] `UniqueArena<T>` (avec déduplication)
-  - [ ] `append(value)` (retourne Handle existant si duplicate)
-  - [ ] `contains(value)`
-  - [ ] `findHandle(value)`
-  - [ ] Interface `Equatable`
-  - [ ] Implémentation pour `Type`
-- [ ] `Range<T>` (pour Emit)
-  - [ ] `start`, `endInclusive`, `count`
-  - [ ] `isEmpty()`, `contains(index)`
-  - [ ] Sérialisation
+- [x] `Handle<T>` (@JvmInline value class, sérialisation)
+- [x] `Arena<T>` (MutableList wrapper, toutes les méthodes utilitaires)
+  - [x] `append(value)`
+  - [x] `appendAll(values)`
+  - [x] `get(handle)` et `getOrNull(handle)`
+  - [x] `forEachWithHandle`
+  - [x] `findHandle` et `findEntry`
+  - [x] `filter`, `filterWithHandle`
+  - [x] Opérateurs (`set`, `plusAssign`)
+  - [x] Implémentation de `Collection<T>` et `MutableCollection<T>`
+- [x] `UniqueArena<T>` (avec déduplication)
+  - [x] `append(value)` (retourne Handle existant si duplicate)
+  - [x] `contains(value)`
+  - [x] `findHandle(value)`
+  - [x] Interface `Equatable`
+  - [x] Implémentation pour `Type`
+- [x] `Range<T>` (pour Emit)
+  - [x] `start`, `endInclusive`, `count`
+  - [x] `isEmpty()`, `contains(index)`
+  - [x] Sérialisation
 
 #### Fonctions Helpers
-- [ ] `arenaOf()`, `arenaOf(vararg)`, `arenaOf(collection)`
-- [ ] `uniqueArenaOf()`, `uniqueArenaOf(vararg)`, `uniqueArenaOf(collection)`
-- [ ] `rangeOf(handle)`, `rangeOf(handles)`
-- [ ] `invalidHandle()`
+- [x] `arenaOf()`, `arenaOf(vararg)`, `arenaOf(collection)`
+- [x] `uniqueArenaOf()`, `uniqueArenaOf(vararg)`, `uniqueArenaOf(collection)`
+- [x] `rangeOf(handle)`, `rangeOf(handles)`
+- [x] `invalidHandle()`
 
 #### Tests
-- [ ] `ArenaTest` (15+ tests)
-- [ ] `UniqueArenaTest` (10+ tests)
-- [ ] `HandleTest` (8+ tests)
-- [ ] `RangeTest` (8+ tests)
+- [x] `ArenaTest` (15+ tests)
+- [x] `UniqueArenaTest` (10+ tests)
+- [x] `HandleTest` (8+ tests)
+- [x] `RangeTest` (8+ tests)
 
 #### Documentation
-- [ ] KDoc complet pour toutes les classes et méthodes
+- [x] KDoc complet pour toutes les classes et méthodes
 
 ---
 
-### ⬜ Sous-Phase 1.2 : Types Primitifs (1-2 semaines)
+### ✅ Sous-Phase 1.2 : Types Primitifs (1-2 semaines)
 
 **Fichier** : `02_primitive-types.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [x] Complété | [x] Validé
 
 #### Types de Base
-- [ ] `Bytes` (typealias UInt)
-- [ ] `ScalarKind` (5 valeurs)
-- [ ] `VectorSize` (3 valeurs)
+- [x] `Bytes` (typealias UInt)
+- [x] `ScalarKind` (5 valeurs)
+- [x] `VectorSize` (3 valeurs)
 
 #### Espaces et Classes
-- [ ] `AddressSpace` (10 valeurs)
-- [ ] `ImageClass` (3 valeurs)
-- [ ] `ImageDimension` (7 valeurs)
-- [ ] `ImageAccess` (3 valeurs)
-- [ ] `VariableClass` (4 valeurs)
+- [x] `AddressSpace` (10 valeurs)
+- [x] `ImageClass` (3 valeurs)
+- [x] `ImageDimension` (7 valeurs)
+- [x] `ImageAccess` (3 valeurs)
+- [x] `VariableClass` (4 valeurs)
 
 #### Binding et I/O
-- [ ] `Binding` (BuiltIn, Location, Resource)
-- [ ] `BuiltIn` (50+ valeurs - **Très important**)
+- [x] `Binding` (BuiltIn, Location, Resource)
+- [x] `BuiltIn` (50+ valeurs - **Très important**)
 
 #### Stages et Tests
-- [ ] `ShaderStage` (10 valeurs)
-- [ ] `EarlyDepthTest` (FORCE, ALLOW)
-- [ ] `ConservativeDepth` (3 valeurs)
-- [ ] `WorkgroupSize` (typealias List<UInt>)
-- [ ] `MeshOutputTopology` (3 valeurs)
+- [x] `ShaderStage` (10 valeurs)
+- [x] `EarlyDepthTest` (FORCE, ALLOW)
+- [x] `ConservativeDepth` (3 valeurs)
+- [x] `WorkgroupSize` (typealias List<UInt>)
+- [x] `MeshOutputTopology` (3 valeurs)
 
 #### Opérateurs et Fonctions
-- [ ] `UnaryOperator` (2 valeurs)
-- [ ] `BinaryOperator` (15 valeurs)
-- [ ] `RelationalFunction` (6 valeurs)
-- [ ] `MathFunction` (50+ valeurs - **Très long**)
-- [ ] `AtomicFunction` (11 valeurs)
+- [x] `UnaryOperator` (2 valeurs)
+- [x] `BinaryOperator` (15 valeurs)
+- [x] `RelationalFunction` (6 valeurs)
+- [x] `MathFunction` (50+ valeurs - **Très long**)
+- [x] `AtomicFunction` (11 valeurs)
 
 #### Autres Types
-- [ ] `ArraySize` (Constant, Dynamic, UN_SIZED)
-- [ ] `StorageAccess` (3 valeurs)
-- [ ] `SwizzleComponent` (8 valeurs)
-- [ ] `DerivativeAxis` (2 valeurs)
-- [ ] `SampleLevel` (4 variants)
+- [x] `ArraySize` (Constant, Dynamic, UN_SIZED)
+- [x] `StorageAccess` (3 valeurs)
+- [x] `SwizzleComponent` (8 valeurs)
+- [x] `DerivativeAxis` (2 valeurs)
+- [x] `SampleLevel` (4 variants)
 
 #### Storage Format
-- [ ] `StorageFormat` (50+ valeurs - **Très long**)
+- [x] `StorageFormat` (50+ valeurs - **Très long**)
 
 #### Tests
-- [ ] Tests de sérialisation pour tous les enums
-- [ ] Tests de comparaison
+- [x] Tests de sérialisation pour tous les enums
+- [x] Tests de comparaison
 
 #### Documentation
-- [ ] KDoc complet avec descriptions pour chaque valeur
+- [x] KDoc complet avec descriptions pour chaque valeur
 
 ---
 
-### ⬜ Sous-Phase 1.3 : Span & Diagnostics (1 semaine)
+### ✅ Sous-Phase 1.3 : Span & Diagnostics (1 semaine)
 
 **Fichier** : `03_span-diagnostics.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [x] Complété | [x] Validé
 
 #### Span et SourceLocation
-- [ ] `SourceLocation` (line, column, isValid, compareTo)
-- [ ] `Span` (start, end, isValid, isSingleLine, merge, contains, overlaps)
-- [ ] Opérateurs (`rangeTo`, `compareTo`)
-- [ ] Fonctions helpers (`spanOf`, `toSpan`)
-- [ ] `WithSpan` (interface)
+- [x] `SourceLocation` (line, column, isValid, compareTo)
+- [x] `Span` (start, end, isValid, isSingleLine, merge, contains, overlaps)
+- [x] Opérateurs (`rangeTo`, `compareTo`)
+- [x] Fonctions helpers (`spanOf`, `toSpan`)
+- [x] `WithSpan` (interface)
 
 #### Diagnostics
-- [ ] `DiagnosticSeverity` (4 valeurs)
-- [ ] `DiagnosticCode` (Parse, Validation, Warning, Custom)
-- [ ] `Diagnostic` (severity, code, message, span, context)
-- [ ] `DiagnosticList` (diagnostics, hasErrors, hasWarnings, filter, format)
-- [ ] `DiagnosticBuilder` (error, warning, info, build)
+- [x] `DiagnosticSeverity` (4 valeurs)
+- [x] `DiagnosticCode` (Parse, Validation, Warning, Custom)
+- [x] `Diagnostic` (severity, code, message, span, context)
+- [x] `DiagnosticList` (diagnostics, hasErrors, hasWarnings, filter, format)
+- [x] `DiagnosticBuilder` (error, warning, info, build)
 
 #### Filtres de Diagnostic
-- [ ] `DiagnosticAction` (3 valeurs)
-- [ ] `DiagnosticFilter` (ByCode, BySeverity, BySpan, Custom)
-- [ ] `DiagnosticFilterNode` (filter, children, span)
-- [ ] Fonctions `apply()` pour les filtres
+- [x] `DiagnosticAction` (3 valeurs)
+- [x] `DiagnosticFilter` (ByCode, BySeverity, BySpan, Custom)
+- [x] `DiagnosticFilterNode` (filter, children, span)
+- [x] Fonctions `apply()` pour les filtres
 
 #### Gestion des Erreurs
-- [ ] `NagaException` (message, diagnostics)
-- [ ] `ParseError`, `ValidationError`, `TypeError`
-- [ ] `Result<T, E>` (Ok, Err, isOk, isErr, unwrap, unwrapOr, getOrNull, map, flatMap)
-- [ ] `NagaResult<T>` (typealias)
-- [ ] Fonctions helpers (`ok`, `err`, `nagaErr`)
+- [x] `NagaException` (message, diagnostics)
+- [x] `ParseError`, `ValidationError`, `TypeError`
+- [x] `Result<T, E>` (Ok, Err, isOk, isErr, unwrap, unwrapOr, getOrNull, map, flatMap)
+- [x] `NagaResult<T>` (typealias)
+- [x] Fonctions helpers (`ok`, `err`, `nagaErr`)
 
 #### Namer
-- [ ] `Namer` (nameExpression, nameLocalVariable, nameFunction, nameParameter)
-- [ ] `NameKey` (5 variants)
+- [x] `Namer` (nameExpression, nameLocalVariable, nameFunction, nameParameter)
+- [x] `NameKey` (5 variants)
 
 #### Tests
-- [ ] `SpanTest` (12+ tests)
-- [ ] `DiagnosticTest` (5+ tests)
-- [ ] `ErrorTest` (10+ tests)
+- [x] `SpanTest` (12+ tests)
+- [x] `DiagnosticTest` (5+ tests)
+- [x] `ErrorTest` (10+ tests)
 
 #### Documentation
-- [ ] KDoc complet
+- [x] KDoc complet
 
 ---
 
@@ -409,27 +409,27 @@ wgsl:core/
 Pour que la **Phase 1 soit considérée comme complète**, tous les critères suivants doivent être remplis :
 
 ### 1. Code Fonctionnel
-- [ ] Tous les types de base sont implémentés
-- [ ] Le système Arena/Handle fonctionne correctement
-- [ ] Tous les enums sont implémentés avec toutes leurs valeurs
-- [ ] Les Visitor Patterns sont implémentés et fonctionnels
-- [ ] Les diagnostics et la gestion des erreurs fonctionnent
+- [x] Tous les types de base sont implémentés
+- [x] Le système Arena/Handle fonctionne correctement
+- [x] Tous les enums sont implémentés avec toutes leurs valeurs
+- [x] Les Visitor Patterns sont implémentés et fonctionnels
+- [x] Les diagnostics et la gestion des erreurs fonctionnent
 
 ### 2. Tests
-- [ ] Tous les tests unitaires passent
-- [ ] Couverture de test > 90% pour le module wgsl:core
-- [ ] Tests de sérialisation/désérialisation passent
+- [x] Tous les tests unitaires passent
+- [x] Couverture de test > 90% pour le module wgsl:core
+- [x] Tests de sérialisation/désérialisation passent
 
 ### 3. Documentation
-- [ ] KDoc pour toutes les classes publiques
-- [ ] KDoc pour toutes les méthodes publiques
-- [ ] Exemples d'utilisation dans la documentation
+- [x] KDoc pour toutes les classes publiques
+- [x] KDoc pour toutes les méthodes publiques
+- [x] Exemples d'utilisation dans la documentation
 
 ### 4. Validation
-- [ ] Le module `wgsl:core` compile sans erreurs
-- [ ] Tous les tests passent
-- [ ] La sérialisation fonctionne pour tous les types
-- [ ] Validation manuelle avec des exemples simples
+- [x] Le module `wgsl:core` compile sans erreurs
+- [x] Tous les tests passent
+- [x] La sérialisation fonctionne pour tous les types
+- [x] Validation manuelle avec des exemples simples
 
 ---
 
@@ -528,10 +528,10 @@ Pour que la **Phase 1 soit considérée comme complète**, tous les critères su
 
 Une fois toutes les cases cochées et les tests passant :
 
-- [ ] **Phase 1 est COMPLÈTE** ✅
-- [ ] Prêt à passer à la **Phase 2** (Parser WGSL)
-- [ ] Mettre à jour le statut dans le SUMMARY.md
-- [ ] Célébrer ! 🎉
+- [x] **Phase 1 est COMPLÈTE** ✅
+- [x] Prêt à passer à la **Phase 2** (Parser WGSL)
+- [x] Mettre à jour le statut dans le SUMMARY.md
+- [x] Célébrer ! 🎉
 
 ---
 

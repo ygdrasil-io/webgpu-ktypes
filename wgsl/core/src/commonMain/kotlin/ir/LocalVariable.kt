@@ -12,12 +12,12 @@ data class LocalVariable(
      * The name of the variable (may be empty for unnamed variables).
      */
     val name: String,
-    
+
     /**
      * The type of the variable.
      */
     val type: Handle<Type>,
-    
+
     /**
      * The initial value expression (if any).
      */

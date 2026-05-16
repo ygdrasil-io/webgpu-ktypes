@@ -73,6 +73,11 @@
 - [ ] Créer `.github/workflows/test-matrix.yml` pour la matrice de test
 - [ ] Configurer Codecov dans `.codecov.yml`
 
+### Directives de Qualité
+- [ ] Décomposer les tests complexes en fichiers thématiques (ex: LexerBasicTest, LexerKeywordTest)
+- [ ] Assurer que chaque fichier de test reste lisible pour la review (< 500 lignes recommandées)
+- [ ] Utiliser des noms de tests descriptifs en français ou anglais selon le contexte du module
+
 ---
 
 ## 🔧 Tests Unitaires

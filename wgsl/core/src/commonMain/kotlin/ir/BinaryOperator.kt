@@ -13,14 +13,14 @@ enum class BinaryOperator {
     Multiply,
     Divide,
     Modulo,
-    
+
     // Bitwise
     BitAnd,
     BitOr,
     BitXor,
     ShiftLeft,
     ShiftRight,
-    
+
     // Comparison
     Equal,
     NotEqual,
@@ -28,7 +28,7 @@ enum class BinaryOperator {
     LessOrEqual,
     Greater,
     GreaterOrEqual,
-    
+
     // Logical
     LogicalAnd,
     LogicalOr,
@@ -41,6 +41,7 @@ val BinaryOperator.isArithmetic: Boolean
     get() = when (this) {
         BinaryOperator.Add, BinaryOperator.Subtract, BinaryOperator.Multiply,
         BinaryOperator.Divide, BinaryOperator.Modulo -> true
+
         else -> false
     }
 
@@ -51,6 +52,7 @@ val BinaryOperator.isBitwise: Boolean
     get() = when (this) {
         BinaryOperator.BitAnd, BinaryOperator.BitOr, BinaryOperator.BitXor,
         BinaryOperator.ShiftLeft, BinaryOperator.ShiftRight -> true
+
         else -> false
     }
 
@@ -62,6 +64,7 @@ val BinaryOperator.isComparison: Boolean
         BinaryOperator.Equal, BinaryOperator.NotEqual,
         BinaryOperator.Less, BinaryOperator.LessOrEqual,
         BinaryOperator.Greater, BinaryOperator.GreaterOrEqual -> true
+
         else -> false
     }
 

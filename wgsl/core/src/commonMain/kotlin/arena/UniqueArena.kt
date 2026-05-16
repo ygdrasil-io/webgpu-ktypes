@@ -15,15 +15,15 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 class UniqueArena<T> where T : Equatable {
-    
+
     internal val data: MutableList<T> = mutableListOf()
     internal val indexMap: MutableMap<T, Int> = mutableMapOf()
-    
+
     /**
      * Number of unique elements in the Arena.
      */
     val size: Int get() = data.size
-    
+
     /**
      * Adds an element to the Arena. If the element already exists, returns the existing Handle.
      *
@@ -37,14 +37,14 @@ class UniqueArena<T> where T : Equatable {
             index
         }.let { Handle.fromIndex<T>(it) }
     }
-    
+
     /**
      * Adds multiple elements to the Arena.
      */
     fun appendAll(values: Iterable<T>): List<Handle<T>> {
         return values.map { append(it) }
     }
-    
+
     /**
      * Retrieves an element by its Handle.
      */
@@ -52,7 +52,7 @@ class UniqueArena<T> where T : Equatable {
         require(handle.isValid()) { "Invalid handle: ${handle.index}" }
         return data[handle.index]
     }
-    
+
     /**
      * Retrieves an element by its Handle, or null if invalid.
      */
@@ -63,24 +63,24 @@ class UniqueArena<T> where T : Equatable {
             null
         }
     }
-    
+
     /**
      * Checks if the Arena contains a specific element.
      */
     fun contains(value: T): Boolean = value in indexMap
-    
+
     /**
      * Finds the Handle of an existing element.
      */
     fun findHandle(value: T): Handle<T>? {
         return indexMap[value]?.let { Handle.fromIndex<T>(it) }
     }
-    
+
     /**
      * Checks if the Arena is empty.
      */
     fun isEmpty(): Boolean = data.isEmpty()
-    
+
     /**
      * Applies an action to each element with its Handle.
      */
@@ -89,12 +89,12 @@ class UniqueArena<T> where T : Equatable {
             action(Handle.fromIndex<T>(index), value)
         }
     }
-    
+
     /**
      * Returns a list of all elements.
      */
     fun toList(): List<T> = data.toList()
-    
+
     /**
      * Clears the Arena.
      */
@@ -102,7 +102,7 @@ class UniqueArena<T> where T : Equatable {
         data.clear()
         indexMap.clear()
     }
-    
+
     /**
      * Creates a copy of the Arena.
      */

@@ -18,48 +18,48 @@ data class Module(
      * Uses UniqueArena to ensure identical types share the same Handle.
      */
     val types: UniqueArena<Type> = UniqueArena(),
-    
+
     /**
      * Constants defined in this module.
      */
     val constants: Arena<Constant> = Arena(),
-    
+
     /**
      * Global variables in this module.
      */
     val globalVariables: Arena<GlobalVariable> = Arena(),
-    
+
     /**
      * Functions in this module.
      */
     val functions: Arena<Function> = Arena(),
-    
+
     /**
      * Entry points for this module (shader entry points).
      */
     val entryPoints: List<EntryPoint> = emptyList(),
-    
+
     /**
      * Special types used in this module.
      */
     val specialTypes: SpecialTypes = SpecialTypes(),
-    
+
     /**
      * Diagnostic filter nodes.
      */
     val diagnosticFilters: Arena<DiagnosticFilterNode> = Arena(),
-    
+
     /**
      * Root diagnostic filter node (if any).
      */
     val diagnosticFilterLeaf: Handle<DiagnosticFilterNode>? = null,
-    
+
     /**
      * Documentation comments.
      */
     val docComments: DocComments? = null,
 ) {
-    
+
     /**
      * Creates a new Module with the given components.
      */
@@ -82,7 +82,7 @@ data class Module(
             )
         }
     }
-    
+
     override fun toString(): String = buildString {
         appendLine("Module(")
         appendLine("  types: ${types.size}")
@@ -114,27 +114,27 @@ data class EntryPoint(
      * The name of the entry point.
      */
     val name: String,
-    
+
     /**
      * The function that implements this entry point.
      */
     val function: Handle<Function>,
-    
+
     /**
      * The stage of this entry point.
      */
     val stage: ShaderStage,
-    
+
     /**
      * The workgroup size for compute shaders.
      */
     val workgroupSize: List<Int>? = null,
-    
+
     /**
      * Early depth test for fragment shaders.
      */
     val earlyDepthTest: EarlyDepthTest? = null,
-    
+
     /**
      * The binding attributes for this entry point.
      */
@@ -204,9 +204,9 @@ sealed class DiagnosticFilterNode {
     data class All(val children: List<Handle<DiagnosticFilterNode>>) : DiagnosticFilterNode()
     data class Any(val children: List<Handle<DiagnosticFilterNode>>) : DiagnosticFilterNode()
     data class Operand(val expression: Handle<Expression>) : DiagnosticFilterNode()
-    data class Severity(val severity: DiagnosticSeverity, val children: List<Handle<DiagnosticFilterNode>>) : DiagnosticFilterNode()
+    data class Severity(val severity: DiagnosticSeverity, val children: List<Handle<DiagnosticFilterNode>>) :
+        DiagnosticFilterNode()
 }
-
 
 
 /**
