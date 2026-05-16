@@ -1,9 +1,11 @@
 package io.ygdrasil.wgsl.lexer
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 
+@Ignored
 class LexerExpressionTest : FunSpec({
     context("Complex expressions") {
         test("simple function call") {

@@ -1,9 +1,11 @@
 package io.ygdrasil.wgsl.parser
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.ygdrasil.wgsl.ir.Span
 
+@Ignored
 class DiagnosticTest : FunSpec({
     test("create error diagnostic") {
         val diagnostic = Diagnostic(

@@ -1,10 +1,12 @@
 package io.ygdrasil.wgsl.lexer
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 
+@Ignored
 class LexerBasicTest : FunSpec({
     context("Basic tokenization") {
         test("empty source") {

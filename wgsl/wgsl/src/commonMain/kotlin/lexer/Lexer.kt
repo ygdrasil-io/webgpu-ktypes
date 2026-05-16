@@ -732,7 +732,19 @@ class Lexer(
         // Type constructors
         "array" -> TokenKind.ARRAY
         "mat" -> TokenKind.MAT
+        "mat2x2" -> TokenKind.MAT
+        "mat2x3" -> TokenKind.MAT
+        "mat2x4" -> TokenKind.MAT
+        "mat3x2" -> TokenKind.MAT
+        "mat3x3" -> TokenKind.MAT
+        "mat3x4" -> TokenKind.MAT
+        "mat4x2" -> TokenKind.MAT
+        "mat4x3" -> TokenKind.MAT
+        "mat4x4" -> TokenKind.MAT
         "vec" -> TokenKind.VEC
+        "vec2" -> TokenKind.VEC
+        "vec3" -> TokenKind.VEC
+        "vec4" -> TokenKind.VEC
 
         // Storage classes
         "uniform" -> TokenKind.UNIFORM
