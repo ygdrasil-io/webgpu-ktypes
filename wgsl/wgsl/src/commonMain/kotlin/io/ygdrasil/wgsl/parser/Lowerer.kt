@@ -136,14 +136,41 @@ class Lowerer {
 
     private fun lowerGlobalVariable(decl: VariableDecl) {
         val type = decl.type?.let { lowerType(it) } ?: return
+        
+        val storageClass = if (decl.storageClass != null) {
+            lowerStorageClassText(decl.storageClass)
+        } else {
+            lowerStorageClass(decl.kind.toStorageClass())
+        }
+        
+        val accessMode = lowerAccessModeText(decl.accessMode)
+
         val variable = GlobalVariable(
             name = decl.name,
-            storageClass = lowerStorageClass(decl.kind.toStorageClass()),
+            storageClass = storageClass,
+            accessMode = accessMode,
             binding = null,
             type = type,
             init = null
         )
         globalVarMap[decl.name] = module.globalVariables.append(variable)
+    }
+
+    private fun lowerStorageClassText(text: String?): StorageClass = when (text) {
+        "storage" -> StorageClass.Storage
+        "uniform" -> StorageClass.Uniform
+        "workgroup" -> StorageClass.Workgroup
+        "private" -> StorageClass.Private
+        "function" -> StorageClass.Function
+        "push_constant" -> StorageClass.PushConstant
+        else -> StorageClass.Private
+    }
+
+    private fun lowerAccessModeText(text: String?): AccessMode? = when (text) {
+        "read" -> AccessMode.Read
+        "write" -> AccessMode.Write
+        "read_write" -> AccessMode.ReadWrite
+        else -> null
     }
 
     private fun VariableDeclKind.toStorageClass(): io.ygdrasil.wgsl.ast.StorageClass = when (this) {

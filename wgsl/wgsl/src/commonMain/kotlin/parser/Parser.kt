@@ -1,6 +1,7 @@
 package io.ygdrasil.wgsl.parser
 
 import io.ygdrasil.wgsl.ast.ArrayType
+import io.ygdrasil.wgsl.ast.AssignmentStatement
 import io.ygdrasil.wgsl.ast.Attribute
 import io.ygdrasil.wgsl.ast.BinaryExpr
 import io.ygdrasil.wgsl.ast.BinaryOperator
@@ -24,6 +25,7 @@ import io.ygdrasil.wgsl.ast.FunctionDecl
 import io.ygdrasil.wgsl.ast.GlobalDecl
 import io.ygdrasil.wgsl.ast.IdentExpr
 import io.ygdrasil.wgsl.ast.IfStatement
+import io.ygdrasil.wgsl.ast.IncDecStatement
 import io.ygdrasil.wgsl.ast.IndexExpr
 import io.ygdrasil.wgsl.ast.IntLiteral
 import io.ygdrasil.wgsl.ast.LoopStatement
@@ -59,6 +61,7 @@ import io.ygdrasil.wgsl.ir.Span
 import io.ygdrasil.wgsl.lexer.Lexer
 import io.ygdrasil.wgsl.lexer.Token
 import io.ygdrasil.wgsl.lexer.TokenKind
+import io.ygdrasil.wgsl.lexer.isKeyword
 
 /**
  * Parser for the WGSL shader language.
@@ -81,6 +84,9 @@ class Parser(
 
     /** true if we've seen an error during parsing. */
     private var hasError: Boolean = false
+
+    /** true if we are currently parsing inside a template (angle brackets). */
+    private var isInsideTemplate: Boolean = false
 
     /** The list of errors encountered during parsing. */
     private val errors: MutableList<ParseError> = mutableListOf()
@@ -305,6 +311,9 @@ class Parser(
         val members = mutableListOf<StructMember>()
         while (currentKind() != TokenKind.RIGHT_BRACE && !isAtEnd()) {
             members.add(parseStructMember())
+            if (currentKind() == TokenKind.COMMA) {
+                advance()
+            }
         }
         expectOrError(TokenKind.RIGHT_BRACE, "Expected '}'")
 
@@ -381,6 +390,25 @@ class Parser(
         }
         advance()
 
+        // Parse storage class and access mode
+        var storageClass: String? = null
+        var accessMode: String? = null
+        if (kind == VariableDeclKind.VAR && currentKind() == TokenKind.LEFT_ANGLE) {
+            advance() // <
+            if (currentKind() == TokenKind.IDENTIFIER || currentKind().isKeyword) {
+                val token = advance()
+                storageClass = token.literal ?: token.kind.name.lowercase()
+            }
+            if (currentKind() == TokenKind.COMMA) {
+                advance() // ,
+                if (currentKind() == TokenKind.IDENTIFIER || currentKind().isKeyword) {
+                    val token = advance()
+                    accessMode = token.literal ?: token.kind.name.lowercase()
+                }
+            }
+            expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
+        }
+
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
@@ -416,8 +444,10 @@ class Parser(
         val end = previousToken?.span?.end ?: currentToken.span.end
         return VariableDecl(
             kind = kind,
-            attributes = emptyList(), // TODO: parse attributes
+            attributes = attributes,
             name = name,
+            storageClass = storageClass,
+            accessMode = accessMode,
             type = type,
             initializer = initializer,
             span = Span(start.start, end)
@@ -872,7 +902,13 @@ class Parser(
 
         if (currentKind() == TokenKind.COMMA) {
             advance()
-            length = parseExpression()
+            val oldInsideTemplate = isInsideTemplate
+            isInsideTemplate = true
+            try {
+                length = parseExpression()
+            } finally {
+                isInsideTemplate = oldInsideTemplate
+            }
 
             if (currentKind() == TokenKind.COMMA) {
                 advance()
@@ -1192,7 +1228,7 @@ class Parser(
         var left = parseShiftExpression()
 
         while (currentKind() == TokenKind.LEFT_ANGLE || currentKind() == TokenKind.LTE ||
-            currentKind() == TokenKind.RIGHT_ANGLE || currentKind() == TokenKind.GTE
+            (currentKind() == TokenKind.RIGHT_ANGLE && !isInsideTemplate) || currentKind() == TokenKind.GTE
         ) {
             val op = when (currentKind()) {
                 TokenKind.LEFT_ANGLE -> BinaryOperator.LT
@@ -1571,12 +1607,56 @@ class Parser(
 
             TokenKind.LET, TokenKind.CONST, TokenKind.VAR -> parseVariableDeclStatement()
             else -> {
-                // Expression statement
+                // Expression or assignment or increment/decrement
                 val expr = parseExpression()
-                expectOrError(TokenKind.SEMICOLON, "Expected ';'")
-                ExpressionStatement(expr, Span(start.start, previousToken?.span?.end ?: start.end))
+
+                val statement = when (currentKind()) {
+                    TokenKind.ASSIGN, TokenKind.PLUS_ASSIGN, TokenKind.MINUS_ASSIGN,
+                    TokenKind.STAR_ASSIGN, TokenKind.SLASH_ASSIGN, TokenKind.PERCENT_ASSIGN,
+                    TokenKind.AND_ASSIGN, TokenKind.OR_ASSIGN, TokenKind.XOR_ASSIGN,
+                    TokenKind.LEFT_SHIFT_ASSIGN, TokenKind.RIGHT_SHIFT_ASSIGN -> {
+                        val op = currentKind()
+                        advance()
+                        val rhs = parseExpression()
+                        expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+                        AssignmentStatement(expr, rhs, mapAssignmentOp(op), Span(start.start, previousToken?.span?.end ?: start.end))
+                    }
+
+                    TokenKind.INCREMENT -> {
+                        advance()
+                        expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+                        IncDecStatement(expr, true, Span(start.start, previousToken?.span?.end ?: start.end))
+                    }
+
+                    TokenKind.DECREMENT -> {
+                        advance()
+                        expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+                        IncDecStatement(expr, false, Span(start.start, previousToken?.span?.end ?: start.end))
+                    }
+
+                    else -> {
+                        expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+                        ExpressionStatement(expr, Span(start.start, previousToken?.span?.end ?: start.end))
+                    }
+                }
+                statement
             }
         }
+    }
+
+    private fun mapAssignmentOp(kind: TokenKind): BinaryOperator? = when (kind) {
+        TokenKind.ASSIGN -> null
+        TokenKind.PLUS_ASSIGN -> BinaryOperator.ADD
+        TokenKind.MINUS_ASSIGN -> BinaryOperator.SUBTRACT
+        TokenKind.STAR_ASSIGN -> BinaryOperator.MULTIPLY
+        TokenKind.SLASH_ASSIGN -> BinaryOperator.DIVIDE
+        TokenKind.PERCENT_ASSIGN -> BinaryOperator.MODULO
+        TokenKind.AND_ASSIGN -> BinaryOperator.BITWISE_AND
+        TokenKind.OR_ASSIGN -> BinaryOperator.BITWISE_OR
+        TokenKind.XOR_ASSIGN -> BinaryOperator.BITWISE_XOR
+        TokenKind.LEFT_SHIFT_ASSIGN -> BinaryOperator.LEFT_SHIFT
+        TokenKind.RIGHT_SHIFT_ASSIGN -> BinaryOperator.RIGHT_SHIFT
+        else -> null
     }
 
     /**
@@ -1788,7 +1868,7 @@ class Parser(
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
 
         val end = previousToken?.span?.end ?: currentToken.span.end
-        return VariableDeclStatement(kind, name, type, initializer, Span(start.start, end))
+        return VariableDeclStatement(kind, name, null, null, type, initializer, Span(start.start, end))
     }
 }
 

@@ -66,9 +66,20 @@ class WgslWriter(
             }
             val space = when (variable.storageClass) {
                 StorageClass.Uniform -> "<uniform>"
-                StorageClass.Storage -> "<storage, read_write>" // simplified
+                StorageClass.Storage -> {
+                    val mode = when (variable.accessMode) {
+                        AccessMode.Read -> ", read"
+                        AccessMode.Write -> ", write"
+                        AccessMode.ReadWrite -> ", read_write"
+                        null -> ""
+                    }
+                    "<storage$mode>"
+                }
+                StorageClass.Workgroup -> "<workgroup>"
+                StorageClass.Private -> "<private>"
+                StorageClass.PushConstant -> "<push_constant>"
+                StorageClass.Function -> "<function>"
                 StorageClass.Handle -> ""
-                else -> ""
             }
             val init = variable.init?.let { " = ${writeExpression(it)}" } ?: ""
             writeLine("var$space $name: $typeName$init;")

@@ -158,6 +158,10 @@ data class VariableDeclStatement(
     val kind: VariableDeclKind,
     /** The name of the variable. */
     val name: String,
+    /** The storage class (null if not specified). */
+    val storageClass: String? = null,
+    /** The access mode (null if not specified). */
+    val accessMode: String? = null,
     /** The type annotation (null if inferred). */
     val type: TypeDecl?,
     /** The initializer expression. */

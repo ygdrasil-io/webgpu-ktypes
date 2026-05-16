@@ -9,6 +9,7 @@ import io.ygdrasil.wgsl.parser.TypeResolver
 import io.ygdrasil.wgsl.parser.parseWgsl
 import io.ygdrasil.wgsl.tests.validator.BackendType
 import io.ygdrasil.wgsl.tests.validator.ValidatorFactory
+import io.ygdrasil.wgsl.tests.roundtrip.WgslNormalizer
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -62,8 +63,13 @@ abstract class GoldenTestBase(val backendName: String) : FunSpec({
                     Files.writeString(outputFile, output)
                 } else {
                     val expected = Files.readString(outputFile)
-                    // TODO: normalize output before comparison?
-                    output shouldBe expected
+                    if (backendName.lowercase() == "wgsl") {
+                        val normalizedActual = WgslNormalizer.normalize(output)
+                        val normalizedExpected = WgslNormalizer.normalize(expected)
+                        normalizedActual shouldBe normalizedExpected
+                    } else {
+                        output shouldBe expected
+                    }
                 }
 
                 // 6. Native Validation (if available)
@@ -77,8 +83,16 @@ abstract class GoldenTestBase(val backendName: String) : FunSpec({
 
                 if (type != null && ValidatorFactory.isAvailable(type)) {
                     println("[DEBUG_LOG] Native validation for $backendName...")
+                    val stage = module.entryPoints.firstOrNull()?.stage?.let {
+                        when (it) {
+                            io.ygdrasil.wgsl.ir.ShaderStage.Vertex -> io.ygdrasil.wgsl.tests.validator.ShaderStage.VERTEX
+                            io.ygdrasil.wgsl.ir.ShaderStage.Fragment -> io.ygdrasil.wgsl.tests.validator.ShaderStage.FRAGMENT
+                            io.ygdrasil.wgsl.ir.ShaderStage.Compute -> io.ygdrasil.wgsl.tests.validator.ShaderStage.COMPUTE
+                        }
+                    }
+
                     val validator = ValidatorFactory.getValidator(type)!!
-                    val validationResult = validator.validate(output)
+                    val validationResult = validator.validate(output, stage = stage)
                     if (validationResult.isFailure) {
                         println("[DEBUG_LOG] Native validation FAILED for $fileName ($backendName)")
                         println(validationResult.output)

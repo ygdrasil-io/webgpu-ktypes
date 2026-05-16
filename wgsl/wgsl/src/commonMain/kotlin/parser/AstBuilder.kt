@@ -136,12 +136,14 @@ class AstBuilder {
         kind: VariableDeclKind,
         attributes: List<Attribute> = emptyList(),
         name: String,
+        storageClass: String? = null,
+        accessMode: String? = null,
         type: TypeDecl? = null,
         initializer: Expression? = null,
         span: Span = Span.UNDEFINED
     ): VariableDecl {
         _declarationCount++
-        return VariableDecl(kind, attributes, name, type, initializer, span)
+        return VariableDecl(kind, attributes, name, storageClass, accessMode, type, initializer, span)
     }
 
     fun TypeAliasDecl(
@@ -487,12 +489,14 @@ class AstBuilder {
     fun VariableDeclStatement(
         kind: VariableDeclKind,
         name: String,
+        storageClass: String? = null,
+        accessMode: String? = null,
         type: TypeDecl? = null,
         initializer: Expression? = null,
         span: Span = Span.UNDEFINED
     ): VariableDeclStatement {
         _statementCount++
-        return VariableDeclStatement(kind, name, type, initializer, span)
+        return VariableDeclStatement(kind, name, storageClass, accessMode, type, initializer, span)
     }
 
     fun AssignmentStatement(
