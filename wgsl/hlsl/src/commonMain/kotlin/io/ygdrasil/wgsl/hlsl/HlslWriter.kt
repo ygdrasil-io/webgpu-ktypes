@@ -112,6 +112,47 @@ class HlslWriter(
         writeLine("}")
     }
 
+    override fun writeLiteralValue(value: LiteralValue): String {
+        return when (value) {
+            is LiteralValue.Scalar -> writeScalarValue(value.value)
+            is LiteralValue.Vector -> {
+                val first = value.components.first()
+                val prefix = when (first) {
+                    is ScalarValue.F32 -> "float"
+                    is ScalarValue.U32 -> "uint"
+                    is ScalarValue.I32 -> "int"
+                    is ScalarValue.Bool -> "bool"
+                    else -> "float"
+                }
+                "$prefix${value.components.size}(${value.components.joinToString { writeScalarValue(it) }})"
+            }
+            is LiteralValue.Matrix -> "mat(...)"
+        }
+    }
+
+    override fun writeSample(
+        texture: String,
+        sampler: String?,
+        coordinate: String,
+        level: SampleLevel?,
+        depthRef: Handle<Expression>?
+    ): String {
+        val method = "Sample($sampler, $coordinate)"
+        // TODO: handle level and depthRef
+        return "$texture.$method"
+    }
+
+    override fun writeTextureQuery(texture: String, query: TextureQueryKind): String {
+        val method = when (query) {
+            TextureQueryKind.Size -> "GetDimensions()" // Simplified, returns multiple values
+            TextureQueryKind.SizeLevel -> "GetDimensions()"
+            TextureQueryKind.NumLevels -> "/* unsupported */"
+            TextureQueryKind.NumLayers -> "/* unsupported */"
+            TextureQueryKind.NumSamples -> "/* unsupported */"
+        }
+        return "$texture.$method"
+    }
+
     private fun getHlslSemantic(builtin: BuiltinValue): String = when (builtin) {
         BuiltinValue.Position -> "SV_Position"
         BuiltinValue.VertexIndex -> "SV_VertexID"
@@ -168,6 +209,17 @@ class HlslWriter(
                 // Simplified HLSL pointer mapping
                 "$baseName*"
             }
+            is TypeInner.Opaque -> {
+                when {
+                    inner.name == "sampler" -> "SamplerState"
+                    inner.name == "comparison_sampler" -> "SamplerComparisonState"
+                    inner.name.startsWith("texture") -> {
+                        // Very simple mapping for now
+                        "Texture2D<float4>"
+                    }
+                    else -> inner.name
+                }
+            }
             else -> "void"
         }
     }
@@ -176,6 +228,14 @@ class HlslWriter(
         BuiltinFunction.Ln -> "log"
         BuiltinFunction.Mix -> "lerp"
         BuiltinFunction.Fract -> "frac"
+        BuiltinFunction.Atan2 -> "atan2"
+        BuiltinFunction.Dot -> "dot"
+        BuiltinFunction.Cross -> "cross"
+        BuiltinFunction.Distance -> "distance"
+        BuiltinFunction.Length -> "length"
+        BuiltinFunction.Normalize -> "normalize"
+        BuiltinFunction.Reflect -> "reflect"
+        BuiltinFunction.Refract -> "refract"
         else -> super.getBuiltinFunctionName(function)
     }
 }

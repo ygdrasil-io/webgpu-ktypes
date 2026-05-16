@@ -13,12 +13,12 @@
 | Sous-Phase | Durée | Fichiers | Statut | Progression |
 |------------|-------|----------|--------|-------------|
 | **4.0 - Architecture Commune** | 1-2 semaines | 7 fichiers | [X] | 100% |
-| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [/] | 40% |
-| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [/] | 30% |
-| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [/] | 30% |
-| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [/] | 30% |
+| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [/] | 60% |
+| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [/] | 50% |
+| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [/] | 50% |
+| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [/] | 50% |
 
-**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : ~45%**
+**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : ~55%**
 
 ---
 
@@ -146,11 +146,11 @@
 - [X] Implémenter writeGlobalVariable() avec [[buffer]], [[texture]], [[sampler]]
 - [X] Implémenter writeFunction() et writeFunctionSignature()
 - [X] Implémenter writeEntryPoint()
-  - [X] writeEntryPointSignature()
-  - [X] writeEntryPointArguments()
-  - [ ] writeInputStruct()
-  - [ ] writeOutputStruct()
-  - [ ] writeArgumentAssignments()
+- [X] Implémenter writeEntryPointSignature()
+- [X] Implémenter writeEntryPointArguments()
+- [ ] writeInputStruct()
+- [ ] writeOutputStruct()
+- [ ] writeArgumentAssignments()
 - [X] Implémenter writeBinding()
 
 #### Expressions (15+)
@@ -169,9 +169,9 @@
 - [ ] writeCallResult()
 - [X] writeLoad()
 - [X] writeStoreExpr()
-- [ ] writeImageSample()
+- [X] writeImageSample()
 - [ ] writeImageLoad()
-- [ ] writeImageQuery()
+- [X] writeImageQuery()
 - [ ] writeDerivative() (dfdx, dfdy, fwidth)
 - [X] writeMath() (40+ fonctions)
 - [ ] writeAtomicResult()

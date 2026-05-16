@@ -184,4 +184,74 @@ class MslWriterTest {
         assertTrue(code.contains("float3(1.0f)"))
         assertTrue(code.contains("(bool)(1.0f)"))
     }
+
+    @Test
+    fun testTexturesAndSamplers() {
+        val module = Module()
+        val textureType = module.types.append(Type(TypeInner.Opaque("texture2d")))
+        val samplerType = module.types.append(Type(TypeInner.Opaque("sampler")))
+        val f32 = module.types.append(Type(TypeInner.Scalar(ScalarKind.F32, 4)))
+        val vec2f = module.types.append(Type(TypeInner.Vector(VectorSize.Bi, f32)))
+        
+        val texHandle = module.globalVariables.append(GlobalVariable(
+            name = "myTexture",
+            storageClass = StorageClass.Handle,
+            type = textureType,
+            binding = ResourceBinding(0, 0)
+        ))
+        
+        val sampHandle = module.globalVariables.append(GlobalVariable(
+            name = "mySampler",
+            storageClass = StorageClass.Handle,
+            type = samplerType,
+            binding = ResourceBinding(0, 1)
+        ))
+        
+        val expressions = Arena<Expression>()
+        val texExpr = expressions.append(Expression(ExpressionKind.GlobalVar(texHandle)))
+        val sampExpr = expressions.append(Expression(ExpressionKind.GlobalVar(sampHandle)))
+        val coordExpr = expressions.append(Expression(ExpressionKind.Literal(LiteralValue.Vector(listOf(ScalarValue.F32(0.5f), ScalarValue.F32(0.5f))))))
+        
+        val sampleExpr = expressions.append(Expression(ExpressionKind.Sample(
+            texture = texExpr,
+            sampler = sampExpr,
+            coordinate = coordExpr
+        )))
+        
+        val queryExpr = expressions.append(Expression(ExpressionKind.TextureQuery(
+            texture = texExpr,
+            query = TextureQueryKind.Size
+        )))
+        
+        val blocks = Arena<io.ygdrasil.wgsl.ir.Block>()
+        val body = blocks.append(io.ygdrasil.wgsl.ir.Block(listOf(
+            Statement.Return(sampleExpr),
+            Statement.Return(queryExpr)
+        )))
+        
+        val funcHandle = module.functions.append(
+            Function(
+                name = "tex_test",
+                parameters = emptyList(),
+                returnType = f32,
+                localVariables = Arena(),
+                expressions = expressions,
+                blocks = blocks,
+                body = body
+            )
+        )
+        
+        module.entryPoints.add(EntryPoint(
+            name = "fs_main",
+            stage = ShaderStage.Fragment,
+            function = funcHandle,
+            bindings = emptyList()
+        ))
+        
+        val code = MslModule.writeString(module)
+        assertTrue(code.contains("texture2d<float> global_0 [[texture(0)]]"))
+        assertTrue(code.contains("sampler global_1 [[sampler(1)]]"))
+        assertTrue(code.contains("global_0.sample(global_1, float2(0.5f, 0.5f))"))
+        assertTrue(code.contains("global_0.get_width(), global_0.get_height()"))
+    }
 }

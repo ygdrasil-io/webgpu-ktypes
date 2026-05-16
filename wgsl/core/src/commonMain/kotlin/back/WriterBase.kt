@@ -285,8 +285,32 @@ abstract class WriterBase<T : BackendOptions>(
                 val e = writeExpression(kind.expr)
                 "($e).length()" // Simplified
             }
+            is ExpressionKind.Sample -> {
+                val t = writeExpression(kind.texture)
+                val s = kind.sampler?.let { writeExpression(it) }
+                val c = writeExpression(kind.coordinate)
+                writeSample(t, s, c, kind.level, kind.depthRef)
+            }
+            is ExpressionKind.TextureQuery -> {
+                val t = writeExpression(kind.texture)
+                writeTextureQuery(t, kind.query)
+            }
             else -> "/* unsupported expression: ${kind::class.simpleName} */"
         }
+    }
+
+    protected open fun writeSample(
+        texture: String,
+        sampler: String?,
+        coordinate: String,
+        level: SampleLevel?,
+        depthRef: Handle<Expression>?
+    ): String {
+        return "textureSample($texture, ${sampler ?: "/* no sampler */"}, $coordinate)"
+    }
+
+    protected open fun writeTextureQuery(texture: String, query: TextureQueryKind): String {
+        return "textureQuery($texture, ${query.name})"
     }
 
     protected open fun getExpressionType(handle: Handle<Expression>): Type {
@@ -300,15 +324,77 @@ abstract class WriterBase<T : BackendOptions>(
                 is LiteralValue.Scalar -> when (kind.value.value) {
                     is ScalarValue.Bool -> Type(TypeInner.Scalar(ScalarKind.Bool, 1))
                     is ScalarValue.F32 -> Type(TypeInner.Scalar(ScalarKind.F32, 4))
-                    is ScalarValue.U32 -> Type(TypeInner.Scalar(ScalarKind.Uint, 4))
-                    is ScalarValue.I32 -> Type(TypeInner.Scalar(ScalarKind.Sint, 4))
+                    is ScalarValue.U32 -> Type(TypeInner.Scalar(ScalarKind.U32, 4))
+                    is ScalarValue.I32 -> Type(TypeInner.Scalar(ScalarKind.S32, 4))
                     else -> Type(TypeInner.Error)
+                }
+                is LiteralValue.Vector -> {
+                   val first = kind.components.first()
+                   val scalar = when(first) {
+                       is ScalarValue.Bool -> Type(TypeInner.Scalar(ScalarKind.Bool, 1))
+                       is ScalarValue.F32 -> Type(TypeInner.Scalar(ScalarKind.F32, 4))
+                       is ScalarValue.U32 -> Type(TypeInner.Scalar(ScalarKind.U32, 4))
+                       is ScalarValue.I32 -> Type(TypeInner.Scalar(ScalarKind.S32, 4))
+                       else -> Type(TypeInner.Error)
+                   }
+                   val scalarHandle = module.types.append(scalar)
+                   Type(TypeInner.Vector(VectorSize.fromInt(kind.components.size) ?: VectorSize.Quad, scalarHandle))
                 }
                 else -> Type(TypeInner.Error)
             }
             is ExpressionKind.LocalVar -> currentFunction!!.localVariables[kind.handle].type.let { module.types[it] }
             is ExpressionKind.GlobalVar -> module.globalVariables[kind.handle].type.let { module.types[it] }
             is ExpressionKind.FunctionArgument -> currentFunction!!.parameters[kind.index].type.let { module.types[it] }
+            is ExpressionKind.Access -> {
+                val baseType = getExpressionType(kind.expr)
+                when (val inner = baseType.inner) {
+                    is TypeInner.Struct -> module.types[inner.members[kind.index].type]
+                    is TypeInner.Vector -> module.types[inner.scalar]
+                    is TypeInner.Matrix -> module.types[inner.scalar] // Should be vector, but let's stay simple
+                    is TypeInner.Array -> module.types[inner.element]
+                    else -> Type(TypeInner.Error)
+                }
+            }
+            is ExpressionKind.AccessIndex -> {
+                val baseType = getExpressionType(kind.expr)
+                when (val inner = baseType.inner) {
+                    is TypeInner.Vector -> module.types[inner.scalar]
+                    is TypeInner.Matrix -> module.types[inner.scalar]
+                    is TypeInner.Array -> module.types[inner.element]
+                    else -> Type(TypeInner.Error)
+                }
+            }
+            is ExpressionKind.Swizzle -> {
+                val baseType = getExpressionType(kind.vector)
+                when (val inner = baseType.inner) {
+                    is TypeInner.Vector -> {
+                        if (kind.size.ordinal == -1) { // scalar
+                             module.types[inner.scalar]
+                        } else {
+                            val scalarHandle = inner.scalar
+                            Type(TypeInner.Vector(kind.size, scalarHandle))
+                        }
+                    }
+                    else -> Type(TypeInner.Error)
+                }
+            }
+            is ExpressionKind.Binary -> getExpressionType(kind.left) // Simplified
+            is ExpressionKind.Unary -> getExpressionType(kind.expr)
+            is ExpressionKind.Load -> {
+                val ptrType = getExpressionType(kind.pointer)
+                when (val inner = ptrType.inner) {
+                    is TypeInner.Pointer -> module.types[inner.base]
+                    is TypeInner.ValuePointer -> module.types[inner.base]
+                    else -> Type(TypeInner.Error)
+                }
+            }
+            is ExpressionKind.Splat -> {
+                val scalarType = getExpressionType(kind.value)
+                val scalarHandle = module.types.append(scalarType)
+                Type(TypeInner.Vector(kind.size, scalarHandle))
+            }
+            is ExpressionKind.As -> module.types[kind.target]
+            is ExpressionKind.TypeConstructor -> module.types[kind.type]
             else -> Type(TypeInner.Error)
         }
     }

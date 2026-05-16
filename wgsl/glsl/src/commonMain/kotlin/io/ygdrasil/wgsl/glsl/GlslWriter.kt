@@ -106,6 +106,45 @@ class GlslWriter(
         writeLine("}")
     }
 
+    override fun writeLiteralValue(value: LiteralValue): String {
+        return when (value) {
+            is LiteralValue.Scalar -> writeScalarValue(value.value)
+            is LiteralValue.Vector -> {
+                val first = value.components.first()
+                val prefix = when (first) {
+                    is ScalarValue.U32 -> "uvec"
+                    is ScalarValue.I32 -> "ivec"
+                    is ScalarValue.Bool -> "bvec"
+                    is ScalarValue.F64 -> "dvec"
+                    else -> "vec"
+                }
+                "$prefix${value.components.size}(${value.components.joinToString { writeScalarValue(it) }})"
+            }
+            is LiteralValue.Matrix -> "mat(...)"
+        }
+    }
+
+    override fun writeSample(
+        texture: String,
+        sampler: String?,
+        coordinate: String,
+        level: SampleLevel?,
+        depthRef: Handle<Expression>?
+    ): String {
+        return "texture(sampler2D($texture, $sampler), $coordinate)"
+    }
+
+    override fun writeTextureQuery(texture: String, query: TextureQueryKind): String {
+        val method = when (query) {
+            TextureQueryKind.Size -> "textureSize($texture, 0)"
+            TextureQueryKind.SizeLevel -> "textureSize($texture, level)" // TODO: level
+            TextureQueryKind.NumLevels -> "textureQueryLevels($texture)"
+            TextureQueryKind.NumLayers -> "textureQueryLevels($texture)" // Simplified
+            TextureQueryKind.NumSamples -> "textureSamples($texture)"
+        }
+        return method
+    }
+
     override fun getScalarTypeName(scalar: TypeInner.Scalar): String {
         return when (scalar.kind) {
             ScalarKind.Bool -> "bool"
@@ -145,12 +184,27 @@ class GlslWriter(
                 // In many cases, it's just the type
                 baseName
             }
+            is TypeInner.Opaque -> {
+                when {
+                    inner.name == "sampler" -> "sampler" // In GLSL it depends if it's combined
+                    inner.name == "comparison_sampler" -> "samplerShadow"
+                    inner.name.startsWith("texture") -> {
+                        "texture2D"
+                    }
+                    else -> inner.name
+                }
+            }
             else -> "void"
         }
     }
 
     override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
         BuiltinFunction.Ln -> "log"
+        BuiltinFunction.Atan2 -> "atan" // GLSL uses atan(y, x)
+        BuiltinFunction.Mix -> "mix"
+        BuiltinFunction.Fract -> "fract"
+        BuiltinFunction.Reflect -> "reflect"
+        BuiltinFunction.Refract -> "refract"
         else -> super.getBuiltinFunctionName(function)
     }
 }

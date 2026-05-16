@@ -151,8 +151,56 @@ class MslWriter(
         writeLine("}")
     }
 
+    override fun writeLiteralValue(value: LiteralValue): String {
+        return when (value) {
+            is LiteralValue.Scalar -> writeScalarValue(value.value)
+            is LiteralValue.Vector -> {
+                val first = value.components.first()
+                val prefix = when (first) {
+                    is ScalarValue.F32 -> "float"
+                    is ScalarValue.U32 -> "uint"
+                    is ScalarValue.I32 -> "int"
+                    is ScalarValue.Bool -> "bool"
+                    else -> "float"
+                }
+                "$prefix${value.components.size}(${value.components.joinToString { writeScalarValue(it) }})"
+            }
+            is LiteralValue.Matrix -> "mat(...)"
+        }
+    }
+
+    override fun writeSample(
+        texture: String,
+        sampler: String?,
+        coordinate: String,
+        level: SampleLevel?,
+        depthRef: Handle<Expression>?
+    ): String {
+        val method = if (sampler != null) "sample($sampler, $coordinate)" else "read($coordinate)"
+        // TODO: handle level and depthRef
+        return "$texture.$method"
+    }
+
+    override fun writeTextureQuery(texture: String, query: TextureQueryKind): String {
+        val method = when (query) {
+            TextureQueryKind.Size -> "get_width(), $texture.get_height()" // simplified
+            TextureQueryKind.SizeLevel -> "get_width($texture), $texture.get_height()"
+            TextureQueryKind.NumLevels -> "get_num_mip_levels()"
+            TextureQueryKind.NumLayers -> "get_array_size()"
+            TextureQueryKind.NumSamples -> "get_num_samples()"
+        }
+        return "$texture.$method"
+    }
+
     override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
         BuiltinFunction.Ln -> "log"
+        BuiltinFunction.Fract -> "fract"
+        BuiltinFunction.Mix -> "mix"
+        BuiltinFunction.Atan2 -> "atan2"
+        BuiltinFunction.Determinant -> "determinant"
+        BuiltinFunction.Modf -> "modf"
+        BuiltinFunction.Frexp -> "frexp"
+        BuiltinFunction.Ldexp -> "ldexp"
         else -> super.getBuiltinFunctionName(function)
     }
 

@@ -110,6 +110,27 @@ class WgslWriter(
         writeLine("}")
     }
 
+    override fun writeSample(
+        texture: String,
+        sampler: String?,
+        coordinate: String,
+        level: SampleLevel?,
+        depthRef: Handle<Expression>?
+    ): String {
+        return "textureSample($texture, ${sampler ?: "/* no sampler */"}, $coordinate)"
+    }
+
+    override fun writeTextureQuery(texture: String, query: TextureQueryKind): String {
+        val method = when (query) {
+            TextureQueryKind.Size -> "textureDimensions($texture)"
+            TextureQueryKind.SizeLevel -> "textureDimensions($texture, level)" // TODO: level
+            TextureQueryKind.NumLevels -> "textureNumLevels($texture)"
+            TextureQueryKind.NumLayers -> "textureNumLayers($texture)"
+            TextureQueryKind.NumSamples -> "textureNumSamples($texture)"
+        }
+        return method
+    }
+
     private fun getWgslBuiltinName(builtin: BuiltinValue): String = when (builtin) {
         BuiltinValue.VertexIndex -> "vertex_index"
         BuiltinValue.InstanceIndex -> "instance_index"
@@ -163,6 +184,7 @@ class WgslWriter(
                 val space = inner.addressSpace.name.lowercase()
                 "ptr<$space, $baseName>"
             }
+            is TypeInner.Opaque -> inner.name
             else -> "/* unknown type */"
         }
     }
