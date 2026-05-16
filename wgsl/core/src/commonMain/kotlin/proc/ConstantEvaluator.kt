@@ -182,6 +182,12 @@ class ConstantEvaluator(
             is ExpressionKind.AccessIndex -> {
                 evaluateAccessIndexExpression(kind, context)
             }
+            is ExpressionKind.Splat -> {
+                evaluateSplatExpression(kind, context)
+            }
+            is ExpressionKind.Swizzle -> {
+                evaluateSwizzleExpression(kind, context)
+            }
             is ExpressionKind.TypeConstructor -> {
                 evaluateTypeConstructorExpression(kind, context)
             }
@@ -560,6 +566,32 @@ class ConstantEvaluator(
                 }
             }
             else -> ConstValue.NotConst
+        }
+    }
+
+    private fun evaluateSplatExpression(kind: ExpressionKind.Splat, context: EvaluationContext): ConstValue {
+        val value = evaluateExpression(kind.value, context)
+        return if (value is ConstValue.Scalar) {
+            val components = List(kind.size.value) { value.value }
+            ConstValue.Vector(components, Handle.create(-1))
+        } else {
+            ConstValue.NotConst
+        }
+    }
+
+    private fun evaluateSwizzleExpression(kind: ExpressionKind.Swizzle, context: EvaluationContext): ConstValue {
+        val vector = evaluateExpression(kind.vector, context)
+        return if (vector is ConstValue.Vector) {
+            val components = kind.pattern.map { index ->
+                if (index >= 0 && index < vector.components.size) {
+                    vector.components[index]
+                } else {
+                    throw EvaluationError("Swizzle index $index out of bounds for vector of size ${vector.components.size}")
+                }
+            }
+            ConstValue.Vector(components, Handle.create(-1))
+        } else {
+            ConstValue.NotConst
         }
     }
 

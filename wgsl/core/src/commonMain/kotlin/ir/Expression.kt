@@ -64,6 +64,16 @@ sealed class ExpressionKind {
     // Constant access
     data class ConstantExpr(val handle: Handle<io.ygdrasil.wgsl.ir.Constant>) : ExpressionKind()
 
+    // Splat
+    data class Splat(val size: VectorSize, val value: Handle<Expression>) : ExpressionKind()
+
+    // Swizzle
+    data class Swizzle(
+        val size: VectorSize,
+        val vector: Handle<Expression>,
+        val pattern: List<Int>
+    ) : ExpressionKind()
+
     // Load from pointer
     data class Load(val pointer: Handle<Expression>) : ExpressionKind()
 

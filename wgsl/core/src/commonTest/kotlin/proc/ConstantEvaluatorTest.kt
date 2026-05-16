@@ -60,4 +60,43 @@ class ConstantEvaluatorTest : FunSpec({
         scalar.shouldBeInstanceOf<ScalarValue.I32>()
         scalar.value shouldBe 40
     }
+
+    test("Splat evaluation") {
+        val module = Module()
+        val evaluator = ConstantEvaluator(module)
+
+        val value = module.globalExpressions.append(Expression(ExpressionKind.Literal(LiteralValue.Scalar(ScalarValue.F32(1.0f)))))
+        val splat = module.globalExpressions.append(Expression(ExpressionKind.Splat(VectorSize.Tri, value)))
+
+        val result = evaluator.evaluate(splat)
+        val constValue = result.value
+        constValue.shouldBeInstanceOf<ConstValue.Vector>()
+        constValue.components.size shouldBe 3
+        constValue.components.forEach {
+            it.shouldBeInstanceOf<ScalarValue.F32>()
+            it.value shouldBe 1.0f
+        }
+    }
+
+    test("Swizzle evaluation") {
+        val module = Module()
+        val evaluator = ConstantEvaluator(module)
+
+        val vec = module.globalExpressions.append(Expression(ExpressionKind.Literal(LiteralValue.Vector(listOf(
+            ScalarValue.F32(1.0f),
+            ScalarValue.F32(2.0f),
+            ScalarValue.F32(3.0f),
+            ScalarValue.F32(4.0f)
+        )))))
+        // Swizzle .zyx (indices 2, 1, 0)
+        val swizzle = module.globalExpressions.append(Expression(ExpressionKind.Swizzle(VectorSize.Tri, vec, listOf(2, 1, 0))))
+
+        val result = evaluator.evaluate(swizzle)
+        val constValue = result.value
+        constValue.shouldBeInstanceOf<ConstValue.Vector>()
+        constValue.components.size shouldBe 3
+        (constValue.components[0] as ScalarValue.F32).value shouldBe 3.0f
+        (constValue.components[1] as ScalarValue.F32).value shouldBe 2.0f
+        (constValue.components[2] as ScalarValue.F32).value shouldBe 1.0f
+    }
 })
