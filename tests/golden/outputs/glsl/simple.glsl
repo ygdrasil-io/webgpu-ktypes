@@ -18,9 +18,10 @@ vec4 fs_main() {
 }
 
 void main() {
-    gl_Position = vs_main(vec4(0.0));
+    gl_Position = vs_main(uint(0.0));
 }
 
+layout(location = 0) out vec4 outColor;
 void main() {
     outColor = fs_main();
 }

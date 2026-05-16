@@ -94,7 +94,7 @@ sealed class TypeInner : Equatable {
 data class StructMember(
     val name: String,
     val type: Handle<Type>,
-    val binding: Handle<GlobalVariable>? = null,
+    val binding: BindingAttribute? = null,
     val offset: Int = 0,
 )
 

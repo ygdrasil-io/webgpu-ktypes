@@ -5,9 +5,7 @@ precision highp int;
 
 vec4 vs_main() {
     float x = 0;
-    
-    float x = 0;
-    return float(0, x);
+    return vec4(0, x);
 }
 
 void main() {

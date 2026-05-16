@@ -91,7 +91,7 @@ class Parser(
     private var isInsideTemplate: Boolean = false
 
     /** The list of errors encountered during parsing. */
-    private val errors: MutableList<ParseError> = mutableListOf()
+    val errors: MutableList<ParseError> = mutableListOf()
 
     /** Returns true if we've reached the end of the token stream. */
     private fun isAtEnd(): Boolean = currentToken.isEof
@@ -1389,6 +1389,18 @@ class Parser(
                 advance()
                 val operand = parseUnaryExpression()
                 return UnaryExpr(UnaryOperator.BITWISE_NOT, operand, operand.span)
+            }
+
+            TokenKind.STAR -> {
+                advance()
+                val operand = parseUnaryExpression()
+                return UnaryExpr(UnaryOperator.DEREF, operand, operand.span)
+            }
+
+            TokenKind.AMPERSAND -> {
+                advance()
+                val operand = parseUnaryExpression()
+                return UnaryExpr(UnaryOperator.ADDRESS_OF, operand, operand.span)
             }
 
             else -> return parsePostfixExpression()

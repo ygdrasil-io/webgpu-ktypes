@@ -2,22 +2,10 @@
 #pragma pack_matrix(column_major)
 
 int global_0;
-void global_1;
 
 float4 vs_main(float3 pos) {
-    
     global_0 = (global_0 + 1);
-    return float(pos, 1.0f);
-}
-
-float4 fs_main() {
-    
-    return float(float(global_0), 0.0f, 0.0f, 1.0f);
-}
-
-void cs_main() {
-    
-    0 = 1.0f;
+    return float4(pos, 1.0f);
 }
 
 struct vs_main_Output {
@@ -26,11 +14,4 @@ struct vs_main_Output {
 vs_main_Output vs_main() {
     vs_main_Output stage_out;
     return stage_out;
-}
-
-float4 fs_main() {
-}
-
-[numthreads(1, 1, 1)]
-void cs_main() {
 }

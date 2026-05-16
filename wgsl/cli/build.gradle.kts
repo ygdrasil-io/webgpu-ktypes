@@ -30,6 +30,16 @@ kotlin {
     }
 
     sourceSets {
+        commonMain {
+            dependencies {
+                implementation(projects.wgsl.core)
+                implementation(projects.wgsl.wgsl)
+                implementation(projects.wgsl.msl)
+                implementation(projects.wgsl.hlsl)
+                implementation(projects.wgsl.glsl)
+                implementation(libs.clikt)
+            }
+        }
 
         commonTest {
             dependencies {

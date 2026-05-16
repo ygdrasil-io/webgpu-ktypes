@@ -80,15 +80,31 @@ class HlslWriter(
         }
     }
 
+    override fun writeFunction(func: Function, handle: Handle<Function>) {
+        val ep = module.entryPoints.find { it.function == handle }
+        if (ep != null) {
+            writeEntryPoint(ep, 0)
+        } else {
+            super.writeFunction(func, handle)
+        }
+    }
+
+    override fun writeEntryPoints() {
+        // Do nothing, handled in writeFunction
+    }
+
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
         writeLine()
         val inputStructName = writeInputStruct(ep)
         val outputStructName = writeOutputStruct(ep)
 
         val stageAttr = when (ep.stage) {
-            ShaderStage.Vertex -> "[numthreads(1, 1, 1)]" // Default for VS in some contexts, but not needed
+            ShaderStage.Vertex -> "" 
             ShaderStage.Fragment -> ""
-            ShaderStage.Compute -> "[numthreads(1, 1, 1)]" // Default
+            ShaderStage.Compute -> {
+                val (x, y, z) = ep.workgroupSize ?: listOf(1, 1, 1)
+                "[numthreads($x, $y, $z)]"
+            }
         }
         
         if (ep.stage == ShaderStage.Compute) {
@@ -105,13 +121,13 @@ class HlslWriter(
             args.add("$inputStructName stage_in")
         }
 
-        // Built-ins that are not in stage_in (if any, like compute built-ins)
-        ep.bindings.forEach { attr ->
-            if (attr is BindingAttribute.Builtin && ep.stage == ShaderStage.Compute) {
-                val hlslSemantic = getHlslSemantic(attr.builtin)
-                val typeName = getHlslBuiltinType(attr.builtin)
-                val name = attr.builtin.name.lowercase()
-                args.add("$typeName $name : $hlslSemantic")
+        // 1. Built-ins that are not in stage_in (like compute built-ins)
+        func.parameters.forEach { param ->
+            val binding = param.binding
+            if (binding is BindingAttribute.Builtin && ep.stage == ShaderStage.Compute) {
+                val hlslSemantic = getHlslSemantic(binding.builtin)
+                val typeName = getHlslBuiltinType(binding.builtin)
+                args.add("$typeName ${param.name} : $hlslSemantic")
             }
         }
 
@@ -121,8 +137,26 @@ class HlslWriter(
             if (outputStructName != null) {
                 writeLine("$outputStructName stage_out;")
             }
+            
+            // Assign inputs to local variables or function arguments
+            func.parameters.forEach { param ->
+                val binding = param.binding
+                if (binding is BindingAttribute.Location || (binding is BindingAttribute.Builtin && ep.stage != ShaderStage.Compute)) {
+                    writeLine("${getTypeName(param.type)} ${param.name} = stage_in.${param.name};")
+                }
+            }
+            
             writeBlock(func.body)
+            
             if (outputStructName != null) {
+                // If the return type was a struct, we need to map its fields to stage_out
+                // This assumes the function body assigned values to something that will be returned
+                // In a real writer, we'd need to handle this more carefully.
+                // For now, let's assume the function returns a value that we assign to stage_out
+                val returnExpr = func.result?.let { writeExpression(it) }
+                if (returnExpr != null) {
+                    writeLine("stage_out = $returnExpr;")
+                }
                 writeLine("return stage_out;")
             }
         }
@@ -130,24 +164,18 @@ class HlslWriter(
     }
 
     protected fun writeInputStruct(ep: EntryPoint): String? {
+        val func = module.functions[ep.function]
         val members = mutableListOf<String>()
         
-        ep.bindings.forEach { attr ->
-            when (attr) {
-                is BindingAttribute.Builtin -> {
-                    if (ep.stage != ShaderStage.Compute) {
-                        val hlslSemantic = getHlslSemantic(attr.builtin)
-                        val typeName = getHlslBuiltinType(attr.builtin)
-                        val name = attr.builtin.name.lowercase()
-                        members.add("$typeName $name : $hlslSemantic;")
-                    }
-                }
-                is BindingAttribute.Location -> {
-                    val typeName = "float4" 
-                    val name = "loc_${attr.location}"
-                    members.add("$typeName $name : TEXCOORD${attr.location};")
-                }
-                else -> {}
+        func.parameters.forEach { param ->
+            val binding = param.binding
+            if (binding is BindingAttribute.Location) {
+                val typeName = getTypeName(param.type)
+                members.add("$typeName ${param.name} : TEXCOORD${binding.location};")
+            } else if (binding is BindingAttribute.Builtin && ep.stage != ShaderStage.Compute) {
+                val hlslSemantic = getHlslSemantic(binding.builtin)
+                val typeName = getHlslBuiltinType(binding.builtin)
+                members.add("$typeName ${param.name} : $hlslSemantic;")
             }
         }
 
@@ -163,16 +191,46 @@ class HlslWriter(
     }
 
     protected fun writeOutputStruct(ep: EntryPoint): String? {
-        if (ep.stage != ShaderStage.Vertex) return null
-        
-        val structName = "${ep.name}_Output"
-        writeLine("struct $structName {")
-        indent {
-            writeLine("float4 position : SV_Position;")
-            // TODO: other outputs (locations)
+        val func = module.functions[ep.function]
+        val returnTypeHandle = func.returnType ?: return null
+        val returnType = module.types[returnTypeHandle]
+        val inner = returnType.inner
+
+        if (inner is TypeInner.Struct) {
+            val structName = "${ep.name}_Output"
+            writeLine("struct $structName {")
+            indent {
+                inner.members.forEach { member ->
+                    val typeName = getTypeName(member.type)
+                    val semantic = when (val binding = member.binding) {
+                        is BindingAttribute.Builtin -> if (binding.builtin == BuiltinValue.Position) "SV_Position" else "SV_Target"
+                        is BindingAttribute.Location -> "TEXCOORD${binding.location}"
+                        else -> if (ep.stage == ShaderStage.Fragment) "SV_Target" else "COLOR"
+                    }
+                    writeLine("$typeName ${member.name} : $semantic;")
+                }
+            }
+            writeLine("};")
+            return structName
+        } else if (ep.stage == ShaderStage.Vertex) {
+            val structName = "${ep.name}_Output"
+            writeLine("struct $structName {")
+            indent {
+                writeLine("float4 position : SV_Position;")
+            }
+            writeLine("};")
+            return structName
+        } else if (ep.stage == ShaderStage.Fragment) {
+            val structName = "${ep.name}_Output"
+            writeLine("struct $structName {")
+            indent {
+                val typeName = getTypeName(returnTypeHandle)
+                writeLine("$typeName color : SV_Target;")
+            }
+            writeLine("};")
+            return structName
         }
-        writeLine("};")
-        return structName
+        return null
     }
 
     override fun writeLiteralValue(value: LiteralValue): String {

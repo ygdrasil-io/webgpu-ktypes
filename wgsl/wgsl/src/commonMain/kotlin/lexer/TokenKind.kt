@@ -382,7 +382,7 @@ val TokenKind.isBinaryOperator: Boolean
  */
 val TokenKind.isUnaryOperator: Boolean
     get() = when (this) {
-        TokenKind.NOT, TokenKind.TILDE, TokenKind.MINUS, TokenKind.PLUS -> true
+        TokenKind.NOT, TokenKind.TILDE, TokenKind.MINUS, TokenKind.PLUS, TokenKind.STAR, TokenKind.AMPERSAND -> true
         else -> false
     }
 

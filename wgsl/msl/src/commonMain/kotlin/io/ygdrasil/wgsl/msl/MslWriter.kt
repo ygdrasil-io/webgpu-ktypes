@@ -79,13 +79,26 @@ class MslWriter(
         }
     }
 
+    override fun writeFunction(func: Function, handle: Handle<Function>) {
+        val ep = module.entryPoints.find { it.function == handle }
+        if (ep != null) {
+            writeEntryPoint(ep, 0)
+        } else {
+            super.writeFunction(func, handle)
+        }
+    }
+
+    override fun writeEntryPoints() {
+        // Do nothing, handled in writeFunction
+    }
+
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
+        writeLine()
         val stageAttr = when (ep.stage) {
             ShaderStage.Vertex -> "[[vertex]]"
             ShaderStage.Fragment -> "[[fragment]]"
             ShaderStage.Compute -> "[[kernel]]"
         }
-        writeLine()
         
         val inputStructName = writeInputStruct(ep)
         val outputStructName = writeOutputStruct(ep)
@@ -102,12 +115,12 @@ class MslWriter(
         }
         
         // 1. Built-ins that are not in stage_in
-        ep.bindings.forEach { attr ->
-            if (attr is BindingAttribute.Builtin) {
-                val mslBuiltin = getMslBuiltin(attr.builtin)
-                val typeName = getMslBuiltinType(attr.builtin)
-                val name = toSnakeCase(attr.builtin.name)
-                args.add("$typeName $name [[$mslBuiltin]]")
+        func.parameters.forEach { param ->
+            val binding = param.binding
+            if (binding is BindingAttribute.Builtin) {
+                val mslBuiltin = getMslBuiltin(binding.builtin)
+                val typeName = getMslBuiltinType(binding.builtin)
+                args.add("$typeName ${param.name} [[$mslBuiltin]]")
             }
         }
 
@@ -152,17 +165,18 @@ class MslWriter(
     }
 
     protected fun writeInputStruct(ep: EntryPoint): String? {
-        val locations = ep.bindings.filterIsInstance<BindingAttribute.Location>()
-        if (locations.isEmpty()) return null
+        val func = module.functions[ep.function]
+        val inputs = func.parameters.filter { it.binding is BindingAttribute.Location }
+        if (inputs.isEmpty()) return null
         
         val structName = "${ep.name}_Input"
         writeLine("struct $structName {")
         indent {
-            locations.forEach { loc ->
-                // TODO: Get actual type from moduleInfo or by analyzing the entry point function parameters
-                val typeName = "float4" 
-                val mslAttr = if (ep.stage == ShaderStage.Vertex) "attribute(${loc.location})" else "user(loc${loc.location})"
-                writeLine("$typeName loc_${loc.location} [[$mslAttr]];")
+            inputs.forEach { param ->
+                val loc = (param.binding as BindingAttribute.Location).location
+                val typeName = getTypeName(param.type)
+                val mslAttr = if (ep.stage == ShaderStage.Vertex) "attribute($loc)" else "user(loc$loc)"
+                writeLine("$typeName ${param.name} [[$mslAttr]];")
             }
         }
         writeLine("};")
@@ -171,23 +185,46 @@ class MslWriter(
 
     protected fun writeOutputStruct(ep: EntryPoint): String? {
         val func = module.functions[ep.function]
-        if (ep.stage == ShaderStage.Vertex) {
+        val returnTypeHandle = func.returnType ?: return null
+        val returnType = module.types[returnTypeHandle]
+        val inner = returnType.inner
+        
+        if (inner is TypeInner.Struct) {
             val structName = "${ep.name}_Output"
             writeLine("struct $structName {")
             indent {
-                writeLine("float4 position [[position]];")
-                // TODO: other outputs (locations)
+                inner.members.forEach { member ->
+                    val typeName = getTypeName(member.type)
+                    val mslAttr = when (val binding = member.binding) {
+                        is BindingAttribute.Builtin -> if (binding.builtin == BuiltinValue.Position) "[[position]]" else ""
+                        is BindingAttribute.Location -> "[[user(loc${binding.location})]]"
+                        else -> ""
+                    }
+                    val attrSuffix = if (mslAttr.isNotEmpty()) " $mslAttr" else ""
+                    writeLine("$typeName ${member.name}$attrSuffix;")
+                }
             }
             writeLine("};")
             return structName
+        } else if (ep.stage == ShaderStage.Vertex && func.returnType != null) {
+             // Vertex shader must return a struct or we wrap it (simplified here)
+             val structName = "${ep.name}_Output"
+             writeLine("struct $structName {")
+             indent {
+                 writeLine("float4 position [[position]];")
+             }
+             writeLine("};")
+             return structName
         }
         return null
     }
 
     protected fun writeArgumentAssignments(ep: EntryPoint) {
-        // If we have an input struct, we might need to assign its members to something
-        // But in this IR, we don't have a direct way to know which local variable 
-        // represents the input. This is a bit advanced for now.
+        val func = module.functions[ep.function]
+        val inputs = func.parameters.filter { it.binding is BindingAttribute.Location }
+        inputs.forEach { param ->
+             writeLine("${getTypeName(param.type)} ${param.name} = in.${param.name};")
+        }
     }
 
     override fun writeLiteralValue(value: LiteralValue): String {

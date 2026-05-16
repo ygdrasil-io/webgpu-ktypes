@@ -120,31 +120,73 @@ class GlslWriter(
         val func = module.functions[ep.function]
         
         // 1. Generate inputs (in) and outputs (out) for the entry point
-        // In GLSL 450, we use layout(location = X) in/out
+        func.parameters.forEach { param ->
+            val binding = param.binding
+            if (binding is BindingAttribute.Location) {
+                val typeName = getTypeName(param.type)
+                writeLine("layout(location = ${binding.location}) in $typeName ${param.name};")
+            } else if (binding is BindingAttribute.Builtin) {
+                // Builtins like gl_VertexIndex are implicit or need special handling
+                // but let's map them if necessary
+            }
+        }
+
+        val returnType = func.returnType
+        if (returnType != null) {
+            val typeName = getTypeName(returnType)
+            if (ep.stage == ShaderStage.Fragment) {
+                writeLine("layout(location = 0) out $typeName outColor;")
+            } else if (ep.stage == ShaderStage.Vertex) {
+                // Usually gl_Position, but could be other locations if it's a struct
+                val type = module.types[returnType]
+                val inner = type.inner
+                if (inner is TypeInner.Struct) {
+                    inner.members.forEachIndexed { i, member ->
+                        val memberTypeName = getTypeName(member.type)
+                        val binding = member.binding
+                        if (binding is BindingAttribute.Location) {
+                             writeLine("layout(location = ${binding.location}) out $memberTypeName out_${member.name};")
+                        }
+                    }
+                } else {
+                    writeLine("out $typeName outValue;")
+                }
+            }
+        }
         
-        // This is a placeholder for a more complete implementation
-        if (ep.stage == ShaderStage.Vertex) {
-             // Position is builtin gl_Position
-        } else if (ep.stage == ShaderStage.Fragment) {
-             writeLine("layout(location = 0) out vec4 outColor;")
+        if (ep.stage == ShaderStage.Compute && ep.workgroupSize != null) {
+            val (x, y, z) = ep.workgroupSize!!
+            writeLine("layout(local_size_x = $x, local_size_y = $y, local_size_z = $z) in;")
         }
         
         writeLine("void main() {")
         indent {
             // Mapping inputs to parameters and calling the function
-            val args = mutableListOf<String>()
-            
-            func.parameters.forEach { param ->
-                // For now, use dummy arguments or try to map from inputs
-                val typeName = getTypeName(param.type)
-                args.add("$typeName(0.0)") 
-            }
+            val args = func.parameters.map { it.name }
             
             val call = "${func.name}(${args.joinToString()})"
-            if (ep.stage == ShaderStage.Vertex) {
-                writeLine("gl_Position = $call;")
-            } else if (ep.stage == ShaderStage.Fragment) {
-                writeLine("outColor = $call;")
+            if (returnType != null) {
+                if (ep.stage == ShaderStage.Vertex) {
+                    val type = module.types[returnType]
+                    val inner = type.inner
+                    if (inner is TypeInner.Struct) {
+                        writeLine("${getTypeName(returnType)} res = $call;")
+                        inner.members.forEach { member ->
+                            val binding = member.binding
+                            if (binding is BindingAttribute.Builtin && binding.builtin == BuiltinValue.Position) {
+                                writeLine("gl_Position = res.${member.name};")
+                            } else if (binding is BindingAttribute.Location) {
+                                writeLine("out_${member.name} = res.${member.name};")
+                            }
+                        }
+                    } else {
+                        writeLine("gl_Position = $call;")
+                    }
+                } else if (ep.stage == ShaderStage.Fragment) {
+                    writeLine("outColor = $call;")
+                } else {
+                    writeLine("$call;")
+                }
             } else {
                 writeLine("$call;")
             }

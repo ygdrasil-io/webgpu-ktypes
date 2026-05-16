@@ -524,7 +524,6 @@ class ConstantEvaluator(
         val index = when (val v = indexVal.value) {
             is ScalarValue.I32 -> v.value
             is ScalarValue.U32 -> v.value.toInt()
-            else -> 0
         }
         
         return when (base) {

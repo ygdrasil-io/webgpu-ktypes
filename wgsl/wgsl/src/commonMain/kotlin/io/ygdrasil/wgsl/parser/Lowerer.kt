@@ -162,10 +162,19 @@ class Lowerer {
 
     private fun lowerStruct(decl: StructDecl) {
         val members = decl.members.map { member ->
+            val binding = member.attributes.find { it.name == "location" }?.let {
+                val loc = (it.args.firstOrNull() as? IntLiteral)?.value?.toInt() ?: 0
+                io.ygdrasil.wgsl.ir.BindingAttribute.Location(loc)
+            } ?: member.attributes.find { it.name == "builtin" }?.let {
+                val builtinName = (it.args.firstOrNull() as? IdentExpr)?.name
+                val builtin = io.ygdrasil.wgsl.ir.BuiltinValue.entries.find { it.name.lowercase() == builtinName?.lowercase() }
+                if (builtin != null) io.ygdrasil.wgsl.ir.BindingAttribute.Builtin(builtin) else null
+            }
+
             IrStructMember(
                 name = member.name,
                 type = lowerType(member.type),
-                binding = null,
+                binding = binding,
                 offset = 0
             )
         }
@@ -237,10 +246,19 @@ class Lowerer {
 
         val parameters = decl.parameters.mapIndexed { index, param ->
             functionParamsMap[param.name] = index
+            val binding = param.attributes.find { it.name == "location" }?.let {
+                val loc = (it.args.firstOrNull() as? IntLiteral)?.value?.toInt() ?: 0
+                io.ygdrasil.wgsl.ir.BindingAttribute.Location(loc)
+            } ?: param.attributes.find { it.name == "builtin" }?.let {
+                val builtinName = (it.args.firstOrNull() as? IdentExpr)?.name
+                val builtin = io.ygdrasil.wgsl.ir.BuiltinValue.entries.find { it.name.lowercase() == builtinName?.lowercase() }
+                if (builtin != null) io.ygdrasil.wgsl.ir.BindingAttribute.Builtin(builtin) else null
+            }
+
             IrFunctionParameter(
                 name = param.name,
                 type = lowerType(param.type),
-                binding = null
+                binding = binding
             )
         }
 
@@ -278,7 +296,14 @@ class Lowerer {
     private fun lowerStatement(astStmt: Statement): IrStatement {
         return when (astStmt) {
             is ReturnStatement -> IrStatement.Return(astStmt.value?.let { lowerExpression(it) })
-            is AssignmentStatement -> IrStatement.Assign(lowerExpression(astStmt.lhs), lowerExpression(astStmt.rhs))
+            is AssignmentStatement -> {
+                val lhs = astStmt.lhs
+                if (lhs is UnaryExpr && lhs.op == io.ygdrasil.wgsl.ast.UnaryOperator.DEREF) {
+                    IrStatement.Assign(lowerExpression(lhs.operand), lowerExpression(astStmt.rhs))
+                } else {
+                    IrStatement.Assign(lowerExpression(lhs), lowerExpression(astStmt.rhs))
+                }
+            }
             is IfStatement -> {
                 val cond = lowerExpression(astStmt.condition)
                 val accept = lowerBlock(astStmt.thenBranch as? BlockStatement ?: BlockStatement(listOf(astStmt.thenBranch), astStmt.thenBranch.span))
@@ -333,10 +358,16 @@ class Lowerer {
                 lowerExpression(astExpr.left),
                 lowerExpression(astExpr.right)
             )
-            is UnaryExpr -> IrExpressionKind.Unary(
-                lowerUnaryOperator(astExpr.op),
-                lowerExpression(astExpr.operand)
-            )
+            is UnaryExpr -> {
+                when (astExpr.op) {
+                    io.ygdrasil.wgsl.ast.UnaryOperator.DEREF -> IrExpressionKind.Load(lowerExpression(astExpr.operand))
+                    io.ygdrasil.wgsl.ast.UnaryOperator.ADDRESS_OF -> IrExpressionKind.ValuePointer(lowerExpression(astExpr.operand))
+                    else -> IrExpressionKind.Unary(
+                        lowerUnaryOperator(astExpr.op),
+                        lowerExpression(astExpr.operand)
+                    )
+                }
+            }
             is CallExpr -> {
                 // Heuristic: if callee is IdentExpr and matches a function name, it's a call
                 // If it matches a type name, it's a TypeConstructor
@@ -355,16 +386,16 @@ class Lowerer {
                 IrExpressionKind.AccessIndex(lowerExpression(astExpr.objectExpr), 0)
             }
             is IndexExpr -> {
-                val indexExpr = astExpr.indexExpr
-                if (indexExpr is IntLiteral) {
+                val index = astExpr.index
+                if (index is IntLiteral) {
                     IrExpressionKind.AccessIndex(
                         lowerExpression(astExpr.objectExpr),
-                        indexExpr.value.toInt()
+                        index.value.toInt()
                     )
                 } else {
                     IrExpressionKind.Access(
                         lowerExpression(astExpr.objectExpr),
-                        lowerExpression(indexExpr)
+                        lowerExpression(index)
                     )
                 }
             }
@@ -395,11 +426,12 @@ class Lowerer {
         else -> IrBinaryOperator.Add
     }
 
-    private fun lowerUnaryOperator(op: UnaryOperator): IrUnaryOperator = when (op) {
-        UnaryOperator.MINUS -> IrUnaryOperator.Negate
-        UnaryOperator.NOT -> IrUnaryOperator.Not
-        UnaryOperator.BITWISE_NOT -> IrUnaryOperator.BitNot
-        UnaryOperator.PLUS -> IrUnaryOperator.BitNot // Plus is often a no-op, use BitNot as placeholder if needed but usually it should be handled
+    private fun lowerUnaryOperator(op: io.ygdrasil.wgsl.ast.UnaryOperator): IrUnaryOperator = when (op) {
+        io.ygdrasil.wgsl.ast.UnaryOperator.MINUS -> IrUnaryOperator.Negate
+        io.ygdrasil.wgsl.ast.UnaryOperator.NOT -> IrUnaryOperator.Not
+        io.ygdrasil.wgsl.ast.UnaryOperator.BITWISE_NOT -> IrUnaryOperator.BitNot
+        io.ygdrasil.wgsl.ast.UnaryOperator.PLUS -> IrUnaryOperator.Negate // Plus is a no-op, use Negate as dummy
+        else -> IrUnaryOperator.Not
     }
 
     private fun lowerInferredType(initializer: Expression?): Handle<IrType> {

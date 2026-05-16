@@ -2,9 +2,10 @@
 #pragma pack_matrix(column_major)
 
 
-float4 vs_main() {
-    float local_0 = 0;
-    return float4(0, local_0);
+float4 vs_main(uint in_vertex_index) {
+    float local_0 = float((int(in_vertex_index) - 1));
+    float local_1 = float(((int((in_vertex_index & 0u)) * 2) - 1));
+    return float4(local_0, local_1, 0.0f, 1.0f);
 }
 
 struct vs_main_Output {

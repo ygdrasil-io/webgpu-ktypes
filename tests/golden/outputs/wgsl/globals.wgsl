@@ -4,10 +4,18 @@ var<workgroup> global_1: /* unknown type */;
 
 fn vs_main(pos: vec3<f32>) -> vec4<f32> {
     
+    global_0 = (global_0 + 1);
+    return f32(pos, 1.0f);
 }
 
 fn fs_main() -> vec4<f32> {
     
+    return f32(f32(global_0), 0.0f, 0.0f, 1.0f);
+}
+
+fn cs_main() {
+    
+    0 = 1.0f;
 }
 
 @vertex
@@ -16,4 +24,8 @@ fn vs_main() -> vec4<f32> {
 
 @fragment
 fn fs_main() -> vec4<f32> {
+}
+
+@compute
+fn cs_main() {
 }

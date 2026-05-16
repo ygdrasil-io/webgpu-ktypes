@@ -120,6 +120,8 @@ enum class UnaryOperator {
     PLUS,
     NOT,
     BITWISE_NOT,
+    DEREF,
+    ADDRESS_OF,
 }
 
 /**

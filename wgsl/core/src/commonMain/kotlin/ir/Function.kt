@@ -73,12 +73,7 @@ data class FunctionParameter(
     /**
      * The binding for this parameter (if it's a shader I/O parameter).
      */
-    val binding: Binding? = null,
-
-    /**
-     * Whether this parameter is builtin.
-     */
-    val builtin: BuiltinValue? = null,
+    val binding: BindingAttribute? = null,
 ) {
     override fun toString(): String = name
 }

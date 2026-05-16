@@ -16,8 +16,3 @@ fn vs_main(
     out.color = vec4<f32>(color, 1.0);
     return out;
 }
-
-@fragment
-fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
-    return in.color;
-}

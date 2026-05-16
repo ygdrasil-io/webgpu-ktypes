@@ -2,9 +2,7 @@
 
 fn vs_main() -> vec4<f32> {
     f32 local_0 = 0;
-    
-    f32 local_0 = 0;
-    return f32(0, local_0);
+    return vec4<f32>(0, local_0);
 }
 
 @vertex
