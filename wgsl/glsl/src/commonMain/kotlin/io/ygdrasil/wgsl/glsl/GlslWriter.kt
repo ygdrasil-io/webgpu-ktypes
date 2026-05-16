@@ -83,7 +83,8 @@ class GlslWriter(
         return when (val inner = type.inner) {
             is TypeInner.Scalar -> getScalarTypeName(inner)
             is TypeInner.Vector -> {
-                val prefix = when ((module.types[inner.scalar].inner as TypeInner.Scalar).kind) {
+                val scalarType = module.types[inner.scalar]
+                val prefix = when ((scalarType.inner as TypeInner.Scalar).kind) {
                     ScalarKind.Uint -> "u"
                     ScalarKind.Sint -> "i"
                     ScalarKind.Bool -> "b"
@@ -93,11 +94,23 @@ class GlslWriter(
                 "${prefix}vec${inner.size.ordinal + 2}"
             }
             is TypeInner.Matrix -> {
-                val prefix = if ((module.types[inner.scalar].inner as TypeInner.Scalar).kind == ScalarKind.F64) "d" else ""
+                val scalarType = module.types[inner.scalar]
+                val prefix = if ((scalarType.inner as TypeInner.Scalar).kind == ScalarKind.F64) "d" else ""
                 "${prefix}mat${inner.columns.ordinal + 2}x${inner.rows.ordinal + 2}"
             }
             is TypeInner.Struct -> "Struct_${handle.index}"
+            is TypeInner.Pointer -> {
+                val baseName = getTypeName(inner.base)
+                // GLSL doesn't really have pointers like C, except for some extensions
+                // In many cases, it's just the type
+                baseName
+            }
             else -> "void"
         }
+    }
+
+    override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
+        BuiltinFunction.Ln -> "log"
+        else -> super.getBuiltinFunctionName(function)
     }
 }

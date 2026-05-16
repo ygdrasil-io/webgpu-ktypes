@@ -213,7 +213,7 @@ abstract class WriterBase<T : BackendOptions>(
             is ExpressionKind.Literal -> writeLiteralValue(kind.value)
             is ExpressionKind.GlobalVar -> getGlobalVariableName(kind.handle)
             is ExpressionKind.LocalVar -> getLocalVariableName(kind.handle)
-            is ExpressionKind.FunctionArgument -> "arg_${kind.index}"
+            is ExpressionKind.FunctionArgument -> getFunctionArgumentName(kind.index)
             is ExpressionKind.ConstantExpr -> getConstantName(kind.handle)
             is ExpressionKind.Binary -> {
                 val left = writeExpression(kind.left)
@@ -231,7 +231,7 @@ abstract class WriterBase<T : BackendOptions>(
             }
             is ExpressionKind.BuiltinCall -> {
                 val args = kind.arguments.joinToString { writeExpression(it) }
-                "${kind.function.name.lowercase()}($args)"
+                "${getBuiltinFunctionName(kind.function)}($args)"
             }
             is ExpressionKind.AccessIndex -> {
                 val e = writeExpression(kind.expr)
@@ -270,6 +270,8 @@ abstract class WriterBase<T : BackendOptions>(
         // This is a simplification, we should use Typifier
         return Type(TypeInner.Error)
     }
+
+    protected open fun getBuiltinFunctionName(function: BuiltinFunction): String = function.name.lowercase()
 
     protected open fun getBinaryOperator(op: BinaryOperator): String = when (op) {
         BinaryOperator.Add -> "+"
@@ -352,6 +354,10 @@ abstract class WriterBase<T : BackendOptions>(
             ScalarKind.F64 -> "f64"
             else -> "unknown"
         }
+    }
+
+    protected open fun getFunctionArgumentName(index: Int): String {
+        return currentFunction?.parameters?.getOrNull(index)?.name ?: "arg_$index"
     }
 
     protected open fun getConstantName(handle: Handle<Constant>): String = "CONST_${handle.index}"

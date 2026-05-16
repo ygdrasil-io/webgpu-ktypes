@@ -84,15 +84,29 @@ class HlslWriter(
         return when (val inner = type.inner) {
             is TypeInner.Scalar -> getScalarTypeName(inner)
             is TypeInner.Vector -> {
-                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                val scalarType = module.types[inner.scalar]
+                val scalarName = getScalarTypeName(scalarType.inner as TypeInner.Scalar)
                 "$scalarName${inner.size.ordinal + 2}"
             }
             is TypeInner.Matrix -> {
-                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                val scalarType = module.types[inner.scalar]
+                val scalarName = getScalarTypeName(scalarType.inner as TypeInner.Scalar)
                 "$scalarName${inner.columns.ordinal + 2}x${inner.rows.ordinal + 2}"
             }
             is TypeInner.Struct -> "Struct_${handle.index}"
+            is TypeInner.Pointer -> {
+                val baseName = getTypeName(inner.base)
+                // Simplified HLSL pointer mapping
+                "$baseName*"
+            }
             else -> "void"
         }
+    }
+
+    override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
+        BuiltinFunction.Ln -> "log"
+        BuiltinFunction.Mix -> "lerp"
+        BuiltinFunction.Fract -> "frac"
+        else -> super.getBuiltinFunctionName(function)
     }
 }

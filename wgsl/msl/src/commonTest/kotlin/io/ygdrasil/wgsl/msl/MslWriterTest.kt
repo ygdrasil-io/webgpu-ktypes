@@ -53,4 +53,93 @@ class MslWriterTest {
         assertTrue(code.contains("float a;"))
         assertTrue(code.contains("void my_func()"))
     }
+
+    @Test
+    fun testIntrinsicFunctions() {
+        val module = Module()
+        val f32 = module.types.append(Type(TypeInner.Scalar(ScalarKind.F32, 4)))
+        
+        val expressions = Arena<Expression>()
+        val arg0 = expressions.append(Expression(ExpressionKind.FunctionArgument(0)))
+        val sinCall = expressions.append(Expression(ExpressionKind.BuiltinCall(BuiltinFunction.Sin, listOf(arg0))))
+        val logCall = expressions.append(Expression(ExpressionKind.BuiltinCall(BuiltinFunction.Ln, listOf(arg0))))
+        
+        val blocks = Arena<io.ygdrasil.wgsl.ir.Block>()
+        val body = blocks.append(io.ygdrasil.wgsl.ir.Block(listOf(
+            Statement.Return(sinCall),
+            Statement.Return(logCall)
+        )))
+        
+        module.functions.append(
+            Function(
+                name = "math_test",
+                parameters = listOf(FunctionParameter("x", f32)),
+                returnType = f32,
+                localVariables = Arena(),
+                expressions = expressions,
+                blocks = blocks,
+                body = body
+            )
+        )
+        
+        val code = MslModule.writeString(module)
+        assertTrue(code.contains("sin(x)"))
+        assertTrue(code.contains("log(x)")) // log because Ln is mapped to log
+    }
+
+    @Test
+    fun testEntryPointWithBindings() {
+        val module = Module()
+        
+        // Types
+        val f32 = module.types.append(Type(TypeInner.Scalar(ScalarKind.F32, 4)))
+        val vec4f = module.types.append(Type(TypeInner.Vector(VectorSize.Quad, f32)))
+        val pointer = module.types.append(Type(TypeInner.Pointer(f32, AddressSpace.Uniform)))
+        
+        // Global variable with binding
+        module.globalVariables.append(
+            GlobalVariable(
+                name = "u_buffer",
+                storageClass = StorageClass.Uniform,
+                type = pointer,
+                binding = Binding(group = 0, index = 1)
+            )
+        )
+        
+        // Function for entry point
+        val expressions = Arena<Expression>()
+        val blocks = Arena<io.ygdrasil.wgsl.ir.Block>()
+        val body = blocks.append(io.ygdrasil.wgsl.ir.Block(emptyList()))
+        
+        val funcHandle = module.functions.append(
+            Function(
+                name = "vs_main_func",
+                parameters = emptyList(),
+                returnType = vec4f,
+                localVariables = Arena(),
+                expressions = expressions,
+                blocks = blocks,
+                body = body
+            )
+        )
+        
+        // Entry point
+        val ep = EntryPoint(
+            name = "vs_main",
+            function = funcHandle,
+            stage = ShaderStage.Vertex,
+            bindings = listOf(
+                BindingAttribute.Builtin(BuiltinValue.VertexIndex)
+            )
+        )
+        
+        val moduleWithEp = module.copy(entryPoints = listOf(ep))
+        
+        val code = MslModule.writeString(moduleWithEp)
+        
+        assertTrue(code.contains("[[vertex]]"))
+        assertTrue(code.contains("float4 vs_main("))
+        assertTrue(code.contains("uint vertex_index [[vertex_id]]"))
+        assertTrue(code.contains("constant float* global_0 [[buffer(1)]]"))
+    }
 }

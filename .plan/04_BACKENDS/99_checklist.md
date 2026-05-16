@@ -110,88 +110,88 @@
 
 ---
 
-### ⬜ Sous-Phase 4.1 : MSL Writer (3-4 semaines)
+### [/] Sous-Phase 4.1 : MSL Writer (3-4 semaines)
 
 **Fichier** : `01_msl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [X] En cours | [ ] Complété | [ ] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour wgsl:msl
-- [ ] Package `io.ygdrasil.wgsl.back.msl`
+- [X] build.gradle.kts pour wgsl:msl
+- [X] Package `io.ygdrasil.wgsl.back.msl`
 
 #### Configuration
-- [ ] MslOptions.kt (héritant de BackendOptions)
+- [X] MslOptions.kt (héritant de BackendOptions)
 - [ ] BindTarget.kt (Slot, BindSamplerTarget, BindExternalTextureTarget)
 - [ ] Keywords.kt (RESERVED_KEYWORDS, AVOID_KEYWORDS, ALL_KEYWORDS)
-- [ ] MslCapabilities.kt (DEFAULT capabilities)
+- [X] MslCapabilities.kt (DEFAULT capabilities)
 
 #### Writer
-- [ ] MslWriter.kt (héritant de WriterBase<MslOptions>)
-- [ ] Implémenter withOptions()
-- [ ] Implémenter canHandle()
-- [ ] Implémenter writeHeader() (includes MSL)
+- [X] MslWriter.kt (héritant de WriterBase<MslOptions>)
+- [X] Implémenter withOptions()
+- [X] Implémenter canHandle()
+- [X] Implémenter writeHeader() (includes MSL)
 - [ ] Implémenter writeHelperFunctions()
   - [ ] writeExternalTextureHelpers()
   - [ ] writeOobLocalHelpers()
-- [ ] Implémenter getTypeName() pour tous les types MSL
-  - [ ] getMslScalarTypeName() (bool, char, uchar, short, ushort, int, uint, long, ulong, half, float, double)
-  - [ ] getMslVectorTypeName() (float2-4, int2-4, uint2-4, half2-4)
-  - [ ] getMslMatrixTypeName() (float2x2-4x4, etc.)
+- [X] Implémenter getTypeName() pour tous les types MSL
+  - [X] getMslScalarTypeName() (bool, char, uchar, short, ushort, int, uint, long, ulong, half, float, double)
+  - [X] getMslVectorTypeName() (float2-4, int2-4, uint2-4, half2-4)
+  - [X] getMslMatrixTypeName() (float2x2-4x4, etc.)
   - [ ] getMslCooperativeMatrixTypeName()
-  - [ ] getMslImageTypeName()
-  - [ ] getMslSamplerTypeName()
-- [ ] Implémenter writeStructType() avec attributs [[align]]
-- [ ] Implémenter writeConstant()
-- [ ] Implémenter writeGlobalVariable() avec [[buffer]], [[texture]], [[sampler]]
-- [ ] Implémenter writeFunction() et writeFunctionSignature()
-- [ ] Implémenter writeEntryPoint()
-  - [ ] writeEntryPointSignature()
-  - [ ] writeEntryPointArguments()
+  - [X] getMslImageTypeName()
+  - [X] getMslSamplerTypeName()
+- [X] Implémenter writeStructType() avec attributs [[align]]
+- [X] Implémenter writeConstant()
+- [X] Implémenter writeGlobalVariable() avec [[buffer]], [[texture]], [[sampler]]
+- [X] Implémenter writeFunction() et writeFunctionSignature()
+- [X] Implémenter writeEntryPoint()
+  - [X] writeEntryPointSignature()
+  - [X] writeEntryPointArguments()
   - [ ] writeInputStruct()
   - [ ] writeOutputStruct()
   - [ ] writeArgumentAssignments()
-- [ ] Implémenter writeBinding()
+- [X] Implémenter writeBinding()
 
 #### Expressions (15+)
-- [ ] writeLiteral()
-- [ ] writeIdent()
-- [ ] writeUnary() (+, -, !, ~)
-- [ ] writeBinary() (+, -, *, /, %, ==, !=, <, >, <=, >=, &&, ||, &, |, ^, <<, >>)
+- [X] writeLiteral()
+- [X] writeIdent()
+- [X] writeUnary() (+, -, !, ~)
+- [X] writeBinary() (+, -, *, /, %, ==, !=, <, >, <=, >=, &&, ||, &, |, ^, <<, >>)
 - [ ] writeSelect() (ternary)
 - [ ] writeCompose()
-- [ ] writeSplat()
-- [ ] writeSwizzle()
-- [ ] writeAccess()
-- [ ] writeAccessIndex()
+- [X] writeSplat()
+- [X] writeSwizzle()
+- [X] writeAccess()
+- [X] writeAccessIndex()
 - [ ] writeAs() (cast/bitcast)
-- [ ] writeCall()
+- [X] writeCall()
 - [ ] writeCallResult()
-- [ ] writeLoad()
-- [ ] writeStoreExpr()
+- [X] writeLoad()
+- [X] writeStoreExpr()
 - [ ] writeImageSample()
 - [ ] writeImageLoad()
 - [ ] writeImageQuery()
 - [ ] writeDerivative() (dfdx, dfdy, fwidth)
-- [ ] writeMath() (40+ fonctions)
+- [X] writeMath() (40+ fonctions)
 - [ ] writeAtomicResult()
 - [ ] writeRayQueryProceedResult()
 
 #### Statements (15+)
-- [ ] writeBlock()
-- [ ] writeIf()
-- [ ] writeSwitch()
-- [ ] writeLoop()
+- [X] writeBlock()
+- [X] writeIf()
+- [X] writeSwitch()
+- [X] writeLoop()
 - [ ] writeWhile()
 - [ ] writeFor()
-- [ ] writeBreak()
-- [ ] writeContinue()
-- [ ] writeReturn()
-- [ ] writeDiscard()
-- [ ] writeEmit()
+- [X] writeBreak()
+- [X] writeContinue()
+- [X] writeReturn()
+- [X] writeDiscard()
+- [X] writeEmit()
 - [ ] writeCallStatement()
-- [ ] writeStore()
-- [ ] writeAtomic()
+- [X] writeStore()
+- [X] writeAtomic()
 - [ ] writeRayQuery()
 - [ ] writeMemoryBarrier()
 - [ ] writeControlBarrier()

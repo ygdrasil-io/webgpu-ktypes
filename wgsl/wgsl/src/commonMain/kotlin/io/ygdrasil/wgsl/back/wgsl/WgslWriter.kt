@@ -86,15 +86,27 @@ class WgslWriter(
         return when (val inner = type.inner) {
             is TypeInner.Scalar -> getScalarTypeName(inner)
             is TypeInner.Vector -> {
-                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                val scalarType = module.types[inner.scalar]
+                val scalarName = getScalarTypeName(scalarType.inner as TypeInner.Scalar)
                 "vec${inner.size.ordinal + 2}<$scalarName>"
             }
             is TypeInner.Matrix -> {
-                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                val scalarType = module.types[inner.scalar]
+                val scalarName = getScalarTypeName(scalarType.inner as TypeInner.Scalar)
                 "mat${inner.columns.ordinal + 2}x${inner.rows.ordinal + 2}<$scalarName>"
             }
             is TypeInner.Struct -> "Struct_${handle.index}"
+            is TypeInner.Pointer -> {
+                val baseName = getTypeName(inner.base)
+                val space = inner.addressSpace.name.lowercase()
+                "ptr<$space, $baseName>"
+            }
             else -> "/* unknown type */"
         }
+    }
+
+    override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
+        BuiltinFunction.Ln -> "log"
+        else -> super.getBuiltinFunctionName(function)
     }
 }

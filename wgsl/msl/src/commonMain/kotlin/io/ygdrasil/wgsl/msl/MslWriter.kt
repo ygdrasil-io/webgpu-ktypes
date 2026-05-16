@@ -58,6 +58,17 @@ class MslWriter(
         write(")")
     }
 
+    override fun writeGlobalVariables() {
+        module.globalVariables.forEachWithHandle { handle, variable ->
+            if (variable.binding == null) {
+                val name = getGlobalVariableName(handle)
+                val typeName = getTypeName(variable.type)
+                val init = variable.init?.let { " = ${writeExpression(it)}" } ?: ""
+                writeLine("$typeName $name$init;")
+            }
+        }
+    }
+
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
         val stageAttr = when (ep.stage) {
             ShaderStage.Vertex -> "[[vertex]]"
@@ -67,19 +78,126 @@ class MslWriter(
         writeLine()
         writeLine("$stageAttr")
         val func = module.functions[ep.function]
-        writeFunctionSignature(func, ep.name)
-        writeLine(" {")
+        val returnType = func.returnType?.let { getTypeName(it) } ?: "void"
+        
+        write("$returnType ${ep.name}(")
+        
+        val args = mutableListOf<String>()
+        
+        // 1. Built-ins and Locations (Input)
+        ep.bindings.forEach { attr ->
+            when (attr) {
+                is BindingAttribute.Builtin -> {
+                    val mslBuiltin = getMslBuiltin(attr.builtin)
+                    val typeName = getMslBuiltinType(attr.builtin)
+                    val name = toSnakeCase(attr.builtin.name)
+                    args.add("$typeName $name [[$mslBuiltin]]")
+                }
+                is BindingAttribute.Location -> {
+                    // TODO
+                }
+                else -> {}
+            }
+        }
+
+        // 2. Resources (Global variables with bindings)
+        module.globalVariables.forEachWithHandle { handle, variable ->
+            val binding = variable.binding
+            if (binding != null) {
+                val name = getGlobalVariableName(handle)
+                val type = module.types[variable.type]
+                val typeName = getTypeName(variable.type)
+                
+                val target = options.bindingMap[binding]
+                
+                val mslAttr = when (val inner = type.inner) {
+                    is TypeInner.Pointer -> {
+                        val bufferIndex = target?.buffer ?: binding.index
+                        "[[buffer($bufferIndex)]]"
+                    }
+                    is TypeInner.Opaque -> {
+                        if (inner.name.contains("texture")) {
+                            val textureIndex = target?.texture ?: binding.index
+                            "[[texture($textureIndex)]]"
+                        } else if (inner.name.contains("sampler")) {
+                            val samplerIndex = target?.sampler ?: binding.index
+                            "[[sampler($samplerIndex)]]"
+                        } else {
+                            "[[buffer(${binding.index})]]"
+                        }
+                    }
+                    else -> "[[buffer(${binding.index})]]"
+                }
+                
+                args.add("$typeName $name $mslAttr")
+            }
+        }
+
+        write(args.joinToString(", "))
+        writeLine(") {")
         indent {
             writeBlock(func.body)
         }
         writeLine("}")
     }
 
+    override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
+        BuiltinFunction.Ln -> "log"
+        else -> super.getBuiltinFunctionName(function)
+    }
+
+    private fun toSnakeCase(s: String): String {
+        return s.mapIndexed { index, c ->
+            if (c.isUpperCase()) {
+                if (index > 0) "_${c.lowercase()}" else c.lowercase()
+            } else {
+                c.toString()
+            }
+        }.joinToString("")
+    }
+
+    private fun getMslBuiltin(builtin: BuiltinValue): String = when (builtin) {
+        BuiltinValue.Position -> "position"
+        BuiltinValue.VertexIndex -> "vertex_id"
+        BuiltinValue.InstanceIndex -> "instance_id"
+        BuiltinValue.FrontFacing -> "front_facing"
+        BuiltinValue.LocalInvocationId -> "thread_position_in_threadgroup"
+        BuiltinValue.LocalInvocationIndex -> "thread_index_in_threadgroup"
+        BuiltinValue.GlobalInvocationId -> "thread_position_in_grid"
+        BuiltinValue.WorkgroupId -> "threadgroup_position_in_grid"
+        BuiltinValue.NumWorkgroups -> "threadgroups_per_grid"
+        BuiltinValue.SampleIndex -> "sample_id"
+        BuiltinValue.SampleMask -> "sample_mask"
+        else -> builtin.name.lowercase()
+    }
+
+    private fun getMslBuiltinType(builtin: BuiltinValue): String = when (builtin) {
+        BuiltinValue.Position -> "float4"
+        BuiltinValue.VertexIndex, BuiltinValue.InstanceIndex, BuiltinValue.SampleIndex -> "uint"
+        BuiltinValue.FrontFacing -> "bool"
+        BuiltinValue.LocalInvocationId, BuiltinValue.GlobalInvocationId, 
+        BuiltinValue.WorkgroupId, BuiltinValue.NumWorkgroups -> "uint3"
+        BuiltinValue.LocalInvocationIndex, BuiltinValue.SampleMask -> "uint"
+        else -> "uint"
+    }
+
     override fun getScalarTypeName(scalar: TypeInner.Scalar): String {
         return when (scalar.kind) {
             ScalarKind.Bool -> "bool"
-            ScalarKind.Sint -> if (scalar.width == 4) "int" else "char" // simplification
-            ScalarKind.Uint -> if (scalar.width == 4) "uint" else "uchar"
+            ScalarKind.Sint -> when (scalar.width) {
+                1 -> "char"
+                2 -> "short"
+                4 -> "int"
+                8 -> "long"
+                else -> "int"
+            }
+            ScalarKind.Uint -> when (scalar.width) {
+                1 -> "uchar"
+                2 -> "ushort"
+                4 -> "uint"
+                8 -> "ulong"
+                else -> "uint"
+            }
             ScalarKind.F32 -> "float"
             ScalarKind.F16 -> "half"
             ScalarKind.F64 -> "double"
@@ -92,11 +210,13 @@ class MslWriter(
         return when (val inner = type.inner) {
             is TypeInner.Scalar -> getScalarTypeName(inner)
             is TypeInner.Vector -> {
-                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                val scalarType = module.types[inner.scalar]
+                val scalarName = getScalarTypeName(scalarType.inner as TypeInner.Scalar)
                 "$scalarName${inner.size.ordinal + 2}"
             }
             is TypeInner.Matrix -> {
-                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                val scalarType = module.types[inner.scalar]
+                val scalarName = getScalarTypeName(scalarType.inner as TypeInner.Scalar)
                 "$scalarName${inner.columns.ordinal + 2}x${inner.rows.ordinal + 2}"
             }
             is TypeInner.Struct -> "Struct_${handle.index}"
@@ -105,9 +225,22 @@ class MslWriter(
                 val spaceName = when (inner.addressSpace) {
                     AddressSpace.Uniform -> "constant"
                     AddressSpace.Storage -> "device"
-                    else -> "thread"
+                    AddressSpace.Private -> "thread"
+                    AddressSpace.Function -> "thread"
+                    AddressSpace.Workgroup -> "threadgroup"
                 }
                 "$spaceName $baseName*"
+            }
+            is TypeInner.Opaque -> {
+                when {
+                    inner.name == "sampler" -> "sampler"
+                    inner.name == "comparison_sampler" -> "sampler"
+                    inner.name.startsWith("texture") -> {
+                         // Very simple mapping for now
+                         "texture2d<float>" 
+                    }
+                    else -> inner.name
+                }
             }
             else -> "/* unknown type */ void"
         }
