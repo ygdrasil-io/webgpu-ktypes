@@ -443,9 +443,9 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 | 02_roundtrip-tests.md | ✅ | 2024-XX-XX | Complété |
 | 99_checklist.md | ✅ | 2026-05-16 | Mise à jour infrastructure |
 | Structure des répertoires | ✅ | 2026-05-16 | Créé (inputs/outputs) |
-| Fichiers WGSL importés | [/] | 2026-05-16 | Partiel (empty/simple) |
-| Validateurs natifs | ⬜ | - | Documentés, à implémenter |
-| Tests de round-trip | ⬜ | - | À implémenter |
+| Fichiers WGSL importés | ✅ | 2026-05-16 | simple.wgsl, complex.wgsl ajoutés |
+| Validateurs natifs | ✅ | 2026-05-16 | Infrastructure implémentée (GLSL, MSL) |
+| Tests de round-trip | [/] | 2026-05-16 | Infrastructure prête (backend WGSL) |
 | Intégration CI | ⬜ | - | À configurer |
 
 ---

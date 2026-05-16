@@ -42,6 +42,8 @@ data class FunctionDecl(
     val templateParams: List<TemplateParam>,
     /** The function parameters. */
     val parameters: List<Param>,
+    /** Attributes on the return type. */
+    val returnAttributes: List<Attribute> = emptyList(),
     /** The return type (null for functions that don't return a value). */
     val returnType: TypeDecl?,
     /** The function body (null for function declarations without a body). */

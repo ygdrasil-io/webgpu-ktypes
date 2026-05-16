@@ -2,6 +2,7 @@ package io.ygdrasil.wgsl.parser
 
 import io.ygdrasil.wgsl.ast.ArrayType
 import io.ygdrasil.wgsl.ast.AssignmentStatement
+import io.ygdrasil.wgsl.ast.Attribute
 import io.ygdrasil.wgsl.ast.BinaryExpr
 import io.ygdrasil.wgsl.ast.BlockStatement
 import io.ygdrasil.wgsl.ast.BoolLiteral
@@ -69,6 +70,27 @@ class TypeResolver(
     private val typeIndex: TypeIndex = TypeIndex(),
     private val moduleIndexer: ModuleIndexer = ModuleIndexer()
 ) {
+    private val localScopes = mutableListOf<MutableSet<String>>()
+
+    private fun pushScope() {
+        localScopes.add(mutableSetOf())
+    }
+
+    private fun popScope() {
+        if (localScopes.isNotEmpty()) {
+            localScopes.removeAt(localScopes.size - 1)
+        }
+    }
+
+    private fun declareLocal(name: String) {
+        if (localScopes.isNotEmpty()) {
+            localScopes.last().add(name)
+        }
+    }
+
+    private fun isKnownLocal(name: String): Boolean {
+        return localScopes.any { it.contains(name) }
+    }
 
     /**
      * Results of type resolution.
@@ -184,12 +206,24 @@ class TypeResolver(
         decl: FunctionDecl,
         unresolved: MutableList<UnresolvedReferenceError>
     ): FunctionDecl {
-        val resolvedParams = decl.parameters.map { resolveParam(it, unresolved) }
+        val resolvedAttributes = decl.attributes.map { resolveAttribute(it, unresolved) }
+        
+        pushScope()
+        val resolvedParams = decl.parameters.map { 
+            val resolved = resolveParam(it, unresolved)
+            declareLocal(resolved.name)
+            resolved
+        }
+        
+        val resolvedReturnAttributes = decl.returnAttributes.map { resolveAttribute(it, unresolved) }
         val resolvedReturnType = decl.returnType?.let { resolveTypeDecl(it, unresolved) }
         val resolvedBody = decl.body?.let { resolveBlockStatement(it, unresolved) }
+        popScope()
 
         return decl.copy(
+            attributes = resolvedAttributes,
             parameters = resolvedParams,
+            returnAttributes = resolvedReturnAttributes,
             returnType = resolvedReturnType,
             body = resolvedBody
         )
@@ -462,6 +496,11 @@ class TypeResolver(
     ): Expression {
         val name = expr.name
 
+        // Check if it's a known local (parameter or local variable)
+        if (isKnownLocal(name)) {
+            return expr
+        }
+
         // Check if it's a built-in value
         if (typeIndex.isBuiltinValue(name)) {
             return when (name) {
@@ -524,25 +563,45 @@ class TypeResolver(
         param: Param,
         unresolved: MutableList<UnresolvedReferenceError>
     ): Param {
+        val resolvedAttributes = param.attributes.map { resolveAttribute(it, unresolved) }
         val resolvedType = resolveTypeDecl(param.type, unresolved)
         val resolvedDefault = param.defaultValue?.let { resolveExpression(it, unresolved) }
-        return param.copy(type = resolvedType, defaultValue = resolvedDefault)
+        return param.copy(
+            attributes = resolvedAttributes,
+            type = resolvedType,
+            defaultValue = resolvedDefault
+        )
     }
 
     private fun resolveStructMember(
         member: StructMember,
         unresolved: MutableList<UnresolvedReferenceError>
     ): StructMember {
+        val resolvedAttributes = member.attributes.map { resolveAttribute(it, unresolved) }
         val resolvedType = resolveTypeDecl(member.type, unresolved)
         val resolvedDefault = member.defaultValue?.let { resolveExpression(it, unresolved) }
-        return member.copy(type = resolvedType, defaultValue = resolvedDefault)
+        return member.copy(
+            attributes = resolvedAttributes,
+            type = resolvedType,
+            defaultValue = resolvedDefault
+        )
+    }
+
+    private fun resolveAttribute(
+        attr: Attribute,
+        unresolved: MutableList<UnresolvedReferenceError>
+    ): Attribute {
+        val resolvedArgs = attr.args.map { resolveExpression(it, unresolved) }
+        return attr.copy(args = resolvedArgs)
     }
 
     private fun resolveBlockStatement(
         block: BlockStatement,
         unresolved: MutableList<UnresolvedReferenceError>
     ): BlockStatement {
+        pushScope()
         val resolvedStatements = block.statements.map { resolveStatement(it, unresolved) }
+        popScope()
         return block.copy(statements = resolvedStatements)
     }
 
@@ -610,6 +669,7 @@ class TypeResolver(
             is VariableDeclStatement -> {
                 val resolvedType = stmt.type?.let { resolveTypeDecl(it, unresolved) }
                 val resolvedInitializer = stmt.initializer?.let { resolveExpression(it, unresolved) }
+                declareLocal(stmt.name)
                 stmt.copy(type = resolvedType, initializer = resolvedInitializer)
             }
 

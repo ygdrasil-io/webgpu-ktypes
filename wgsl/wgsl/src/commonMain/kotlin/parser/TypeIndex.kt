@@ -119,7 +119,21 @@ class TypeIndex {
      * Check if a name is a builtin value (true, false, etc.).
      */
     fun isBuiltinValue(name: String): Boolean {
-        return name == "true" || name == "false"
+        return name == "true" || name == "false" ||
+                isBuiltinScalarType(name) ||
+                isBuiltinVectorType(name) ||
+                isBuiltinMatrixType(name) ||
+                isBuiltinValueKeyword(name)
+    }
+
+    private fun isBuiltinValueKeyword(name: String): Boolean {
+        return name in setOf(
+            "position", "vertex_index", "instance_index", "front_facing",
+            "primitive_index", "sample_index", "sample_mask", "viewport_index",
+            "pointsize", "clip_distances", "cull_distances", "device_index",
+            "view_index", "workgroup_id", "num_workgroups", "global_invocation_id",
+            "local_invocation_id", "local_invocation_index"
+        )
     }
 
     /**

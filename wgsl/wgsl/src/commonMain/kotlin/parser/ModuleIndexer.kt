@@ -60,7 +60,7 @@ class ModuleIndexer {
      */
     fun reorderDeclarations(unit: TranslationUnit): TranslationUnit {
         val dependencyGraph = buildDependencyGraph(unit)
-        val sortedNames = topologicalSort(dependencyGraph)
+        val sortedNames = topologicalSort(dependencyGraph).reversed()
 
         // Map names back to declarations
         val nameToDecl = mutableMapOf<String, GlobalDecl>()
@@ -429,7 +429,7 @@ class ModuleIndexer {
      * Get the name of a declaration.
      */
     private fun getDeclarationName(decl: GlobalDecl): String? {
-        return when (decl) {
+        val name = when (decl) {
             is FunctionDecl -> decl.name
             is StructDecl -> decl.name
             is VariableDecl -> decl.name
@@ -437,6 +437,7 @@ class ModuleIndexer {
             is OverrideDecl -> decl.function.name
             else -> null
         }
+        return if (name.isNullOrEmpty()) null else name
     }
 
     /**

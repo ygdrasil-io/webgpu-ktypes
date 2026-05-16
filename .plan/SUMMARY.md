@@ -122,11 +122,10 @@
 
 ### 🚧 **Phase 5 : Validation (2-3 semaines)**
 - [x] Configurer l'infrastructure des golden files (Classes de base et backends)
-- [/] Étendre la suite de tests golden (En cours, 2/2 tests de base, OOM sur simple.wgsl)
-- [ ] Intégrer spirv-val pour SPIR-V (Documenté, non implémenté)
-- [ ] Intégrer glslangValidator pour GLSL (Documenté, non implémenté)
-- [ ] Intégrer Metal compiler pour MSL (Documenté, non implémenté)
-- [ ] Intégrer DXC/FXC pour HLSL (Documenté, non implémenté)
+- [x] Étendre la suite de tests golden (simple.wgsl, complex.wgsl opérationnels)
+- [x] Intégrer l'infrastructure des validateurs natifs (GlslValidator, MetalValidator implémentés)
+- [ ] Intégrer spirv-val pour SPIR-V (Infrastructure prête, reste SPIRV-Tools à configurer)
+- [ ] Intégrer DXC/FXC pour HLSL (Infrastructure prête, à tester sur Windows)
 - [ ] **Livrable** : Pipeline de validation complet
 
 ### 🟢 **Phase 6 : Tests (2 semaines)**

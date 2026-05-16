@@ -292,11 +292,7 @@ class Lexer(
         val text = source.substring(startIndex, index)
         val kind = keywordFor(text) ?: TokenKind.IDENTIFIER
 
-        return if (kind == TokenKind.IDENTIFIER) {
-            Token.identifier(text, spanFrom(start))
-        } else {
-            Token.simple(kind, spanFrom(start))
-        }
+        return Token.of(kind, spanFrom(start), text)
     }
 
     /**
@@ -620,7 +616,7 @@ class Lexer(
                 }
 
                 else -> {
-                    consume(); Token.simple(TokenKind.LT, spanFrom(start))
+                    consume(); Token.simple(TokenKind.LEFT_ANGLE, spanFrom(start))
                 }
             }
 
@@ -640,7 +636,7 @@ class Lexer(
                 }
 
                 else -> {
-                    consume(); Token.simple(TokenKind.GT, spanFrom(start))
+                    consume(); Token.simple(TokenKind.RIGHT_ANGLE, spanFrom(start))
                 }
             }
 

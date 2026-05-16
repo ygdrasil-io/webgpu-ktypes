@@ -124,9 +124,7 @@ enum class TokenKind {
     // Operators - Comparison
     EQ,
     NEQ,
-    LT,
     LTE,
-    GT,
     GTE,
 
     // Operators - Logical
@@ -273,7 +271,7 @@ val TokenKind.isOperator: Boolean
         TokenKind.AMPERSAND, TokenKind.PIPE, TokenKind.CARET, TokenKind.TILDE,
         TokenKind.LEFT_SHIFT, TokenKind.RIGHT_SHIFT -> true
         // Comparison
-        TokenKind.EQ, TokenKind.NEQ, TokenKind.LT, TokenKind.LTE, TokenKind.GT, TokenKind.GTE -> true
+        TokenKind.EQ, TokenKind.NEQ, TokenKind.LEFT_ANGLE, TokenKind.LTE, TokenKind.RIGHT_ANGLE, TokenKind.GTE -> true
         // Logical
         TokenKind.AND, TokenKind.OR, TokenKind.NOT -> true
         // Assignment
@@ -328,7 +326,7 @@ fun TokenKind.precedence(): Int = when (this) {
     TokenKind.LEFT_SHIFT, TokenKind.RIGHT_SHIFT -> 10
 
     // Relational
-    TokenKind.LT, TokenKind.LTE, TokenKind.GT, TokenKind.GTE -> 9
+    TokenKind.LEFT_ANGLE, TokenKind.LTE, TokenKind.RIGHT_ANGLE, TokenKind.GTE -> 9
 
     // Equality
     TokenKind.EQ, TokenKind.NEQ -> 8
@@ -368,7 +366,7 @@ val TokenKind.isBinaryOperator: Boolean
         TokenKind.PLUS, TokenKind.MINUS, TokenKind.STAR, TokenKind.SLASH, TokenKind.PERCENT,
         TokenKind.AMPERSAND, TokenKind.PIPE, TokenKind.CARET,
         TokenKind.LEFT_SHIFT, TokenKind.RIGHT_SHIFT,
-        TokenKind.EQ, TokenKind.NEQ, TokenKind.LT, TokenKind.LTE, TokenKind.GT, TokenKind.GTE,
+        TokenKind.EQ, TokenKind.NEQ, TokenKind.LEFT_ANGLE, TokenKind.LTE, TokenKind.RIGHT_ANGLE, TokenKind.GTE,
         TokenKind.AND, TokenKind.OR,
         TokenKind.ASSIGN, TokenKind.PLUS_ASSIGN, TokenKind.MINUS_ASSIGN, TokenKind.STAR_ASSIGN, TokenKind.SLASH_ASSIGN,
         TokenKind.PERCENT_ASSIGN, TokenKind.AND_ASSIGN, TokenKind.OR_ASSIGN, TokenKind.XOR_ASSIGN,

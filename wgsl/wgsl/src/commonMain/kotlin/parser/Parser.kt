@@ -269,6 +269,7 @@ class Parser(
             name = name,
             templateParams = templateParams,
             parameters = parameters,
+            returnAttributes = returnAttributes,
             returnType = returnType,
             body = body,
             span = Span(start.start, end)
@@ -561,13 +562,8 @@ class Parser(
         expectOrError(TokenKind.AT, "Expected '@'")
 
         // Parse attribute name
-        val name = if (currentKind() == TokenKind.IDENTIFIER) {
-            val nameToken = advance()
-            nameToken.literal ?: ""
-        } else {
-            error("Expected attribute name")
-            ""
-        }
+        val token = advance()
+        val name = token.literal ?: token.kind.name.lowercase()
 
         // Parse arguments (if any)
         val args = mutableListOf<Expression>()
@@ -1195,13 +1191,13 @@ class Parser(
     private fun parseRelationalExpression(): Expression {
         var left = parseShiftExpression()
 
-        while (currentKind() == TokenKind.LT || currentKind() == TokenKind.LTE ||
-            currentKind() == TokenKind.GT || currentKind() == TokenKind.GTE
+        while (currentKind() == TokenKind.LEFT_ANGLE || currentKind() == TokenKind.LTE ||
+            currentKind() == TokenKind.RIGHT_ANGLE || currentKind() == TokenKind.GTE
         ) {
             val op = when (currentKind()) {
-                TokenKind.LT -> BinaryOperator.LT
+                TokenKind.LEFT_ANGLE -> BinaryOperator.LT
                 TokenKind.LTE -> BinaryOperator.LTE
-                TokenKind.GT -> BinaryOperator.GT
+                TokenKind.RIGHT_ANGLE -> BinaryOperator.GT
                 TokenKind.GTE -> BinaryOperator.GTE
                 else -> BinaryOperator.LT
             }
@@ -1474,7 +1470,13 @@ class Parser(
             TokenKind.F16, TokenKind.F32, TokenKind.F64,
             TokenKind.VEC, TokenKind.MAT, TokenKind.ARRAY,
             TokenKind.SAMPLER, TokenKind.TEXTURE_1D, TokenKind.TEXTURE_2D, TokenKind.TEXTURE_3D,
-            TokenKind.TEXTURE_CUBE, TokenKind.TEXTURE_EXTERNAL -> {
+            TokenKind.TEXTURE_CUBE, TokenKind.TEXTURE_EXTERNAL,
+            TokenKind.BUILTIN, TokenKind.POSITION, TokenKind.VERTEX_INDEX, TokenKind.INSTANCE_INDEX,
+            TokenKind.FRONT_FACING, TokenKind.PRIMITIVE_INDEX, TokenKind.SAMPLE_INDEX,
+            TokenKind.SAMPLE_MASK, TokenKind.VIEWPORT_INDEX, TokenKind.POINTSIZE,
+            TokenKind.CLIP_DISTANCES, TokenKind.CULL_DISTANCES, TokenKind.DEVICE_INDEX,
+            TokenKind.VIEW_INDEX, TokenKind.WORKGROUP_ID, TokenKind.NUM_WORKGROUPS,
+            TokenKind.GLOBAL_INVOCATION_ID, TokenKind.LOCAL_INVOCATION_ID, TokenKind.LOCAL_INVOCATION_INDEX -> {
                 val token = advance()
                 IdentExpr(token.literal ?: token.kind.name.lowercase(), token.span)
             }

@@ -7,6 +7,8 @@ import io.ygdrasil.wgsl.back.BackendRegistry
 import io.ygdrasil.wgsl.parser.Lowerer
 import io.ygdrasil.wgsl.parser.TypeResolver
 import io.ygdrasil.wgsl.parser.parseWgsl
+import io.ygdrasil.wgsl.tests.validator.BackendType
+import io.ygdrasil.wgsl.tests.validator.ValidatorFactory
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -62,6 +64,28 @@ abstract class GoldenTestBase(val backendName: String) : FunSpec({
                     val expected = Files.readString(outputFile)
                     // TODO: normalize output before comparison?
                     output shouldBe expected
+                }
+
+                // 6. Native Validation (if available)
+                val type = when (backendName.lowercase()) {
+                    "msl" -> BackendType.MSL
+                    "glsl" -> BackendType.GLSL
+                    "hlsl" -> BackendType.HLSL
+                    "spirv" -> BackendType.SPIRV
+                    else -> null
+                }
+
+                if (type != null && ValidatorFactory.isAvailable(type)) {
+                    println("[DEBUG_LOG] Native validation for $backendName...")
+                    val validator = ValidatorFactory.getValidator(type)!!
+                    val validationResult = validator.validate(output)
+                    if (validationResult.isFailure) {
+                        println("[DEBUG_LOG] Native validation FAILED for $fileName ($backendName)")
+                        println(validationResult.output)
+                        throw RuntimeException("Native validation failed for $fileName:\n${validationResult.output}")
+                    } else {
+                        println("[DEBUG_LOG] Native validation SUCCESS for $fileName ($backendName)")
+                    }
                 }
             }
         }

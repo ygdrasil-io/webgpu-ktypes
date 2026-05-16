@@ -31,8 +31,8 @@ data class Token(
             literal: String? = null,
         ): Token {
             // Validate that literal is only set for appropriate token kinds
-            check(literal == null || kind.isLiteral) {
-                "Literal can only be set for literal token kinds, got ${kind.name}"
+            check(literal == null || kind.isLiteral || kind.isKeyword) {
+                "Literal can only be set for literal or keyword token kinds, got ${kind.name}"
             }
             return Token(kind, span, literal)
         }
