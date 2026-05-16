@@ -6,7 +6,7 @@
 **Sous-Phase** : 2.1 - WGSL Parser  
 **Durée** : 3-4 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique - Deuxième étape du parsing)  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété
+**Statut** : [x] Complété
 
 > **Référence Rust** : `/Users/chaos/RustroverProjects/wgpu/naga/src/front/wgsl/parse/mod.rs` (~2000+ lignes)
 > **Référence AST** : `/Users/chaos/RustroverProjects/wgpu/naga/src/front/wgsl/parse/ast.rs` (~800 lignes)
