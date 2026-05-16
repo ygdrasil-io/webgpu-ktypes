@@ -40,7 +40,9 @@ class MslWriter(
             for (member in structInner.members) {
                 val memberName = member.name
                 val typeName = getTypeName(member.type)
-                writeLine("$typeName $memberName;")
+                // TODO: use layouter to get alignment
+                val align = "" // " [[align(16)]]" 
+                writeLine("$typeName $memberName$align;")
             }
         }
         writeLine("};")
@@ -94,7 +96,15 @@ class MslWriter(
                     args.add("$typeName $name [[$mslBuiltin]]")
                 }
                 is BindingAttribute.Location -> {
-                    // TODO
+                    val mslAttr = when (ep.stage) {
+                        ShaderStage.Vertex -> "attribute(${attr.location})"
+                        else -> "user(loc${attr.location})"
+                    }
+                    // For now we don't have the type of the location easily, 
+                    // but we can try to guess or use float4 as default for inter-stage
+                    val typeName = "float4" 
+                    val name = "loc_${attr.location}"
+                    args.add("$typeName $name [[$mslAttr]]")
                 }
                 else -> {}
             }

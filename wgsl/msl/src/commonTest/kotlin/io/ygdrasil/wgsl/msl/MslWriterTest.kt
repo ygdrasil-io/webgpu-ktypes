@@ -129,7 +129,8 @@ class MslWriterTest {
             function = funcHandle,
             stage = ShaderStage.Vertex,
             bindings = listOf(
-                BindingAttribute.Builtin(BuiltinValue.VertexIndex)
+                BindingAttribute.Builtin(BuiltinValue.VertexIndex),
+                BindingAttribute.Location(0)
             )
         )
         
@@ -140,6 +141,47 @@ class MslWriterTest {
         assertTrue(code.contains("[[vertex]]"))
         assertTrue(code.contains("float4 vs_main("))
         assertTrue(code.contains("uint vertex_index [[vertex_id]]"))
+        assertTrue(code.contains("float4 loc_0 [[attribute(0)]]"))
         assertTrue(code.contains("constant float* global_0 [[buffer(1)]]"))
+    }
+
+    @Test
+    fun testExpressions() {
+        val module = Module()
+        val f32 = module.types.append(Type(TypeInner.Scalar(ScalarKind.F32, 4)))
+        val bool = module.types.append(Type(TypeInner.Scalar(ScalarKind.Bool, 1)))
+        
+        val expressions = Arena<Expression>()
+        val f1 = expressions.append(Expression(ExpressionKind.Literal(LiteralValue.Scalar(ScalarValue.F32(1.0f)))))
+        val f2 = expressions.append(Expression(ExpressionKind.Literal(LiteralValue.Scalar(ScalarValue.F32(2.0f)))))
+        val b = expressions.append(Expression(ExpressionKind.Literal(LiteralValue.Scalar(ScalarValue.Bool(true)))))
+        
+        val select = expressions.append(Expression(ExpressionKind.Select(b, f1, f2)))
+        val splat = expressions.append(Expression(ExpressionKind.Splat(VectorSize.Tri, f1)))
+        val cast = expressions.append(Expression(ExpressionKind.As(f1, bool)))
+        
+        val blocks = Arena<io.ygdrasil.wgsl.ir.Block>()
+        val body = blocks.append(io.ygdrasil.wgsl.ir.Block(listOf(
+            Statement.Return(select),
+            Statement.Return(splat),
+            Statement.Return(cast)
+        )))
+        
+        module.functions.append(
+            Function(
+                name = "expr_test",
+                parameters = emptyList(),
+                returnType = f32,
+                localVariables = Arena(),
+                expressions = expressions,
+                blocks = blocks,
+                body = body
+            )
+        )
+        
+        val code = MslModule.writeString(module)
+        assertTrue(code.contains("(true ? 1.0f : 2.0f)"))
+        assertTrue(code.contains("float3(1.0f)"))
+        assertTrue(code.contains("(bool)(1.0f)"))
     }
 }

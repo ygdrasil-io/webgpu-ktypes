@@ -224,6 +224,12 @@ abstract class WriterBase<T : BackendOptions>(
                 val e = writeExpression(kind.expr)
                 "${getUnaryOperator(kind.operator)}($e)"
             }
+            is ExpressionKind.Select -> {
+                val cond = writeExpression(kind.condition)
+                val accept = writeExpression(kind.accept)
+                val reject = writeExpression(kind.reject)
+                "($cond ? $accept : $reject)"
+            }
             is ExpressionKind.Call -> {
                 val name = getFunctionName(kind.function)
                 val args = kind.arguments.joinToString { writeExpression(it) }
@@ -254,7 +260,10 @@ abstract class WriterBase<T : BackendOptions>(
             }
             is ExpressionKind.Splat -> {
                 val e = writeExpression(kind.value)
-                "/* splat */ $e"
+                val type = getExpressionType(kind.value)
+                val scalarName = if (type.inner is TypeInner.Scalar) getScalarTypeName(type.inner) else "/* error */"
+                val vectorName = "$scalarName${kind.size.ordinal + 2}"
+                "$vectorName($e)"
             }
             is ExpressionKind.Load -> writeExpression(kind.pointer)
             is ExpressionKind.Store -> {
@@ -262,13 +271,46 @@ abstract class WriterBase<T : BackendOptions>(
                 val v = writeExpression(kind.value)
                 "($p = $v)"
             }
+            is ExpressionKind.As -> {
+                val e = writeExpression(kind.expr)
+                val typeName = getTypeName(kind.target)
+                "($typeName)($e)"
+            }
+            is ExpressionKind.TypeConstructor -> {
+                val typeName = getTypeName(kind.type)
+                val args = kind.arguments.joinToString { writeExpression(it) }
+                "$typeName($args)"
+            }
+            is ExpressionKind.ArrayLength -> {
+                val e = writeExpression(kind.expr)
+                "($e).length()" // Simplified
+            }
             else -> "/* unsupported expression: ${kind::class.simpleName} */"
         }
     }
 
     protected open fun getExpressionType(handle: Handle<Expression>): Type {
-        // This is a simplification, we should use Typifier
-        return Type(TypeInner.Error)
+        val expr = if (currentFunction != null) {
+            currentFunction!!.expressions[handle]
+        } else {
+            module.globalExpressions[handle]
+        }
+        return when (val kind = expr.kind) {
+            is ExpressionKind.Literal -> when (kind.value) {
+                is LiteralValue.Scalar -> when (kind.value.value) {
+                    is ScalarValue.Bool -> Type(TypeInner.Scalar(ScalarKind.Bool, 1))
+                    is ScalarValue.F32 -> Type(TypeInner.Scalar(ScalarKind.F32, 4))
+                    is ScalarValue.U32 -> Type(TypeInner.Scalar(ScalarKind.Uint, 4))
+                    is ScalarValue.I32 -> Type(TypeInner.Scalar(ScalarKind.Sint, 4))
+                    else -> Type(TypeInner.Error)
+                }
+                else -> Type(TypeInner.Error)
+            }
+            is ExpressionKind.LocalVar -> currentFunction!!.localVariables[kind.handle].type.let { module.types[it] }
+            is ExpressionKind.GlobalVar -> module.globalVariables[kind.handle].type.let { module.types[it] }
+            is ExpressionKind.FunctionArgument -> currentFunction!!.parameters[kind.index].type.let { module.types[it] }
+            else -> Type(TypeInner.Error)
+        }
     }
 
     protected open fun getBuiltinFunctionName(function: BuiltinFunction): String = function.name.lowercase()

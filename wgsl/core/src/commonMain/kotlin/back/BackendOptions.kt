@@ -47,6 +47,11 @@ sealed class BackendOptions {
      * Extension du fichier (ex: ".metal", ".hlsl", ".glsl", ".wgsl").
      */
     abstract val fileExtension: String
+
+    /**
+     * Map des ressources.
+     */
+    abstract val bindingMap: BindingMap
 }
 
 /**
@@ -61,9 +66,9 @@ data class MslOptions(
     override val version: String? = "2.3",
     override val languageName: String = "MSL",
     override val fileExtension: String = ".metal",
+    override val bindingMap: BindingMap = BindingMap(),
 
     // Options spécifiques MSL
-    val bindingMap: BindingMap = BindingMap(),
     val inlineSamplers: Boolean = false,
     val bufferSizeAlignment: Int = 16
 ) : BackendOptions()
@@ -80,6 +85,7 @@ data class HlslOptions(
     override val version: String? = "6.0",
     override val languageName: String = "HLSL",
     override val fileExtension: String = ".hlsl",
+    override val bindingMap: BindingMap = BindingMap(),
 
     // Options spécifiques HLSL
     val shaderModel: ShaderModel = ShaderModel.SM6_0
@@ -97,6 +103,7 @@ data class GlslOptions(
     override val version: String? = "450",
     override val languageName: String = "GLSL",
     override val fileExtension: String = ".glsl",
+    override val bindingMap: BindingMap = BindingMap(),
 
     // Options spécifiques GLSL
     val profile: GlslProfile = GlslProfile.CORE,
@@ -115,6 +122,7 @@ data class WgslOptions(
     override val version: String? = null,
     override val languageName: String = "WGSL",
     override val fileExtension: String = ".wgsl",
+    override val bindingMap: BindingMap = BindingMap(),
 
     // Options spécifiques WGSL
     val debug: Boolean = false,

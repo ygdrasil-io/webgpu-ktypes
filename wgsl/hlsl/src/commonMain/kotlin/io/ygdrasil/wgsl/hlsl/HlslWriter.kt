@@ -2,6 +2,7 @@ package io.ygdrasil.wgsl.hlsl
 
 import io.ygdrasil.wgsl.arena.Handle
 import io.ygdrasil.wgsl.back.HlslOptions
+import io.ygdrasil.wgsl.back.BindingMap
 import io.ygdrasil.wgsl.back.WriterBase
 import io.ygdrasil.wgsl.back.BackendWriter
 import io.ygdrasil.wgsl.ir.*
@@ -56,15 +57,83 @@ class HlslWriter(
         write(")")
     }
 
+    override fun writeGlobalVariables() {
+        module.globalVariables.forEachWithHandle { handle, variable ->
+            val name = getGlobalVariableName(handle)
+            val typeName = getTypeName(variable.type)
+            val binding = variable.binding
+            if (binding != null) {
+                val target = options.bindingMap[binding]
+                val register = when (variable.storageClass) {
+                    StorageClass.Uniform -> "register(b${target?.buffer ?: binding.index})"
+                    StorageClass.Storage -> "register(u${target?.buffer ?: binding.index})"
+                    // TODO: handle textures and samplers properly
+                    else -> "register(t${target?.texture ?: binding.index})"
+                }
+                writeLine("$typeName $name : $register;")
+            } else {
+                val init = variable.init?.let { " = ${writeExpression(it)}" } ?: ""
+                writeLine("$typeName $name$init;")
+            }
+        }
+    }
+
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
-        writeLine("// Entry point: ${ep.name}")
+        writeLine()
         val func = module.functions[ep.function]
-        writeFunctionSignature(func, ep.name)
-        writeLine(" {")
+        val returnType = func.returnType?.let { getTypeName(it) } ?: "void"
+        
+        write("$returnType ${ep.name}(")
+        
+        val args = mutableListOf<String>()
+        
+        ep.bindings.forEach { attr ->
+            when (attr) {
+                is BindingAttribute.Builtin -> {
+                    val hlslSemantic = getHlslSemantic(attr.builtin)
+                    val typeName = getHlslBuiltinType(attr.builtin)
+                    val name = attr.builtin.name.lowercase()
+                    args.add("$typeName $name : $hlslSemantic")
+                }
+                is BindingAttribute.Location -> {
+                    val typeName = "float4" 
+                    val name = "loc_${attr.location}"
+                    args.add("$typeName $name : TEXCOORD${attr.location}")
+                }
+                else -> {}
+            }
+        }
+
+        write(args.joinToString(", "))
+        writeLine(") {")
         indent {
             writeBlock(func.body)
         }
         writeLine("}")
+    }
+
+    private fun getHlslSemantic(builtin: BuiltinValue): String = when (builtin) {
+        BuiltinValue.Position -> "SV_Position"
+        BuiltinValue.VertexIndex -> "SV_VertexID"
+        BuiltinValue.InstanceIndex -> "SV_InstanceID"
+        BuiltinValue.FrontFacing -> "SV_IsFrontFace"
+        BuiltinValue.LocalInvocationId -> "SV_GroupThreadID"
+        BuiltinValue.LocalInvocationIndex -> "SV_GroupIndex"
+        BuiltinValue.GlobalInvocationId -> "SV_DispatchThreadID"
+        BuiltinValue.WorkgroupId -> "SV_GroupID"
+        BuiltinValue.SampleIndex -> "SV_SampleIndex"
+        BuiltinValue.SampleMask -> "SV_Coverage"
+        else -> builtin.name.uppercase()
+    }
+
+    private fun getHlslBuiltinType(builtin: BuiltinValue): String = when (builtin) {
+        BuiltinValue.Position -> "float4"
+        BuiltinValue.VertexIndex, BuiltinValue.InstanceIndex, BuiltinValue.SampleIndex -> "uint"
+        BuiltinValue.FrontFacing -> "bool"
+        BuiltinValue.LocalInvocationId, BuiltinValue.GlobalInvocationId, 
+        BuiltinValue.WorkgroupId -> "uint3"
+        BuiltinValue.LocalInvocationIndex, BuiltinValue.SampleMask -> "uint"
+        else -> "uint"
     }
 
     override fun getScalarTypeName(scalar: TypeInner.Scalar): String {

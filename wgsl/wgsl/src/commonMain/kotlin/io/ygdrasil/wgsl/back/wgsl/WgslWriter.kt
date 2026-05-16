@@ -56,17 +56,79 @@ class WgslWriter(
         write(")$returnType")
     }
 
+    override fun writeGlobalVariables() {
+        module.globalVariables.forEachWithHandle { handle, variable ->
+            val name = getGlobalVariableName(handle)
+            val typeName = getTypeName(variable.type)
+            val binding = variable.binding
+            if (binding != null) {
+                writeLine("@group(${binding.group}) @binding(${binding.index})")
+            }
+            val space = when (variable.storageClass) {
+                StorageClass.Uniform -> "<uniform>"
+                StorageClass.Storage -> "<storage, read_write>" // simplified
+                StorageClass.Handle -> ""
+                else -> ""
+            }
+            val init = variable.init?.let { " = ${writeExpression(it)}" } ?: ""
+            writeLine("var$space $name: $typeName$init;")
+        }
+    }
+
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
         writeLine()
         val stage = ep.stage.name.lowercase()
         writeLine("@$stage")
         val func = module.functions[ep.function]
-        writeFunctionSignature(func, ep.name)
-        writeLine(" {")
+        val returnType = func.returnType?.let { " -> ${getTypeName(it)}" } ?: ""
+        
+        write("fn ${ep.name}(")
+        
+        val args = mutableListOf<String>()
+        
+        ep.bindings.forEach { attr ->
+            when (attr) {
+                is BindingAttribute.Builtin -> {
+                    val typeName = getWgslBuiltinType(attr.builtin)
+                    val name = attr.builtin.name.lowercase()
+                    args.add("@builtin(${getWgslBuiltinName(attr.builtin)}) $name: $typeName")
+                }
+                is BindingAttribute.Location -> {
+                    val typeName = "vec4<f32>" 
+                    val name = "loc_${attr.location}"
+                    args.add("@location(${attr.location}) $name: $typeName")
+                }
+                else -> {}
+            }
+        }
+
+        write(args.joinToString(", "))
+        writeLine(")$returnType {")
         indent {
             writeBlock(func.body)
         }
         writeLine("}")
+    }
+
+    private fun getWgslBuiltinName(builtin: BuiltinValue): String = when (builtin) {
+        BuiltinValue.VertexIndex -> "vertex_index"
+        BuiltinValue.InstanceIndex -> "instance_index"
+        BuiltinValue.LocalInvocationId -> "local_invocation_id"
+        BuiltinValue.LocalInvocationIndex -> "local_invocation_index"
+        BuiltinValue.GlobalInvocationId -> "global_invocation_id"
+        BuiltinValue.WorkgroupId -> "workgroup_id"
+        BuiltinValue.NumWorkgroups -> "num_workgroups"
+        else -> builtin.name.lowercase()
+    }
+
+    private fun getWgslBuiltinType(builtin: BuiltinValue): String = when (builtin) {
+        BuiltinValue.Position -> "vec4<f32>"
+        BuiltinValue.VertexIndex, BuiltinValue.InstanceIndex, BuiltinValue.SampleIndex -> "u32"
+        BuiltinValue.FrontFacing -> "bool"
+        BuiltinValue.LocalInvocationId, BuiltinValue.GlobalInvocationId, 
+        BuiltinValue.WorkgroupId, BuiltinValue.NumWorkgroups -> "vec3<u32>"
+        BuiltinValue.LocalInvocationIndex, BuiltinValue.SampleMask -> "u32"
+        else -> "u32"
     }
 
     override fun getScalarTypeName(scalar: TypeInner.Scalar): String {

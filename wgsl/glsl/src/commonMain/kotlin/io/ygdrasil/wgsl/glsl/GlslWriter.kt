@@ -2,6 +2,7 @@ package io.ygdrasil.wgsl.glsl
 
 import io.ygdrasil.wgsl.arena.Handle
 import io.ygdrasil.wgsl.back.GlslOptions
+import io.ygdrasil.wgsl.back.BindingMap
 import io.ygdrasil.wgsl.back.WriterBase
 import io.ygdrasil.wgsl.back.BackendWriter
 import io.ygdrasil.wgsl.ir.*
@@ -56,10 +57,49 @@ class GlslWriter(
         write(")")
     }
 
+    override fun writeGlobalVariables() {
+        module.globalVariables.forEachWithHandle { handle, variable ->
+            val name = getGlobalVariableName(handle)
+            val typeName = getTypeName(variable.type)
+            val binding = variable.binding
+            if (binding != null) {
+                val target = options.bindingMap[binding]
+                val layout = "layout(set = ${binding.group}, binding = ${target?.buffer ?: binding.index})"
+                val storage = when (variable.storageClass) {
+                    StorageClass.Uniform -> "uniform"
+                    StorageClass.Storage -> "buffer"
+                    else -> "uniform"
+                }
+                writeLine("$layout $storage $typeName $name;")
+            } else {
+                val storage = when (variable.storageClass) {
+                    StorageClass.Private -> ""
+                    StorageClass.Workgroup -> "shared"
+                    else -> ""
+                }
+                val init = variable.init?.let { " = ${writeExpression(it)}" } ?: ""
+                writeLine("$storage $typeName $name$init;")
+            }
+        }
+    }
+
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
-        writeLine("// Entry point: ${ep.name}")
+        writeLine()
+        // GLSL entry point arguments are global variables with in/out qualifiers
+        ep.bindings.forEach { attr ->
+            when (attr) {
+                is BindingAttribute.Location -> {
+                    val typeName = "vec4" 
+                    val name = "loc_${attr.location}"
+                    writeLine("layout(location = ${attr.location}) in $typeName $name;")
+                }
+                else -> {}
+            }
+        }
+
         writeLine("void main() {")
         indent {
+            // Built-in mapping needs to be handled inside the body if they are used
             val func = module.functions[ep.function]
             writeBlock(func.body)
         }

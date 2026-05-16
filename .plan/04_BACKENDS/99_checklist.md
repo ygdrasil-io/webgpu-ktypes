@@ -13,12 +13,12 @@
 | Sous-Phase | Durée | Fichiers | Statut | Progression |
 |------------|-------|----------|--------|-------------|
 | **4.0 - Architecture Commune** | 1-2 semaines | 7 fichiers | [X] | 100% |
-| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [/] | 20% |
-| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [/] | 10% |
-| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [/] | 10% |
-| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [/] | 10% |
+| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [/] | 40% |
+| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [/] | 30% |
+| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [/] | 30% |
+| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [/] | 30% |
 
-**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : ~25%**
+**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : ~45%**
 
 ---
 
@@ -158,13 +158,13 @@
 - [X] writeIdent()
 - [X] writeUnary() (+, -, !, ~)
 - [X] writeBinary() (+, -, *, /, %, ==, !=, <, >, <=, >=, &&, ||, &, |, ^, <<, >>)
-- [ ] writeSelect() (ternary)
-- [ ] writeCompose()
+- [X] writeSelect() (ternary)
+- [X] writeCompose()
 - [X] writeSplat()
 - [X] writeSwizzle()
 - [X] writeAccess()
 - [X] writeAccessIndex()
-- [ ] writeAs() (cast/bitcast)
+- [X] writeAs() (cast/bitcast)
 - [X] writeCall()
 - [ ] writeCallResult()
 - [X] writeLoad()
@@ -202,33 +202,33 @@
 - [ ] tryWriteString()
 
 #### Tests
-- [ ] MslWriterTest.kt
-- [ ] Test module vide
-- [ ] Test types (scalaires, vecteurs, matrices, structs)
-- [ ] Test constantes
-- [ ] Test variables globales
-- [ ] Test fonctions simples
-- [ ] Test entry points (vertex, fragment, compute)
-- [ ] Test bindings
-- [ ] Test expressions (toutes)
+- [X] MslWriterTest.kt
+- [X] Test module vide
+- [X] Test types (scalaires, vecteurs, matrices, structs)
+- [X] Test constantes
+- [X] Test variables globales
+- [X] Test fonctions simples
+- [X] Test entry points (vertex, fragment, compute)
+- [X] Test bindings
+- [X] Test expressions (toutes)
 - [ ] Test statements (tous)
 - [ ] Test external textures
 - [ ] Test OOB locals
 
 ---
 
-### ⬜ Sous-Phase 4.2 : HLSL Writer (3-4 semaines)
+### [/] Sous-Phase 4.2 : HLSL Writer (3-4 semaines)
 
 **Fichier** : `02_hlsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [X] En cours | [ ] Complété | [ ] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour wgsl:hlsl
-- [ ] Package `io.ygdrasil.wgsl.back.hlsl`
+- [X] build.gradle.kts pour wgsl:hlsl
+- [X] Package `io.ygdrasil.wgsl.back.hlsl`
 
 #### Configuration
-- [ ] HlslOptions.kt
+- [X] HlslOptions.kt
 - [ ] BindTarget.kt (register, space, matrixLayout, packed)
 - [ ] Keywords.kt
 - [ ] ShaderModel.kt (SM2_0 à SM6_6)
@@ -273,18 +273,18 @@
 
 ---
 
-### ⬜ Sous-Phase 4.3 : GLSL Writer (2-3 semaines)
+### [/] Sous-Phase 4.3 : GLSL Writer (2-3 semaines)
 
 **Fichier** : `03_glsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [X] En cours | [ ] Complété | [ ] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour wgsl:glsl
-- [ ] Package `io.ygdrasil.wgsl.back.glsl`
+- [X] build.gradle.kts pour wgsl:glsl
+- [X] Package `io.ygdrasil.wgsl.back.glsl`
 
 #### Configuration
-- [ ] GlslOptions.kt
+- [X] GlslOptions.kt
 - [ ] BindTarget.kt
 - [ ] Keywords.kt
 - [ ] GlslVersion.kt (SUPPORTED_CORE, SUPPORTED_ES)
@@ -341,18 +341,18 @@
 
 ---
 
-### ⬜ Sous-Phase 4.4 : WGSL Writer (2-3 semaines)
+### [/] Sous-Phase 4.4 : WGSL Writer (2-3 semaines)
 
 **Fichier** : `04_wgsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [X] En cours | [ ] Complété | [ ] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour wgsl:wgsl
-- [ ] Package `io.ygdrasil.wgsl.back.wgsl`
+- [X] build.gradle.kts pour wgsl:wgsl
+- [X] Package `io.ygdrasil.wgsl.back.wgsl`
 
 #### Configuration
-- [ ] WgslOptions.kt
+- [X] WgslOptions.kt
 - [ ] WgslCapabilities.kt
 
 #### Utilitaires
