@@ -37,12 +37,20 @@ class MslWriter(
     override fun writeStructType(handle: Handle<Type>, structInner: TypeInner.Struct, name: String) {
         writeLine("struct $name {")
         indent {
+            var currentOffset = 0
             for (member in structInner.members) {
+                val memberLayout = layouter[member.type]
+                val offset = member.offset
+                
+                if (offset > currentOffset) {
+                    val padding = offset - currentOffset
+                    writeLine("char _pad$currentOffset[$padding];")
+                }
+                
                 val memberName = member.name
                 val typeName = getTypeName(member.type)
-                // TODO: use layouter to get alignment
-                val align = "" // " [[align(16)]]" 
-                writeLine("$typeName $memberName$align;")
+                writeLine("$typeName $memberName;")
+                currentOffset = offset + memberLayout.size
             }
         }
         writeLine("};")
@@ -252,6 +260,11 @@ class MslWriter(
         }
     }
 
+    override fun writeBitcast(expr: String, targetType: Type): String {
+        val typeName = getTypeName(module.types.append(targetType))
+        return "as_type<$typeName>($expr)"
+    }
+
     override fun writeAtomic(pointer: String, function: AtomicFunction, arguments: List<String>): String {
         val mslFunc = when (function) {
             AtomicFunction.Add -> "atomic_fetch_add_explicit"
@@ -373,12 +386,17 @@ class MslWriter(
                     inner.name == "sampler" -> "sampler"
                     inner.name == "comparison_sampler" -> "sampler"
                     inner.name == "external_texture" -> "/* expanded external_texture */ void"
+                    inner.name == "texture_1d<f32>" -> "texture1d<float>"
                     inner.name == "texture_2d<f32>" -> "texture2d<float>"
+                    inner.name == "texture_2d_array<f32>" -> "texture2d_array<float>"
+                    inner.name == "texture_3d<f32>" -> "texture3d<float>"
+                    inner.name == "texture_cube<f32>" -> "texturecube<float>"
+                    inner.name == "texture_cube_array<f32>" -> "texturecube_array<float>"
+                    inner.name == "texture_multisampled_2d<f32>" -> "texture2d_ms<float>"
                     inner.name == "texture_2d<u32>" -> "texture2d<uint>"
                     inner.name == "texture_2d<i32>" -> "texture2d<int>"
                     inner.name.startsWith("texture_depth") -> "depth2d<float>"
                     inner.name.startsWith("texture") -> {
-                         // Very simple mapping for now
                          "texture2d<float>" 
                     }
                     else -> inner.name

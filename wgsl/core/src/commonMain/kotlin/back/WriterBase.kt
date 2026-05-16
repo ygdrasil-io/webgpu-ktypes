@@ -283,7 +283,7 @@ abstract class WriterBase<T : BackendOptions>(
             }
             is ExpressionKind.ArrayLength -> {
                 val e = writeExpression(kind.expr)
-                "($e).length()" // Simplified
+                "($e).length()" // HLSL/GLSL style. WGSL uses arrayLength()
             }
             is ExpressionKind.Sample -> {
                 val t = writeExpression(kind.texture)
@@ -306,7 +306,8 @@ abstract class WriterBase<T : BackendOptions>(
             }
             is ExpressionKind.Bitcast -> {
                 val e = writeExpression(kind.expr)
-                "as_type<${getTypeName(getExpressionType(handle).inner.let { module.types.append(Type(it)) })} >($e)" // Simplified
+                val targetType = getExpressionType(handle)
+                writeBitcast(e, targetType)
             }
             else -> "/* unsupported expression: ${kind::class.simpleName} */"
         }
@@ -318,6 +319,10 @@ abstract class WriterBase<T : BackendOptions>(
 
     protected open fun writeRelational(function: RelationalFunction, arguments: List<String>): String {
         return "${function.name.lowercase()}(${arguments.joinToString()})"
+    }
+
+    protected open fun writeBitcast(expr: String, targetType: Type): String {
+        return "bitcast<${getTypeName(module.types.append(targetType))}>($expr)"
     }
 
     protected open fun writeSample(
@@ -528,10 +533,26 @@ abstract class WriterBase<T : BackendOptions>(
     protected open fun writeConstantInner(inner: ConstantInner): String {
         return when (inner) {
             is ConstantInner.Scalar -> writeScalarValue(inner.value)
-            is ConstantInner.Vector -> "vec(${inner.components.joinToString { writeScalarValue(it) }})"
-            is ConstantInner.Matrix -> "mat(...)"
-            is ConstantInner.Zero -> "/* zero */"
-            is ConstantInner.Composite -> "/* composite */"
+            is ConstantInner.Vector -> {
+                val scalarType = when (inner.components.first()) {
+                    is ScalarValue.F32 -> "f32"
+                    is ScalarValue.U32 -> "u32"
+                    is ScalarValue.I32 -> "i32"
+                    is ScalarValue.Bool -> "bool"
+                    else -> "f32"
+                }
+                "vec${inner.components.size}<$scalarType>(${inner.components.joinToString { writeScalarValue(it) }})"
+            }
+            is ConstantInner.Matrix -> "mat${inner.columns.size}x${inner.columns.firstOrNull()?.size ?: 0}(...)"
+            is ConstantInner.Zero -> {
+                val typeName = getTypeName(inner.type)
+                "$typeName()"
+            }
+            is ConstantInner.Composite -> {
+                val typeName = getTypeName(inner.type)
+                val elements = inner.components.joinToString { getConstantName(it) }
+                "$typeName($elements)"
+            }
             is ConstantInner.Expression -> writeExpression(inner.expr)
         }
     }

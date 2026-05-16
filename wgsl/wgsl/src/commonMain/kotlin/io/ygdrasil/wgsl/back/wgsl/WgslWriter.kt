@@ -39,7 +39,7 @@ class WgslWriter(
             for (member in structInner.members) {
                 val memberName = member.name
                 val typeName = getTypeName(member.type)
-                writeLine("  $memberName: $typeName,")
+                writeLine("$memberName: $typeName,")
             }
         }
         writeLine("}")
@@ -108,6 +108,21 @@ class WgslWriter(
             writeBlock(func.body)
         }
         writeLine("}")
+    }
+
+    override fun writeExpression(handle: Handle<Expression>): String {
+        val expr = if (currentFunction != null) {
+            currentFunction!!.expressions[handle]
+        } else {
+            module.globalExpressions[handle]
+        }
+
+        if (expr.kind is ExpressionKind.ArrayLength) {
+            val e = writeExpression((expr.kind as ExpressionKind.ArrayLength).expr)
+            return "arrayLength(&$e)"
+        }
+        
+        return super.writeExpression(handle)
     }
 
     override fun writeSample(

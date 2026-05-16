@@ -13,12 +13,12 @@
 | Sous-Phase | Durée | Fichiers | Statut | Progression |
 |------------|-------|----------|--------|-------------|
 | **4.0 - Architecture Commune** | 1-2 semaines | 7 fichiers | [X] | 100% |
-| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [/] | 80% |
-| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [/] | 75% |
-| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [/] | 75% |
-| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [/] | 70% |
+| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [X] | 100% |
+| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [X] | 100% |
+| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [X] | 100% |
+| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [X] | 100% |
 
-**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : ~80%**
+**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : 100%**
 
 ---
 
@@ -110,11 +110,11 @@
 
 ---
 
-### [/] Sous-Phase 4.1 : MSL Writer (3-4 semaines)
+### [X] Sous-Phase 4.1 : MSL Writer (3-4 semaines)
 
 **Fichier** : `01_msl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [X] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Module Structure
 - [X] build.gradle.kts pour wgsl:msl
@@ -217,11 +217,11 @@
 
 ---
 
-### [/] Sous-Phase 4.2 : HLSL Writer (3-4 semaines)
+### [X] Sous-Phase 4.2 : HLSL Writer (3-4 semaines)
 
 **Fichier** : `02_hlsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [X] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Module Structure
 - [X] build.gradle.kts pour wgsl:hlsl
@@ -273,11 +273,11 @@
 
 ---
 
-### [/] Sous-Phase 4.3 : GLSL Writer (2-3 semaines)
+### [X] Sous-Phase 4.3 : GLSL Writer (2-3 semaines)
 
 **Fichier** : `03_glsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [X] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Module Structure
 - [X] build.gradle.kts pour wgsl:glsl
@@ -341,11 +341,11 @@
 
 ---
 
-### [/] Sous-Phase 4.4 : WGSL Writer (2-3 semaines)
+### [X] Sous-Phase 4.4 : WGSL Writer (2-3 semaines)
 
 **Fichier** : `04_wgsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [X] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Module Structure
 - [X] build.gradle.kts pour wgsl:wgsl

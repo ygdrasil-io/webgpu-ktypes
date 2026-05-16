@@ -347,4 +347,24 @@ class MslWriterTest {
         assertTrue(code.contains("vs_main_Input in [[stage_in]]"))
         assertTrue(code.contains("uint vertex_index [[vertex_id]]"))
     }
+
+    @Test
+    fun testStructPadding() {
+        val module = Module()
+        val f32 = module.types.append(Type(TypeInner.Scalar(ScalarKind.F32, 4)))
+        val vec3f = module.types.append(Type(TypeInner.Vector(VectorSize.Tri, f32)))
+        
+        // Struct with float and then float3 (float3 has alignment of 16)
+        module.types.append(
+            Type(TypeInner.Struct(listOf(
+                StructMember("a", f32, null, 0),
+                StructMember("b", vec3f, null, 16)
+            )))
+        )
+        
+        val code = MslModule.writeString(module)
+        assertTrue(code.contains("float a;"))
+        assertTrue(code.contains("char _pad4[12];")) // 4 to 16
+        assertTrue(code.contains("float3 b;"))
+    }
 }

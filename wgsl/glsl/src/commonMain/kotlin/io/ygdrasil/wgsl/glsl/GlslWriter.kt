@@ -31,7 +31,14 @@ class GlslWriter(
     override fun canHandle(module: Module, moduleInfo: ModuleInfo): Boolean = true
 
     override fun writeHeader() {
-        writeLine("#version ${options.version}")
+        writeLine("#version 450 core")
+        writeLine("#extension GL_ARB_separate_shader_objects : enable")
+    }
+
+    override fun writePreamble() {
+        writeLine("precision highp float;")
+        writeLine("precision highp int;")
+        writeLine()
     }
 
     override fun writeStructType(handle: Handle<Type>, structInner: TypeInner.Struct, name: String) {
@@ -213,16 +220,32 @@ class GlslWriter(
             }
             is TypeInner.Opaque -> {
                 when {
-                    inner.name == "sampler" -> "sampler" // In GLSL it depends if it's combined
+                    inner.name == "sampler" -> "sampler"
                     inner.name == "comparison_sampler" -> "samplerShadow"
-                    inner.name.startsWith("texture") -> {
-                        "texture2D"
-                    }
+                    inner.name == "texture_1d<f32>" -> "texture1D"
+                    inner.name == "texture_2d<f32>" -> "texture2D"
+                    inner.name == "texture_2d_array<f32>" -> "texture2DArray"
+                    inner.name == "texture_3d<f32>" -> "texture3D"
+                    inner.name == "texture_cube<f32>" -> "textureCube"
+                    inner.name == "texture_cube_array<f32>" -> "textureCubeArray"
+                    inner.name == "texture_multisampled_2d<f32>" -> "texture2DMS"
+                    inner.name.startsWith("texture_depth") -> "texture2D"
                     else -> inner.name
                 }
             }
             else -> "void"
         }
+    }
+
+    override fun writeBitcast(expr: String, targetType: Type): String {
+        val inner = targetType.inner
+        val func = when {
+            inner is TypeInner.Scalar && inner.kind == ScalarKind.Uint -> "floatBitsToUint"
+            inner is TypeInner.Scalar && inner.kind == ScalarKind.F32 -> "intBitsToFloat" // simplified
+            inner is TypeInner.Scalar && inner.kind == ScalarKind.Sint -> "floatBitsToInt"
+            else -> "bitfieldExtract" // fallback/error
+        }
+        return "$func($expr)"
     }
 
     override fun writeRelational(function: RelationalFunction, arguments: List<String>): String {
