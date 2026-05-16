@@ -78,35 +78,28 @@ class MslWriter(
             ShaderStage.Compute -> "[[kernel]]"
         }
         writeLine()
+        
+        val inputStructName = writeInputStruct(ep)
+        val outputStructName = writeOutputStruct(ep)
+        
         writeLine("$stageAttr")
         val func = module.functions[ep.function]
-        val returnType = func.returnType?.let { getTypeName(it) } ?: "void"
+        val returnType = outputStructName ?: (func.returnType?.let { getTypeName(it) } ?: "void")
         
         write("$returnType ${ep.name}(")
         
         val args = mutableListOf<String>()
+        if (inputStructName != null) {
+            args.add("$inputStructName in [[stage_in]]")
+        }
         
-        // 1. Built-ins and Locations (Input)
+        // 1. Built-ins that are not in stage_in
         ep.bindings.forEach { attr ->
-            when (attr) {
-                is BindingAttribute.Builtin -> {
-                    val mslBuiltin = getMslBuiltin(attr.builtin)
-                    val typeName = getMslBuiltinType(attr.builtin)
-                    val name = toSnakeCase(attr.builtin.name)
-                    args.add("$typeName $name [[$mslBuiltin]]")
-                }
-                is BindingAttribute.Location -> {
-                    val mslAttr = when (ep.stage) {
-                        ShaderStage.Vertex -> "attribute(${attr.location})"
-                        else -> "user(loc${attr.location})"
-                    }
-                    // For now we don't have the type of the location easily, 
-                    // but we can try to guess or use float4 as default for inter-stage
-                    val typeName = "float4" 
-                    val name = "loc_${attr.location}"
-                    args.add("$typeName $name [[$mslAttr]]")
-                }
-                else -> {}
+            if (attr is BindingAttribute.Builtin) {
+                val mslBuiltin = getMslBuiltin(attr.builtin)
+                val typeName = getMslBuiltinType(attr.builtin)
+                val name = toSnakeCase(attr.builtin.name)
+                args.add("$typeName $name [[$mslBuiltin]]")
             }
         }
 
@@ -117,7 +110,6 @@ class MslWriter(
                 val name = getGlobalVariableName(handle)
                 val type = module.types[variable.type]
                 val typeName = getTypeName(variable.type)
-                
                 val target = options.bindingMap[binding]
                 
                 val mslAttr = when (val inner = type.inner) {
@@ -138,7 +130,6 @@ class MslWriter(
                     }
                     else -> "[[buffer(${binding.index})]]"
                 }
-                
                 args.add("$typeName $name $mslAttr")
             }
         }
@@ -146,9 +137,49 @@ class MslWriter(
         write(args.joinToString(", "))
         writeLine(") {")
         indent {
+            writeArgumentAssignments(ep)
             writeBlock(func.body)
         }
         writeLine("}")
+    }
+
+    protected fun writeInputStruct(ep: EntryPoint): String? {
+        val locations = ep.bindings.filterIsInstance<BindingAttribute.Location>()
+        if (locations.isEmpty()) return null
+        
+        val structName = "${ep.name}_Input"
+        writeLine("struct $structName {")
+        indent {
+            locations.forEach { loc ->
+                // TODO: Get actual type from moduleInfo or by analyzing the entry point function parameters
+                val typeName = "float4" 
+                val mslAttr = if (ep.stage == ShaderStage.Vertex) "attribute(${loc.location})" else "user(loc${loc.location})"
+                writeLine("$typeName loc_${loc.location} [[$mslAttr]];")
+            }
+        }
+        writeLine("};")
+        return structName
+    }
+
+    protected fun writeOutputStruct(ep: EntryPoint): String? {
+        val func = module.functions[ep.function]
+        if (ep.stage == ShaderStage.Vertex) {
+            val structName = "${ep.name}_Output"
+            writeLine("struct $structName {")
+            indent {
+                writeLine("float4 position [[position]];")
+                // TODO: other outputs (locations)
+            }
+            writeLine("};")
+            return structName
+        }
+        return null
+    }
+
+    protected fun writeArgumentAssignments(ep: EntryPoint) {
+        // If we have an input struct, we might need to assign its members to something
+        // But in this IR, we don't have a direct way to know which local variable 
+        // represents the input. This is a bit advanced for now.
     }
 
     override fun writeLiteralValue(value: LiteralValue): String {
@@ -190,6 +221,34 @@ class MslWriter(
             TextureQueryKind.NumSamples -> "get_num_samples()"
         }
         return "$texture.$method"
+    }
+
+    override fun writeRelational(function: RelationalFunction, arguments: List<String>): String {
+        return when (function) {
+            RelationalFunction.Any -> "any(${arguments.joinToString()})"
+            RelationalFunction.All -> "all(${arguments.joinToString()})"
+            RelationalFunction.IsNan -> "isnan(${arguments.joinToString()})"
+            RelationalFunction.IsInf -> "isinf(${arguments.joinToString()})"
+            RelationalFunction.IsFinite -> "isfinite(${arguments.joinToString()})"
+            RelationalFunction.IsNormal -> "isnormal(${arguments.joinToString()})"
+            RelationalFunction.SignBit -> "signbit(${arguments.joinToString()})"
+        }
+    }
+
+    override fun writeAtomic(pointer: String, function: AtomicFunction, arguments: List<String>): String {
+        val mslFunc = when (function) {
+            AtomicFunction.Add -> "atomic_fetch_add_explicit"
+            AtomicFunction.Subtract -> "atomic_fetch_sub_explicit"
+            AtomicFunction.And -> "atomic_fetch_and_explicit"
+            AtomicFunction.Or -> "atomic_fetch_or_explicit"
+            AtomicFunction.Xor -> "atomic_fetch_xor_explicit"
+            AtomicFunction.Min -> "atomic_fetch_min_explicit"
+            AtomicFunction.Max -> "atomic_fetch_max_explicit"
+            AtomicFunction.Exchange -> "atomic_exchange_explicit"
+            AtomicFunction.CompSwap -> "atomic_compare_exchange_weak_explicit"
+        }
+        // Note: MSL atomics usually require a memory order argument
+        return "$mslFunc($pointer, ${arguments.joinToString()}, memory_order_relaxed)"
     }
 
     override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {

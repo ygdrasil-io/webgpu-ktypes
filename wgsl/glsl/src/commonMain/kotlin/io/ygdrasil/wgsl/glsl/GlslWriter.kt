@@ -198,6 +198,33 @@ class GlslWriter(
         }
     }
 
+    override fun writeRelational(function: RelationalFunction, arguments: List<String>): String {
+        return when (function) {
+            RelationalFunction.Any -> "any(${arguments.joinToString()})"
+            RelationalFunction.All -> "all(${arguments.joinToString()})"
+            RelationalFunction.IsNan -> "isnan(${arguments.joinToString()})"
+            RelationalFunction.IsInf -> "isinf(${arguments.joinToString()})"
+            RelationalFunction.IsFinite -> "!isinf(${arguments.joinToString()}) && !isnan(${arguments.joinToString()})"
+            RelationalFunction.IsNormal -> "/* isnormal unsupported */ true"
+            RelationalFunction.SignBit -> "/* signbit unsupported */ false"
+        }
+    }
+
+    override fun writeAtomic(pointer: String, function: AtomicFunction, arguments: List<String>): String {
+        val glslFunc = when (function) {
+            AtomicFunction.Add -> "atomicAdd"
+            AtomicFunction.Subtract -> "atomicAdd" // use negative
+            AtomicFunction.And -> "atomicAnd"
+            AtomicFunction.Or -> "atomicOr"
+            AtomicFunction.Xor -> "atomicXor"
+            AtomicFunction.Min -> "atomicMin"
+            AtomicFunction.Max -> "atomicMax"
+            AtomicFunction.Exchange -> "atomicExchange"
+            AtomicFunction.CompSwap -> "atomicCompSwap"
+        }
+        return "$glslFunc($pointer, ${arguments.joinToString()})"
+    }
+
     override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
         BuiltinFunction.Ln -> "log"
         BuiltinFunction.Atan2 -> "atan" // GLSL uses atan(y, x)

@@ -189,6 +189,25 @@ class WgslWriter(
         }
     }
 
+    override fun writeRelational(function: RelationalFunction, arguments: List<String>): String {
+        return "${function.name.lowercase()}(${arguments.joinToString()})"
+    }
+
+    override fun writeAtomic(pointer: String, function: AtomicFunction, arguments: List<String>): String {
+        val wgslFunc = when (function) {
+            AtomicFunction.Add -> "atomicAdd"
+            AtomicFunction.Subtract -> "atomicSub"
+            AtomicFunction.And -> "atomicAnd"
+            AtomicFunction.Or -> "atomicOr"
+            AtomicFunction.Xor -> "atomicXor"
+            AtomicFunction.Min -> "atomicMin"
+            AtomicFunction.Max -> "atomicMax"
+            AtomicFunction.Exchange -> "atomicExchange"
+            AtomicFunction.CompSwap -> "atomicCompareExchangeWeak"
+        }
+        return "$wgslFunc($pointer, ${arguments.joinToString()})"
+    }
+
     override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
         BuiltinFunction.Ln -> "log"
         else -> super.getBuiltinFunctionName(function)

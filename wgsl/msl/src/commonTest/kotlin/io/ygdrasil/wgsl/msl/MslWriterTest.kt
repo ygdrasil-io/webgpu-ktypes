@@ -134,12 +134,12 @@ class MslWriterTest {
             )
         )
         
-        val moduleWithEp = module.copy(entryPoints = listOf(ep))
+        val moduleWithEp = module.copy(entryPoints = mutableListOf(ep))
         
         val code = MslModule.writeString(moduleWithEp)
         
         assertTrue(code.contains("[[vertex]]"))
-        assertTrue(code.contains("float4 vs_main("))
+        assertTrue(code.contains("vs_main_Output vs_main("))
         assertTrue(code.contains("uint vertex_index [[vertex_id]]"))
         assertTrue(code.contains("float4 loc_0 [[attribute(0)]]"))
         assertTrue(code.contains("constant float* global_0 [[buffer(1)]]"))
@@ -197,14 +197,14 @@ class MslWriterTest {
             name = "myTexture",
             storageClass = StorageClass.Handle,
             type = textureType,
-            binding = ResourceBinding(0, 0)
+            binding = Binding(0, 0)
         ))
         
         val sampHandle = module.globalVariables.append(GlobalVariable(
             name = "mySampler",
             storageClass = StorageClass.Handle,
             type = samplerType,
-            binding = ResourceBinding(0, 1)
+            binding = Binding(0, 1)
         ))
         
         val expressions = Arena<Expression>()
@@ -253,5 +253,98 @@ class MslWriterTest {
         assertTrue(code.contains("sampler global_1 [[sampler(1)]]"))
         assertTrue(code.contains("global_0.sample(global_1, float2(0.5f, 0.5f))"))
         assertTrue(code.contains("global_0.get_width(), global_0.get_height()"))
+    }
+
+    @Test
+    fun testAtomicsAndRelational() {
+        val module = Module()
+        val u32 = module.types.append(Type(TypeInner.Scalar(ScalarKind.Uint, 4)))
+        val ptrU32 = module.types.append(Type(TypeInner.Pointer(u32, AddressSpace.Storage)))
+        
+        val expressions = Arena<Expression>()
+        val ptrExpr = expressions.append(Expression(ExpressionKind.FunctionArgument(0)))
+        val valExpr = expressions.append(Expression(ExpressionKind.Literal(LiteralValue.Scalar(ScalarValue.U32(10)))))
+        
+        val atomicExpr = expressions.append(Expression(ExpressionKind.Atomic(
+            pointer = ptrExpr,
+            fun_ = AtomicFunction.Add,
+            arguments = listOf(valExpr)
+        )))
+        
+        val boolExpr = expressions.append(Expression(ExpressionKind.Literal(LiteralValue.Scalar(ScalarValue.Bool(true)))))
+        val relationalExpr = expressions.append(Expression(ExpressionKind.Relational(
+            fun_ = RelationalFunction.Any,
+            arguments = listOf(boolExpr)
+        )))
+        
+        val blocks = Arena<io.ygdrasil.wgsl.ir.Block>()
+        val body = blocks.append(io.ygdrasil.wgsl.ir.Block(listOf(
+            Statement.Return(atomicExpr),
+            Statement.Return(relationalExpr)
+        )))
+        
+        module.functions.append(
+            Function(
+                name = "atomic_test",
+                parameters = listOf(FunctionParameter("p", ptrU32)),
+                returnType = u32,
+                localVariables = Arena(),
+                expressions = expressions,
+                blocks = blocks,
+                body = body
+            )
+        )
+        
+        val code = MslModule.writeString(module)
+        assertTrue(code.contains("atomic_fetch_add_explicit(p, 10u, memory_order_relaxed)"))
+        assertTrue(code.contains("any(true)"))
+    }
+
+    @Test
+    fun testEntryPointWithStructs() {
+        val module = Module()
+        val f32 = module.types.append(Type(TypeInner.Scalar(ScalarKind.F32, 4)))
+        val vec4f = module.types.append(Type(TypeInner.Vector(VectorSize.Quad, f32)))
+        
+        val expressions = Arena<Expression>()
+        val posExpr = expressions.append(Expression(ExpressionKind.Literal(LiteralValue.Vector(listOf(
+            ScalarValue.F32(0.0f), ScalarValue.F32(0.0f), ScalarValue.F32(0.0f), ScalarValue.F32(1.0f)
+        )))))
+        
+        val blocks = Arena<io.ygdrasil.wgsl.ir.Block>()
+        val body = blocks.append(io.ygdrasil.wgsl.ir.Block(listOf(
+            Statement.Return(posExpr)
+        )))
+        
+        val funcHandle = module.functions.append(
+            Function(
+                name = "vs_main_impl",
+                parameters = emptyList(),
+                returnType = vec4f,
+                localVariables = Arena(),
+                expressions = expressions,
+                blocks = blocks,
+                body = body
+            )
+        )
+        
+        module.entryPoints.add(EntryPoint(
+            name = "vs_main",
+            stage = ShaderStage.Vertex,
+            function = funcHandle,
+            bindings = listOf(
+                BindingAttribute.Location(0),
+                BindingAttribute.Builtin(BuiltinValue.VertexIndex)
+            )
+        ))
+        
+        val code = MslModule.writeString(module)
+        assertTrue(code.contains("struct vs_main_Input {"))
+        assertTrue(code.contains("float4 loc_0 [[attribute(0)]];"))
+        assertTrue(code.contains("struct vs_main_Output {"))
+        assertTrue(code.contains("float4 position [[position]];"))
+        assertTrue(code.contains("vs_main_Output vs_main("))
+        assertTrue(code.contains("vs_main_Input in [[stage_in]]"))
+        assertTrue(code.contains("uint vertex_index [[vertex_id]]"))
     }
 }

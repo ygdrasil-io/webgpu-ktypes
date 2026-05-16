@@ -295,8 +295,29 @@ abstract class WriterBase<T : BackendOptions>(
                 val t = writeExpression(kind.texture)
                 writeTextureQuery(t, kind.query)
             }
+            is ExpressionKind.Atomic -> {
+                val p = writeExpression(kind.pointer)
+                val args = kind.arguments.map { writeExpression(it) }
+                writeAtomic(p, kind.fun_, args)
+            }
+            is ExpressionKind.Relational -> {
+                val args = kind.arguments.map { writeExpression(it) }
+                writeRelational(kind.fun_, args)
+            }
+            is ExpressionKind.Bitcast -> {
+                val e = writeExpression(kind.expr)
+                "as_type<${getTypeName(getExpressionType(handle).inner.let { module.types.append(Type(it)) })} >($e)" // Simplified
+            }
             else -> "/* unsupported expression: ${kind::class.simpleName} */"
         }
+    }
+
+    protected open fun writeAtomic(pointer: String, function: AtomicFunction, arguments: List<String>): String {
+        return "atomic_${function.name.lowercase()}($pointer, ${arguments.joinToString()})"
+    }
+
+    protected open fun writeRelational(function: RelationalFunction, arguments: List<String>): String {
+        return "${function.name.lowercase()}(${arguments.joinToString()})"
     }
 
     protected open fun writeSample(
@@ -320,8 +341,8 @@ abstract class WriterBase<T : BackendOptions>(
             module.globalExpressions[handle]
         }
         return when (val kind = expr.kind) {
-            is ExpressionKind.Literal -> when (kind.value) {
-                is LiteralValue.Scalar -> when (kind.value.value) {
+            is ExpressionKind.Literal -> when (val value = kind.value) {
+                is LiteralValue.Scalar -> when (val scalar = value.value) {
                     is ScalarValue.Bool -> Type(TypeInner.Scalar(ScalarKind.Bool, 1))
                     is ScalarValue.F32 -> Type(TypeInner.Scalar(ScalarKind.F32, 4))
                     is ScalarValue.U32 -> Type(TypeInner.Scalar(ScalarKind.U32, 4))
@@ -329,7 +350,7 @@ abstract class WriterBase<T : BackendOptions>(
                     else -> Type(TypeInner.Error)
                 }
                 is LiteralValue.Vector -> {
-                   val first = kind.components.first()
+                   val first = value.components.first()
                    val scalar = when(first) {
                        is ScalarValue.Bool -> Type(TypeInner.Scalar(ScalarKind.Bool, 1))
                        is ScalarValue.F32 -> Type(TypeInner.Scalar(ScalarKind.F32, 4))
@@ -338,7 +359,7 @@ abstract class WriterBase<T : BackendOptions>(
                        else -> Type(TypeInner.Error)
                    }
                    val scalarHandle = module.types.append(scalar)
-                   Type(TypeInner.Vector(VectorSize.fromInt(kind.components.size) ?: VectorSize.Quad, scalarHandle))
+                   Type(TypeInner.Vector(VectorSize.fromInt(value.components.size), scalarHandle))
                 }
                 else -> Type(TypeInner.Error)
             }

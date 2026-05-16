@@ -224,6 +224,36 @@ class HlslWriter(
         }
     }
 
+    override fun writeRelational(function: RelationalFunction, arguments: List<String>): String {
+        return when (function) {
+            RelationalFunction.Any -> "any(${arguments.joinToString()})"
+            RelationalFunction.All -> "all(${arguments.joinToString()})"
+            RelationalFunction.IsNan -> "isnan(${arguments.joinToString()})"
+            RelationalFunction.IsInf -> "isinf(${arguments.joinToString()})"
+            RelationalFunction.IsFinite -> "isfinite(${arguments.joinToString()})"
+            // HLSL doesn't have a direct isnormal, let's use a placeholder
+            RelationalFunction.IsNormal -> "/* isnormal unsupported */ true"
+            RelationalFunction.SignBit -> "signbit(${arguments.joinToString()})"
+        }
+    }
+
+    override fun writeAtomic(pointer: String, function: AtomicFunction, arguments: List<String>): String {
+        val hlslFunc = when (function) {
+            AtomicFunction.Add -> "InterlockedAdd"
+            AtomicFunction.Subtract -> "InterlockedAdd" // use negative
+            AtomicFunction.And -> "InterlockedAnd"
+            AtomicFunction.Or -> "InterlockedOr"
+            AtomicFunction.Xor -> "InterlockedXor"
+            AtomicFunction.Min -> "InterlockedMin"
+            AtomicFunction.Max -> "InterlockedMax"
+            AtomicFunction.Exchange -> "InterlockedExchange"
+            AtomicFunction.CompSwap -> "InterlockedCompareExchange"
+        }
+        // HLSL Interlocked functions are statements, not expressions. 
+        // This is a major difference with WGSL/MSL.
+        return "$hlslFunc($pointer, ${arguments.joinToString()}, /* old_value */)"
+    }
+
     override fun getBuiltinFunctionName(function: BuiltinFunction): String = when (function) {
         BuiltinFunction.Ln -> "log"
         BuiltinFunction.Mix -> "lerp"
