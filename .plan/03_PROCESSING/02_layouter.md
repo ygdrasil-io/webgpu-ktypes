@@ -6,7 +6,7 @@
 **Sous-Phase** : 3.2 - Layout Assignment  
 **Durée** : 2-3 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique - Calcul des offsets mémoire)  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété
+**Statut** : [ ] Non commencé | [ ] En cours | [x] Complété
 
 > **Référence Rust** : `/Users/chaos/RustroverProjects/wgpu/naga/src/proc/layouter.rs` (~300 lignes)
 
@@ -709,38 +709,38 @@ class LayouterTest {
 ## ✅ CHECKLIST D'IMPLÉMENTATION
 
 ### Structure des Fichiers
-- [ ] `Alignment.kt` - Classe Alignment avec toutes les opérations
-- [ ] `TypeLayout.kt` - Data class TypeLayout avec toStride()
-- [ ] `StructMemberLayout.kt` - Data class pour les offsets des membres
-- [ ] `Layouter.kt` - Classe principale avec update(), get(), clear()
-- [ ] `LayoutError.kt` - Toutes les erreurs de layout
+- [x] `Alignment.kt` - Classe Alignment avec toutes les opérations
+- [x] `TypeLayout.kt` - Data class TypeLayout avec toStride()
+- [x] `StructMemberLayout.kt` - Data class pour les offsets des membres
+- [x] `Layouter.kt` - Classe principale avec update(), get(), clear()
+- [x] `LayoutError.kt` - Toutes les erreurs de layout
 
 ### Fonctionnalités Layouter
-- [ ] Calcul de layout pour les types scalaires
-- [ ] Calcul de layout pour les types vectoriels
-- [ ] Calcul de layout pour les types matrices
-- [ ] Calcul de layout pour les types cooperative matrices
-- [ ] Calcul de layout pour les pointeurs
-- [ ] Calcul de layout pour les arrays
-- [ ] Calcul de layout pour les structs avec offsets membres
-- [ ] Calcul de layout pour les types Image/Sampler/AccelerationStructure
-- [ ] Gestion des dépendances circulaires
-- [ ] Mise à jour incrémentale (updateNew)
+- [x] Calcul de layout pour les types scalaires
+- [x] Calcul de layout pour les types vectoriels
+- [x] Calcul de layout pour les types matrices
+- [x] Calcul de layout pour les types cooperative matrices
+- [x] Calcul de layout pour les pointeurs
+- [x] Calcul de layout pour les arrays
+- [x] Calcul de layout pour les structs avec offsets membres
+- [x] Calcul de layout pour les types Image/Sampler/AccelerationStructure
+- [x] Gestion des dépendances circulaires
+- [x] Mise à jour incrémentale (updateNew)
 
 ### Tests
-- [ ] Tests pour Alignment (isAligned, roundUp, times, max)
-- [ ] Tests pour les types scalaires (i32, u32, f32, bool)
-- [ ] Tests pour les types vectoriels (vec2, vec3, vec4)
-- [ ] Tests pour les types matrices
-- [ ] Tests pour les structs simples
-- [ ] Tests pour les structs avec padding d'alignement
-- [ ] Tests pour les arrays (stride)
-- [ ] Tests pour les erreurs (TooLarge, InvalidType)
+- [x] Tests pour Alignment (isAligned, roundUp, times, max)
+- [x] Tests pour les types scalaires (i32, u32, f32, bool)
+- [x] Tests pour les types vectoriels (vec2, vec3, vec4)
+- [x] Tests pour les types matrices
+- [x] Tests pour les structs simples
+- [x] Tests pour les structs avec padding d'alignement
+- [x] Tests pour les arrays (stride)
+- [x] Tests pour les erreurs (TooLarge, InvalidType)
 
 ### Intégration
-- [ ] Utiliser Layouter dans Validator
-- [ ] Utiliser Layouter dans les backends (MSL, HLSL, GLSL)
-- [ ] Documenter l'API publique
+- [x] Utiliser Layouter dans Validator
+- [x] Utiliser Layouter dans les backends (MSL, HLSL, GLSL)
+- [x] Documenter l'API publique
 
 ---
 
@@ -756,14 +756,14 @@ class LayouterTest {
 
 | Tâche | Durée | Dépendances | Priorité |
 |-------|-------|-------------|----------|
-| Implémenter Alignment.kt | 2-4h | Aucune | ⭐⭐⭐⭐⭐ |
-| Implémenter TypeLayout.kt et StructMemberLayout.kt | 2h | Alignment | ⭐⭐⭐⭐⭐ |
-| Implémenter Layouter.kt (base) | 4-8h | TypeLayout | ⭐⭐⭐⭐⭐ |
-| Implémenter le calcul de layout par type | 8-12h | Layouter base | ⭐⭐⭐⭐⭐ |
-| Implémenter le layout des structs | 8-12h | Layouter base | ⭐⭐⭐⭐⭐ |
-| Implémenter LayoutError.kt | 2h | Layouter | ⭐⭐⭐⭐ |
-| Tests unitaires | 8-12h | Tout | ⭐⭐⭐⭐ |
-| Intégration avec Validator | 4h | Tout | ⭐⭐⭐ |
+| Implémenter Alignment.kt | 2-4h | Aucune | [x] |
+| Implémenter TypeLayout.kt et StructMemberLayout.kt | 2h | Alignment | [x] |
+| Implémenter Layouter.kt (base) | 4-8h | TypeLayout | [x] |
+| Implémenter le calcul de layout par type | 8-12h | Layouter base | [x] |
+| Implémenter le layout des structs | 8-12h | Layouter base | [x] |
+| Implémenter LayoutError.kt | 2h | Layouter | [x] |
+| Tests unitaires | 8-12h | Tout | [x] |
+| Intégration avec Validator | 4h | Tout | [x] |
 | **Total** | **40-64h (1-2 semaines)** | | |
 
 ---

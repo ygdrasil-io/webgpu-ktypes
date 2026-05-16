@@ -6,7 +6,7 @@
 **Sous-Phase** : 3.0 - Constant Evaluator  
 **Durée** : 2-3 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique - Évaluation à la compilation)  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété
+**Statut** : [ ] Non commencé | [ ] En cours | [x] Complété
 
 > **Référence Rust** : `/Users/chaos/RustroverProjects/wgpu/naga/src/proc/constant_evaluator.rs` (~3000 lignes)
 
@@ -1227,79 +1227,79 @@ if (evaluator.errors.isNotEmpty()) {
 ## ✅ CHECKLIST PHASE 3.0
 
 ### Structure ConstValue
-- [ ] `ConstValue` sealed class
-- [ ] `Scalar` avec tous les types scalaires
-- [ ] `Vector` avec composantes
-- [ ] `Matrix` avec colonnes
-- [ ] `Array` avec éléments
-- [ ] `Struct` avec membres
-- [ ] `Pointer` (optionnel)
-- [ ] `NotConst` sentinelle
-- [ ] `ScalarValue` sealed class
-- [ ] Toutes les variantes de ScalarValue
+- [x] `ConstValue` sealed class
+- [x] `Scalar` avec tous les types scalaires
+- [x] `Vector` avec composantes
+- [x] `Matrix` avec colonnes
+- [x] `Array` avec éléments
+- [x] `Struct` avec membres
+- [x] `Pointer` (optionnel)
+- [x] `NotConst` sentinelle
+- [x] `ScalarValue` sealed class
+- [x] Toutes les variantes de ScalarValue
 
 ### ConstantEvaluator
-- [ ] Classe principale `ConstantEvaluator`
-- [ ] `EvaluationContext`
-- [ ] `tryEvaluate()` - Évaluation avec retour optionnel
-- [ ] `evaluate()` - Évaluation avec exception
-- [ ] `evaluateModule()` - Évaluation complète d'un module
-- [ ] `evaluateFunction()` - Évaluation d'une fonction
-- [ ] `evaluateStatement()` - Évaluation d'une instruction
-- [ ] `evaluateExpression()` - Évaluation d'une expression
+- [x] Classe principale `ConstantEvaluator`
+- [x] `EvaluationContext`
+- [x] `tryEvaluate()` - Évaluation avec retour optionnel
+- [x] `evaluate()` - Évaluation avec exception
+- [x] `evaluateModule()` - Évaluation complète d'un module
+- [x] `evaluateFunction()` - Évaluation d'une fonction
+- [x] `evaluateStatement()` - Évaluation d'une instruction
+- [x] `evaluateExpression()` - Évaluation d'une expression
 
 ### Évaluation des Expressions
-- [ ] Literal
-- [ ] Access
-- [ ] AccessIndex
-- [ ] Splat
-- [ ] Unary (tous les opérateurs)
-- [ ] Binary (tous les opérateurs, scalaires et vecteurs)
-- [ ] Select
-- [ ] ArrayLength
-- [ ] As (cast)
-- [ ] GlobalVariable
-- [ ] LocalVariable
-- [ ] FunctionArgument
+- [x] Literal
+- [x] Access
+- [x] AccessIndex
+- [x] Splat
+- [x] Unary (tous les opérateurs)
+- [x] Binary (tous les opérateurs, scalaires et vecteurs)
+- [x] Select
+- [x] ArrayLength
+- [x] As (cast)
+- [x] GlobalVariable
+- [x] LocalVariable
+- [x] FunctionArgument
 
 ### Opérations supportées
-- [ ] Opérations arithmétiques (+, -, *, /, %)
-- [ ] Opérations logiques (&&, ||, !)
-- [ ] Opérations de comparaison (==, !=, <, >, <=, >=)
-- [ ] Opérations bits (&, |, ^, ~, <<, >>)
-- [ ] Casts entre types scalaires
-- [ ] Casts entre types vecteurs
-- [ ] Select (scalaire et vectoriel)
+- [x] Opérations arithmétiques (+, -, *, /, %)
+- [x] Opérations logiques (&&, ||, !)
+- [x] Opérations de comparaison (==, !=, <, >, <=, >=)
+- [x] Opérations bits (&, |, ^, ~, <<, >>)
+- [x] Casts entre types scalaires
+- [x] Casts entre types vecteurs
+- [x] Select (scalaire et vectoriel)
 
 ### Gestion des erreurs
-- [ ] Détection des divisions par zéro
-- [ ] Détection des modulo par zéro
-- [ ] Détection des index out of bounds
-- [ ] Détection des casts invalides
-- [ ] Messages d'erreur clairs avec spans
+- [x] Détection des divisions par zéro
+- [x] Détection des modulo par zéro
+- [x] Détection des index out of bounds
+- [x] Détection des casts invalides
+- [x] Messages d'erreur clairs avec spans
 
 ### Tests
-- [ ] `ConstantEvaluatorTest.kt`
-  - [ ] Littéraux simples
-  - [ ] Expressions arithmétiques
-  - [ ] Expressions logiques
-  - [ ] Expressions bits
-  - [ ] Comparaisons
-  - [ ] Casts
-  - [ ] Vecteurs
-  - [ ] Matrices
-  - [ ] Tableaux
-  - [ ] Select
-  - [ ] ArrayLength
-  - [ ] Splat
-  - [ ] Erreurs (division par zéro, etc.)
-  - [ ] Expressions non constantes
+- [x] `ConstantEvaluatorTest.kt`
+  - [x] Littéraux simples
+  - [x] Expressions arithmétiques
+  - [x] Expressions logiques
+  - [x] Expressions bits
+  - [x] Comparaisons
+  - [x] Casts
+  - [x] Vecteurs
+  - [x] Matrices
+  - [x] Tableaux
+  - [x] Select
+  - [x] ArrayLength
+  - [x] Splat
+  - [x] Erreurs (division par zéro, etc.)
+  - [x] Expressions non constantes
 
 ### Documentation
-- [ ] KDoc complet pour toutes les classes
-- [ ] KDoc complet pour toutes les méthodes
-- [ ] Exemples d'utilisation
-- [ ] Documentation des limitations
+- [x] KDoc complet pour toutes les classes
+- [x] KDoc complet pour toutes les méthodes
+- [x] Exemples d'utilisation
+- [x] Documentation des limitations
 
 ---
 
@@ -1307,23 +1307,23 @@ if (evaluator.errors.isNotEmpty()) {
 
 | Tâche | Durée | Dépendances | Statut |
 |-------|-------|-------------|--------|
-| Concevoir ConstValue | 1 jour | IR Structures | [ ] |
-| Implémenter ConstValue et ScalarValue | 2 jours | Conception | [ ] |
-| Implémenter ConstantEvaluator class | 2 jours | ConstValue | [ ] |
-| Implémenter evaluateExpression | 5 jours | Evaluator | [ ] |
-| Implémenter les opérateurs arithmétiques | 2 jours | evaluateExpression | [ ] |
-| Implémenter les opérateurs logiques | 1 jour | evaluateExpression | [ ] |
-| Implémenter les opérateurs bits | 1 jour | evaluateExpression | [ ] |
-| Implémenter les opérateurs de comparaison | 1 jour | evaluateExpression | [ ] |
-| Implémenter les casts | 2 jours | evaluateExpression | [ ] |
-| Implémenter les opérations vecteurs | 3 jours | evaluateExpression | [ ] |
-| Implémenter Select | 1 jour | evaluateExpression | [ ] |
-| Implémenter ArrayLength | 0.5 jour | evaluateExpression | [ ] |
-| Implémenter la gestion des erreurs | 1 jour | Tout | [ ] |
-| Intégrer avec le pipeline | 1 jour | Tout | [ ] |
-| Écrire les tests unitaires | 3 jours | Tout | [ ] |
-| Documentation complète | 1 jour | Tout | [ ] |
-| Validation manuelle | 2 jours | Tout | [ ] |
+| Concevoir ConstValue | 1 jour | IR Structures | [x] |
+| Implémenter ConstValue et ScalarValue | 2 jours | Conception | [x] |
+| Implémenter ConstantEvaluator class | 2 jours | ConstValue | [x] |
+| Implémenter evaluateExpression | 5 jours | Evaluator | [x] |
+| Implémenter les opérateurs arithmétiques | 2 jours | evaluateExpression | [x] |
+| Implémenter les opérateurs logiques | 1 jour | evaluateExpression | [x] |
+| Implémenter les opérateurs bits | 1 jour | evaluateExpression | [x] |
+| Implémenter les opérateurs de comparaison | 1 jour | evaluateExpression | [x] |
+| Implémenter les casts | 2 jours | evaluateExpression | [x] |
+| Implémenter les opérations vecteurs | 3 jours | evaluateExpression | [x] |
+| Implémenter Select | 1 jour | evaluateExpression | [x] |
+| Implémenter ArrayLength | 0.5 jour | evaluateExpression | [x] |
+| Implémenter la gestion des erreurs | 1 jour | Tout | [x] |
+| Intégrer avec le pipeline | 1 jour | Tout | [x] |
+| Écrire les tests unitaires | 3 jours | Tout | [x] |
+| Documentation complète | 1 jour | Tout | [x] |
+| Validation manuelle | 2 jours | Tout | [x] |
 
 **Total estimé** : **2-3 semaines** (1 developer)
 
@@ -1358,10 +1358,10 @@ if (evaluator.errors.isNotEmpty()) {
 
 ## 🔄 PROCHAINES ÉTAPES
 
-1. [ ] Finaliser la conception de ConstValue
-2. [ ] Implémenter ConstValue et ScalarValue
-3. [ ] Implémenter ConstantEvaluator
-4. [ ] Implémenter toutes les opérations
-5. [ ] Écrire les tests
-6. [ ] Valider avec des tests manuels
-7. [ ] Passer à `01_typifier.md` (typage)
+1. [x] Finaliser la conception de ConstValue
+2. [x] Implémenter ConstValue et ScalarValue
+3. [x] Implémenter ConstantEvaluator
+4. [x] Implémenter toutes les opérations
+5. [x] Écrire les tests
+6. [x] Valider avec des tests manuels
+7. [x] Passer à `01_typifier.md` (typage)
