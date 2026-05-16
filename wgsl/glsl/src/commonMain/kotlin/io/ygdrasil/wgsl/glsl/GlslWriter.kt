@@ -48,10 +48,56 @@ class GlslWriter(
     override fun writeFunctionSignature(func: Function, name: String) {
         val returnType = func.returnType?.let { getTypeName(it) } ?: "void"
         write("$returnType $name(")
+        func.parameters.forEachIndexed { i, param ->
+            if (i > 0) write(", ")
+            val typeName = getTypeName(param.type)
+            write("$typeName ${param.name}")
+        }
         write(")")
     }
 
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
         writeLine("// Entry point: ${ep.name}")
+        writeLine("void main() {")
+        indent {
+            val func = module.functions[ep.function]
+            writeBlock(func.body)
+        }
+        writeLine("}")
+    }
+
+    override fun getScalarTypeName(scalar: TypeInner.Scalar): String {
+        return when (scalar.kind) {
+            ScalarKind.Bool -> "bool"
+            ScalarKind.Sint -> "int"
+            ScalarKind.Uint -> "uint"
+            ScalarKind.F32 -> "float"
+            ScalarKind.F16 -> "float16_t"
+            ScalarKind.F64 -> "double"
+            else -> "void"
+        }
+    }
+
+    override fun getTypeName(handle: Handle<Type>): String {
+        val type = module.types[handle]
+        return when (val inner = type.inner) {
+            is TypeInner.Scalar -> getScalarTypeName(inner)
+            is TypeInner.Vector -> {
+                val prefix = when ((module.types[inner.scalar].inner as TypeInner.Scalar).kind) {
+                    ScalarKind.Uint -> "u"
+                    ScalarKind.Sint -> "i"
+                    ScalarKind.Bool -> "b"
+                    ScalarKind.F64 -> "d"
+                    else -> ""
+                }
+                "${prefix}vec${inner.size.ordinal + 2}"
+            }
+            is TypeInner.Matrix -> {
+                val prefix = if ((module.types[inner.scalar].inner as TypeInner.Scalar).kind == ScalarKind.F64) "d" else ""
+                "${prefix}mat${inner.columns.ordinal + 2}x${inner.rows.ordinal + 2}"
+            }
+            is TypeInner.Struct -> "Struct_${handle.index}"
+            else -> "void"
+        }
     }
 }

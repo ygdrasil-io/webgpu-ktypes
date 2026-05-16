@@ -48,10 +48,53 @@ class WgslWriter(
     override fun writeFunctionSignature(func: Function, name: String) {
         val returnType = func.returnType?.let { " -> ${getTypeName(it)}" } ?: ""
         write("fn $name(")
+        func.parameters.forEachIndexed { i, param ->
+            if (i > 0) write(", ")
+            val typeName = getTypeName(param.type)
+            write("${param.name}: $typeName")
+        }
         write(")$returnType")
     }
 
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
-        writeLine("// Entry point: ${ep.name}")
+        writeLine()
+        val stage = ep.stage.name.lowercase()
+        writeLine("@$stage")
+        val func = module.functions[ep.function]
+        writeFunctionSignature(func, ep.name)
+        writeLine(" {")
+        indent {
+            writeBlock(func.body)
+        }
+        writeLine("}")
+    }
+
+    override fun getScalarTypeName(scalar: TypeInner.Scalar): String {
+        return when (scalar.kind) {
+            ScalarKind.Bool -> "bool"
+            ScalarKind.Sint -> "i32"
+            ScalarKind.Uint -> "u32"
+            ScalarKind.F32 -> "f32"
+            ScalarKind.F16 -> "f16"
+            ScalarKind.F64 -> "f64"
+            else -> "/* unknown scalar */"
+        }
+    }
+
+    override fun getTypeName(handle: Handle<Type>): String {
+        val type = module.types[handle]
+        return when (val inner = type.inner) {
+            is TypeInner.Scalar -> getScalarTypeName(inner)
+            is TypeInner.Vector -> {
+                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                "vec${inner.size.ordinal + 2}<$scalarName>"
+            }
+            is TypeInner.Matrix -> {
+                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                "mat${inner.columns.ordinal + 2}x${inner.rows.ordinal + 2}<$scalarName>"
+            }
+            is TypeInner.Struct -> "Struct_${handle.index}"
+            else -> "/* unknown type */"
+        }
     }
 }

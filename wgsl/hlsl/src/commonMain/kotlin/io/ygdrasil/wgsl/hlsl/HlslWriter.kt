@@ -48,10 +48,51 @@ class HlslWriter(
     override fun writeFunctionSignature(func: Function, name: String) {
         val returnType = func.returnType?.let { getTypeName(it) } ?: "void"
         write("$returnType $name(")
+        func.parameters.forEachIndexed { i, param ->
+            if (i > 0) write(", ")
+            val typeName = getTypeName(param.type)
+            write("$typeName ${param.name}")
+        }
         write(")")
     }
 
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
         writeLine("// Entry point: ${ep.name}")
+        val func = module.functions[ep.function]
+        writeFunctionSignature(func, ep.name)
+        writeLine(" {")
+        indent {
+            writeBlock(func.body)
+        }
+        writeLine("}")
+    }
+
+    override fun getScalarTypeName(scalar: TypeInner.Scalar): String {
+        return when (scalar.kind) {
+            ScalarKind.Bool -> "bool"
+            ScalarKind.Sint -> "int"
+            ScalarKind.Uint -> "uint"
+            ScalarKind.F32 -> "float"
+            ScalarKind.F16 -> "half"
+            ScalarKind.F64 -> "double"
+            else -> "void"
+        }
+    }
+
+    override fun getTypeName(handle: Handle<Type>): String {
+        val type = module.types[handle]
+        return when (val inner = type.inner) {
+            is TypeInner.Scalar -> getScalarTypeName(inner)
+            is TypeInner.Vector -> {
+                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                "$scalarName${inner.size.ordinal + 2}"
+            }
+            is TypeInner.Matrix -> {
+                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                "$scalarName${inner.columns.ordinal + 2}x${inner.rows.ordinal + 2}"
+            }
+            is TypeInner.Struct -> "Struct_${handle.index}"
+            else -> "void"
+        }
     }
 }

@@ -20,6 +20,7 @@ abstract class WriterBase<T : BackendOptions>(
 ) {
 
     protected var indentLevel: Int = 0
+    protected var currentFunction: Function? = null
 
     /**
      * Génère le code complet pour le module.
@@ -83,6 +84,7 @@ abstract class WriterBase<T : BackendOptions>(
 
     protected open fun writeFunction(func: Function, handle: Handle<Function>) {
         val name = getFunctionName(handle)
+        currentFunction = func
         writeLine()
         writeFunctionSignature(func, name)
         writeLine(" {")
@@ -97,6 +99,7 @@ abstract class WriterBase<T : BackendOptions>(
             writeBlock(func.body)
         }
         writeLine("}")
+        currentFunction = null
     }
 
     protected abstract fun writeFunctionSignature(func: Function, name: String)
@@ -109,31 +112,197 @@ abstract class WriterBase<T : BackendOptions>(
 
     protected abstract fun writeEntryPoint(ep: EntryPoint, index: Int)
 
-    protected open fun writeBlock(handle: Handle<Block>) {
-        val block = module.functions.firstOrNull { it.body == handle }?.body // This is hacky, need better block access
-        // Actually Block is accessible via module.functions or ep.function
-        // But the IR stores Block in Handle<Block> which is not in an Arena in Module.
-        // Wait, where are Blocks stored?
-        // In Function.kt: val body: Handle<Block>
-        // But there's no Arena<Block> in Module.
-        // Let's check Module.kt again.
+    protected open fun writeBlock(handle: Handle<io.ygdrasil.wgsl.ir.Block>) {
+        val blocks = currentFunction?.blocks ?: return
+        val block = blocks[handle]
+        block.statements.forEach { writeStatement(it) }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    protected open fun writeStatement(stmt: Statement) {
+        when (stmt) {
+            is Statement.Nop -> {}
+            is Statement.Block -> {
+                writeLine("{")
+                indent { writeBlock(stmt.block as Handle<io.ygdrasil.wgsl.ir.Block>) }
+                writeLine("}")
+            }
+            is Statement.Declare -> {
+                val variable = currentFunction!!.localVariables[stmt.variable]
+                val name = getLocalVariableName(stmt.variable)
+                val typeName = getTypeName(variable.type)
+                writeLine("$typeName $name;")
+            }
+            is Statement.Init -> {
+                val variable = currentFunction!!.localVariables[stmt.variable]
+                val name = getLocalVariableName(stmt.variable)
+                val typeName = getTypeName(variable.type)
+                val init = variable.init?.let { writeExpression(it) } ?: "/* error: no init */"
+                writeLine("$typeName $name = $init;")
+            }
+            is Statement.Assign -> {
+                val pointer = writeExpression(stmt.pointer)
+                val value = writeExpression(stmt.value)
+                writeLine("$pointer = $value;")
+            }
+            is Statement.Emit -> {
+                // In some backends, Emit might be a no-op or might trigger something
+                // For now, we skip it as it's IR metadata for expression ranges
+            }
+            is Statement.If -> {
+                val cond = writeExpression(stmt.condition)
+                writeLine("if ($cond) {")
+                indent { writeBlock(stmt.accept as Handle<io.ygdrasil.wgsl.ir.Block>) }
+                if (stmt.reject != null) {
+                    writeLine("} else {")
+                    indent { writeBlock(stmt.reject as Handle<io.ygdrasil.wgsl.ir.Block>) }
+                }
+                writeLine("}")
+            }
+            is Statement.Switch -> {
+                val selector = writeExpression(stmt.selector)
+                writeLine("switch ($selector) {")
+                indent {
+                    stmt.cases.forEach { case ->
+                        case.selector.let { sel ->
+                            when (sel) {
+                                is CaseSelector.Value -> writeLine("case ${writeScalarValue(sel.value)}:")
+                                is CaseSelector.Default -> writeLine("default:")
+                            }
+                        }
+                        indent {
+                            writeBlock(case.body)
+                            writeLine("break;")
+                        }
+                    }
+                }
+                writeLine("}")
+            }
+            is Statement.Loop -> {
+                writeLine("while (true) {")
+                indent {
+                    writeBlock(stmt.body as Handle<io.ygdrasil.wgsl.ir.Block>)
+                    if (stmt.continuing != null) {
+                        // Continuing block is tricky in C-like languages
+                        // For now we just write it at the end
+                        writeBlock(stmt.continuing as Handle<io.ygdrasil.wgsl.ir.Block>)
+                    }
+                }
+                writeLine("}")
+            }
+            is Statement.Return -> {
+                val value = stmt.value?.let { " ${writeExpression(it)}" } ?: ""
+                writeLine("return$value;")
+            }
+            is Statement.Break -> writeLine("break;")
+            is Statement.Continue -> writeLine("continue;")
+            is Statement.Kill -> writeLine("kill;")
+            is Statement.Discard -> writeLine("discard;")
+        }
     }
 
     // Expressions
     protected open fun writeExpression(handle: Handle<Expression>): String {
-        // We need to know which Arena to use (global or function local)
-        // This suggests WriterBase needs more context about current function
-        return "/* expression ${handle.index} */"
+        val expr = if (currentFunction != null) {
+            currentFunction!!.expressions[handle]
+        } else {
+            module.globalExpressions[handle]
+        }
+
+        return when (val kind = expr.kind) {
+            is ExpressionKind.Literal -> writeLiteralValue(kind.value)
+            is ExpressionKind.GlobalVar -> getGlobalVariableName(kind.handle)
+            is ExpressionKind.LocalVar -> getLocalVariableName(kind.handle)
+            is ExpressionKind.FunctionArgument -> "arg_${kind.index}"
+            is ExpressionKind.ConstantExpr -> getConstantName(kind.handle)
+            is ExpressionKind.Binary -> {
+                val left = writeExpression(kind.left)
+                val right = writeExpression(kind.right)
+                "($left ${getBinaryOperator(kind.operator)} $right)"
+            }
+            is ExpressionKind.Unary -> {
+                val e = writeExpression(kind.expr)
+                "${getUnaryOperator(kind.operator)}($e)"
+            }
+            is ExpressionKind.Call -> {
+                val name = getFunctionName(kind.function)
+                val args = kind.arguments.joinToString { writeExpression(it) }
+                "$name($args)"
+            }
+            is ExpressionKind.BuiltinCall -> {
+                val args = kind.arguments.joinToString { writeExpression(it) }
+                "${kind.function.name.lowercase()}($args)"
+            }
+            is ExpressionKind.AccessIndex -> {
+                val e = writeExpression(kind.expr)
+                "$e[${kind.index}]"
+            }
+            is ExpressionKind.Access -> {
+                val e = writeExpression(kind.expr)
+                val type = getExpressionType(kind.expr)
+                if (type.inner is TypeInner.Struct) {
+                    val member = type.inner.members[kind.index]
+                    "$e.${member.name}"
+                } else {
+                    "$e[${kind.index}]"
+                }
+            }
+            is ExpressionKind.Swizzle -> {
+                val e = writeExpression(kind.vector)
+                val components = kind.pattern.joinToString("") { "xyzw"[it].toString() }
+                "$e.$components"
+            }
+            is ExpressionKind.Splat -> {
+                val e = writeExpression(kind.value)
+                "/* splat */ $e"
+            }
+            is ExpressionKind.Load -> writeExpression(kind.pointer)
+            is ExpressionKind.Store -> {
+                val p = writeExpression(kind.pointer)
+                val v = writeExpression(kind.value)
+                "($p = $v)"
+            }
+            else -> "/* unsupported expression: ${kind::class.simpleName} */"
+        }
     }
 
-    protected open fun writeConstantInner(inner: ConstantInner): String {
-        return when (inner) {
-            is ConstantInner.Scalar -> writeScalarValue(inner.value)
-            is ConstantInner.Vector -> "vec(${inner.components.joinToString { writeScalarValue(it) }})"
-            is ConstantInner.Matrix -> "mat(...)"
-            is ConstantInner.Zero -> "/* zero */"
-            is ConstantInner.Composite -> "/* composite */"
-            is ConstantInner.Expression -> writeExpression(inner.expr)
+    protected open fun getExpressionType(handle: Handle<Expression>): Type {
+        // This is a simplification, we should use Typifier
+        return Type(TypeInner.Error)
+    }
+
+    protected open fun getBinaryOperator(op: BinaryOperator): String = when (op) {
+        BinaryOperator.Add -> "+"
+        BinaryOperator.Subtract -> "-"
+        BinaryOperator.Multiply -> "*"
+        BinaryOperator.Divide -> "/"
+        BinaryOperator.Modulo -> "%"
+        BinaryOperator.Equal -> "=="
+        BinaryOperator.NotEqual -> "!="
+        BinaryOperator.Less -> "<"
+        BinaryOperator.LessOrEqual -> "<="
+        BinaryOperator.Greater -> ">"
+        BinaryOperator.GreaterOrEqual -> ">="
+        BinaryOperator.BitAnd -> "&"
+        BinaryOperator.BitOr -> "|"
+        BinaryOperator.BitXor -> "^"
+        BinaryOperator.LogicalAnd -> "&&"
+        BinaryOperator.LogicalOr -> "||"
+        BinaryOperator.ShiftLeft -> "<<"
+        BinaryOperator.ShiftRight -> ">>"
+    }
+
+    protected open fun getUnaryOperator(op: UnaryOperator): String = when (op) {
+        UnaryOperator.Negate -> "-"
+        UnaryOperator.Not -> "!"
+        UnaryOperator.BitNot -> "~"
+    }
+
+    protected open fun writeLiteralValue(value: LiteralValue): String {
+        return when (value) {
+            is LiteralValue.Scalar -> writeScalarValue(value.value)
+            is LiteralValue.Vector -> "vec(${value.components.joinToString { writeScalarValue(it) }})"
+            is LiteralValue.Matrix -> "mat(...)"
         }
     }
 
@@ -199,6 +368,17 @@ abstract class WriterBase<T : BackendOptions>(
     protected fun writeLine(line: String = "") {
         repeat(indentLevel) { output.append(options.indent) }
         output.append(line).append(options.newline)
+    }
+
+    protected open fun writeConstantInner(inner: ConstantInner): String {
+        return when (inner) {
+            is ConstantInner.Scalar -> writeScalarValue(inner.value)
+            is ConstantInner.Vector -> "vec(${inner.components.joinToString { writeScalarValue(it) }})"
+            is ConstantInner.Matrix -> "mat(...)"
+            is ConstantInner.Zero -> "/* zero */"
+            is ConstantInner.Composite -> "/* composite */"
+            is ConstantInner.Expression -> writeExpression(inner.expr)
+        }
     }
 
     protected fun write(text: String) {

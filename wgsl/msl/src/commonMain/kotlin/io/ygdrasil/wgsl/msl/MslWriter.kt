@@ -49,11 +49,67 @@ class MslWriter(
     override fun writeFunctionSignature(func: Function, name: String) {
         val returnType = func.returnType?.let { getTypeName(it) } ?: "void"
         write("$returnType $name(")
-        // Arguments...
+        func.parameters.forEachIndexed { i, param ->
+            if (i > 0) write(", ")
+            val typeName = getTypeName(param.type)
+            write("$typeName ${param.name}")
+            // MSL attributes for params would go here
+        }
         write(")")
     }
 
     override fun writeEntryPoint(ep: EntryPoint, index: Int) {
-        writeLine("// Entry point: ${ep.name}")
+        val stageAttr = when (ep.stage) {
+            ShaderStage.Vertex -> "[[vertex]]"
+            ShaderStage.Fragment -> "[[fragment]]"
+            ShaderStage.Compute -> "[[kernel]]"
+        }
+        writeLine()
+        writeLine("$stageAttr")
+        val func = module.functions[ep.function]
+        writeFunctionSignature(func, ep.name)
+        writeLine(" {")
+        indent {
+            writeBlock(func.body)
+        }
+        writeLine("}")
+    }
+
+    override fun getScalarTypeName(scalar: TypeInner.Scalar): String {
+        return when (scalar.kind) {
+            ScalarKind.Bool -> "bool"
+            ScalarKind.Sint -> if (scalar.width == 4) "int" else "char" // simplification
+            ScalarKind.Uint -> if (scalar.width == 4) "uint" else "uchar"
+            ScalarKind.F32 -> "float"
+            ScalarKind.F16 -> "half"
+            ScalarKind.F64 -> "double"
+            else -> "/* unknown scalar */ void"
+        }
+    }
+
+    override fun getTypeName(handle: Handle<Type>): String {
+        val type = module.types[handle]
+        return when (val inner = type.inner) {
+            is TypeInner.Scalar -> getScalarTypeName(inner)
+            is TypeInner.Vector -> {
+                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                "$scalarName${inner.size.ordinal + 2}"
+            }
+            is TypeInner.Matrix -> {
+                val scalarName = getScalarTypeName(module.types[inner.scalar].inner as TypeInner.Scalar)
+                "$scalarName${inner.columns.ordinal + 2}x${inner.rows.ordinal + 2}"
+            }
+            is TypeInner.Struct -> "Struct_${handle.index}"
+            is TypeInner.Pointer -> {
+                val baseName = getTypeName(inner.base)
+                val spaceName = when (inner.addressSpace) {
+                    AddressSpace.Uniform -> "constant"
+                    AddressSpace.Storage -> "device"
+                    else -> "thread"
+                }
+                "$spaceName $baseName*"
+            }
+            else -> "/* unknown type */ void"
+        }
     }
 }

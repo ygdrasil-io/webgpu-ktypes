@@ -4,7 +4,7 @@
 **Phase** : 4 - Backends  
 **Durée totale** : 10-14 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique)  
-**Statut Global** : [ ] 0% | [ ] 25% | [ ] 50% | [ ] 75% | [ ] 100%
+**Statut Global** : [ ] 0% | [X] 25% | [ ] 50% | [ ] 75% | [ ] 100%
 
 ---
 
@@ -12,13 +12,13 @@
 
 | Sous-Phase | Durée | Fichiers | Statut | Progression |
 |------------|-------|----------|--------|-------------|
-| **4.0 - Architecture Commune** | 1-2 semaines | 7 fichiers | [ ] | 0% |
-| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [ ] | 0% |
-| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [ ] | 0% |
-| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [ ] | 0% |
-| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [ ] | 0% |
+| **4.0 - Architecture Commune** | 1-2 semaines | 7 fichiers | [X] | 100% |
+| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [/] | 20% |
+| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [/] | 10% |
+| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [/] | 10% |
+| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [/] | 10% |
 
-**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : 0%**
+**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : ~25%**
 
 ---
 
@@ -28,85 +28,85 @@
 
 **Fichier** : `00_backend-architecture.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Structure des Fichiers
-- [ ] `BackendOptions.kt` - Options communes à tous les backends
-- [ ] `BackendError.kt` - Classes d'erreur pour les backends
-- [ ] `BindingMap.kt` - Mapping des bindings WGSL → Backend
-- [ ] `PipelineConstants.kt` - Constantes de pipeline
-- [ ] `WriterBase.kt` - Classe de base pour tous les writers
-- [ ] `BackendWriter.kt` - Interface commune BackendWriter
-- [ ] `BackendRegistry.kt` - Registre des backends disponibles
+- [X] `BackendOptions.kt` - Options communes à tous les backends
+- [X] `BackendError.kt` - Classes d'erreur pour les backends
+- [X] `BindingMap.kt` - Mapping des bindings WGSL → Backend
+- [X] `PipelineConstants.kt` - Constantes de pipeline
+- [X] `WriterBase.kt` - Classe de base pour tous les writers
+- [X] `BackendWriter.kt` - Interface commune BackendWriter
+- [X] `BackendRegistry.kt` - Registre des backends disponibles
 
 #### BackendOptions
-- [ ] Classe abstraite BackendOptions
-- [ ] Propriétés communes (validationFlags, capabilities, shaderStages, indent, newline, version, languageName, fileExtension)
-- [ ] MslOptions
-- [ ] HlslOptions
-- [ ] GlslOptions
-- [ ] WgslOptions
-- [ ] ShaderModel (enum)
-- [ ] GlslProfile (enum)
-- [ ] BackendType (enum)
+- [X] Classe abstraite BackendOptions
+- [X] Propriétés communes (validationFlags, capabilities, shaderStages, indent, newline, version, languageName, fileExtension)
+- [X] MslOptions
+- [X] HlslOptions
+- [X] GlslOptions
+- [X] WgslOptions
+- [X] ShaderModel (enum)
+- [X] GlslProfile (enum)
+- [X] BackendType (enum)
 
 #### BackendError
-- [ ] Classe sealed BackendError
-- [ ] UnsupportedFeature
-- [ ] UnsupportedType
-- [ ] UnsupportedExpression
-- [ ] UnsupportedStatement
-- [ ] TypeMismatch
-- [ ] InternalError
-- [ ] Erreurs spécifiques par backend (MslError, HlslError, GlslError, WgslError)
+- [X] Classe sealed BackendError
+- [X] UnsupportedFeature
+- [X] UnsupportedType
+- [X] UnsupportedExpression
+- [X] UnsupportedStatement
+- [X] TypeMismatch
+- [X] InternalError
+- [X] Erreurs spécifiques par backend (MslError, HlslError, GlslError, WgslError)
 
 #### BindingMap
-- [ ] Classe BindingMap
-- [ ] Classe BindTarget (buffer, texture, sampler, mutable)
-- [ ] Méthodes insert(), get(), contains(), clear()
-- [ ] Factory methods pour chaque backend
+- [X] Classe BindingMap
+- [X] Classe BindTarget (buffer, texture, sampler, mutable)
+- [X] Méthodes insert(), get(), contains(), clear()
+- [X] Factory methods pour chaque backend
 
 #### PipelineConstants
-- [ ] Typealias PipelineConstants = Map<String, Double>
-- [ ] Utilitaires (empty, single, of, toBackendString)
+- [X] Typealias PipelineConstants = Map<String, Double>
+- [X] Utilitaires (empty, single, of, toBackendString)
 
 #### WriterBase
-- [ ] Classe abstraite WriterBase<T : BackendOptions>
-- [ ] Propriétés (output, module, moduleInfo, options, namer, layouter)
-- [ ] État (indentLevel, currentFunction, currentEntryPoint)
-- [ ] Méthode write()
-- [ ] Méthodes writeHeader() (abstrait), writePreamble(), writeTypes()
-- [ ] Méthodes writeConstants(), writeGlobalVariables(), writeFunctions()
-- [ ] Méthodes writeEntryPoints(), writeEntryPoint() (abstrait)
-- [ ] Méthodes writeStatement(), writeBlock(), writeExpression()
-- [ ] Méthodes getTypeName() pour tous les types
-- [ ] Méthodes utilitaires (indent, writeLine, write)
-- [ ] Toutes les méthodes writeXxx() abstraites pour expressions (15+)
-- [ ] Toutes les méthodes writeXxx() abstraites pour statements (15+)
+- [X] Classe abstraite WriterBase<T : BackendOptions>
+- [X] Propriétés (output, module, moduleInfo, options, namer, layouter)
+- [X] État (indentLevel, currentFunction, currentEntryPoint)
+- [X] Méthode write()
+- [X] Méthodes writeHeader() (abstrait), writePreamble(), writeTypes()
+- [X] Méthodes writeConstants(), writeGlobalVariables(), writeFunctions()
+- [X] Méthodes writeEntryPoints(), writeEntryPoint() (abstrait)
+- [X] Méthodes writeStatement(), writeBlock(), writeExpression()
+- [X] Méthodes getTypeName() pour tous les types
+- [X] Méthodes utilitaires (indent, writeLine, write)
+- [X] Toutes les méthodes writeXxx() abstraites pour expressions (15+)
+- [X] Toutes les méthodes writeXxx() abstraites pour statements (15+)
 
 #### BackendWriter
-- [ ] Interface BackendWriter<T : BackendOptions>
-- [ ] Méthode write(module, moduleInfo)
-- [ ] Méthode withOptions()
-- [ ] Méthode canHandle()
+- [X] Interface BackendWriter<T : BackendOptions>
+- [X] Méthode write(module, moduleInfo)
+- [X] Méthode withOptions()
+- [X] Méthode canHandle()
 
 #### BackendRegistry
-- [ ] Classe BackendRegistry
-- [ ] Interface BackendFactory
-- [ ] Méthodes register(), get(), getWithOptions()
-- [ ] Méthodes listBackendNames(), hasBackend()
-- [ ] Méthode write(module, moduleInfo, backendName)
-- [ ] Enregistrement des backends par défaut (MSL, HLSL, GLSL, WGSL)
+- [X] Classe BackendRegistry
+- [X] Interface BackendFactory
+- [X] Méthodes register(), get(), getWithOptions()
+- [X] Méthodes listBackendNames(), hasBackend()
+- [X] Méthode write(module, moduleInfo, backendName)
+- [X] Enregistrement des backends par défaut (MSL, HLSL, GLSL, WGSL)
 
 #### Tests
-- [ ] BackendOptionsTest.kt
-- [ ] BackendRegistryTest.kt
-- [ ] BindingMapTest.kt
+- [X] BackendOptionsTest.kt
+- [X] BackendRegistryTest.kt
+- [X] BindingMapTest.kt
 
 #### Intégration
-- [ ] Utiliser WriterBase dans tous les backends
-- [ ] Utiliser BackendRegistry dans l'API publique
-- [ ] Documenter l'API publique
+- [X] Utiliser WriterBase dans tous les backends
+- [X] Utiliser BackendRegistry dans l'API publique
+- [X] Documenter l'API publique
 
 ---
 
