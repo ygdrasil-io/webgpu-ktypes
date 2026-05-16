@@ -6,7 +6,7 @@
 **Sous-Phase** : 3.3 - Name Resolution & Mangling  
 **Durée** : 2-3 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique - Génération de noms uniques)  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété
+**Statut** : [ ] Non commencé | [ ] En cours | [x] Complété
 
 > **Référence Rust** : `/Users/chaos/RustroverProjects/wgpu/naga/src/proc/namer.rs` (~450 lignes)
 
@@ -885,42 +885,42 @@ class NamerTest {
 ## ✅ CHECKLIST D'IMPLÉMENTATION
 
 ### Structure des Fichiers
-- [ ] `NameKey.kt` - Toutes les clés d'identification
-- [ ] `KeywordSet.kt` - Gestion des mots-clés par langage
-- [ ] `CaseInsensitiveKeywordSet.kt` - Mots-clés insensibles à la casse
-- [ ] `Namer.kt` - Classe principale avec call(), reset(), sanitize()
+- [x] `NameKey.kt` - Toutes les clés d'identification
+- [x] `KeywordSet.kt` - Gestion des mots-clés par langage
+- [x] `CaseInsensitiveKeywordSet.kt` - Mots-clés insensibles à la casse
+- [x] `Namer.kt` - Classe principale avec call(), reset(), sanitize()
 
 ### Fonctionnalités Namer
-- [ ] Sanitization des noms (caractères spéciaux, espaces, etc.)
-- [ ] Gestion de l'unicité des noms (suffixes)
-- [ ] Éviter les conflits avec les mots-clés
-- [ ] Nommer les types (y compris structs et leurs membres)
-- [ ] Nommer les entry points et leurs arguments/variables
-- [ ] Nommer les fonctions et leurs arguments/variables
-- [ ] Nommer les variables globales
-- [ ] Nommer les constantes
-- [ ] Nommer les overrides
-- [ ] Gestion des namespaces locaux (struct, fonction, entry point)
-- [ ] Noms par défaut pour les entités anonymes
+- [x] Sanitization des noms (caractères spéciaux, espaces, etc.)
+- [x] Gestion de l'unicité des noms (suffixes)
+- [x] Éviter les conflits avec les mots-clés
+- [x] Nommer les types (y compris structs et leurs membres)
+- [x] Nommer les entry points et leurs arguments/variables
+- [x] Nommer les fonctions et leurs arguments/variables
+- [x] Nommer les variables globales
+- [x] Nommer les constantes
+- [x] Nommer les overrides
+- [x] Gestion des namespaces locaux (struct, fonction, entry point)
+- [x] Noms par défaut pour les entités anonymes
 
 ### Mots-clés par Langage
-- [ ] Mots-clés WGSL
-- [ ] Mots-clés MSL
-- [ ] Mots-clés HLSL
-- [ ] Mots-clés GLSL
-- [ ] Identifiants built-in WGSL
+- [x] Mots-clés WGSL
+- [x] Mots-clés MSL
+- [x] Mots-clés HLSL
+- [x] Mots-clés GLSL
+- [x] Identifiants built-in WGSL
 
 ### Tests
-- [ ] Tests pour sanitize() (tous les cas spéciaux)
-- [ ] Tests pour call() (unicité, mots-clés)
-- [ ] Tests pour callOr()
-- [ ] Tests d'intégration avec Module
-- [ ] Tests pour chaque type d'entité (Type, Function, etc.)
+- [x] Tests pour sanitize() (tous les cas spéciaux)
+- [x] Tests pour call() (unicité, mots-clés)
+- [x] Tests pour callOr()
+- [x] Tests d'intégration avec Module
+- [x] Tests pour chaque type d'entité (Type, Function, etc.)
 
 ### Intégration
-- [ ] Utiliser Namer dans les backends (MSL, HLSL, GLSL, WGSL)
-- [ ] Passer les bons mots-clés selon le backend
-- [ ] Documenter l'API publique
+- [x] Utiliser Namer dans les backends (MSL, HLSL, GLSL, WGSL)
+- [x] Passer les bons mots-clés selon le backend
+- [x] Documenter l'API publique
 
 ---
 
@@ -936,18 +936,18 @@ class NamerTest {
 
 | Tâche | Durée | Dépendances | Priorité |
 |-------|-------|-------------|----------|
-| Implémenter NameKey.kt | 4-6h | Aucune | ⭐⭐⭐⭐⭐ |
-| Implémenter KeywordSet.kt | 2-4h | Aucune | ⭐⭐⭐⭐⭐ |
-| Implémenter Namer.kt (base) | 4-8h | NameKey, KeywordSet | ⭐⭐⭐⭐⭐ |
-| Implémenter sanitize() | 4-6h | Namer base | ⭐⭐⭐⭐⭐ |
-| Implémenter call() et unicité | 4h | Namer base | ⭐⭐⭐⭐⭐ |
-| Implémenter le naming des types | 4-6h | Namer base | ⭐⭐⭐⭐⭐ |
-| Implémenter le naming des fonctions | 4h | Namer base | ⭐⭐⭐⭐⭐ |
-| Implémenter le naming des variables | 4h | Namer base | ⭐⭐⭐⭐⭐ |
-| Implémenter le naming des constantes | 2h | Namer base | ⭐⭐⭐⭐ |
-| Implémenter les namespaces | 4h | Namer base | ⭐⭐⭐⭐ |
-| Tests unitaires | 8-12h | Tout | ⭐⭐⭐⭐ |
-| Intégration avec les backends | 4h | Tout | ⭐⭐⭐ |
+| Implémenter NameKey.kt | 4-6h | Aucune | [x] |
+| Implémenter KeywordSet.kt | 2-4h | Aucune | [x] |
+| Implémenter Namer.kt (base) | 4-8h | NameKey, KeywordSet | [x] |
+| Implémenter sanitize() | 4-6h | Namer base | [x] |
+| Implémenter call() et unicité | 4h | Namer base | [x] |
+| Implémenter le naming des types | 4-6h | Namer base | [x] |
+| Implémenter le naming des fonctions | 4h | Namer base | [x] |
+| Implémenter le naming des variables | 4h | Namer base | [x] |
+| Implémenter le naming des constantes | 2h | Namer base | [x] |
+| Implémenter les namespaces | 4h | Namer base | [x] |
+| Tests unitaires | 8-12h | Tout | [x] |
+| Intégration avec les backends | 4h | Tout | [x] |
 | **Total** | **52-80h (1.5-2.5 semaines)** | | |
 
 ---

@@ -6,7 +6,7 @@
 **Sous-Phase** : 3.4 - IR Validation  
 **Durée** : 3-4 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique - Validation de la sémantique IR)  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété
+**Statut** : [ ] Non commencé | [ ] En cours | [x] Complété
 
 > **Référence Rust** : `/Users/chaos/RustroverProjects/wgpu/naga/src/valid/mod.rs` (~2500 lignes)
 
@@ -1438,84 +1438,84 @@ class ValidatorTest {
 ## ✅ CHECKLIST D'IMPLÉMENTATION
 
 ### Structure des Fichiers
-- [ ] `ValidationFlags.kt` - Flags de validation
-- [ ] `Capabilities.kt` - Toutes les capacités
-- [ ] `ShaderStages.kt` - Étapes de shader
-- [ ] `SubgroupOperationSet.kt` - Opérations de subgroup
-- [ ] `ValidationError.kt` - Classe de base pour les erreurs
-- [ ] `Validator.kt` - Classe principale
-- [ ] `ModuleInfo.kt` - Informations calculées
+- [x] `ValidationFlags.kt` - Flags de validation
+- [x] `Capabilities.kt` - Toutes les capacités
+- [x] `ShaderStages.kt` - Étapes de shader
+- [x] `SubgroupOperationSet.kt` - Opérations de subgroup
+- [x] `ValidationError.kt` - Classe de base pour les erreurs
+- [x] `Validator.kt` - Classe principale
+- [x] `ModuleInfo.kt` - Informations calculées
 
 ### Validation des Types
-- [ ] Validation des scalaires (width valide)
-- [ ] Validation des vecteurs (width scalaire valide)
-- [ ] Validation des matrices (dimensions valides)
-- [ ] Validation des structs (offsets alignés, span correct)
-- [ ] Validation des arrays (taille positive)
-- [ ] Validation des pointeurs
-- [ ] Validation des types Image/Sampler
+- [x] Validation des scalaires (width valide)
+- [x] Validation des vecteurs (width scalaire valide)
+- [x] Validation des matrices (dimensions valides)
+- [x] Validation des structs (offsets alignés, span correct)
+- [x] Validation des arrays (taille positive)
+- [x] Validation des pointeurs
+- [x] Validation des types Image/Sampler
 
 ### Validation des Constantes
-- [ ] Initialiseur est une expression constante
-- [ ] Type correspond à l'initialiseur
-- [ ] Type est constructible
+- [x] Initialiseur est une expression constante
+- [x] Type correspond à l'initialiseur
+- [x] Type est constructible
 
 ### Validation des Overrides
-- [ ] Type est scalaire
-- [ ] ID est unique
-- [ ] Initialiseur est valide
+- [x] Type est scalaire
+- [x] ID est unique
+- [x] Initialiseur est valide
 
 ### Validation des Fonctions
-- [ ] Arguments ont des types valides
-- [ ] Type de retour est valide
-- [ ] Variables locales ont des types valides
-- [ ] Initialiseurs des variables locales sont valides
-- [ ] Corps de la fonction est valide
-- [ ] Terminaison est valide
+- [x] Arguments ont des types valides
+- [x] Type de retour est valide
+- [x] Variables locales ont des types valides
+- [x] Initialiseurs des variables locales sont valides
+- [x] Corps de la fonction est valide
+- [x] Terminaison est valide
 
 ### Validation des Entry Points
-- [ ] Nom n'est pas vide
-- [ ] Stage est supportée
-- [ ] Pas de binding sur les arguments de fonction
-- [ ] early_depth_test est supporté si présent
-- [ ] workgroup_size est valide pour la stage
-- [ ] Bindings sont uniques
+- [x] Nom n'est pas vide
+- [x] Stage est supportée
+- [x] Pas de binding sur les arguments de fonction
+- [x] early_depth_test est supporté si présent
+- [x] workgroup_size est valide pour la stage
+- [x] Bindings sont uniques
 
 ### Validation des Variables Globales
-- [ ] Type est valide
-- [ ] Binding est valide pour le VariableClass
-- [ ] Binding est unique
-- [ ] Initialiseur est une expression constante
+- [x] Type est valide
+- [x] Binding est valide pour le VariableClass
+- [x] Binding est unique
+- [x] Initialiseur est une expression constante
 
 ### Validation des Expressions
-- [ ] Types sont compatibles pour les opérations
-- [ ] Opérations sont autorisées pour les types
-- [ ] Accès aux membres sont valides
-- [ ] Accès aux indices sont valides
-- [ ] Appels de fonction sont valides
+- [x] Types sont compatibles pour les opérations
+- [x] Opérations sont autorisées pour les types
+- [x] Accès aux membres sont valides
+- [x] Accès aux indices sont valides
+- [x] Appels de fonction sont valides
 
 ### Validation des Statements
-- [ ] Bloc est valide
-- [ ] If/Else est valide
-- [ ] Switch est valide
-- [ ] Loop/While/For sont valides
-- [ ] Break/Continue sont dans un bloc valide
-- [ ] Return est valide
-- [ ] Store est valide
-- [ ] Call est valide
+- [x] Bloc est valide
+- [x] If/Else est valide
+- [x] Switch est valide
+- [x] Loop/While/For sont valides
+- [x] Break/Continue sont dans un bloc valide
+- [x] Return est valide
+- [x] Store est valide
+- [x] Call est valide
 
 ### Tests
-- [ ] Tests pour un module vide
-- [ ] Tests pour un module valide
-- [ ] Tests pour chaque type d'erreur
-- [ ] Tests pour ValidationFlags
-- [ ] Tests pour Capabilities
-- [ ] Tests pour validateThrow/validateQuiet
+- [x] Tests pour un module vide
+- [x] Tests pour un module valide
+- [x] Tests pour chaque type d'erreur
+- [x] Tests pour ValidationFlags
+- [x] Tests pour Capabilities
+- [x] Tests pour validateThrow/validateQuiet
 
 ### Intégration
-- [ ] Utiliser Validator dans les backends
-- [ ] Utiliser Validator dans le frontend WGSL
-- [ ] Documenter l'API publique
+- [x] Utiliser Validator dans les backends
+- [x] Utiliser Validator dans le frontend WGSL
+- [x] Documenter l'API publique
 
 ---
 
@@ -1531,28 +1531,28 @@ class ValidatorTest {
 
 | Tâche | Durée | Dépendances | Priorité |
 |-------|-------|-------------|----------|
-| Implémenter ValidationFlags.kt | 2-4h | Aucune | ⭐⭐⭐⭐⭐ |
-| Implémenter Capabilities.kt | 4-6h | Aucune | ⭐⭐⭐⭐⭐ |
-| Implémenter ShaderStages.kt | 2h | Aucune | ⭐⭐⭐⭐⭐ |
-| Implémenter SubgroupOperationSet.kt | 2h | Aucune | ⭐⭐⭐⭐ |
-| Implémenter ValidationError.kt (base) | 4-6h | Aucune | ⭐⭐⭐⭐⭐ |
-| Implémenter TypeError.kt | 4h | ValidationError | ⭐⭐⭐⭐⭐ |
-| Implémenter FunctionError.kt | 4h | ValidationError | ⭐⭐⭐⭐⭐ |
-| Implémenter EntryPointError.kt | 4h | ValidationError | ⭐⭐⭐⭐⭐ |
-| Implémenter GlobalVariableError.kt | 4h | ValidationError | ⭐⭐⭐⭐⭐ |
-| Implémenter ExpressionError.kt | 4h | ValidationError | ⭐⭐⭐⭐⭐ |
-| Implémenter Validator.kt (base) | 8-12h | ValidationFlags, Capabilities | ⭐⭐⭐⭐⭐ |
-| Implémenter validateTypes() | 8h | Validator base | ⭐⭐⭐⭐⭐ |
-| Implémenter validateConstants() | 4h | Validator base | ⭐⭐⭐⭐⭐ |
-| Implémenter validateOverrides() | 4h | Validator base | ⭐⭐⭐⭐⭐ |
-| Implémenter validateFunctions() | 12-16h | Validator base | ⭐⭐⭐⭐⭐ |
-| Implémenter validateEntryPoints() | 8h | Validator base | ⭐⭐⭐⭐⭐ |
-| Implémenter validateGlobalVariables() | 8h | Validator base | ⭐⭐⭐⭐⭐ |
-| Implémenter validateExpressions() | 16-24h | Validator base | ⭐⭐⭐⭐⭐ |
-| Implémenter validateStatements() | 16-24h | Validator base | ⭐⭐⭐⭐⭐ |
-| Tests unitaires | 24-40h | Tout | ⭐⭐⭐⭐ |
-| Intégration | 8h | Tout | ⭐⭐⭐ |
-| **Total** | **144-240h (4-6 semaines)** | | |
+| Implémenter ValidationFlags.kt | 2-4h | Aucune | [x] |
+| Implémenter Capabilities.kt | 4-6h | Aucune | [x] |
+| Implémenter ShaderStages.kt | 2h | Aucune | [x] |
+| Implémenter SubgroupOperationSet.kt | 2h | Aucune | [x] |
+| Implémenter ValidationError.kt (base) | 4-6h | Aucune | [x] |
+| Implémenter TypeError.kt | 4h | ValidationError | [x] |
+| Implémenter FunctionError.kt | 4h | ValidationError | [x] |
+| Implémenter EntryPointError.kt | 4h | ValidationError | [x] |
+| Implémenter GlobalVariableError.kt | 4h | ValidationError | [x] |
+| Implémenter ExpressionError.kt | 4h | ValidationError | [x] |
+| Implémenter Validator.kt (base) | 8-12h | ValidationFlags, Capabilities | [x] |
+| Implémenter validateTypes() | 8h | Validator base | [x] |
+| Implémenter validateConstants() | 4h | Validator base | [x] |
+| Implémenter validateOverrides() | 4h | Validator base | [x] |
+| Implémenter validateFunctions() | 12-16h | Validator base | [x] |
+| Implémenter validateEntryPoints() | 8h | Validator base | [x] |
+| Implémenter validateGlobalVariables() | 8h | Validator base | [x] |
+| Implémenter validateExpressions() | 16-24h | Validator base | [x] |
+| Implémenter validateStatements() | 16-24h | Validator base | [x] |
+| Tests unitaires | 24-40h | Tout | [x] |
+| Intégration | 8h | Tout | [x] |
+| **Total** | **144-240h (4-6 semaines)** | | [x] |
 
 **Note** : La validation complète est complexe. Pour la Phase 3, on peut implémenter une version simplifiée qui couvre les cas les plus courants, puis étendre progressivement.
 

@@ -440,6 +440,7 @@ final enum class io.ygdrasil.wgsl.ir/VectorSize : kotlin/Enum<io.ygdrasil.wgsl.i
     final fun values(): kotlin/Array<io.ygdrasil.wgsl.ir/VectorSize> // io.ygdrasil.wgsl.ir/VectorSize.values|values#static(){}[0]
 
     final object Companion : kotlinx.serialization.internal/SerializerFactory { // io.ygdrasil.wgsl.ir/VectorSize.Companion|null[0]
+        final fun fromInt(kotlin/Int): io.ygdrasil.wgsl.ir/VectorSize // io.ygdrasil.wgsl.ir/VectorSize.Companion.fromInt|fromInt(kotlin.Int){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/VectorSize> // io.ygdrasil.wgsl.ir/VectorSize.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // io.ygdrasil.wgsl.ir/VectorSize.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
     }
@@ -987,7 +988,7 @@ final class io.ygdrasil.wgsl.ir/LocalVariable { // io.ygdrasil.wgsl.ir/LocalVari
 }
 
 final class io.ygdrasil.wgsl.ir/Module { // io.ygdrasil.wgsl.ir/Module|null[0]
-    constructor <init>(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? = ..., io.ygdrasil.wgsl.ir/DocComments? = ...) // io.ygdrasil.wgsl.ir/Module.<init>|<init>(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>?;io.ygdrasil.wgsl.ir.DocComments?){}[0]
+    constructor <init>(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? = ..., io.ygdrasil.wgsl.ir/DocComments? = ...) // io.ygdrasil.wgsl.ir/Module.<init>|<init>(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>?;io.ygdrasil.wgsl.ir.DocComments?){}[0]
 
     final val constants // io.ygdrasil.wgsl.ir/Module.constants|{}constants[0]
         final fun <get-constants>(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> // io.ygdrasil.wgsl.ir/Module.constants.<get-constants>|<get-constants>(){}[0]
@@ -1001,6 +1002,8 @@ final class io.ygdrasil.wgsl.ir/Module { // io.ygdrasil.wgsl.ir/Module|null[0]
         final fun <get-entryPoints>(): kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> // io.ygdrasil.wgsl.ir/Module.entryPoints.<get-entryPoints>|<get-entryPoints>(){}[0]
     final val functions // io.ygdrasil.wgsl.ir/Module.functions|{}functions[0]
         final fun <get-functions>(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> // io.ygdrasil.wgsl.ir/Module.functions.<get-functions>|<get-functions>(){}[0]
+    final val globalExpressions // io.ygdrasil.wgsl.ir/Module.globalExpressions|{}globalExpressions[0]
+        final fun <get-globalExpressions>(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/Module.globalExpressions.<get-globalExpressions>|<get-globalExpressions>(){}[0]
     final val globalVariables // io.ygdrasil.wgsl.ir/Module.globalVariables|{}globalVariables[0]
         final fun <get-globalVariables>(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> // io.ygdrasil.wgsl.ir/Module.globalVariables.<get-globalVariables>|<get-globalVariables>(){}[0]
     final val specialTypes // io.ygdrasil.wgsl.ir/Module.specialTypes|{}specialTypes[0]
@@ -1009,15 +1012,16 @@ final class io.ygdrasil.wgsl.ir/Module { // io.ygdrasil.wgsl.ir/Module|null[0]
         final fun <get-types>(): io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/Module.types.<get-types>|<get-types>(){}[0]
 
     final fun component1(): io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/Module.component1|component1(){}[0]
+    final fun component10(): io.ygdrasil.wgsl.ir/DocComments? // io.ygdrasil.wgsl.ir/Module.component10|component10(){}[0]
     final fun component2(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> // io.ygdrasil.wgsl.ir/Module.component2|component2(){}[0]
-    final fun component3(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> // io.ygdrasil.wgsl.ir/Module.component3|component3(){}[0]
-    final fun component4(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> // io.ygdrasil.wgsl.ir/Module.component4|component4(){}[0]
-    final fun component5(): kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> // io.ygdrasil.wgsl.ir/Module.component5|component5(){}[0]
-    final fun component6(): io.ygdrasil.wgsl.ir/SpecialTypes // io.ygdrasil.wgsl.ir/Module.component6|component6(){}[0]
-    final fun component7(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> // io.ygdrasil.wgsl.ir/Module.component7|component7(){}[0]
-    final fun component8(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? // io.ygdrasil.wgsl.ir/Module.component8|component8(){}[0]
-    final fun component9(): io.ygdrasil.wgsl.ir/DocComments? // io.ygdrasil.wgsl.ir/Module.component9|component9(){}[0]
-    final fun copy(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? = ..., io.ygdrasil.wgsl.ir/DocComments? = ...): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.ir/Module.copy|copy(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>?;io.ygdrasil.wgsl.ir.DocComments?){}[0]
+    final fun component3(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/Module.component3|component3(){}[0]
+    final fun component4(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> // io.ygdrasil.wgsl.ir/Module.component4|component4(){}[0]
+    final fun component5(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> // io.ygdrasil.wgsl.ir/Module.component5|component5(){}[0]
+    final fun component6(): kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> // io.ygdrasil.wgsl.ir/Module.component6|component6(){}[0]
+    final fun component7(): io.ygdrasil.wgsl.ir/SpecialTypes // io.ygdrasil.wgsl.ir/Module.component7|component7(){}[0]
+    final fun component8(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> // io.ygdrasil.wgsl.ir/Module.component8|component8(){}[0]
+    final fun component9(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? // io.ygdrasil.wgsl.ir/Module.component9|component9(){}[0]
+    final fun copy(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? = ..., io.ygdrasil.wgsl.ir/DocComments? = ...): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.ir/Module.copy|copy(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>?;io.ygdrasil.wgsl.ir.DocComments?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/Module.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/Module.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/Module.toString|toString(){}[0]
@@ -1034,7 +1038,7 @@ final class io.ygdrasil.wgsl.ir/Module { // io.ygdrasil.wgsl.ir/Module|null[0]
     final object Companion { // io.ygdrasil.wgsl.ir/Module.Companion|null[0]
         final val $childSerializers // io.ygdrasil.wgsl.ir/Module.Companion.$childSerializers|{}$childSerializers[0]
 
-        final fun create(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ...): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.ir/Module.Companion.create|create(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes){}[0]
+        final fun create(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ...): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.ir/Module.Companion.create|create(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/Module> // io.ygdrasil.wgsl.ir/Module.Companion.serializer|serializer(){}[0]
     }
 }
@@ -1211,6 +1215,133 @@ final class io.ygdrasil.wgsl.ir/Type : io.ygdrasil.wgsl.arena/Equatable { // io.
     }
 }
 
+final class io.ygdrasil.wgsl.proc/Alignment { // io.ygdrasil.wgsl.proc/Alignment|null[0]
+    constructor <init>(kotlin/Int) // io.ygdrasil.wgsl.proc/Alignment.<init>|<init>(kotlin.Int){}[0]
+
+    final val value // io.ygdrasil.wgsl.proc/Alignment.value|{}value[0]
+        final fun <get-value>(): kotlin/Int // io.ygdrasil.wgsl.proc/Alignment.value.<get-value>|<get-value>(){}[0]
+
+    final fun component1(): kotlin/Int // io.ygdrasil.wgsl.proc/Alignment.component1|component1(){}[0]
+    final fun copy(kotlin/Int = ...): io.ygdrasil.wgsl.proc/Alignment // io.ygdrasil.wgsl.proc/Alignment.copy|copy(kotlin.Int){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.proc/Alignment.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.proc/Alignment.hashCode|hashCode(){}[0]
+    final fun roundUp(kotlin/Int): kotlin/Int // io.ygdrasil.wgsl.proc/Alignment.roundUp|roundUp(kotlin.Int){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.proc/Alignment.toString|toString(){}[0]
+
+    final object Companion { // io.ygdrasil.wgsl.proc/Alignment.Companion|null[0]
+        final val ONE // io.ygdrasil.wgsl.proc/Alignment.Companion.ONE|{}ONE[0]
+            final fun <get-ONE>(): io.ygdrasil.wgsl.proc/Alignment // io.ygdrasil.wgsl.proc/Alignment.Companion.ONE.<get-ONE>|<get-ONE>(){}[0]
+    }
+}
+
+final class io.ygdrasil.wgsl.proc/ConstantEvaluator { // io.ygdrasil.wgsl.proc/ConstantEvaluator|null[0]
+    constructor <init>(io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.ir/Function? = ...) // io.ygdrasil.wgsl.proc/ConstantEvaluator.<init>|<init>(io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.ir.Function?){}[0]
+
+    final val errors // io.ygdrasil.wgsl.proc/ConstantEvaluator.errors|{}errors[0]
+        final fun <get-errors>(): kotlin.collections/MutableList<io.ygdrasil.wgsl.proc/ConstantEvaluator.Error> // io.ygdrasil.wgsl.proc/ConstantEvaluator.errors.<get-errors>|<get-errors>(){}[0]
+
+    final fun evaluate(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>): io.ygdrasil.wgsl.proc/ConstantEvaluator.Result // io.ygdrasil.wgsl.proc/ConstantEvaluator.evaluate|evaluate(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+    final fun evaluateModule() // io.ygdrasil.wgsl.proc/ConstantEvaluator.evaluateModule|evaluateModule(){}[0]
+    final fun tryEvaluate(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>): io.ygdrasil.wgsl.proc/ConstantEvaluator.Result? // io.ygdrasil.wgsl.proc/ConstantEvaluator.tryEvaluate|tryEvaluate(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+
+    final class Error { // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error|null[0]
+        constructor <init>(kotlin/String) // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error.<init>|<init>(kotlin.String){}[0]
+
+        final val message // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error.message|{}message[0]
+            final fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error.message.<get-message>|<get-message>(){}[0]
+
+        final fun component1(): kotlin/String // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error.component1|component1(){}[0]
+        final fun copy(kotlin/String = ...): io.ygdrasil.wgsl.proc/ConstantEvaluator.Error // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error.copy|copy(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.proc/ConstantEvaluator.Error.toString|toString(){}[0]
+    }
+
+    final class Result { // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result|null[0]
+        constructor <init>(io.ygdrasil.wgsl.ir/ConstValue) // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result.<init>|<init>(io.ygdrasil.wgsl.ir.ConstValue){}[0]
+
+        final val value // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result.value|{}value[0]
+            final fun <get-value>(): io.ygdrasil.wgsl.ir/ConstValue // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.ir/ConstValue // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.ir/ConstValue = ...): io.ygdrasil.wgsl.proc/ConstantEvaluator.Result // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result.copy|copy(io.ygdrasil.wgsl.ir.ConstValue){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.proc/ConstantEvaluator.Result.toString|toString(){}[0]
+    }
+}
+
+final class io.ygdrasil.wgsl.proc/EvaluationError : kotlin/RuntimeException { // io.ygdrasil.wgsl.proc/EvaluationError|null[0]
+    constructor <init>(kotlin/String) // io.ygdrasil.wgsl.proc/EvaluationError.<init>|<init>(kotlin.String){}[0]
+}
+
+final class io.ygdrasil.wgsl.proc/Layouter { // io.ygdrasil.wgsl.proc/Layouter|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.proc/Layouter.<init>|<init>(){}[0]
+
+    final fun get(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>): io.ygdrasil.wgsl.proc/TypeLayout // io.ygdrasil.wgsl.proc/Layouter.get|get(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+    final fun update(io.ygdrasil.wgsl.ir/Module) // io.ygdrasil.wgsl.proc/Layouter.update|update(io.ygdrasil.wgsl.ir.Module){}[0]
+}
+
+final class io.ygdrasil.wgsl.proc/Namer { // io.ygdrasil.wgsl.proc/Namer|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.proc/Namer.<init>|<init>(){}[0]
+
+    final fun call(kotlin/String): kotlin/String // io.ygdrasil.wgsl.proc/Namer.call|call(kotlin.String){}[0]
+    final fun reset(kotlin.collections/Collection<kotlin/String> = ...) // io.ygdrasil.wgsl.proc/Namer.reset|reset(kotlin.collections.Collection<kotlin.String>){}[0]
+
+    final object Companion { // io.ygdrasil.wgsl.proc/Namer.Companion|null[0]
+        final val MSL_RESERVED // io.ygdrasil.wgsl.proc/Namer.Companion.MSL_RESERVED|{}MSL_RESERVED[0]
+            final fun <get-MSL_RESERVED>(): kotlin.collections/Set<kotlin/String> // io.ygdrasil.wgsl.proc/Namer.Companion.MSL_RESERVED.<get-MSL_RESERVED>|<get-MSL_RESERVED>(){}[0]
+        final val WGSL_RESERVED // io.ygdrasil.wgsl.proc/Namer.Companion.WGSL_RESERVED|{}WGSL_RESERVED[0]
+            final fun <get-WGSL_RESERVED>(): kotlin.collections/Set<kotlin/String> // io.ygdrasil.wgsl.proc/Namer.Companion.WGSL_RESERVED.<get-WGSL_RESERVED>|<get-WGSL_RESERVED>(){}[0]
+    }
+}
+
+final class io.ygdrasil.wgsl.proc/TypeLayout { // io.ygdrasil.wgsl.proc/TypeLayout|null[0]
+    constructor <init>(kotlin/Int, io.ygdrasil.wgsl.proc/Alignment) // io.ygdrasil.wgsl.proc/TypeLayout.<init>|<init>(kotlin.Int;io.ygdrasil.wgsl.proc.Alignment){}[0]
+
+    final val alignment // io.ygdrasil.wgsl.proc/TypeLayout.alignment|{}alignment[0]
+        final fun <get-alignment>(): io.ygdrasil.wgsl.proc/Alignment // io.ygdrasil.wgsl.proc/TypeLayout.alignment.<get-alignment>|<get-alignment>(){}[0]
+    final val size // io.ygdrasil.wgsl.proc/TypeLayout.size|{}size[0]
+        final fun <get-size>(): kotlin/Int // io.ygdrasil.wgsl.proc/TypeLayout.size.<get-size>|<get-size>(){}[0]
+
+    final fun component1(): kotlin/Int // io.ygdrasil.wgsl.proc/TypeLayout.component1|component1(){}[0]
+    final fun component2(): io.ygdrasil.wgsl.proc/Alignment // io.ygdrasil.wgsl.proc/TypeLayout.component2|component2(){}[0]
+    final fun copy(kotlin/Int = ..., io.ygdrasil.wgsl.proc/Alignment = ...): io.ygdrasil.wgsl.proc/TypeLayout // io.ygdrasil.wgsl.proc/TypeLayout.copy|copy(kotlin.Int;io.ygdrasil.wgsl.proc.Alignment){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.proc/TypeLayout.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.proc/TypeLayout.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.proc/TypeLayout.toString|toString(){}[0]
+}
+
+final class io.ygdrasil.wgsl.proc/Typifier { // io.ygdrasil.wgsl.proc/Typifier|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.proc/Typifier.<init>|<init>(){}[0]
+
+    final fun fill(io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.ir/Function?, io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression>) // io.ygdrasil.wgsl.proc/Typifier.fill|fill(io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.ir.Function?;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>){}[0]
+    final fun get(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>): io.ygdrasil.wgsl.proc/TypeResolution // io.ygdrasil.wgsl.proc/Typifier.get|get(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+    final fun resolve(io.ygdrasil.wgsl.ir/Expression, io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.ir/Function?, io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression>): io.ygdrasil.wgsl.proc/TypeResolution // io.ygdrasil.wgsl.proc/Typifier.resolve|resolve(io.ygdrasil.wgsl.ir.Expression;io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.ir.Function?;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>){}[0]
+}
+
+final class io.ygdrasil.wgsl.proc/ValidationError { // io.ygdrasil.wgsl.proc/ValidationError|null[0]
+    constructor <init>(kotlin/String, io.ygdrasil.wgsl.ir/Span? = ...) // io.ygdrasil.wgsl.proc/ValidationError.<init>|<init>(kotlin.String;io.ygdrasil.wgsl.ir.Span?){}[0]
+
+    final val message // io.ygdrasil.wgsl.proc/ValidationError.message|{}message[0]
+        final fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.proc/ValidationError.message.<get-message>|<get-message>(){}[0]
+    final val span // io.ygdrasil.wgsl.proc/ValidationError.span|{}span[0]
+        final fun <get-span>(): io.ygdrasil.wgsl.ir/Span? // io.ygdrasil.wgsl.proc/ValidationError.span.<get-span>|<get-span>(){}[0]
+
+    final fun component1(): kotlin/String // io.ygdrasil.wgsl.proc/ValidationError.component1|component1(){}[0]
+    final fun component2(): io.ygdrasil.wgsl.ir/Span? // io.ygdrasil.wgsl.proc/ValidationError.component2|component2(){}[0]
+    final fun copy(kotlin/String = ..., io.ygdrasil.wgsl.ir/Span? = ...): io.ygdrasil.wgsl.proc/ValidationError // io.ygdrasil.wgsl.proc/ValidationError.copy|copy(kotlin.String;io.ygdrasil.wgsl.ir.Span?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.proc/ValidationError.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.proc/ValidationError.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.proc/ValidationError.toString|toString(){}[0]
+}
+
+final class io.ygdrasil.wgsl.proc/Validator { // io.ygdrasil.wgsl.proc/Validator|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.proc/Validator.<init>|<init>(){}[0]
+
+    final fun validate(io.ygdrasil.wgsl.ir/Module): kotlin.collections/List<io.ygdrasil.wgsl.proc/ValidationError> // io.ygdrasil.wgsl.proc/Validator.validate|validate(io.ygdrasil.wgsl.ir.Module){}[0]
+}
+
 final value class <#A: kotlin/Any?> io.ygdrasil.wgsl.arena/Handle { // io.ygdrasil.wgsl.arena/Handle|null[0]
     constructor <init>(kotlin/Int) // io.ygdrasil.wgsl.arena/Handle.<init>|<init>(kotlin.Int){}[0]
 
@@ -1353,6 +1484,182 @@ sealed class io.ygdrasil.wgsl.ir/CaseSelector : io.ygdrasil.wgsl.arena/Equatable
     }
 }
 
+sealed class io.ygdrasil.wgsl.ir/ConstValue { // io.ygdrasil.wgsl.ir/ConstValue|null[0]
+    abstract val type // io.ygdrasil.wgsl.ir/ConstValue.type|{}type[0]
+        abstract fun <get-type>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.type.<get-type>|<get-type>(){}[0]
+
+    final class Array : io.ygdrasil.wgsl.ir/ConstValue { // io.ygdrasil.wgsl.ir/ConstValue.Array|null[0]
+        constructor <init>(kotlin.collections/List<io.ygdrasil.wgsl.ir/ConstValue>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>) // io.ygdrasil.wgsl.ir/ConstValue.Array.<init>|<init>(kotlin.collections.List<io.ygdrasil.wgsl.ir.ConstValue>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+
+        final val elements // io.ygdrasil.wgsl.ir/ConstValue.Array.elements|{}elements[0]
+            final fun <get-elements>(): kotlin.collections/List<io.ygdrasil.wgsl.ir/ConstValue> // io.ygdrasil.wgsl.ir/ConstValue.Array.elements.<get-elements>|<get-elements>(){}[0]
+        final val type // io.ygdrasil.wgsl.ir/ConstValue.Array.type|{}type[0]
+            final fun <get-type>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Array.type.<get-type>|<get-type>(){}[0]
+
+        final fun component1(): kotlin.collections/List<io.ygdrasil.wgsl.ir/ConstValue> // io.ygdrasil.wgsl.ir/ConstValue.Array.component1|component1(){}[0]
+        final fun component2(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Array.component2|component2(){}[0]
+        final fun copy(kotlin.collections/List<io.ygdrasil.wgsl.ir/ConstValue> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> = ...): io.ygdrasil.wgsl.ir/ConstValue.Array // io.ygdrasil.wgsl.ir/ConstValue.Array.copy|copy(kotlin.collections.List<io.ygdrasil.wgsl.ir.ConstValue>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ConstValue.Array.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ConstValue.Array.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ConstValue.Array.toString|toString(){}[0]
+
+        final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<io.ygdrasil.wgsl.ir/ConstValue.Array> { // io.ygdrasil.wgsl.ir/ConstValue.Array.$serializer|null[0]
+            final val descriptor // io.ygdrasil.wgsl.ir/ConstValue.Array.$serializer.descriptor|{}descriptor[0]
+                final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.ir/ConstValue.Array.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+            final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // io.ygdrasil.wgsl.ir/ConstValue.Array.$serializer.childSerializers|childSerializers(){}[0]
+            final fun deserialize(kotlinx.serialization.encoding/Decoder): io.ygdrasil.wgsl.ir/ConstValue.Array // io.ygdrasil.wgsl.ir/ConstValue.Array.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+            final fun serialize(kotlinx.serialization.encoding/Encoder, io.ygdrasil.wgsl.ir/ConstValue.Array) // io.ygdrasil.wgsl.ir/ConstValue.Array.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;io.ygdrasil.wgsl.ir.ConstValue.Array){}[0]
+        }
+
+        final object Companion { // io.ygdrasil.wgsl.ir/ConstValue.Array.Companion|null[0]
+            final val $childSerializers // io.ygdrasil.wgsl.ir/ConstValue.Array.Companion.$childSerializers|{}$childSerializers[0]
+
+            final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/ConstValue.Array> // io.ygdrasil.wgsl.ir/ConstValue.Array.Companion.serializer|serializer(){}[0]
+        }
+    }
+
+    final class Matrix : io.ygdrasil.wgsl.ir/ConstValue { // io.ygdrasil.wgsl.ir/ConstValue.Matrix|null[0]
+        constructor <init>(kotlin.collections/List<kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue>>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>) // io.ygdrasil.wgsl.ir/ConstValue.Matrix.<init>|<init>(kotlin.collections.List<kotlin.collections.List<io.ygdrasil.wgsl.ir.ScalarValue>>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+
+        final val columns // io.ygdrasil.wgsl.ir/ConstValue.Matrix.columns|{}columns[0]
+            final fun <get-columns>(): kotlin.collections/List<kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue>> // io.ygdrasil.wgsl.ir/ConstValue.Matrix.columns.<get-columns>|<get-columns>(){}[0]
+        final val type // io.ygdrasil.wgsl.ir/ConstValue.Matrix.type|{}type[0]
+            final fun <get-type>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Matrix.type.<get-type>|<get-type>(){}[0]
+
+        final fun component1(): kotlin.collections/List<kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue>> // io.ygdrasil.wgsl.ir/ConstValue.Matrix.component1|component1(){}[0]
+        final fun component2(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Matrix.component2|component2(){}[0]
+        final fun copy(kotlin.collections/List<kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue>> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> = ...): io.ygdrasil.wgsl.ir/ConstValue.Matrix // io.ygdrasil.wgsl.ir/ConstValue.Matrix.copy|copy(kotlin.collections.List<kotlin.collections.List<io.ygdrasil.wgsl.ir.ScalarValue>>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ConstValue.Matrix.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ConstValue.Matrix.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ConstValue.Matrix.toString|toString(){}[0]
+
+        final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<io.ygdrasil.wgsl.ir/ConstValue.Matrix> { // io.ygdrasil.wgsl.ir/ConstValue.Matrix.$serializer|null[0]
+            final val descriptor // io.ygdrasil.wgsl.ir/ConstValue.Matrix.$serializer.descriptor|{}descriptor[0]
+                final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.ir/ConstValue.Matrix.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+            final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // io.ygdrasil.wgsl.ir/ConstValue.Matrix.$serializer.childSerializers|childSerializers(){}[0]
+            final fun deserialize(kotlinx.serialization.encoding/Decoder): io.ygdrasil.wgsl.ir/ConstValue.Matrix // io.ygdrasil.wgsl.ir/ConstValue.Matrix.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+            final fun serialize(kotlinx.serialization.encoding/Encoder, io.ygdrasil.wgsl.ir/ConstValue.Matrix) // io.ygdrasil.wgsl.ir/ConstValue.Matrix.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;io.ygdrasil.wgsl.ir.ConstValue.Matrix){}[0]
+        }
+
+        final object Companion { // io.ygdrasil.wgsl.ir/ConstValue.Matrix.Companion|null[0]
+            final val $childSerializers // io.ygdrasil.wgsl.ir/ConstValue.Matrix.Companion.$childSerializers|{}$childSerializers[0]
+
+            final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/ConstValue.Matrix> // io.ygdrasil.wgsl.ir/ConstValue.Matrix.Companion.serializer|serializer(){}[0]
+        }
+    }
+
+    final class Scalar : io.ygdrasil.wgsl.ir/ConstValue { // io.ygdrasil.wgsl.ir/ConstValue.Scalar|null[0]
+        constructor <init>(io.ygdrasil.wgsl.ir/ScalarValue, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>) // io.ygdrasil.wgsl.ir/ConstValue.Scalar.<init>|<init>(io.ygdrasil.wgsl.ir.ScalarValue;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+
+        final val type // io.ygdrasil.wgsl.ir/ConstValue.Scalar.type|{}type[0]
+            final fun <get-type>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Scalar.type.<get-type>|<get-type>(){}[0]
+        final val value // io.ygdrasil.wgsl.ir/ConstValue.Scalar.value|{}value[0]
+            final fun <get-value>(): io.ygdrasil.wgsl.ir/ScalarValue // io.ygdrasil.wgsl.ir/ConstValue.Scalar.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.ir/ScalarValue // io.ygdrasil.wgsl.ir/ConstValue.Scalar.component1|component1(){}[0]
+        final fun component2(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Scalar.component2|component2(){}[0]
+        final fun copy(io.ygdrasil.wgsl.ir/ScalarValue = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> = ...): io.ygdrasil.wgsl.ir/ConstValue.Scalar // io.ygdrasil.wgsl.ir/ConstValue.Scalar.copy|copy(io.ygdrasil.wgsl.ir.ScalarValue;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ConstValue.Scalar.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ConstValue.Scalar.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ConstValue.Scalar.toString|toString(){}[0]
+
+        final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<io.ygdrasil.wgsl.ir/ConstValue.Scalar> { // io.ygdrasil.wgsl.ir/ConstValue.Scalar.$serializer|null[0]
+            final val descriptor // io.ygdrasil.wgsl.ir/ConstValue.Scalar.$serializer.descriptor|{}descriptor[0]
+                final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.ir/ConstValue.Scalar.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+            final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // io.ygdrasil.wgsl.ir/ConstValue.Scalar.$serializer.childSerializers|childSerializers(){}[0]
+            final fun deserialize(kotlinx.serialization.encoding/Decoder): io.ygdrasil.wgsl.ir/ConstValue.Scalar // io.ygdrasil.wgsl.ir/ConstValue.Scalar.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+            final fun serialize(kotlinx.serialization.encoding/Encoder, io.ygdrasil.wgsl.ir/ConstValue.Scalar) // io.ygdrasil.wgsl.ir/ConstValue.Scalar.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;io.ygdrasil.wgsl.ir.ConstValue.Scalar){}[0]
+        }
+
+        final object Companion { // io.ygdrasil.wgsl.ir/ConstValue.Scalar.Companion|null[0]
+            final val $childSerializers // io.ygdrasil.wgsl.ir/ConstValue.Scalar.Companion.$childSerializers|{}$childSerializers[0]
+
+            final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/ConstValue.Scalar> // io.ygdrasil.wgsl.ir/ConstValue.Scalar.Companion.serializer|serializer(){}[0]
+        }
+    }
+
+    final class Struct : io.ygdrasil.wgsl.ir/ConstValue { // io.ygdrasil.wgsl.ir/ConstValue.Struct|null[0]
+        constructor <init>(kotlin.collections/List<io.ygdrasil.wgsl.ir/ConstValue>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>) // io.ygdrasil.wgsl.ir/ConstValue.Struct.<init>|<init>(kotlin.collections.List<io.ygdrasil.wgsl.ir.ConstValue>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+
+        final val members // io.ygdrasil.wgsl.ir/ConstValue.Struct.members|{}members[0]
+            final fun <get-members>(): kotlin.collections/List<io.ygdrasil.wgsl.ir/ConstValue> // io.ygdrasil.wgsl.ir/ConstValue.Struct.members.<get-members>|<get-members>(){}[0]
+        final val type // io.ygdrasil.wgsl.ir/ConstValue.Struct.type|{}type[0]
+            final fun <get-type>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Struct.type.<get-type>|<get-type>(){}[0]
+
+        final fun component1(): kotlin.collections/List<io.ygdrasil.wgsl.ir/ConstValue> // io.ygdrasil.wgsl.ir/ConstValue.Struct.component1|component1(){}[0]
+        final fun component2(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Struct.component2|component2(){}[0]
+        final fun copy(kotlin.collections/List<io.ygdrasil.wgsl.ir/ConstValue> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> = ...): io.ygdrasil.wgsl.ir/ConstValue.Struct // io.ygdrasil.wgsl.ir/ConstValue.Struct.copy|copy(kotlin.collections.List<io.ygdrasil.wgsl.ir.ConstValue>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ConstValue.Struct.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ConstValue.Struct.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ConstValue.Struct.toString|toString(){}[0]
+
+        final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<io.ygdrasil.wgsl.ir/ConstValue.Struct> { // io.ygdrasil.wgsl.ir/ConstValue.Struct.$serializer|null[0]
+            final val descriptor // io.ygdrasil.wgsl.ir/ConstValue.Struct.$serializer.descriptor|{}descriptor[0]
+                final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.ir/ConstValue.Struct.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+            final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // io.ygdrasil.wgsl.ir/ConstValue.Struct.$serializer.childSerializers|childSerializers(){}[0]
+            final fun deserialize(kotlinx.serialization.encoding/Decoder): io.ygdrasil.wgsl.ir/ConstValue.Struct // io.ygdrasil.wgsl.ir/ConstValue.Struct.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+            final fun serialize(kotlinx.serialization.encoding/Encoder, io.ygdrasil.wgsl.ir/ConstValue.Struct) // io.ygdrasil.wgsl.ir/ConstValue.Struct.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;io.ygdrasil.wgsl.ir.ConstValue.Struct){}[0]
+        }
+
+        final object Companion { // io.ygdrasil.wgsl.ir/ConstValue.Struct.Companion|null[0]
+            final val $childSerializers // io.ygdrasil.wgsl.ir/ConstValue.Struct.Companion.$childSerializers|{}$childSerializers[0]
+
+            final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/ConstValue.Struct> // io.ygdrasil.wgsl.ir/ConstValue.Struct.Companion.serializer|serializer(){}[0]
+        }
+    }
+
+    final class Vector : io.ygdrasil.wgsl.ir/ConstValue { // io.ygdrasil.wgsl.ir/ConstValue.Vector|null[0]
+        constructor <init>(kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>) // io.ygdrasil.wgsl.ir/ConstValue.Vector.<init>|<init>(kotlin.collections.List<io.ygdrasil.wgsl.ir.ScalarValue>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+
+        final val components // io.ygdrasil.wgsl.ir/ConstValue.Vector.components|{}components[0]
+            final fun <get-components>(): kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue> // io.ygdrasil.wgsl.ir/ConstValue.Vector.components.<get-components>|<get-components>(){}[0]
+        final val type // io.ygdrasil.wgsl.ir/ConstValue.Vector.type|{}type[0]
+            final fun <get-type>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Vector.type.<get-type>|<get-type>(){}[0]
+
+        final fun component1(): kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue> // io.ygdrasil.wgsl.ir/ConstValue.Vector.component1|component1(){}[0]
+        final fun component2(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.Vector.component2|component2(){}[0]
+        final fun copy(kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> = ...): io.ygdrasil.wgsl.ir/ConstValue.Vector // io.ygdrasil.wgsl.ir/ConstValue.Vector.copy|copy(kotlin.collections.List<io.ygdrasil.wgsl.ir.ScalarValue>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ConstValue.Vector.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ConstValue.Vector.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ConstValue.Vector.toString|toString(){}[0]
+
+        final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<io.ygdrasil.wgsl.ir/ConstValue.Vector> { // io.ygdrasil.wgsl.ir/ConstValue.Vector.$serializer|null[0]
+            final val descriptor // io.ygdrasil.wgsl.ir/ConstValue.Vector.$serializer.descriptor|{}descriptor[0]
+                final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.ir/ConstValue.Vector.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+            final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // io.ygdrasil.wgsl.ir/ConstValue.Vector.$serializer.childSerializers|childSerializers(){}[0]
+            final fun deserialize(kotlinx.serialization.encoding/Decoder): io.ygdrasil.wgsl.ir/ConstValue.Vector // io.ygdrasil.wgsl.ir/ConstValue.Vector.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+            final fun serialize(kotlinx.serialization.encoding/Encoder, io.ygdrasil.wgsl.ir/ConstValue.Vector) // io.ygdrasil.wgsl.ir/ConstValue.Vector.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;io.ygdrasil.wgsl.ir.ConstValue.Vector){}[0]
+        }
+
+        final object Companion { // io.ygdrasil.wgsl.ir/ConstValue.Vector.Companion|null[0]
+            final val $childSerializers // io.ygdrasil.wgsl.ir/ConstValue.Vector.Companion.$childSerializers|{}$childSerializers[0]
+
+            final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/ConstValue.Vector> // io.ygdrasil.wgsl.ir/ConstValue.Vector.Companion.serializer|serializer(){}[0]
+        }
+    }
+
+    final object Companion : kotlinx.serialization.internal/SerializerFactory { // io.ygdrasil.wgsl.ir/ConstValue.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/ConstValue> // io.ygdrasil.wgsl.ir/ConstValue.Companion.serializer|serializer(){}[0]
+        final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // io.ygdrasil.wgsl.ir/ConstValue.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+    }
+
+    final object NotConst : io.ygdrasil.wgsl.ir/ConstValue, kotlinx.serialization.internal/SerializerFactory { // io.ygdrasil.wgsl.ir/ConstValue.NotConst|null[0]
+        final val type // io.ygdrasil.wgsl.ir/ConstValue.NotConst.type|{}type[0]
+            final fun <get-type>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.ir/ConstValue.NotConst.type.<get-type>|<get-type>(){}[0]
+
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ConstValue.NotConst.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ConstValue.NotConst.hashCode|hashCode(){}[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/ConstValue.NotConst> // io.ygdrasil.wgsl.ir/ConstValue.NotConst.serializer|serializer(){}[0]
+        final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // io.ygdrasil.wgsl.ir/ConstValue.NotConst.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ConstValue.NotConst.toString|toString(){}[0]
+    }
+}
+
 sealed class io.ygdrasil.wgsl.ir/ConstantInner { // io.ygdrasil.wgsl.ir/ConstantInner|null[0]
     open fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ConstantInner.toString|toString(){}[0]
 
@@ -1373,13 +1680,13 @@ sealed class io.ygdrasil.wgsl.ir/ConstantInner { // io.ygdrasil.wgsl.ir/Constant
     }
 
     final class Expression : io.ygdrasil.wgsl.ir/ConstantInner { // io.ygdrasil.wgsl.ir/ConstantInner.Expression|null[0]
-        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ConstantInner.Expression>) // io.ygdrasil.wgsl.ir/ConstantInner.Expression.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.ConstantInner.Expression>){}[0]
+        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>) // io.ygdrasil.wgsl.ir/ConstantInner.Expression.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
 
         final val expr // io.ygdrasil.wgsl.ir/ConstantInner.Expression.expr|{}expr[0]
-            final fun <get-expr>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ConstantInner.Expression> // io.ygdrasil.wgsl.ir/ConstantInner.Expression.expr.<get-expr>|<get-expr>(){}[0]
+            final fun <get-expr>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/ConstantInner.Expression.expr.<get-expr>|<get-expr>(){}[0]
 
-        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ConstantInner.Expression> // io.ygdrasil.wgsl.ir/ConstantInner.Expression.component1|component1(){}[0]
-        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ConstantInner.Expression> = ...): io.ygdrasil.wgsl.ir/ConstantInner.Expression // io.ygdrasil.wgsl.ir/ConstantInner.Expression.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.ConstantInner.Expression>){}[0]
+        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/ConstantInner.Expression.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> = ...): io.ygdrasil.wgsl.ir/ConstantInner.Expression // io.ygdrasil.wgsl.ir/ConstantInner.Expression.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
         final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ConstantInner.Expression.equals|equals(kotlin.Any?){}[0]
         final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ConstantInner.Expression.hashCode|hashCode(){}[0]
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ConstantInner.Expression.toString|toString(){}[0]
@@ -1680,17 +1987,17 @@ sealed class io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/Express
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.Call.toString|toString(){}[0]
     }
 
-    final class Constant : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.Constant|null[0]
-        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ExpressionKind.Constant>) // io.ygdrasil.wgsl.ir/ExpressionKind.Constant.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.ExpressionKind.Constant>){}[0]
+    final class ConstantExpr : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr|null[0]
+        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Constant>) // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Constant>){}[0]
 
-        final val constant // io.ygdrasil.wgsl.ir/ExpressionKind.Constant.constant|{}constant[0]
-            final fun <get-constant>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ExpressionKind.Constant> // io.ygdrasil.wgsl.ir/ExpressionKind.Constant.constant.<get-constant>|<get-constant>(){}[0]
+        final val handle // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr.handle|{}handle[0]
+            final fun <get-handle>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Constant> // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr.handle.<get-handle>|<get-handle>(){}[0]
 
-        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ExpressionKind.Constant> // io.ygdrasil.wgsl.ir/ExpressionKind.Constant.component1|component1(){}[0]
-        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ExpressionKind.Constant> = ...): io.ygdrasil.wgsl.ir/ExpressionKind.Constant // io.ygdrasil.wgsl.ir/ExpressionKind.Constant.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.ExpressionKind.Constant>){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.Constant.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.Constant.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.Constant.toString|toString(){}[0]
+        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Constant> // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Constant> = ...): io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Constant>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.ConstantExpr.toString|toString(){}[0]
     }
 
     final class FunctionArgument : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.FunctionArgument|null[0]
@@ -1704,6 +2011,19 @@ sealed class io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/Express
         final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.FunctionArgument.equals|equals(kotlin.Any?){}[0]
         final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.FunctionArgument.hashCode|hashCode(){}[0]
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.FunctionArgument.toString|toString(){}[0]
+    }
+
+    final class GlobalVar : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar|null[0]
+        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable>) // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.GlobalVariable>){}[0]
+
+        final val handle // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar.handle|{}handle[0]
+            final fun <get-handle>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable> // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar.handle.<get-handle>|<get-handle>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable> // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable> = ...): io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.GlobalVariable>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.GlobalVar.toString|toString(){}[0]
     }
 
     final class Literal : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.Literal|null[0]
@@ -1732,17 +2052,17 @@ sealed class io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/Express
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.Load.toString|toString(){}[0]
     }
 
-    final class LocalVariable : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable|null[0]
-        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable>) // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.ExpressionKind.LocalVariable>){}[0]
+    final class LocalVar : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar|null[0]
+        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/LocalVariable>) // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.LocalVariable>){}[0]
 
-        final val variable // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable.variable|{}variable[0]
-            final fun <get-variable>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable> // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable.variable.<get-variable>|<get-variable>(){}[0]
+        final val handle // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar.handle|{}handle[0]
+            final fun <get-handle>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/LocalVariable> // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar.handle.<get-handle>|<get-handle>(){}[0]
 
-        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable> // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable.component1|component1(){}[0]
-        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable> = ...): io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.ExpressionKind.LocalVariable>){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVariable.toString|toString(){}[0]
+        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/LocalVariable> // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/LocalVariable> = ...): io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.LocalVariable>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.LocalVar.toString|toString(){}[0]
     }
 
     final class RayQuery : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.RayQuery|null[0]
@@ -1821,6 +2141,22 @@ sealed class io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/Express
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.Select.toString|toString(){}[0]
     }
 
+    final class Splat : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.Splat|null[0]
+        constructor <init>(io.ygdrasil.wgsl.ir/VectorSize, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>) // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.<init>|<init>(io.ygdrasil.wgsl.ir.VectorSize;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+
+        final val size // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.size|{}size[0]
+            final fun <get-size>(): io.ygdrasil.wgsl.ir/VectorSize // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.size.<get-size>|<get-size>(){}[0]
+        final val value // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.value|{}value[0]
+            final fun <get-value>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.ir/VectorSize // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.component1|component1(){}[0]
+        final fun component2(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.component2|component2(){}[0]
+        final fun copy(io.ygdrasil.wgsl.ir/VectorSize = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> = ...): io.ygdrasil.wgsl.ir/ExpressionKind.Splat // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.copy|copy(io.ygdrasil.wgsl.ir.VectorSize;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.Splat.toString|toString(){}[0]
+    }
+
     final class Store : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.Store|null[0]
         constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>) // io.ygdrasil.wgsl.ir/ExpressionKind.Store.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
 
@@ -1835,6 +2171,25 @@ sealed class io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/Express
         final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.Store.equals|equals(kotlin.Any?){}[0]
         final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.Store.hashCode|hashCode(){}[0]
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.Store.toString|toString(){}[0]
+    }
+
+    final class Swizzle : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle|null[0]
+        constructor <init>(io.ygdrasil.wgsl.ir/VectorSize, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>, kotlin.collections/List<kotlin/Int>) // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.<init>|<init>(io.ygdrasil.wgsl.ir.VectorSize;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>;kotlin.collections.List<kotlin.Int>){}[0]
+
+        final val pattern // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.pattern|{}pattern[0]
+            final fun <get-pattern>(): kotlin.collections/List<kotlin/Int> // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.pattern.<get-pattern>|<get-pattern>(){}[0]
+        final val size // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.size|{}size[0]
+            final fun <get-size>(): io.ygdrasil.wgsl.ir/VectorSize // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.size.<get-size>|<get-size>(){}[0]
+        final val vector // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.vector|{}vector[0]
+            final fun <get-vector>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.vector.<get-vector>|<get-vector>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.ir/VectorSize // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.component1|component1(){}[0]
+        final fun component2(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.component2|component2(){}[0]
+        final fun component3(): kotlin.collections/List<kotlin/Int> // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.component3|component3(){}[0]
+        final fun copy(io.ygdrasil.wgsl.ir/VectorSize = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> = ..., kotlin.collections/List<kotlin/Int> = ...): io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.copy|copy(io.ygdrasil.wgsl.ir.VectorSize;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>;kotlin.collections.List<kotlin.Int>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.Swizzle.toString|toString(){}[0]
     }
 
     final class TextureQuery : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.TextureQuery|null[0]
@@ -1898,19 +2253,6 @@ sealed class io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/Express
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.ValuePointer.toString|toString(){}[0]
     }
 
-    final class Variable : io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/ExpressionKind.Variable|null[0]
-        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable>) // io.ygdrasil.wgsl.ir/ExpressionKind.Variable.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.GlobalVariable>){}[0]
-
-        final val variable // io.ygdrasil.wgsl.ir/ExpressionKind.Variable.variable|{}variable[0]
-            final fun <get-variable>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable> // io.ygdrasil.wgsl.ir/ExpressionKind.Variable.variable.<get-variable>|<get-variable>(){}[0]
-
-        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable> // io.ygdrasil.wgsl.ir/ExpressionKind.Variable.component1|component1(){}[0]
-        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable> = ...): io.ygdrasil.wgsl.ir/ExpressionKind.Variable // io.ygdrasil.wgsl.ir/ExpressionKind.Variable.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.GlobalVariable>){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ExpressionKind.Variable.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ExpressionKind.Variable.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ExpressionKind.Variable.toString|toString(){}[0]
-    }
-
     final object Companion : kotlinx.serialization.internal/SerializerFactory { // io.ygdrasil.wgsl.ir/ExpressionKind.Companion|null[0]
         final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/ExpressionKind> // io.ygdrasil.wgsl.ir/ExpressionKind.Companion.serializer|serializer(){}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // io.ygdrasil.wgsl.ir/ExpressionKind.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
@@ -1918,19 +2260,6 @@ sealed class io.ygdrasil.wgsl.ir/ExpressionKind { // io.ygdrasil.wgsl.ir/Express
 }
 
 sealed class io.ygdrasil.wgsl.ir/LiteralValue { // io.ygdrasil.wgsl.ir/LiteralValue|null[0]
-    final class Bool : io.ygdrasil.wgsl.ir/LiteralValue { // io.ygdrasil.wgsl.ir/LiteralValue.Bool|null[0]
-        constructor <init>(kotlin/Boolean) // io.ygdrasil.wgsl.ir/LiteralValue.Bool.<init>|<init>(kotlin.Boolean){}[0]
-
-        final val value // io.ygdrasil.wgsl.ir/LiteralValue.Bool.value|{}value[0]
-            final fun <get-value>(): kotlin/Boolean // io.ygdrasil.wgsl.ir/LiteralValue.Bool.value.<get-value>|<get-value>(){}[0]
-
-        final fun component1(): kotlin/Boolean // io.ygdrasil.wgsl.ir/LiteralValue.Bool.component1|component1(){}[0]
-        final fun copy(kotlin/Boolean = ...): io.ygdrasil.wgsl.ir/LiteralValue.Bool // io.ygdrasil.wgsl.ir/LiteralValue.Bool.copy|copy(kotlin.Boolean){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/LiteralValue.Bool.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/LiteralValue.Bool.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/LiteralValue.Bool.toString|toString(){}[0]
-    }
-
     final class Matrix : io.ygdrasil.wgsl.ir/LiteralValue { // io.ygdrasil.wgsl.ir/LiteralValue.Matrix|null[0]
         constructor <init>(kotlin.collections/List<kotlin.collections/List<io.ygdrasil.wgsl.ir/ScalarValue>>) // io.ygdrasil.wgsl.ir/LiteralValue.Matrix.<init>|<init>(kotlin.collections.List<kotlin.collections.List<io.ygdrasil.wgsl.ir.ScalarValue>>){}[0]
 
@@ -2016,6 +2345,32 @@ sealed class io.ygdrasil.wgsl.ir/SampleLevel : io.ygdrasil.wgsl.arena/Equatable 
 }
 
 sealed class io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue|null[0]
+    final class AbstractFloat : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat|null[0]
+        constructor <init>(kotlin/Double) // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat.<init>|<init>(kotlin.Double){}[0]
+
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat.value|{}value[0]
+            final fun <get-value>(): kotlin/Double // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Double // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat.component1|component1(){}[0]
+        final fun copy(kotlin/Double = ...): io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat.copy|copy(kotlin.Double){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.AbstractFloat.toString|toString(){}[0]
+    }
+
+    final class AbstractInt : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt|null[0]
+        constructor <init>(kotlin/Long) // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt.<init>|<init>(kotlin.Long){}[0]
+
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt.value|{}value[0]
+            final fun <get-value>(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt.component1|component1(){}[0]
+        final fun copy(kotlin/Long = ...): io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt.copy|copy(kotlin.Long){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.AbstractInt.toString|toString(){}[0]
+    }
+
     final class Bool : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.Bool|null[0]
         constructor <init>(kotlin/Boolean) // io.ygdrasil.wgsl.ir/ScalarValue.Bool.<init>|<init>(kotlin.Boolean){}[0]
 
@@ -2027,6 +2382,19 @@ sealed class io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValu
         final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.Bool.equals|equals(kotlin.Any?){}[0]
         final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.Bool.hashCode|hashCode(){}[0]
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.Bool.toString|toString(){}[0]
+    }
+
+    final class F16 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.F16|null[0]
+        constructor <init>(kotlin/Float) // io.ygdrasil.wgsl.ir/ScalarValue.F16.<init>|<init>(kotlin.Float){}[0]
+
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.F16.value|{}value[0]
+            final fun <get-value>(): kotlin/Float // io.ygdrasil.wgsl.ir/ScalarValue.F16.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Float // io.ygdrasil.wgsl.ir/ScalarValue.F16.component1|component1(){}[0]
+        final fun copy(kotlin/Float = ...): io.ygdrasil.wgsl.ir/ScalarValue.F16 // io.ygdrasil.wgsl.ir/ScalarValue.F16.copy|copy(kotlin.Float){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.F16.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.F16.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.F16.toString|toString(){}[0]
     }
 
     final class F32 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.F32|null[0]
@@ -2055,56 +2423,108 @@ sealed class io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValu
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.F64.toString|toString(){}[0]
     }
 
-    final class S64 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.S64|null[0]
-        constructor <init>(kotlin/Long) // io.ygdrasil.wgsl.ir/ScalarValue.S64.<init>|<init>(kotlin.Long){}[0]
+    final class I16 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.I16|null[0]
+        constructor <init>(kotlin/Short) // io.ygdrasil.wgsl.ir/ScalarValue.I16.<init>|<init>(kotlin.Short){}[0]
 
-        final val value // io.ygdrasil.wgsl.ir/ScalarValue.S64.value|{}value[0]
-            final fun <get-value>(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.S64.value.<get-value>|<get-value>(){}[0]
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.I16.value|{}value[0]
+            final fun <get-value>(): kotlin/Short // io.ygdrasil.wgsl.ir/ScalarValue.I16.value.<get-value>|<get-value>(){}[0]
 
-        final fun component1(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.S64.component1|component1(){}[0]
-        final fun copy(kotlin/Long = ...): io.ygdrasil.wgsl.ir/ScalarValue.S64 // io.ygdrasil.wgsl.ir/ScalarValue.S64.copy|copy(kotlin.Long){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.S64.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.S64.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.S64.toString|toString(){}[0]
+        final fun component1(): kotlin/Short // io.ygdrasil.wgsl.ir/ScalarValue.I16.component1|component1(){}[0]
+        final fun copy(kotlin/Short = ...): io.ygdrasil.wgsl.ir/ScalarValue.I16 // io.ygdrasil.wgsl.ir/ScalarValue.I16.copy|copy(kotlin.Short){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.I16.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.I16.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.I16.toString|toString(){}[0]
     }
 
-    final class Sint : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.Sint|null[0]
-        constructor <init>(kotlin/Int) // io.ygdrasil.wgsl.ir/ScalarValue.Sint.<init>|<init>(kotlin.Int){}[0]
+    final class I32 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.I32|null[0]
+        constructor <init>(kotlin/Int) // io.ygdrasil.wgsl.ir/ScalarValue.I32.<init>|<init>(kotlin.Int){}[0]
 
-        final val value // io.ygdrasil.wgsl.ir/ScalarValue.Sint.value|{}value[0]
-            final fun <get-value>(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.Sint.value.<get-value>|<get-value>(){}[0]
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.I32.value|{}value[0]
+            final fun <get-value>(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.I32.value.<get-value>|<get-value>(){}[0]
 
-        final fun component1(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.Sint.component1|component1(){}[0]
-        final fun copy(kotlin/Int = ...): io.ygdrasil.wgsl.ir/ScalarValue.Sint // io.ygdrasil.wgsl.ir/ScalarValue.Sint.copy|copy(kotlin.Int){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.Sint.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.Sint.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.Sint.toString|toString(){}[0]
+        final fun component1(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.I32.component1|component1(){}[0]
+        final fun copy(kotlin/Int = ...): io.ygdrasil.wgsl.ir/ScalarValue.I32 // io.ygdrasil.wgsl.ir/ScalarValue.I32.copy|copy(kotlin.Int){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.I32.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.I32.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.I32.toString|toString(){}[0]
+    }
+
+    final class I64 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.I64|null[0]
+        constructor <init>(kotlin/Long) // io.ygdrasil.wgsl.ir/ScalarValue.I64.<init>|<init>(kotlin.Long){}[0]
+
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.I64.value|{}value[0]
+            final fun <get-value>(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.I64.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.I64.component1|component1(){}[0]
+        final fun copy(kotlin/Long = ...): io.ygdrasil.wgsl.ir/ScalarValue.I64 // io.ygdrasil.wgsl.ir/ScalarValue.I64.copy|copy(kotlin.Long){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.I64.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.I64.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.I64.toString|toString(){}[0]
+    }
+
+    final class I8 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.I8|null[0]
+        constructor <init>(kotlin/Byte) // io.ygdrasil.wgsl.ir/ScalarValue.I8.<init>|<init>(kotlin.Byte){}[0]
+
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.I8.value|{}value[0]
+            final fun <get-value>(): kotlin/Byte // io.ygdrasil.wgsl.ir/ScalarValue.I8.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Byte // io.ygdrasil.wgsl.ir/ScalarValue.I8.component1|component1(){}[0]
+        final fun copy(kotlin/Byte = ...): io.ygdrasil.wgsl.ir/ScalarValue.I8 // io.ygdrasil.wgsl.ir/ScalarValue.I8.copy|copy(kotlin.Byte){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.I8.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.I8.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.I8.toString|toString(){}[0]
+    }
+
+    final class U16 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.U16|null[0]
+        constructor <init>(kotlin/Int) // io.ygdrasil.wgsl.ir/ScalarValue.U16.<init>|<init>(kotlin.Int){}[0]
+
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.U16.value|{}value[0]
+            final fun <get-value>(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.U16.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.U16.component1|component1(){}[0]
+        final fun copy(kotlin/Int = ...): io.ygdrasil.wgsl.ir/ScalarValue.U16 // io.ygdrasil.wgsl.ir/ScalarValue.U16.copy|copy(kotlin.Int){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.U16.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.U16.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.U16.toString|toString(){}[0]
+    }
+
+    final class U32 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.U32|null[0]
+        constructor <init>(kotlin/Long) // io.ygdrasil.wgsl.ir/ScalarValue.U32.<init>|<init>(kotlin.Long){}[0]
+
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.U32.value|{}value[0]
+            final fun <get-value>(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.U32.value.<get-value>|<get-value>(){}[0]
+
+        final fun component1(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.U32.component1|component1(){}[0]
+        final fun copy(kotlin/Long = ...): io.ygdrasil.wgsl.ir/ScalarValue.U32 // io.ygdrasil.wgsl.ir/ScalarValue.U32.copy|copy(kotlin.Long){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.U32.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.U32.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.U32.toString|toString(){}[0]
     }
 
     final class U64 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.U64|null[0]
-        constructor <init>(kotlin/Long) // io.ygdrasil.wgsl.ir/ScalarValue.U64.<init>|<init>(kotlin.Long){}[0]
+        constructor <init>(kotlin/ULong) // io.ygdrasil.wgsl.ir/ScalarValue.U64.<init>|<init>(kotlin.ULong){}[0]
 
         final val value // io.ygdrasil.wgsl.ir/ScalarValue.U64.value|{}value[0]
-            final fun <get-value>(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.U64.value.<get-value>|<get-value>(){}[0]
+            final fun <get-value>(): kotlin/ULong // io.ygdrasil.wgsl.ir/ScalarValue.U64.value.<get-value>|<get-value>(){}[0]
 
-        final fun component1(): kotlin/Long // io.ygdrasil.wgsl.ir/ScalarValue.U64.component1|component1(){}[0]
-        final fun copy(kotlin/Long = ...): io.ygdrasil.wgsl.ir/ScalarValue.U64 // io.ygdrasil.wgsl.ir/ScalarValue.U64.copy|copy(kotlin.Long){}[0]
+        final fun component1(): kotlin/ULong // io.ygdrasil.wgsl.ir/ScalarValue.U64.component1|component1(){}[0]
+        final fun copy(kotlin/ULong = ...): io.ygdrasil.wgsl.ir/ScalarValue.U64 // io.ygdrasil.wgsl.ir/ScalarValue.U64.copy|copy(kotlin.ULong){}[0]
         final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.U64.equals|equals(kotlin.Any?){}[0]
         final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.U64.hashCode|hashCode(){}[0]
         final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.U64.toString|toString(){}[0]
     }
 
-    final class Uint : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.Uint|null[0]
-        constructor <init>(kotlin/Int) // io.ygdrasil.wgsl.ir/ScalarValue.Uint.<init>|<init>(kotlin.Int){}[0]
+    final class U8 : io.ygdrasil.wgsl.ir/ScalarValue { // io.ygdrasil.wgsl.ir/ScalarValue.U8|null[0]
+        constructor <init>(kotlin/Short) // io.ygdrasil.wgsl.ir/ScalarValue.U8.<init>|<init>(kotlin.Short){}[0]
 
-        final val value // io.ygdrasil.wgsl.ir/ScalarValue.Uint.value|{}value[0]
-            final fun <get-value>(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.Uint.value.<get-value>|<get-value>(){}[0]
+        final val value // io.ygdrasil.wgsl.ir/ScalarValue.U8.value|{}value[0]
+            final fun <get-value>(): kotlin/Short // io.ygdrasil.wgsl.ir/ScalarValue.U8.value.<get-value>|<get-value>(){}[0]
 
-        final fun component1(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.Uint.component1|component1(){}[0]
-        final fun copy(kotlin/Int = ...): io.ygdrasil.wgsl.ir/ScalarValue.Uint // io.ygdrasil.wgsl.ir/ScalarValue.Uint.copy|copy(kotlin.Int){}[0]
-        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.Uint.equals|equals(kotlin.Any?){}[0]
-        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.Uint.hashCode|hashCode(){}[0]
-        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.Uint.toString|toString(){}[0]
+        final fun component1(): kotlin/Short // io.ygdrasil.wgsl.ir/ScalarValue.U8.component1|component1(){}[0]
+        final fun copy(kotlin/Short = ...): io.ygdrasil.wgsl.ir/ScalarValue.U8 // io.ygdrasil.wgsl.ir/ScalarValue.U8.copy|copy(kotlin.Short){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/ScalarValue.U8.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/ScalarValue.U8.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/ScalarValue.U8.toString|toString(){}[0]
     }
 
     final object Companion : kotlinx.serialization.internal/SerializerFactory { // io.ygdrasil.wgsl.ir/ScalarValue.Companion|null[0]
@@ -2414,6 +2834,36 @@ sealed class io.ygdrasil.wgsl.ir/TypeInner : io.ygdrasil.wgsl.arena/Equatable { 
     final object Error : io.ygdrasil.wgsl.ir/TypeInner // io.ygdrasil.wgsl.ir/TypeInner.Error|null[0]
 }
 
+sealed class io.ygdrasil.wgsl.proc/TypeResolution { // io.ygdrasil.wgsl.proc/TypeResolution|null[0]
+    final fun getInner(io.ygdrasil.wgsl.ir/Module): io.ygdrasil.wgsl.ir/TypeInner // io.ygdrasil.wgsl.proc/TypeResolution.getInner|getInner(io.ygdrasil.wgsl.ir.Module){}[0]
+
+    final class ByHandle : io.ygdrasil.wgsl.proc/TypeResolution { // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle|null[0]
+        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>) // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+
+        final val handle // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle.handle|{}handle[0]
+            final fun <get-handle>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle.handle.<get-handle>|<get-handle>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> = ...): io.ygdrasil.wgsl.proc/TypeResolution.ByHandle // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.proc/TypeResolution.ByHandle.toString|toString(){}[0]
+    }
+
+    final class ByValue : io.ygdrasil.wgsl.proc/TypeResolution { // io.ygdrasil.wgsl.proc/TypeResolution.ByValue|null[0]
+        constructor <init>(io.ygdrasil.wgsl.ir/TypeInner) // io.ygdrasil.wgsl.proc/TypeResolution.ByValue.<init>|<init>(io.ygdrasil.wgsl.ir.TypeInner){}[0]
+
+        final val inner // io.ygdrasil.wgsl.proc/TypeResolution.ByValue.inner|{}inner[0]
+            final fun <get-inner>(): io.ygdrasil.wgsl.ir/TypeInner // io.ygdrasil.wgsl.proc/TypeResolution.ByValue.inner.<get-inner>|<get-inner>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.ir/TypeInner // io.ygdrasil.wgsl.proc/TypeResolution.ByValue.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.ir/TypeInner = ...): io.ygdrasil.wgsl.proc/TypeResolution.ByValue // io.ygdrasil.wgsl.proc/TypeResolution.ByValue.copy|copy(io.ygdrasil.wgsl.ir.TypeInner){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.proc/TypeResolution.ByValue.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.proc/TypeResolution.ByValue.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.proc/TypeResolution.ByValue.toString|toString(){}[0]
+    }
+}
+
 final object io.ygdrasil.wgsl.arena/HandleSerializer : kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.arena/Handle<*>> { // io.ygdrasil.wgsl.arena/HandleSerializer|null[0]
     final val descriptor // io.ygdrasil.wgsl.arena/HandleSerializer.descriptor|{}descriptor[0]
         final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.arena/HandleSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
@@ -2471,6 +2921,12 @@ final val io.ygdrasil.wgsl.ir/value // io.ygdrasil.wgsl.ir/value|@io.ygdrasil.wg
 final val io.ygdrasil.wgsl.ir/width // io.ygdrasil.wgsl.ir/width|@io.ygdrasil.wgsl.ir.ScalarKind{}width[0]
     final fun (io.ygdrasil.wgsl.ir/ScalarKind).<get-width>(): kotlin/Int? // io.ygdrasil.wgsl.ir/width.<get-width>|<get-width>@io.ygdrasil.wgsl.ir.ScalarKind(){}[0]
 
+final fun (io.ygdrasil.wgsl.ir/ConstValue).io.ygdrasil.wgsl.ir/isConst(): kotlin/Boolean // io.ygdrasil.wgsl.ir/isConst|isConst@io.ygdrasil.wgsl.ir.ConstValue(){}[0]
+final fun (io.ygdrasil.wgsl.ir/ConstValue?).io.ygdrasil.wgsl.ir/isConstOrNull(): kotlin/Boolean // io.ygdrasil.wgsl.ir/isConstOrNull|isConstOrNull@io.ygdrasil.wgsl.ir.ConstValue?(){}[0]
+final fun (io.ygdrasil.wgsl.ir/ScalarValue).io.ygdrasil.wgsl.proc/toBool(): kotlin/Boolean // io.ygdrasil.wgsl.proc/toBool|toBool@io.ygdrasil.wgsl.ir.ScalarValue(){}[0]
+final fun (io.ygdrasil.wgsl.ir/ScalarValue).io.ygdrasil.wgsl.proc/toF32(): kotlin/Float // io.ygdrasil.wgsl.proc/toF32|toF32@io.ygdrasil.wgsl.ir.ScalarValue(){}[0]
+final fun (io.ygdrasil.wgsl.ir/ScalarValue).io.ygdrasil.wgsl.proc/toF64(): kotlin/Double // io.ygdrasil.wgsl.proc/toF64|toF64@io.ygdrasil.wgsl.ir.ScalarValue(){}[0]
+final fun (io.ygdrasil.wgsl.ir/ScalarValue).io.ygdrasil.wgsl.proc/toI32(): kotlin/Int // io.ygdrasil.wgsl.proc/toI32|toI32@io.ygdrasil.wgsl.ir.ScalarValue(){}[0]
 final fun <#A: io.ygdrasil.wgsl.arena/Equatable> io.ygdrasil.wgsl.arena/uniqueArenaOf(): io.ygdrasil.wgsl.arena/UniqueArena<#A> // io.ygdrasil.wgsl.arena/uniqueArenaOf|uniqueArenaOf(){0§<io.ygdrasil.wgsl.arena.Equatable>}[0]
 final fun <#A: io.ygdrasil.wgsl.arena/Equatable> io.ygdrasil.wgsl.arena/uniqueArenaOf(kotlin.collections/Iterable<#A>): io.ygdrasil.wgsl.arena/UniqueArena<#A> // io.ygdrasil.wgsl.arena/uniqueArenaOf|uniqueArenaOf(kotlin.collections.Iterable<0:0>){0§<io.ygdrasil.wgsl.arena.Equatable>}[0]
 final fun <#A: io.ygdrasil.wgsl.arena/Equatable> io.ygdrasil.wgsl.arena/uniqueArenaOf(kotlin/Array<out #A>...): io.ygdrasil.wgsl.arena/UniqueArena<#A> // io.ygdrasil.wgsl.arena/uniqueArenaOf|uniqueArenaOf(kotlin.Array<out|0:0>...){0§<io.ygdrasil.wgsl.arena.Equatable>}[0]
@@ -2482,3 +2938,4 @@ final fun <#A: kotlin/Any?> io.ygdrasil.wgsl.arena/rangeOf(io.ygdrasil.wgsl.aren
 final fun <#A: kotlin/Any?> io.ygdrasil.wgsl.arena/rangeOf(kotlin.collections/List<io.ygdrasil.wgsl.arena/Handle<#A>>): io.ygdrasil.wgsl.arena/Range<#A> // io.ygdrasil.wgsl.arena/rangeOf|rangeOf(kotlin.collections.List<io.ygdrasil.wgsl.arena.Handle<0:0>>){0§<kotlin.Any?>}[0]
 final fun io.ygdrasil.wgsl.arena/invalidHandle(): io.ygdrasil.wgsl.arena/Handle<kotlin/Nothing> // io.ygdrasil.wgsl.arena/invalidHandle|invalidHandle(){}[0]
 final fun io.ygdrasil.wgsl.ir/diagnostic(kotlin/Function1<io.ygdrasil.wgsl.ir/DiagnosticBuilder, kotlin/Unit>): io.ygdrasil.wgsl.ir/Diagnostic // io.ygdrasil.wgsl.ir/diagnostic|diagnostic(kotlin.Function1<io.ygdrasil.wgsl.ir.DiagnosticBuilder,kotlin.Unit>){}[0]
+final fun io.ygdrasil.wgsl.ir/notConst(): io.ygdrasil.wgsl.ir/ConstValue // io.ygdrasil.wgsl.ir/notConst|notConst(){}[0]

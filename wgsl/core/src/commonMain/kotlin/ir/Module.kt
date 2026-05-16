@@ -25,6 +25,11 @@ data class Module(
     val constants: Arena<Constant> = Arena(),
 
     /**
+     * Global expressions used in constants initializers.
+     */
+    val globalExpressions: Arena<Expression> = Arena(),
+
+    /**
      * Global variables in this module.
      */
     val globalVariables: Arena<GlobalVariable> = Arena(),
@@ -67,6 +72,7 @@ data class Module(
         fun create(
             types: UniqueArena<Type> = UniqueArena(),
             constants: Arena<Constant> = Arena(),
+            globalExpressions: Arena<Expression> = Arena(),
             globalVariables: Arena<GlobalVariable> = Arena(),
             functions: Arena<Function> = Arena(),
             entryPoints: List<EntryPoint> = emptyList(),
@@ -75,6 +81,7 @@ data class Module(
             return Module(
                 types = types,
                 constants = constants,
+                globalExpressions = globalExpressions,
                 globalVariables = globalVariables,
                 functions = functions,
                 entryPoints = entryPoints,

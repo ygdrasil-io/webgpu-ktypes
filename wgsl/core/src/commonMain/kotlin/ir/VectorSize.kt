@@ -20,7 +20,16 @@ enum class VectorSize {
     /**
      * 4-element vector.
      */
-    Quad,
+    Quad;
+
+    companion object {
+        fun fromInt(value: Int): VectorSize = when (value) {
+            2 -> Bi
+            3 -> Tri
+            4 -> Quad
+            else -> throw IllegalArgumentException("Invalid vector size: $value")
+        }
+    }
 }
 
 /**

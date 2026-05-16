@@ -6,7 +6,7 @@
 **Sous-Phase** : 3.1 - Typifier  
 **Durée** : 2-3 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique - Inférence et validation des types)  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété
+**Statut** : [ ] Non commencé | [ ] En cours | [x] Complété
 
 > **Référence Rust** : `/Users/chaos/RustroverProjects/wgpu/naga/src/proc/typifier.rs` (~1500 lignes)
 
@@ -789,99 +789,97 @@ println("Type de l'expression: ${module.types[exprType].inner}")
 ## ✅ CHECKLIST PHASE 3.1
 
 ### Structure Typifier
-- [ ] `Typifier` class principale
-- [ ] `TypeError` class pour les erreurs
-- [ ] `Context` class pour le contexte de typage
+- [x] `Typifier` class principale
+- [x] `TypeError` class pour les erreurs
+- [x] `Context` class pour le contexte de typage
 
 ### Méthodes principales
-- [ ] `process()` - Traiter tout le module
-- [ ] `processGlobalDeclarations()` - Déclarations globales
-- [ ] `processFunction()` - Fonctions
-- [ ] `processLocalVariable()` - Variables locales
-- [ ] `processStatements()` - Instructions
-- [ ] `processStatement()` - Instruction unique
-- [ ] `inferExpressionType()` - Inférer le type d'une expression
-- [ ] `inferLValueType()` - Inférer le type d'une LValue
+- [x] `process()` - Traiter tout le module
+- [x] `processGlobalDeclarations()` - Déclarations globales
+- [x] `processFunction()` - Fonctions
+- [x] `processLocalVariable()` - Variables locales
+- [x] `processStatements()` - Instructions
+- [x] `processStatement()` - Instruction unique
+- [x] `inferExpressionType()` - Inférer le type d'une expression
+- [x] `inferLValueType()` - Inférer le type d'une LValue
 
 ### Inférence par type d'expression
-- [ ] Literal
-- [ ] Access
-- [ ] AccessIndex
-- [ ] Splat
-- [ ] Unary
-- [ ] Binary
-- [ ] Select
-- [ ] ArrayLength
-- [ ] As
-- [ ] GlobalVariable
-- [ ] LocalVariable
-- [ ] FunctionArgument
-- [ ] Const
+- [x] Literal
+- [x] Access
+- [x] AccessIndex
+- [x] Splat
+- [x] Unary
+- [x] Binary
+- [x] Select
+- [x] ArrayLength
+- [x] As
+- [x] GlobalVariable
+- [x] LocalVariable
+- [x] FunctionArgument
+- [x] Const
 
 ### Inférence par type d'instruction
-- [ ] Let
-- [ ] Assign
-- [ ] Store
-- [ ] If
-- [ ] Switch
-- [ ] Loop
-- [ ] While
-- [ ] For
-- [ ] BreakIf
-- [ ] ContinueIf
-- [ ] Return
-- [ ] Discard
-- [ ] Block
-- [ ] Emit
+- [x] Let
+- [x] Assign
+- [x] Store
+- [x] If
+- [x] Switch
+- [x] Loop
+- [x] While
+- [x] For
+- [x] BreakIf
+- [x] ContinueIf
+- [x] Return
+- [x] Discard
+- [x] Block
+- [x] Emit
 
 ### Vérifications de types
-- [ ] Compatibilité des types binaires
-- [ ] Types booléens pour les conditions
-- [ ] Types compatibles pour les assignments
-- [ ] Types compatibles pour les stores
-- [ ] Types switchables pour switch
-- [ ] Types de retour compatibles
+- [x] Compatibilité des types binaires
+- [x] Types booléens pour les conditions
+- [x] Types compatibles pour les assignments
+- [x] Types compatibles pour les stores
+- [x] Types switchables pour switch
+- [x] Types de retour compatibles
 
 ### Helpers
-- [ ] `areTypesCompatible()`
-- [ ] `isBooleanType()`
-- [ ] `isVectorOfBooleanType()`
-- [ ] `isIntegerType()`
-- [ ] `isSwitchableType()`
+- [x] `areTypesCompatible()`
+- [x] `isBooleanType()`
+- [x] `isVectorOfBooleanType()`
+- [x] `isIntegerType()`
+- [x] `isSwitchableType()`
 
 ### Tests
-- [ ] `TypifierTest.kt`
-  - [ ] Inférence de types littéraux
-  - [ ] Inférence de types binaires
-  - [ ] Inférence de types unaires
-  - [ ] Inférence de types vectoriels
-  - [ ] Inférence de types Select
-  - [ ] Vérification de compatibilité
-  - [ ] Erreurs de typage
-  - [ ] Functions complètes
-  - [ ] Modules complets
+- [x] `TypifierTest.kt`
+  - [x] Inférence de types littéraux
+  - [x] Inférence de types binaires
+  - [x] Inférence de types unaires
+  - [x] Inférence de types vectoriels
+  - [x] Inférence de types Select
+  - [x] Vérification de compatibilité
+  - [x] Erreurs de typage
+  - [x] Functions complètes
+  - [x] Modules complets
 
 ### Documentation
-- [ ] KDoc complet
-- [ ] Exemples d'utilisation
-- [ ] Documentation des règles de typage
+- [x] KDoc complet
+- [x] Exemples d'utilisation
+- [x] Documentation des règles de typage
 
 ---
 
 ## 📅 PLANNING
 
-| Tâche | Durée | Dépendances | Statut |
-|-------|-------|-------------|--------|
-| Concevoir Typifier | 1 jour | IR Structures | [ ] |
-| Implémenter Typifier class | 2 jours | Conception | [ ] |
-| Implémenter processModule | 2 jours | Typifier | [ ] |
-| Implémenter inferExpressionType | 5 jours | Typifier | [ ] |
-| Implémenter toutes les inférences | 5 jours | inferExpressionType | [ ] |
-| Implémenter les vérifications | 2 jours | Typifier | [ ] |
-| Intégrer avec le pipeline | 1 jour | Tout | [ ] |
-| Écrire les tests | 3 jours | Tout | [ ] |
-| Documentation | 1 jour | Tout | [ ] |
-| Validation manuelle | 2 jours | Tout | [ ] |
+| Concevoir Typifier | 1 jour | IR Structures | [x] |
+| Implémenter Typifier class | 2 jours | Conception | [x] |
+| Implémenter processModule | 2 jours | Typifier | [x] |
+| Implémenter inferExpressionType | 5 jours | Typifier | [x] |
+| Implémenter toutes les inférences | 5 jours | inferExpressionType | [x] |
+| Implémenter les vérifications | 2 jours | Typifier | [x] |
+| Intégrer avec le pipeline | 1 jour | Tout | [x] |
+| Écrire les tests | 3 jours | Tout | [x] |
+| Documentation | 1 jour | Tout | [x] |
+| Validation manuelle | 2 jours | Tout | [x] |
 
 **Total estimé** : **2-3 semaines**
 
@@ -906,9 +904,9 @@ println("Type de l'expression: ${module.types[exprType].inner}")
 
 ## 🔄 PROCHAINES ÉTAPES
 
-1. [ ] Finaliser la conception
-2. [ ] Implémenter Typifier
-3. [ ] Implémenter toutes les méthodes d'inférence
-4. [ ] Écrire les tests
-5. [ ] Valider avec des tests manuels
-6. [ ] Passer à `02_layouter.md`
+1. [x] Finaliser la conception
+2. [x] Implémenter Typifier
+3. [x] Implémenter toutes les méthodes d'inférence
+4. [x] Écrire les tests
+5. [x] Valider avec des tests manuels
+6. [x] Passer à `02_layouter.md`

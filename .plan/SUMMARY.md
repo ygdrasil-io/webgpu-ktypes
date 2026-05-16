@@ -103,13 +103,13 @@
 - [x] Implémenter la gestion des erreurs (Diagnostic/ErrorRecovery/PrettyPrintError, 13 tests)
 - [x] **Livrable** : 7 fichiers source, 6 fichiers de test, 113+ tests Phase 2, compilation avec -Werror
 
-### 🟡 **Phase 3 : Traitement IR (4-6 semaines)**
-- [ ] Implémenter ConstantEvaluator
-- [ ] Implémenter Typifier
-- [ ] Implémenter Layouter
-- [ ] Implémenter Namer
-- [ ] Implémenter Validator
-- [ ] **Livrable** : Module IR validé et optimisé
+### ✅ **Phase 3 : Traitement IR (4-6 semaines)**
+- [x] Implémenter ConstantEvaluator
+- [x] Implémenter Typifier
+- [x] Implémenter Layouter
+- [x] Implémenter Namer
+- [x] Implémenter Validator
+- [x] **Livrable** : Module IR validé et optimisé, tests de processing (6 tests)
 
 ### 🔴 **Phase 4 : Backends (8-10 semaines)**
 - [ ] Implémenter l'architecture commune des backends
@@ -289,8 +289,9 @@
    - ✅ Construction de l'AST
    - ✅ Résolution de types
    - ✅ Gestion d'erreurs et récupération
-5. **Phase 3** : Traitement IR (ConstantEvaluator, Typifier, Layouter, Validator)
-6. Valider chaque étape avec les tests correspondants
+5. **Phase 3 terminée ✅** : Traitement IR complet (ConstantEvaluator, Typifier, Layouter, Namer, Validator)
+6. **Phase 4** : Backends (Architecture, MSL, HLSL, GLSL, WGSL)
+7. Valider chaque étape avec les tests correspondants
 
 **Fichier à consulter en premier** : `/Users/chaos/RustroverProjects/wgpu/naga/src/front/wgsl/mod.rs`
 
