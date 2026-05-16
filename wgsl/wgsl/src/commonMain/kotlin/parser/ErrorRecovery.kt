@@ -1,6 +1,12 @@
 package io.ygdrasil.wgsl.parser
 
-import io.ygdrasil.wgsl.ast.*
+import io.ygdrasil.wgsl.ast.BlockStatement
+import io.ygdrasil.wgsl.ast.BoolLiteral
+import io.ygdrasil.wgsl.ast.Expression
+import io.ygdrasil.wgsl.ast.ScalarKind
+import io.ygdrasil.wgsl.ast.ScalarType
+import io.ygdrasil.wgsl.ast.Statement
+import io.ygdrasil.wgsl.ast.TypeDecl
 import io.ygdrasil.wgsl.ir.Span
 import io.ygdrasil.wgsl.lexer.Token
 import io.ygdrasil.wgsl.lexer.TokenKind

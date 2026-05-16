@@ -4,7 +4,11 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
-import io.ygdrasil.wgsl.ast.*
+import io.ygdrasil.wgsl.ast.ScalarKind
+import io.ygdrasil.wgsl.ast.ScalarType
+import io.ygdrasil.wgsl.ast.StructDecl
+import io.ygdrasil.wgsl.ast.StructMember
+import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ir.Span
 
 class TypeIndexTest : FunSpec({

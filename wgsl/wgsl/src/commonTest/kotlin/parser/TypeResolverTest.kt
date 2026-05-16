@@ -1,11 +1,15 @@
 package io.ygdrasil.wgsl.parser
 
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.booleans.shouldBeFalse
-import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
-import io.ygdrasil.wgsl.ast.*
+import io.ygdrasil.wgsl.ast.BlockStatement
+import io.ygdrasil.wgsl.ast.FunctionDecl
+import io.ygdrasil.wgsl.ast.NamedType
+import io.ygdrasil.wgsl.ast.Param
+import io.ygdrasil.wgsl.ast.ScalarKind
+import io.ygdrasil.wgsl.ast.ScalarType
+import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ir.Span
 
 class TypeResolverTest : FunSpec({

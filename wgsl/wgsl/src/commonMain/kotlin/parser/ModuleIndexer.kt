@@ -1,6 +1,47 @@
 package io.ygdrasil.wgsl.parser
 
-import io.ygdrasil.wgsl.ast.*
+import io.ygdrasil.wgsl.ast.ArrayType
+import io.ygdrasil.wgsl.ast.AssignmentStatement
+import io.ygdrasil.wgsl.ast.BinaryExpr
+import io.ygdrasil.wgsl.ast.BlockStatement
+import io.ygdrasil.wgsl.ast.CallExpr
+import io.ygdrasil.wgsl.ast.Case
+import io.ygdrasil.wgsl.ast.DefaultCase
+import io.ygdrasil.wgsl.ast.Expression
+import io.ygdrasil.wgsl.ast.ExpressionStatement
+import io.ygdrasil.wgsl.ast.ForStatement
+import io.ygdrasil.wgsl.ast.FunctionDecl
+import io.ygdrasil.wgsl.ast.GlobalDecl
+import io.ygdrasil.wgsl.ast.IdentExpr
+import io.ygdrasil.wgsl.ast.IfStatement
+import io.ygdrasil.wgsl.ast.IncDecStatement
+import io.ygdrasil.wgsl.ast.IndexExpr
+import io.ygdrasil.wgsl.ast.LoopStatement
+import io.ygdrasil.wgsl.ast.MatrixType
+import io.ygdrasil.wgsl.ast.MemberAccessExpr
+import io.ygdrasil.wgsl.ast.NamedType
+import io.ygdrasil.wgsl.ast.OverrideDecl
+import io.ygdrasil.wgsl.ast.PointerType
+import io.ygdrasil.wgsl.ast.ReferenceType
+import io.ygdrasil.wgsl.ast.ReturnStatement
+import io.ygdrasil.wgsl.ast.ScalarType
+import io.ygdrasil.wgsl.ast.Statement
+import io.ygdrasil.wgsl.ast.StructDecl
+import io.ygdrasil.wgsl.ast.StructType
+import io.ygdrasil.wgsl.ast.SwitchBody
+import io.ygdrasil.wgsl.ast.SwitchStatement
+import io.ygdrasil.wgsl.ast.SwizzleExpr
+import io.ygdrasil.wgsl.ast.TemplateType
+import io.ygdrasil.wgsl.ast.TernaryExpr
+import io.ygdrasil.wgsl.ast.TranslationUnit
+import io.ygdrasil.wgsl.ast.TypeAliasDecl
+import io.ygdrasil.wgsl.ast.TypeCastExpr
+import io.ygdrasil.wgsl.ast.TypeDecl
+import io.ygdrasil.wgsl.ast.UnaryExpr
+import io.ygdrasil.wgsl.ast.VariableDecl
+import io.ygdrasil.wgsl.ast.VariableDeclStatement
+import io.ygdrasil.wgsl.ast.VectorType
+import io.ygdrasil.wgsl.ast.WhileStatement
 
 /**
  * Performs topological sorting of WGSL module declarations to handle forward references.

@@ -1,17 +1,13 @@
 package io.ygdrasil.wgsl.parser
 
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.booleans.shouldBeFalse
-import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.ygdrasil.wgsl.ast.FunctionDecl
-import io.ygdrasil.wgsl.ast.ScalarKind
 import io.ygdrasil.wgsl.ast.StructDecl
 import io.ygdrasil.wgsl.ast.VariableDecl
 import io.ygdrasil.wgsl.ast.VariableDeclKind
 import io.ygdrasil.wgsl.lexer.Lexer
-import io.ygdrasil.wgsl.ir.Span
 
 class IntegrationTest : FunSpec({
     test("parse and resolve: empty function") {

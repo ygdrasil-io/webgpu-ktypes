@@ -2,10 +2,10 @@ package io.ygdrasil.wgsl.parser
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.ygdrasil.wgsl.ast.MatrixType
 import io.ygdrasil.wgsl.ast.ScalarKind
 import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.VectorType
-import io.ygdrasil.wgsl.ast.MatrixType
 import io.ygdrasil.wgsl.ir.Span
 
 class BuilderTest : FunSpec({

@@ -1,6 +1,15 @@
 package io.ygdrasil.wgsl.parser
 
-import io.ygdrasil.wgsl.ast.*
+import io.ygdrasil.wgsl.ast.FunctionDecl
+import io.ygdrasil.wgsl.ast.GlobalDecl
+import io.ygdrasil.wgsl.ast.OverrideDecl
+import io.ygdrasil.wgsl.ast.ScalarKind
+import io.ygdrasil.wgsl.ast.ScalarType
+import io.ygdrasil.wgsl.ast.StructDecl
+import io.ygdrasil.wgsl.ast.TranslationUnit
+import io.ygdrasil.wgsl.ast.TypeAliasDecl
+import io.ygdrasil.wgsl.ast.VariableDecl
+import io.ygdrasil.wgsl.ast.VariableDeclKind
 
 /**
  * Index of all types and values declared in a WGSL module.

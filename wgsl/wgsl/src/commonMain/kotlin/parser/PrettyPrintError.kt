@@ -1,7 +1,6 @@
 package io.ygdrasil.wgsl.parser
 
 import io.ygdrasil.wgsl.ir.Span
-import io.ygdrasil.wgsl.ir.SourceLocation
 
 /**
  * Formats diagnostics for human-readable output.
