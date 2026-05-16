@@ -28,12 +28,12 @@ sealed class ExpressionKind {
     data class Literal(val value: LiteralValue) : ExpressionKind()
 
     // Variable access
-    data class Variable(val variable: Handle<GlobalVariable>) : ExpressionKind()
-    data class LocalVariable(val variable: Handle<LocalVariable>) : ExpressionKind()
+    data class GlobalVar(val handle: Handle<io.ygdrasil.wgsl.ir.GlobalVariable>) : ExpressionKind()
+    data class LocalVar(val handle: Handle<io.ygdrasil.wgsl.ir.LocalVariable>) : ExpressionKind()
     data class FunctionArgument(val index: Int) : ExpressionKind()
 
     // Type constructors
-    data class TypeConstructor(val type: Handle<Type>, val arguments: List<Handle<Expression>>) : ExpressionKind()
+    data class TypeConstructor(val type: Handle<io.ygdrasil.wgsl.ir.Type>, val arguments: List<Handle<Expression>>) : ExpressionKind()
 
     // Unary operations
     data class Unary(val operator: UnaryOperator, val expr: Handle<Expression>) : ExpressionKind()
@@ -51,7 +51,7 @@ sealed class ExpressionKind {
 
     // Function calls
     data class Call(
-        val function: Handle<Function>,
+        val function: Handle<io.ygdrasil.wgsl.ir.Function>,
         val arguments: List<Handle<Expression>>
     ) : ExpressionKind()
 
@@ -62,7 +62,7 @@ sealed class ExpressionKind {
     ) : ExpressionKind()
 
     // Constant access
-    data class Constant(val constant: Handle<Constant>) : ExpressionKind()
+    data class ConstantExpr(val handle: Handle<io.ygdrasil.wgsl.ir.Constant>) : ExpressionKind()
 
     // Load from pointer
     data class Load(val pointer: Handle<Expression>) : ExpressionKind()
@@ -196,7 +196,6 @@ sealed class LiteralValue {
     data class Scalar(val value: ScalarValue) : LiteralValue()
     data class Vector(val components: List<ScalarValue>) : LiteralValue()
     data class Matrix(val columns: List<List<ScalarValue>>) : LiteralValue()
-    data class Bool(val value: Boolean) : LiteralValue()
 }
 
 /**
@@ -204,11 +203,18 @@ sealed class LiteralValue {
  */
 @Serializable
 sealed class ScalarValue {
-    data class Sint(val value: Int) : ScalarValue()
-    data class Uint(val value: Int) : ScalarValue()
-    data class S64(val value: Long) : ScalarValue()
-    data class U64(val value: Long) : ScalarValue()
+    data class Bool(val value: Boolean) : ScalarValue()
+    data class I8(val value: Byte) : ScalarValue()
+    data class U8(val value: Short) : ScalarValue()
+    data class I16(val value: Short) : ScalarValue()
+    data class U16(val value: Int) : ScalarValue()
+    data class I32(val value: Int) : ScalarValue()
+    data class U32(val value: Long) : ScalarValue()
+    data class I64(val value: Long) : ScalarValue()
+    data class U64(val value: ULong) : ScalarValue()
+    data class F16(val value: Float) : ScalarValue()
     data class F32(val value: Float) : ScalarValue()
     data class F64(val value: Double) : ScalarValue()
-    data class Bool(val value: Boolean) : ScalarValue()
+    data class AbstractInt(val value: Long) : ScalarValue()
+    data class AbstractFloat(val value: Double) : ScalarValue()
 }

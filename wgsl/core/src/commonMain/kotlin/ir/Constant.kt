@@ -59,7 +59,7 @@ sealed class ConstantInner {
     /**
      * A constant expression that needs to be evaluated.
      */
-    data class Expression(val expr: Handle<Expression>) : ConstantInner()
+    data class Expression(val expr: Handle<io.ygdrasil.wgsl.ir.Expression>) : ConstantInner()
 
     override fun toString(): String = when (this) {
         is Scalar -> value.toString()
