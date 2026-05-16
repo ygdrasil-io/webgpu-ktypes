@@ -72,10 +72,10 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 #### Core Language
 - [x] `const-exprs.wgsl` - Expressions constantes
 - [ ] `conv-bvec.wgsl` - Conversion de vecteurs booléens (Non trouvé dans Naga)
-- [ ] `entry-point-args.wgsl` - Arguments des points d'entrée (Remplacé par separate-entry-points.wgsl)
+- [x] `const_assert.wgsl` - Assertions de compilation
 - [x] `separate-entry-points.wgsl` - Points d'entrée séparés
 - [x] `globals.wgsl` - Variables globales
-- [ ] `local-variable.wgsl` - Variables locales (Remplacé par local-const.wgsl ou functions.wgsl)
+- [x] `local-const.wgsl` - Constantes locales (Remplacé local-variable.wgsl)
 - [ ] `matrix.wgsl` - Opérations matricielles (Remplacé par math-functions.wgsl)
 - [x] `pointers.wgsl` - Pointeurs
 - [ ] `structs.wgsl` - Structures (Remplacé par struct-layout.wgsl)
@@ -84,8 +84,10 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 #### Expressions
 - [x] `access.wgsl` - Accès aux membres
 - [ ] `arithmetic.wgsl` - Opérations arithmétiques (Remplacé par math-functions.wgsl)
-- [ ] `array.wgsl` - Opérations sur les tableaux (Remplacé par constructors.wgsl ou functions.wgsl)
+- [x] `array-in-ctor.wgsl` - Tableaux dans les constructeurs
 - [x] `bits.wgsl` - Opérations binaires (bitwise)
+- [x] `bitcast.wgsl` - Opérations de bitcast
+- [x] `operators.wgsl` - Opérateurs généraux
 - [ ] `bool.wgsl` - Opérations booléennes (Inclus dans d'autres tests)
 - [ ] `builtin.wgsl` - Fonctions builtin (Remplacé par math-functions.wgsl)
 - [ ] `comparison.wgsl` - Comparaisons (Inclus dans d'autres tests)
@@ -93,7 +95,7 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 - [x] `conversions.wgsl` - Conversions et initialisations (init.wgsl)
 
 #### Control Flow
-- [ ] `break-continue-return.wgsl` - break, continue, return (Inclus dans control-flow.wgsl)
+- [x] `break-if.wgsl` - break if (boucle loop)
 - [x] `control-flow.wgsl` - Flux de contrôle général
 - [ ] `discard.wgsl` - Instruction discard (Inclus dans d'autres tests)
 - [ ] `for.wgsl` - Boucles for (Inclus dans control-flow.wgsl)
@@ -103,24 +105,29 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 - [ ] `while.wgsl` - Boucles while (Inclus dans control-flow.wgsl)
 
 #### Shader Stages
-- [ ] `compute.wgsl` - Shaders compute (Inclus dans separate-entry-points.wgsl)
-- [ ] `fragment.wgsl` - Shaders fragment (Inclus dans separate-entry-points.wgsl)
-- [ ] `vertex.wgsl` - Shaders vertex (Inclus dans separate-entry-points.wgsl)
+- [x] `separate-entry-points.wgsl` - Couvre Vertex, Fragment, Compute
+- [ ] `compute.wgsl` - Inclus dans separate-entry-points.wgsl
+- [ ] `fragment.wgsl` - Inclus dans separate-entry-points.wgsl
+- [ ] `vertex.wgsl` - Inclus dans separate-entry-points.wgsl
 
 #### Avancé
 - [x] `atomicOps.wgsl` - Opérations atomiques
 - [x] `binding-arrays.wgsl` - Bindings de ressources
-- [ ] `derivative.wgsl` - Dérivées
+- [x] `derivative.wgsl` - Dérivées (standard.wgsl)
 - [x] `image.wgsl` - Accès aux images
 - [x] `interpolate.wgsl` - Interpolation
-- [ ] `modf.wgsl` - Fonction modf
-- [ ] `packing.wgsl` - Packing/unpacking
-- [ ] `sampler.wgsl` - Échantillonnage
-- [ ] `storage-class.wgsl` - Classes de stockage
+- [x] `modf.wgsl` - Fonction modf (math-functions.wgsl)
+- [x] `packed-vec3-bitcast.wgsl` - Packing (remplace packing.wgsl)
+- [x] `sample-cube-array-depth-lod.wgsl` - Échantillonnage (remplace sampler.wgsl)
+- [x] `push-constants.wgsl` - Classes de stockage (push_constant)
 - [x] `struct-layout.wgsl` - Layout des structures
 - [x] `storage-textures.wgsl` - Accès aux textures
 - [x] `type-alias.wgsl` - Alias de type
 - [x] `workgroup-uniform-load.wgsl` - Variables de workgroup
+- [x] `abstract-types-const.wgsl` - Types abstraits (const)
+- [x] `abstract-types-texture.wgsl` - Types abstraits (texture)
+- [x] `overrides.wgsl` - Constantes de spécialisation
+- [x] `lexical-scopes.wgsl` - Portées lexicales
 
 ### Génération Initiale des Golden Files
 - [x] Copier les fichiers WGSL depuis Rust
