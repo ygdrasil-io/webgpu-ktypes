@@ -88,6 +88,7 @@ kotlin {
             dependencies {
                 implementation(libs.kotest.runner.junit5)
                 implementation(libs.kotlin.reflect)
+                implementation(libs.logback.classic)
             }
         }
     }
@@ -114,7 +115,7 @@ tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
     testLogging {
         showExceptions = true
-        showStandardStreams = true
+        showStandardStreams = false
         events = setOf(
             org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
             org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED

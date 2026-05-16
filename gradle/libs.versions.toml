@@ -9,6 +9,8 @@ kotlin = "2.3.21"
 agp = "8.12.3"
 coroutines = "1.10.2"
 kotlinpoet = "2.3.0"
+kotlin-logging = "7.0.4"
+logback = "1.5.16"
 
 # Tests
 kotest = "6.1.11"
@@ -23,6 +25,8 @@ webidl-util = { module = "de.fabmax:webidl-util", version.ref = "webidl-util" }
 wgpu-specs = { module = "io.ygdrasil:wgpu4k-native-specs-jvm", version.ref = "wgpu4k-native" }
 kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlin-logging" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 # LLM
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }

@@ -122,5 +122,6 @@ private fun getExtension(backend: String): String = when (backend.lowercase()) {
     "hlsl" -> ".hlsl"
     "glsl" -> ".glsl"
     "wgsl" -> ".wgsl"
+    "ir" -> ".json"
     else -> ".txt"
 }
