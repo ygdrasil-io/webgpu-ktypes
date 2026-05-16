@@ -722,11 +722,13 @@ class Lexer(
         "const" -> TokenKind.CONST
         "var" -> TokenKind.VAR
         "type" -> TokenKind.TYPE
+        "alias" -> TokenKind.ALIAS
         "struct" -> TokenKind.STRUCT
         "const_assert" -> TokenKind.CONST_ASSERT
 
         // Type constructors
         "array" -> TokenKind.ARRAY
+        "ptr" -> TokenKind.PTR
         "mat" -> TokenKind.MAT
         "mat2x2" -> TokenKind.MAT
         "mat2x3" -> TokenKind.MAT

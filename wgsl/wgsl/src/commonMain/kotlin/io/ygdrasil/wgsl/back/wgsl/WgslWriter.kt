@@ -208,7 +208,13 @@ class WgslWriter(
             is TypeInner.Pointer -> {
                 val baseName = getTypeName(inner.base)
                 val space = inner.addressSpace.name.lowercase()
-                "ptr<$space, $baseName>"
+                val mode = when (inner.accessMode) {
+                    AccessMode.Read -> ", read"
+                    AccessMode.Write -> ", write"
+                    AccessMode.ReadWrite -> ", read_write"
+                    null -> ""
+                }
+                "ptr<$space, $baseName$mode>"
             }
             is TypeInner.Opaque -> inner.name
             else -> "/* unknown type */"

@@ -126,7 +126,7 @@ abstract class WriterBase<T : BackendOptions>(
             is Statement.Nop -> {}
             is Statement.Block -> {
                 writeLine("{")
-                indent { writeBlock(stmt.block as Handle<io.ygdrasil.wgsl.ir.Block>) }
+                indent { writeBlock(stmt.block) }
                 writeLine("}")
             }
             is Statement.Declare -> {
@@ -154,10 +154,10 @@ abstract class WriterBase<T : BackendOptions>(
             is Statement.If -> {
                 val cond = writeExpression(stmt.condition)
                 writeLine("if ($cond) {")
-                indent { writeBlock(stmt.accept as Handle<io.ygdrasil.wgsl.ir.Block>) }
+                indent { writeBlock(stmt.accept) }
                 if (stmt.reject != null) {
                     writeLine("} else {")
-                    indent { writeBlock(stmt.reject as Handle<io.ygdrasil.wgsl.ir.Block>) }
+                    indent { writeBlock(stmt.reject) }
                 }
                 writeLine("}")
             }
@@ -183,11 +183,11 @@ abstract class WriterBase<T : BackendOptions>(
             is Statement.Loop -> {
                 writeLine("while (true) {")
                 indent {
-                    writeBlock(stmt.body as Handle<io.ygdrasil.wgsl.ir.Block>)
+                    writeBlock(stmt.body)
                     if (stmt.continuing != null) {
                         // Continuing block is tricky in C-like languages
                         // For now we just write it at the end
-                        writeBlock(stmt.continuing as Handle<io.ygdrasil.wgsl.ir.Block>)
+                        writeBlock(stmt.continuing)
                     }
                 }
                 writeLine("}")

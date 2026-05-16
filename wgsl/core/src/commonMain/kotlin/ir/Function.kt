@@ -143,7 +143,7 @@ sealed class Statement {
     /**
      * Block of statements.
      */
-    data class Block(val block: Handle<Block>) : Statement()
+    data class Block(val block: Handle<io.ygdrasil.wgsl.ir.Block>) : Statement()
 
     /**
      * Variable declaration statement.
@@ -170,8 +170,8 @@ sealed class Statement {
      */
     data class If(
         val condition: Handle<Expression>,
-        val accept: Handle<Block>,
-        val reject: Handle<Block>? = null
+        val accept: Handle<io.ygdrasil.wgsl.ir.Block>,
+        val reject: Handle<io.ygdrasil.wgsl.ir.Block>? = null
     ) : Statement()
 
     /**
@@ -179,8 +179,8 @@ sealed class Statement {
      */
     data class Switch(
         val selector: Handle<Expression>,
-        val body: Handle<Block>,
-        val default: Handle<Block>? = null,
+        val body: Handle<io.ygdrasil.wgsl.ir.Block>,
+        val default: Handle<io.ygdrasil.wgsl.ir.Block>? = null,
         val cases: List<Case>
     ) : Statement()
 
@@ -188,8 +188,8 @@ sealed class Statement {
      * Loop statement.
      */
     data class Loop(
-        val body: Handle<Block>,
-        val continuing: Handle<Block>? = null
+        val body: Handle<io.ygdrasil.wgsl.ir.Block>,
+        val continuing: Handle<io.ygdrasil.wgsl.ir.Block>? = null
     ) : Statement()
 
     /**
@@ -231,7 +231,7 @@ data class Case(
     /**
      * The body of the case.
      */
-    val body: Handle<Block>,
+    val body: Handle<io.ygdrasil.wgsl.ir.Block>,
 )
 
 /**

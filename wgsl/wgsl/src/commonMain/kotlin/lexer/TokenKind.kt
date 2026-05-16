@@ -46,11 +46,13 @@ enum class TokenKind {
     TYPE,
     STRUCT,
     CONST_ASSERT,
+    ALIAS,
 
     // Keywords - Type constructors
     ARRAY,
     MAT,
     VEC,
+    PTR,
 
     // Keywords - Storage classes
     UNIFORM,
@@ -219,9 +221,9 @@ val TokenKind.isKeyword: Boolean
         TokenKind.LOOP, TokenKind.WHILE, TokenKind.FOR, TokenKind.BREAK, TokenKind.CONTINUE,
         TokenKind.RETURN, TokenKind.DISCARD, TokenKind.CONTINUING -> true
         // Declarations
-        TokenKind.FN, TokenKind.LET, TokenKind.CONST, TokenKind.VAR, TokenKind.TYPE, TokenKind.STRUCT, TokenKind.CONST_ASSERT -> true
+        TokenKind.FN, TokenKind.LET, TokenKind.CONST, TokenKind.VAR, TokenKind.TYPE, TokenKind.STRUCT, TokenKind.CONST_ASSERT, TokenKind.ALIAS -> true
         // Type constructors
-        TokenKind.ARRAY, TokenKind.MAT, TokenKind.VEC -> true
+        TokenKind.ARRAY, TokenKind.MAT, TokenKind.VEC, TokenKind.PTR -> true
         // Storage classes
         TokenKind.UNIFORM, TokenKind.STORAGE, TokenKind.WORKGROUP, TokenKind.PRIVATE, TokenKind.FUNCTION -> true
         // Attributes

@@ -34,10 +34,12 @@ import io.ygdrasil.wgsl.ast.MemberAccessExpr
 import io.ygdrasil.wgsl.ast.NamedType
 import io.ygdrasil.wgsl.ast.OverrideDecl
 import io.ygdrasil.wgsl.ast.Param
+import io.ygdrasil.wgsl.ast.PointerType
 import io.ygdrasil.wgsl.ast.ReturnStatement
 import io.ygdrasil.wgsl.ast.ScalarKind
 import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.Statement
+import io.ygdrasil.wgsl.ast.StorageClass
 import io.ygdrasil.wgsl.ast.StringLiteral
 import io.ygdrasil.wgsl.ast.StructDecl
 import io.ygdrasil.wgsl.ast.StructMember
@@ -202,7 +204,7 @@ class Parser(
             TokenKind.FN -> parseFunctionDecl(attributes)
             TokenKind.STRUCT -> parseStructDecl(attributes)
             TokenKind.LET, TokenKind.CONST, TokenKind.VAR -> parseVariableDecl(attributes)
-            TokenKind.TYPE -> parseTypeAliasDecl(attributes)
+            TokenKind.TYPE, TokenKind.ALIAS -> parseTypeAliasDecl(attributes)
             TokenKind.OVERRIDE -> parseOverrideDecl(attributes)
             TokenKind.CONST_ASSERT -> parseConstAssertDecl()
             else -> {
@@ -460,8 +462,12 @@ class Parser(
     private fun parseTypeAliasDecl(attributes: List<Attribute> = emptyList()): TypeAliasDecl {
         val start = attributes.firstOrNull()?.span ?: currentToken.span
 
-        // Consume 'type'
-        expectOrError(TokenKind.TYPE, "Expected 'type'")
+        // Consume 'type' or 'alias'
+        if (currentKind() == TokenKind.TYPE || currentKind() == TokenKind.ALIAS) {
+            advance()
+        } else {
+            error("Expected 'type' or 'alias'")
+        }
 
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
@@ -829,6 +835,11 @@ class Parser(
                 return parseArrayType(start)
             }
 
+            TokenKind.PTR -> {
+                advance()
+                return parsePointerType(start)
+            }
+
             TokenKind.IDENTIFIER -> {
                 val nameToken = advance()
                 return NamedType(nameToken.literal ?: "", nameToken.span)
@@ -923,6 +934,46 @@ class Parser(
 
         val end = previousToken?.span?.end ?: currentToken.span.end
         return ArrayType(elementType, length, stride, Span(start.start, end))
+    }
+
+    /**
+     * Parses a pointer type like `ptr<function, i32>`.
+     */
+    private fun parsePointerType(start: Span): PointerType {
+        expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
+
+        // Storage class
+        val storageClassToken = advance()
+        val storageClass = when (storageClassToken.literal ?: storageClassToken.kind.name.lowercase()) {
+            "function" -> StorageClass.FUNCTION
+            "private" -> StorageClass.PRIVATE
+            "workgroup" -> StorageClass.WORKGROUP
+            "uniform" -> StorageClass.UNIFORM
+            "storage" -> StorageClass.STORAGE
+            "handle" -> StorageClass.HANDLE
+            else -> {
+                error("Unknown storage class: ${storageClassToken.literal}")
+                StorageClass.PRIVATE
+            }
+        }
+
+        expectOrError(TokenKind.COMMA, "Expected ','")
+
+        // Element type
+        val elementType = parseTypeDecl()
+
+        // Optional access mode
+        var accessMode: String? = null
+        if (currentKind() == TokenKind.COMMA) {
+            advance()
+            val accessModeToken = advance()
+            accessMode = accessModeToken.literal ?: accessModeToken.kind.name.lowercase()
+        }
+
+        expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
+
+        val end = previousToken?.span?.end ?: currentToken.span.end
+        return PointerType(storageClass, elementType, accessMode, Span(start.start, end))
     }
 
     /**

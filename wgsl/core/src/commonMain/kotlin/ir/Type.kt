@@ -55,7 +55,7 @@ sealed class TypeInner : Equatable {
     data class Struct(val members: List<StructMember>) : TypeInner()
 
     // Pointer types
-    data class Pointer(val base: Handle<Type>, val addressSpace: AddressSpace) : TypeInner()
+    data class Pointer(val base: Handle<Type>, val addressSpace: AddressSpace, val accessMode: AccessMode? = null) : TypeInner()
 
     // Value pointer types (WGSL extension)
     data class ValuePointer(val base: Handle<Type>) : TypeInner()

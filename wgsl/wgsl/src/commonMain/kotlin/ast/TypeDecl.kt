@@ -105,6 +105,8 @@ data class PointerType(
     val storageClass: StorageClass,
     /** The type being pointed to. */
     val elementType: TypeDecl,
+    /** The access mode (optional). */
+    val accessMode: String? = null,
     override val span: Span,
 ) : TypeDecl()
 

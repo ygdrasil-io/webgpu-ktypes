@@ -2,26 +2,40 @@
 
 fn add_f32(a: f32, b: f32) -> f32 {
     
+    return (a + b);
 }
 
 fn sub_f32(a: f32, b: f32) -> f32 {
     
+    return (a - b);
 }
 
 fn mul_f32(a: f32, b: f32) -> f32 {
     
+    return (a * b);
 }
 
 fn div_f32(a: f32, b: f32) -> f32 {
     
+    return (a / b);
 }
 
 fn rem_f32(a: f32, b: f32) -> f32 {
     
+    return (a % b);
 }
 
 fn vs_main(pos: vec2<f32>) -> vec4<f32> {
+    f32 local_0 = add_f32(pos[0], pos[0]);
+    f32 local_1 = sub_f32(pos[0], pos[0]);
+    f32 local_2 = mul_f32(pos[0], pos[0]);
+    f32 local_3 = div_f32(pos[0], pos[0]);
     
+    f32 local_0 = add_f32(pos[0], pos[0]);
+    f32 local_1 = sub_f32(pos[0], pos[0]);
+    f32 local_2 = mul_f32(pos[0], pos[0]);
+    f32 local_3 = div_f32(pos[0], pos[0]);
+    return f32(local_0, local_1, local_2, local_3);
 }
 
 @vertex
