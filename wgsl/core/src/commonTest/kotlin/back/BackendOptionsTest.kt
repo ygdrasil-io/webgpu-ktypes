@@ -1,45 +1,41 @@
 package io.ygdrasil.wgsl.back
 
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.ygdrasil.wgsl.valid.Capabilities
 import io.ygdrasil.wgsl.valid.ShaderStages
 import io.ygdrasil.wgsl.valid.ValidationFlags
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
-class BackendOptionsTest {
+class BackendOptionsTest : FunSpec({
 
-    @Test
-    fun testMslOptionsDefaults() {
+    test("MslOptions defaults") {
         val options = MslOptions()
-        assertEquals("    ", options.indent)
-        assertEquals("\n", options.newline)
-        assertEquals("2.3", options.version)
-        assertEquals("MSL", options.languageName)
-        assertEquals(".metal", options.fileExtension)
+        options.indent shouldBe "    "
+        options.newline shouldBe "\n"
+        options.version shouldBe "2.3"
+        options.languageName shouldBe "MSL"
+        options.fileExtension shouldBe ".metal"
     }
 
-    @Test
-    fun testHlslOptionsDefaults() {
+    test("HlslOptions defaults") {
         val options = HlslOptions()
-        assertEquals("    ", options.indent)
-        assertEquals("6.0", options.version)
-        assertEquals("HLSL", options.languageName)
+        options.indent shouldBe "    "
+        options.version shouldBe "6.0"
+        options.languageName shouldBe "HLSL"
     }
 
-    @Test
-    fun testGlslOptionsDefaults() {
+    test("GlslOptions defaults") {
         val options = GlslOptions()
-        assertEquals("    ", options.indent)
-        assertEquals("450", options.version)
-        assertEquals(GlslProfile.CORE, options.profile)
+        options.indent shouldBe "    "
+        options.version shouldBe "450"
+        options.profile shouldBe GlslProfile.CORE
     }
 
-    @Test
-    fun testWgslOptionsDefaults() {
+    test("WgslOptions defaults") {
         val options = WgslOptions()
-        assertEquals("    ", options.indent)
-        assertEquals("WGSL", options.languageName)
-        assertTrue(options.capabilities.float64) // WGSL options default to all caps in my impl
+        options.indent shouldBe "    "
+        options.languageName shouldBe "WGSL"
+        options.capabilities.float64.shouldBeTrue() // WGSL options default to all caps in my impl
     }
-}
+})

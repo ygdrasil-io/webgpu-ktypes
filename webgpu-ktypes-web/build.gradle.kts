@@ -1,6 +1,8 @@
 plugins {
     publish
     kotlin("multiplatform")
+    alias(libs.plugins.kotest)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -40,8 +42,7 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(kotlin("test"))
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(libs.bundles.kotest)
             }
         }
 

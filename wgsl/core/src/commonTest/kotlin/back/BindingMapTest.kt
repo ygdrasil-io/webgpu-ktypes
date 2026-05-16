@@ -1,59 +1,56 @@
 package io.ygdrasil.wgsl.back
 
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.nulls.shouldBeNull
 import io.ygdrasil.wgsl.ir.Binding
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
-class BindingMapTest {
+class BindingMapTest : FunSpec({
 
-    @Test
-    fun testBindingMapInsertAndGet() {
+    test("BindingMap insert and get") {
         val map = BindingMap()
         val binding = Binding(group = 0, index = 1)
         val target = BindingMap.BindTarget(buffer = 2)
 
-        assertFalse(map.contains(binding))
-        assertNull(map[binding])
+        map.contains(binding).shouldBeFalse()
+        map[binding].shouldBeNull()
 
         map.insert(binding, target)
 
-        assertTrue(map.contains(binding))
-        assertEquals(target, map[binding])
-        assertEquals(2, map[binding]?.buffer)
+        map.contains(binding).shouldBeTrue()
+        map[binding] shouldBe target
+        map[binding]?.buffer shouldBe 2
     }
 
-    @Test
-    fun testBindingMapClear() {
+    test("BindingMap clear") {
         val map = BindingMap()
         val binding = Binding(group = 0, index = 1)
         val target = BindingMap.BindTarget(buffer = 2)
 
         map.insert(binding, target)
-        assertTrue(map.contains(binding))
+        map.contains(binding).shouldBeTrue()
 
         map.clear()
-        assertFalse(map.contains(binding))
-        assertNull(map[binding])
+        map.contains(binding).shouldBeFalse()
+        map[binding].shouldBeNull()
     }
 
-    @Test
-    fun testBindTargetDefaultValues() {
+    test("BindTarget default values") {
         val target = BindingMap.BindTarget()
-        assertNull(target.buffer)
-        assertNull(target.texture)
-        assertNull(target.sampler)
-        assertFalse(target.mutable)
+        target.buffer.shouldBeNull()
+        target.texture.shouldBeNull()
+        target.sampler.shouldBeNull()
+        target.mutable.shouldBeFalse()
     }
 
-    @Test
-    fun testBindTargetCustomValues() {
+    test("BindTarget custom values") {
         val target = BindingMap.BindTarget(buffer = 1, texture = 2, sampler = 3, mutable = true)
-        assertEquals(1, target.buffer)
-        assertEquals(2, target.texture)
-        assertEquals(3, target.sampler)
-        assertTrue(target.mutable)
+        target.buffer shouldBe 1
+        target.texture shouldBe 2
+        target.sampler shouldBe 3
+        target.mutable.shouldBeTrue()
     }
-}
+})

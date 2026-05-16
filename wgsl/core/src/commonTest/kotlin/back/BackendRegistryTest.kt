@@ -1,15 +1,14 @@
 package io.ygdrasil.wgsl.back
 
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.shouldNotBe
 import io.ygdrasil.wgsl.ir.Module
 import io.ygdrasil.wgsl.valid.ModuleInfo
-import kotlin.test.Test
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
-class BackendRegistryTest {
+class BackendRegistryTest : FunSpec({
 
-    @Test
-    fun testListBackendNames() {
+    test("list backend names") {
         val registry = BackendRegistry()
         registry.register("msl", object : BackendRegistry.BackendFactory {
             override fun create(): BackendWriter<*> = object : BackendWriter<MslOptions> {
@@ -21,11 +20,10 @@ class BackendRegistryTest {
         })
         
         val names = registry.listBackendNames()
-        assertTrue(names.contains("msl"))
+        names shouldContain "msl"
     }
 
-    @Test
-    fun testGetBackend() {
+    test("get backend") {
         val registry = BackendRegistry()
         registry.register("msl", object : BackendRegistry.BackendFactory {
             override fun create(): BackendWriter<*> = object : BackendWriter<MslOptions> {
@@ -37,6 +35,6 @@ class BackendRegistryTest {
         })
         
         val mslBackend = registry.get("msl")
-        assertNotNull(mslBackend)
+        mslBackend shouldNotBe null
     }
-}
+})
