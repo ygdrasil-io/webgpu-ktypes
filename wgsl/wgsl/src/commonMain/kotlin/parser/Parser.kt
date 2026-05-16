@@ -847,7 +847,7 @@ class Parser(
 
             else -> {
                 error("Expected a type, found ${currentKind()}")
-                val dummy = NamedType("", start)
+                val dummy = NamedType("error_type", start)
                 advance()
                 return dummy
             }

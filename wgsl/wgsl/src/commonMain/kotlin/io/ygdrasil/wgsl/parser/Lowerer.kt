@@ -102,6 +102,25 @@ class Lowerer {
                     lowerAddressSpace(typeDecl.storageClass),
                     lowerAccessModeText(typeDecl.accessMode)
                 )
+                is NamedType -> {
+                    val name = typeDecl.name
+                    when {
+                        name == "f32" -> IrTypeInner.Scalar(IrScalarKind.F32, 4)
+                        name == "i32" -> IrTypeInner.Scalar(IrScalarKind.Sint, 4)
+                        name == "u32" -> IrTypeInner.Scalar(IrScalarKind.Uint, 4)
+                        name == "bool" -> IrTypeInner.Scalar(IrScalarKind.Bool, 1)
+                        name.startsWith("vec") -> {
+                            val size = name.substring(3, 4).toIntOrNull() ?: 4
+                            IrTypeInner.Vector(lowerVectorSize(size), module.types.append(IrType(IrTypeInner.Scalar(IrScalarKind.F32, 4))))
+                        }
+                        name.startsWith("mat") -> {
+                            val cols = name.substring(3, 4).toIntOrNull() ?: 4
+                            val rows = name.substring(5, 6).toIntOrNull() ?: 4
+                            IrTypeInner.Matrix(lowerVectorSize(cols), lowerVectorSize(rows), module.types.append(IrType(IrTypeInner.Scalar(IrScalarKind.F32, 4))))
+                        }
+                        else -> IrTypeInner.Scalar(IrScalarKind.F32, 4)
+                    }
+                }
                 else -> IrTypeInner.Scalar(IrScalarKind.F32, 4)
             }
             module.types.append(IrType(inner))
@@ -331,8 +350,23 @@ class Lowerer {
                 }
             }
             is MemberAccessExpr -> {
-                // Simplified: assume index 0 for now as we don't have full type info here
-                IrExpressionKind.Access(lowerExpression(astExpr.objectExpr), 0)
+                // For now, assume it's a struct access and we use a dummy index 0
+                // Ideally we should lookup the member index in the type
+                IrExpressionKind.AccessIndex(lowerExpression(astExpr.objectExpr), 0)
+            }
+            is IndexExpr -> {
+                val indexExpr = astExpr.indexExpr
+                if (indexExpr is IntLiteral) {
+                    IrExpressionKind.AccessIndex(
+                        lowerExpression(astExpr.objectExpr),
+                        indexExpr.value.toInt()
+                    )
+                } else {
+                    IrExpressionKind.Access(
+                        lowerExpression(astExpr.objectExpr),
+                        lowerExpression(indexExpr)
+                    )
+                }
             }
             else -> IrExpressionKind.Literal(IrLiteralValue.Scalar(IrScalarValue.I32(0)))
         }

@@ -80,14 +80,14 @@ sealed class ExpressionKind {
     // Store to pointer
     data class Store(val pointer: Handle<Expression>, val value: Handle<Expression>) : ExpressionKind()
 
-    // Access index
-    data class AccessIndex(
+    // Access index (dynamic or constant)
+    data class Access(
         val expr: Handle<Expression>,
-        val index: Int
+        val index: Handle<Expression>
     ) : ExpressionKind()
 
-    // Access member
-    data class Access(
+    // Access constant index (for structs or optimized constant access)
+    data class AccessIndex(
         val expr: Handle<Expression>,
         val index: Int
     ) : ExpressionKind()

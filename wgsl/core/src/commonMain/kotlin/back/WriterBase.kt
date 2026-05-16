@@ -91,13 +91,6 @@ abstract class WriterBase<T : BackendOptions>(
         writeFunctionSignature(func, name)
         writeLine(" {")
         indent {
-            func.localVariables.forEachWithHandle { vHandle, variable ->
-                val varName = getLocalVariableName(vHandle)
-                val typeName = getTypeName(variable.type)
-                val init = variable.init?.let { " = ${writeExpression(it)}" } ?: ""
-                writeLine("$typeName $varName$init;")
-            }
-            writeLine()
             writeBlock(func.body)
         }
         writeLine("}")
@@ -243,10 +236,6 @@ abstract class WriterBase<T : BackendOptions>(
             }
             is ExpressionKind.AccessIndex -> {
                 val e = writeExpression(kind.expr)
-                "$e[${kind.index}]"
-            }
-            is ExpressionKind.Access -> {
-                val e = writeExpression(kind.expr)
                 val type = getExpressionType(kind.expr)
                 if (type.inner is TypeInner.Struct) {
                     val member = type.inner.members[kind.index]
@@ -254,6 +243,11 @@ abstract class WriterBase<T : BackendOptions>(
                 } else {
                     "$e[${kind.index}]"
                 }
+            }
+            is ExpressionKind.Access -> {
+                val e = writeExpression(kind.expr)
+                val i = writeExpression(kind.index)
+                "$e[$i]"
             }
             is ExpressionKind.Swizzle -> {
                 val e = writeExpression(kind.vector)
@@ -373,17 +367,17 @@ abstract class WriterBase<T : BackendOptions>(
             is ExpressionKind.LocalVar -> currentFunction!!.localVariables[kind.handle].type.let { module.types[it] }
             is ExpressionKind.GlobalVar -> module.globalVariables[kind.handle].type.let { module.types[it] }
             is ExpressionKind.FunctionArgument -> currentFunction!!.parameters[kind.index].type.let { module.types[it] }
-            is ExpressionKind.Access -> {
+            is ExpressionKind.AccessIndex -> {
                 val baseType = getExpressionType(kind.expr)
                 when (val inner = baseType.inner) {
                     is TypeInner.Struct -> module.types[inner.members[kind.index].type]
                     is TypeInner.Vector -> module.types[inner.scalar]
-                    is TypeInner.Matrix -> module.types[inner.scalar] // Should be vector, but let's stay simple
+                    is TypeInner.Matrix -> module.types[inner.scalar] // Should be vector
                     is TypeInner.Array -> module.types[inner.element]
                     else -> Type(TypeInner.Error)
                 }
             }
-            is ExpressionKind.AccessIndex -> {
+            is ExpressionKind.Access -> {
                 val baseType = getExpressionType(kind.expr)
                 when (val inner = baseType.inner) {
                     is TypeInner.Vector -> module.types[inner.scalar]

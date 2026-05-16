@@ -119,27 +119,31 @@ class GlslWriter(
         writeLine()
         val func = module.functions[ep.function]
         
-        // 1. Generate inputs (in)
-        ep.bindings.forEach { attr ->
-            // Note: in a real implementation, we should check if it's input or output
-            // For now, assume attributes on parameters are inputs
-        }
+        // 1. Generate inputs (in) and outputs (out) for the entry point
+        // In GLSL 450, we use layout(location = X) in/out
         
-        // This is a bit complex to do right without more metadata in EntryPoint.
-        // Let's try a simpler approach for now to make tests pass.
+        // This is a placeholder for a more complete implementation
+        if (ep.stage == ShaderStage.Vertex) {
+             // Position is builtin gl_Position
+        } else if (ep.stage == ShaderStage.Fragment) {
+             writeLine("layout(location = 0) out vec4 outColor;")
+        }
         
         writeLine("void main() {")
         indent {
             // Mapping inputs to parameters and calling the function
             val args = mutableListOf<String>()
-            // TODO: map real inputs. For now just use defaults or dummy
-            func.parameters.forEach { _ -> args.add("vec4(0.0)") } // stub
+            
+            func.parameters.forEach { param ->
+                // For now, use dummy arguments or try to map from inputs
+                val typeName = getTypeName(param.type)
+                args.add("$typeName(0.0)") 
+            }
             
             val call = "${func.name}(${args.joinToString()})"
             if (ep.stage == ShaderStage.Vertex) {
                 writeLine("gl_Position = $call;")
             } else if (ep.stage == ShaderStage.Fragment) {
-                // Fragment might return color to loc 0
                 writeLine("outColor = $call;")
             } else {
                 writeLine("$call;")
