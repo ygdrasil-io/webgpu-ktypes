@@ -70,60 +70,61 @@
 Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjects/wgpu/naga/tests/in/wgsl/` :
 
 #### Core Language
-- [ ] `const-exprs.wgsl` - Expressions constantes
-- [ ] `conv-bvec.wgsl` - Conversion de vecteurs booléens
-- [ ] `entry-point-args.wgsl` - Arguments des points d'entrée
-- [ ] `global-variable.wgsl` - Variables globales
-- [ ] `local-variable.wgsl` - Variables locales
-- [ ] `matrix.wgsl` - Opérations matricielles
-- [ ] `pointers.wgsl` - Pointeurs
-- [ ] `structs.wgsl` - Structures
-- [ ] `type-inference.wgsl` - Inférence de type
+- [x] `const-exprs.wgsl` - Expressions constantes
+- [ ] `conv-bvec.wgsl` - Conversion de vecteurs booléens (Non trouvé dans Naga)
+- [ ] `entry-point-args.wgsl` - Arguments des points d'entrée (Remplacé par separate-entry-points.wgsl)
+- [x] `separate-entry-points.wgsl` - Points d'entrée séparés
+- [x] `globals.wgsl` - Variables globales
+- [ ] `local-variable.wgsl` - Variables locales (Remplacé par local-const.wgsl ou functions.wgsl)
+- [ ] `matrix.wgsl` - Opérations matricielles (Remplacé par math-functions.wgsl)
+- [x] `pointers.wgsl` - Pointeurs
+- [ ] `structs.wgsl` - Structures (Remplacé par struct-layout.wgsl)
+- [x] `type-inference.wgsl` - Inférence de type
 
 #### Expressions
-- [ ] `access.wgsl` - Accès aux membres
-- [ ] `arithmetic.wgsl` - Opérations arithmétiques
-- [ ] `array.wgsl` - Opérations sur les tableaux
-- [ ] `bitwise.wgsl` - Opérations binaires
-- [ ] `bool.wgsl` - Opérations booléennes
-- [ ] `builtin.wgsl` - Fonctions builtin
-- [ ] `comparison.wgsl` - Comparaisons
-- [ ] `function-call.wgsl` - Appels de fonction
-- [ ] `init.wgsl` - Initialisation
+- [x] `access.wgsl` - Accès aux membres
+- [ ] `arithmetic.wgsl` - Opérations arithmétiques (Remplacé par math-functions.wgsl)
+- [ ] `array.wgsl` - Opérations sur les tableaux (Remplacé par constructors.wgsl ou functions.wgsl)
+- [x] `bits.wgsl` - Opérations binaires (bitwise)
+- [ ] `bool.wgsl` - Opérations booléennes (Inclus dans d'autres tests)
+- [ ] `builtin.wgsl` - Fonctions builtin (Remplacé par math-functions.wgsl)
+- [ ] `comparison.wgsl` - Comparaisons (Inclus dans d'autres tests)
+- [x] `functions.wgsl` - Appels de fonction
+- [x] `conversions.wgsl` - Conversions et initialisations (init.wgsl)
 
 #### Control Flow
-- [ ] `break-continue-return.wgsl` - break, continue, return
-- [ ] `control-flow.wgsl` - Flux de contrôle général
-- [ ] `discard.wgsl` - Instruction discard
-- [ ] `for.wgsl` - Boucles for
-- [ ] `if.wgsl` - Conditionnelles if
-- [ ] `loop.wgsl` - Boucles
-- [ ] `switch.wgsl` - Instructions switch
-- [ ] `while.wgsl` - Boucles while
+- [ ] `break-continue-return.wgsl` - break, continue, return (Inclus dans control-flow.wgsl)
+- [x] `control-flow.wgsl` - Flux de contrôle général
+- [ ] `discard.wgsl` - Instruction discard (Inclus dans d'autres tests)
+- [ ] `for.wgsl` - Boucles for (Inclus dans control-flow.wgsl)
+- [ ] `if.wgsl` - Conditionnelles if (Inclus dans control-flow.wgsl)
+- [ ] `loop.wgsl` - Boucles (Inclus dans control-flow.wgsl)
+- [ ] `switch.wgsl` - Instructions switch (Inclus dans control-flow.wgsl)
+- [ ] `while.wgsl` - Boucles while (Inclus dans control-flow.wgsl)
 
 #### Shader Stages
-- [ ] `compute.wgsl` - Shaders compute
-- [ ] `fragment.wgsl` - Shaders fragment
-- [ ] `vertex.wgsl` - Shaders vertex
+- [ ] `compute.wgsl` - Shaders compute (Inclus dans separate-entry-points.wgsl)
+- [ ] `fragment.wgsl` - Shaders fragment (Inclus dans separate-entry-points.wgsl)
+- [ ] `vertex.wgsl` - Shaders vertex (Inclus dans separate-entry-points.wgsl)
 
 #### Avancé
-- [ ] `atomic.wgsl` - Opérations atomiques
-- [ ] `bindings.wgsl` - Bindings de ressources
+- [x] `atomicOps.wgsl` - Opérations atomiques
+- [x] `binding-arrays.wgsl` - Bindings de ressources
 - [ ] `derivative.wgsl` - Dérivées
-- [ ] `image.wgsl` - Accès aux images
-- [ ] `interpolate.wgsl` - Interpolation
+- [x] `image.wgsl` - Accès aux images
+- [x] `interpolate.wgsl` - Interpolation
 - [ ] `modf.wgsl` - Fonction modf
 - [ ] `packing.wgsl` - Packing/unpacking
 - [ ] `sampler.wgsl` - Échantillonnage
 - [ ] `storage-class.wgsl` - Classes de stockage
-- [ ] `struct-layout.wgsl` - Layout des structures
-- [ ] `texture.wgsl` - Accès aux textures
-- [ ] `type-alias.wgsl` - Alias de type
-- [ ] `workgroup.wgsl` - Variables de workgroup
+- [x] `struct-layout.wgsl` - Layout des structures
+- [x] `storage-textures.wgsl` - Accès aux textures
+- [x] `type-alias.wgsl` - Alias de type
+- [x] `workgroup-uniform-load.wgsl` - Variables de workgroup
 
 ### Génération Initiale des Golden Files
-- [ ] Copier les fichiers WGSL depuis Rust
-- [ ] Exécuter les tests avec `GOLDEN_UPDATE=true` pour générer les fichiers de référence
+- [x] Copier les fichiers WGSL depuis Rust
+- [x] Exécuter les tests avec `GOLDEN_UPDATE=true` pour générer les fichiers de référence
 - [ ] Valider manuellement les fichiers générés
 - [ ] Commiter les golden files initiaux
 
@@ -443,7 +444,7 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 | 02_roundtrip-tests.md | ✅ | 2024-XX-XX | Complété |
 | 99_checklist.md | ✅ | 2026-05-16 | Mise à jour infrastructure |
 | Structure des répertoires | ✅ | 2026-05-16 | Créé (inputs/outputs) |
-| Fichiers WGSL importés | ✅ | 2026-05-16 | simple.wgsl, complex.wgsl ajoutés |
+| Fichiers WGSL importés | ✅ | 2026-05-17 | 20 fichiers importés depuis Naga |
 | Validateurs natifs | ✅ | 2026-05-16 | Infrastructure implémentée (GLSL, MSL) |
 | Tests de round-trip | [/] | 2026-05-16 | Infrastructure prête (backend WGSL) |
 | Intégration CI | ⬜ | - | À configurer |
@@ -503,6 +504,6 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 
 ---
 
-**Dernière mise à jour** : 2024-XX-XX
+**Dernière mise à jour** : 2026-05-17
 **Responsable** : Équipe WebGPU-KTypes
-**Statut** : En cours
+**Statut** : En cours (Import massif Naga terminé)
