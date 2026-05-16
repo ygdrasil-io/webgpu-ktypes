@@ -1,8 +1,11 @@
 package io.ygdrasil.wgsl.tests.validator
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.io.BufferedReader
 import java.io.File
 import java.nio.file.Files
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Wrapper for Metal Shader Compiler (macOS only)
@@ -71,11 +74,11 @@ class MetalValidator : BackendValidator {
             val output = process.inputStream.bufferedReader().use { it.readText() }
             val exitCode = process.waitFor()
             if (exitCode != 0) {
-                println("[DEBUG_LOG] MetalValidator.isAvailable failed with exit code $exitCode. Output:\n$output")
+                logger.debug { "MetalValidator.isAvailable failed with exit code $exitCode. Output:\n$output" }
             }
             exitCode == 0
         } catch (e: Exception) {
-            println("[DEBUG_LOG] MetalValidator.isAvailable failed with exception: ${e.message}")
+            logger.debug(e) { "MetalValidator.isAvailable failed with exception: ${e.message}" }
             false
         }
     }

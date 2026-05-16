@@ -46,6 +46,7 @@ kotlin {
         jvmTest {
             dependencies {
                 implementation(libs.kotest.runner.junit5)
+                implementation(libs.kotlin.logging)
                 implementation(libs.logback.classic)
             }
         }

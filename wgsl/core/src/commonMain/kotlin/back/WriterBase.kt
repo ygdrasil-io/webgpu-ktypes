@@ -1,11 +1,14 @@
 package io.ygdrasil.wgsl.back
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ygdrasil.wgsl.arena.Handle
 import io.ygdrasil.wgsl.ir.*
 import io.ygdrasil.wgsl.ir.Function
 import io.ygdrasil.wgsl.proc.Layouter
 import io.ygdrasil.wgsl.proc.Namer
 import io.ygdrasil.wgsl.valid.ModuleInfo
+
+private val logger = KotlinLogging.logger {}
 
 /**
  * Classe de base pour tous les writers de backend.
@@ -77,9 +80,9 @@ abstract class WriterBase<T : BackendOptions>(
     }
 
     protected open fun writeFunctions() {
-        println("[DEBUG_LOG] Writing ${module.functions.size} functions")
+        logger.debug { "Writing ${module.functions.size} functions" }
         module.functions.forEachWithHandle { handle, func ->
-            println("[DEBUG_LOG] Writing function ${func.name}")
+            logger.debug { "Writing function ${func.name}" }
             writeFunction(func, handle)
         }
     }
