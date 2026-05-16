@@ -289,8 +289,9 @@
    - ✅ Construction de l'AST
    - ✅ Résolution de types
    - ✅ Gestion d'erreurs et récupération
-5. **Phase 3** : Traitement IR (ConstantEvaluator, Typifier, Layouter, Validator)
-6. Valider chaque étape avec les tests correspondants
+5. **Phase 3 terminée ✅** : Traitement IR complet (ConstantEvaluator, Typifier, Layouter, Namer, Validator)
+6. **Phase 4** : Backends (Architecture, MSL, HLSL, GLSL, WGSL)
+7. Valider chaque étape avec les tests correspondants
 
 **Fichier à consulter en premier** : `/Users/chaos/RustroverProjects/wgpu/naga/src/front/wgsl/mod.rs`
 

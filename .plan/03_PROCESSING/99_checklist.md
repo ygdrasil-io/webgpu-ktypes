@@ -5,7 +5,7 @@
 **Phase** : 3 - Processing  
 **Durée totale** : 8-12 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique)  
-**Statut Global** : [ ] 0% | [ ] 25% | [ ] 50% | [ ] 75% | [ ] 100%
+**Statut Global** : [ ] 0% | [ ] 25% | [ ] 50% | [ ] 75% | [x] 100%
 
 ---
 
@@ -13,13 +13,13 @@
 
 | Sous-Phase | Durée | Fichiers | Statut | Progression |
 |------------|-------|----------|--------|-------------|
-| **3.0 - Constant Evaluator** | 2-3 semaines | 5 fichiers | [ ] | 0% |
-| **3.1 - Typifier** | 2-3 semaines | 4 fichiers | [ ] | 0% |
-| **3.2 - Layouter** | 2-3 semaines | 5 fichiers | [ ] | 0% |
-| **3.3 - Namer** | 2-3 semaines | 4 fichiers | [ ] | 0% |
-| **3.4 - Validator** | 3-4 semaines | 15+ fichiers | [ ] | 0% |
+| **3.0 - Constant Evaluator** | 2-3 semaines | 5 fichiers | [x] | 100% |
+| **3.1 - Typifier** | 2-3 semaines | 4 fichiers | [x] | 100% |
+| **3.2 - Layouter** | 2-3 semaines | 5 fichiers | [x] | 100% |
+| **3.3 - Namer** | 2-3 semaines | 4 fichiers | [x] | 100% |
+| **3.4 - Validator** | 3-4 semaines | 15+ fichiers | [x] | 100% |
 
-**Total Phase 3** : **8-12 semaines** | **~33 fichiers** | **Progression Globale : 0%**
+**Total Phase 3** : **8-12 semaines** | **~33 fichiers** | **Progression Globale : 100%**
 
 ---
 
@@ -32,74 +32,74 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Structure des Fichiers
-- [ ] `ConstValue.kt` - Valeurs constantes (ScalarValue, VectorValue, MatrixValue, ArrayValue)
-- [ ] `ConstantEvaluator.kt` - Classe principale avec tryEvaluate()
-- [ ] `ConstantEvaluationError.kt` - Erreurs d'évaluation
-- [ ] `ConstantExpressionChecker.kt` - Vérification des expressions constantes
+- [x] `ConstValue.kt` - Valeurs constantes (ScalarValue, VectorValue, MatrixValue, ArrayValue)
+- [x] `ConstantEvaluator.kt` - Classe principale avec tryEvaluate()
+- [x] `ConstantEvaluationError.kt` - Erreurs d'évaluation
+- [x] `ConstantExpressionChecker.kt` - Vérification des expressions constantes
 
 #### ConstValue
-- [ ] `ScalarValue` (Bool, Sint, Uint, Float, AbstractInt)
-- [ ] `VectorValue` (list of ScalarValue, width)
-- [ ] `MatrixValue` (list of VectorValue, columns, rows)
-- [ ] `ArrayValue` (list of ConstValue)
-- [ ] `SplatValue` (value, size)
-- [ ] Méthodes utilitaires (getElement, getVectorSize, getScalarKind)
+- [x] `ScalarValue` (Bool, Sint, Uint, Float, AbstractInt)
+- [x] `VectorValue` (list of ScalarValue, width)
+- [x] `MatrixValue` (list of VectorValue, columns, rows)
+- [x] `ArrayValue` (list of ConstValue)
+- [x] `SplatValue` (value, size)
+- [x] Méthodes utilitaires (getElement, getVectorSize, getScalarKind)
 
 #### Évaluation des Expressions
-- [ ] `tryEvaluateLiteral()` - Littéraux
-- [ ] `tryEvaluateIdent()` - Identifiants (constantes globales)
-- [ ] `tryEvaluateUnary()` - Opérateurs unaires (+, -, !, ~)
-- [ ] `tryEvaluateBinary()` - Opérateurs binaires (+, -, *, /, %, ==, !=, <, >, <=, >=, &&, ||, &, |, ^, <<, >>)
-- [ ] `tryEvaluateSelect()` - Opérateur ternaire select
-- [ ] `tryEvaluateCompose()` - Construction de vecteurs/matrices
-- [ ] `tryEvaluateSplat()` - Splat de valeurs scalaires
-- [ ] `tryEvaluateSwizzle()` - Swizzle de vecteurs
-- [ ] `tryEvaluateAccess()` - Accès aux membres/indices
-- [ ] `tryEvaluateAccessIndex()` - Accès aux indices constants
-- [ ] `tryEvaluateArrayLength()` - Longueur de tableau
-- [ ] `tryEvaluateAs()` - Cast/bitcast
-- [ ] `tryEvaluateMath()` - Fonctions mathématiques (abs, min, max, clamp, etc.)
-- [ ] `tryEvaluateDerivative()` - Dérivées (dpdx, dpdy, fwidth)
+- [x] `tryEvaluateLiteral()` - Littéraux
+- [x] `tryEvaluateIdent()` - Identifiants (constantes globales)
+- [x] `tryEvaluateUnary()` - Opérateurs unaires (+, -, !, ~)
+- [x] `tryEvaluateBinary()` - Opérateurs binaires (+, -, *, /, %, ==, !=, <, >, <=, >=, &&, ||, &, |, ^, <<, >>)
+- [x] `tryEvaluateSelect()` - Opérateur ternaire select
+- [x] `tryEvaluateCompose()` - Construction de vecteurs/matrices
+- [x] `tryEvaluateSplat()` - Splat de valeurs scalaires
+- [x] `tryEvaluateSwizzle()` - Swizzle de vecteurs
+- [x] `tryEvaluateAccess()` - Accès aux membres/indices
+- [x] `tryEvaluateAccessIndex()` - Accès aux indices constants
+- [x] `tryEvaluateArrayLength()` - Longueur de tableau
+- [x] `tryEvaluateAs()` - Cast/bitcast
+- [x] `tryEvaluateMath()` - Fonctions mathématiques (abs, min, max, clamp, etc.)
+- [x] `tryEvaluateDerivative()` - Dérivées (dpdx, dpdy, fwidth)
 
 #### Évaluation par Type
-- [ ] Évaluation des scalaires (i32, u32, f32, bool)
-- [ ] Évaluation des vecteurs (vec2, vec3, vec4)
-- [ ] Évaluation des matrices (mat2x2, mat2x3, mat2x4, mat3x2, mat3x3, mat3x4, mat4x2, mat4x3, mat4x4)
-- [ ] Évaluation des tableaux
-- [ ] Évaluation des structs
+- [x] Évaluation des scalaires (i32, u32, f32, bool)
+- [x] Évaluation des vecteurs (vec2, vec3, vec4)
+- [x] Évaluation des matrices (mat2x2, mat2x3, mat2x4, mat3x2, mat3x3, mat3x4, mat4x2, mat4x3, mat4x4)
+- [x] Évaluation des tableaux
+- [x] Évaluation des structs
 
 #### Opérations Supportées
-- [ ] Opérations arithmétiques (+, -, *, /, %)
-- [ ] Opérations logiques (&&, ||, !)
-- [ ] Opérations de comparaison (==, !=, <, >, <=, >=)
-- [ ] Opérations bits (&, |, ^, ~, <<, >>)
-- [ ] Constructeurs (vec2, vec3, vec4, mat2x2, etc.)
-- [ ] Conversions (i32(), u32(), f32(), etc.)
-- [ ] Fonctions mathématiques (abs, min, max, clamp, floor, ceil, round, etc.)
-- [ ] Fonctions trigonométriques (sin, cos, tan, etc.)
-- [ ] Fonctions exponentielles (exp, log, pow, etc.)
+- [x] Opérations arithmétiques (+, -, *, /, %)
+- [x] Opérations logiques (&&, ||, !)
+- [x] Opérations de comparaison (==, !=, <, >, <=, >=)
+- [x] Opérations bits (&, |, ^, ~, <<, >>)
+- [x] Constructeurs (vec2, vec3, vec4, mat2x2, etc.)
+- [x] Conversions (i32(), u32(), f32(), etc.)
+- [x] Fonctions mathématiques (abs, min, max, clamp, floor, ceil, round, etc.)
+- [x] Fonctions trigonométriques (sin, cos, tan, etc.)
+- [x] Fonctions exponentielles (exp, log, pow, etc.)
 
 #### Gestion des Erreurs
-- [ ] Division par zéro
-- [ ] Overflow/Underflow
-- [ ] Opérations invalides (ex: f32 % f32)
-- [ ] Accès hors limites
-- [ ] Types incompatibles
+- [x] Division par zéro
+- [x] Overflow/Underflow
+- [x] Opérations invalides (ex: f32 % f32)
+- [x] Accès hors limites
+- [x] Types incompatibles
 
 #### Intégration
-- [ ] Intégration avec le parser WGSL
-- [ ] Intégration avec le typifier
-- [ ] Utilisation dans le validator
-- [ ] Utilisation dans les backends
+- [x] Intégration avec le parser WGSL
+- [x] Intégration avec le typifier
+- [x] Utilisation dans le validator
+- [x] Utilisation dans les backends
 
 #### Tests
-- [ ] Tests pour toutes les opérations scalaires
-- [ ] Tests pour toutes les opérations vectorielles
-- [ ] Tests pour toutes les opérations matricielles
-- [ ] Tests pour les constructeurs
-- [ ] Tests pour les conversions
-- [ ] Tests pour les fonctions mathématiques
-- [ ] Tests pour les erreurs
+- [x] Tests pour toutes les opérations scalaires
+- [x] Tests pour toutes les opérations vectorielles
+- [x] Tests pour toutes les opérations matricielles
+- [x] Tests pour les constructeurs
+- [x] Tests pour les conversions
+- [x] Tests pour les fonctions mathématiques
+- [x] Tests pour les erreurs
 
 ---
 
@@ -110,54 +110,54 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Structure des Fichiers
-- [ ] `TypeResolution.kt` - Résolution de type
-- [ ] `Typifier.kt` - Classe principale
-- [ ] `TypeError.kt` - Erreurs de typage
-- [ ] `TypeCompatibility.kt` - Vérification de compatibilité
+- [x] `TypeResolution.kt` - Résolution de type
+- [x] `Typifier.kt` - Classe principale
+- [x] `TypeError.kt` - Erreurs de typage
+- [x] `TypeCompatibility.kt` - Vérification de compatibilité
 
 #### TypeResolution
-- [ ] `TypeResolution` (ty: Handle<Type>, span: Span)
-- [ ] `TypeResolution.error()` - Résolution en erreur
-- [ ] `TypeResolution.unresolved()` - Non résolu
+- [x] `TypeResolution` (ty: Handle<Type>, span: Span)
+- [x] `TypeResolution.error()` - Résolution en erreur
+- [x] `TypeResolution.unresolved()` - Non résolu
 
 #### Fonctionnalités Typifier
-- [ ] Assignation des types explicites
-- [ ] Inférence des types pour les littéraux
-- [ ] Inférence des types pour les opérations binaires
-- [ ] Inférence des types pour les opérations unaires
-- [ ] Inférence des types pour les constructeurs
-- [ ] Inférence des types pour les accès (membre, index)
-- [ ] Inférence des types pour les appels de fonction
-- [ ] Inférence des types pour les expressions select
-- [ ] Inférence des types pour les casts/bitcasts
-- [ ] Vérification de compatibilité des types
+- [x] Assignation des types explicites
+- [x] Inférence des types pour les littéraux
+- [x] Inférence des types pour les opérations binaires
+- [x] Inférence des types pour les opérations unaires
+- [x] Inférence des types pour les constructeurs
+- [x] Inférence des types pour les accès (membre, index)
+- [x] Inférence des types pour les appels de fonction
+- [x] Inférence des types pour les expressions select
+- [x] Inférence des types pour les casts/bitcasts
+- [x] Vérification de compatibilité des types
 
 #### Inférence par Expression
-- [ ] `Literal` - Type basé sur la valeur
-- [ ] `Ident` - Type de la déclaration
-- [ ] `Unary` - Même type que l'opérande
-- [ ] `Binary` - Type basé sur les opérandes et l'opérateur
-- [ ] `Compose` - Type vectoriel/matriciel
-- [ ] `Splat` - Type vectoriel
-- [ ] `Swizzle` - Même type que la source
-- [ ] `Access` - Type du membre/élément
-- [ ] `AccessIndex` - Type du membre/élément
-- [ ] `Select` - Type basé sur les branches
-- [ ] `As` - Type de la cible
-- [ ] `Call` - Type du retour de la fonction
-- [ ] `Math` - Type basé sur l'opération
+- [x] `Literal` - Type basé sur la valeur
+- [x] `Ident` - Type de la déclaration
+- [x] `Unary` - Même type que l'opérande
+- [x] `Binary` - Type basé sur les opérandes et l'opérateur
+- [x] `Compose` - Type vectoriel/matriciel
+- [x] `Splat` - Type vectoriel
+- [x] `Swizzle` - Même type que la source
+- [x] `Access` - Type du membre/élément
+- [x] `AccessIndex` - Type du membre/élément
+- [x] `Select` - Type basé sur les branches
+- [x] `As` - Type de la cible
+- [x] `Call` - Type du retour de la fonction
+- [x] `Math` - Type basé sur l'opération
 
 #### Vérification de Type
-- [ ] Vérification que les opérandes sont compatibles
-- [ ] Vérification que les opérations sont autorisées
-- [ ] Vérification des conversions implicites
-- [ ] Vérification des casts explicites
+- [x] Vérification que les opérandes sont compatibles
+- [x] Vérification que les opérations sont autorisées
+- [x] Vérification des conversions implicites
+- [x] Vérification des casts explicites
 
 #### Tests
-- [ ] Tests pour l'inférence des littéraux
-- [ ] Tests pour l'inférence des opérations
-- [ ] Tests pour la compatibilité des types
-- [ ] Tests pour les erreurs de typage
+- [x] Tests pour l'inférence des littéraux
+- [x] Tests pour l'inférence des opérations
+- [x] Tests pour la compatibilité des types
+- [x] Tests pour les erreurs de typage
 
 ---
 
@@ -168,59 +168,59 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Structure des Fichiers
-- [ ] `Alignment.kt` - Classe Alignment
-- [ ] `TypeLayout.kt` - Layout de type
-- [ ] `StructMemberLayout.kt` - Layout des membres de struct
-- [ ] `Layouter.kt` - Classe principale
-- [ ] `LayoutError.kt` - Erreurs de layout
+- [x] `Alignment.kt` - Classe Alignment
+- [x] `TypeLayout.kt` - Layout de type
+- [x] `StructMemberLayout.kt` - Layout des membres de struct
+- [x] `Layouter.kt` - Classe principale
+- [x] `LayoutError.kt` - Erreurs de layout
 
 #### Alignment
-- [ ] Classe Alignment (value class)
-- [ ] Constantes (ONE, TWO, FOUR, EIGHT, SIXTEEN)
-- [ ] MIN_UNIFORM (16)
-- [ ] `fromWidth()` - Créer à partir d'une largeur
-- [ ] `new()` - Créer s'il s'agit d'une puissance de 2
-- [ ] `isPowerOfTwo` - Extension Int
-- [ ] `isAligned()` - Vérifier l'alignement
-- [ ] `roundUp()` - Arrondir à l'alignement supérieur
-- [ ] `times()` - Multiplier par un scalaire
-- [ ] `max()` - Maximum de deux alignments
-- [ ] Implémentation de Comparable
+- [x] Classe Alignment (value class)
+- [x] Constantes (ONE, TWO, FOUR, EIGHT, SIXTEEN)
+- [x] MIN_UNIFORM (16)
+- [x] `fromWidth()` - Créer à partir d'une largeur
+- [x] `new()` - Créer s'il s'agit d'une puissance de 2
+- [x] `isPowerOfTwo` - Extension Int
+- [x] `isAligned()` - Vérifier l'alignement
+- [x] `roundUp()` - Arrondir à l'alignement supérieur
+- [x] `times()` - Multiplier par un scalaire
+- [x] `max()` - Maximum de deux alignments
+- [x] Implémentation de Comparable
 
 #### TypeLayout
-- [ ] Data class TypeLayout (size, alignment)
-- [ ] `toStride()` - Calculer le stride
+- [x] Data class TypeLayout (size, alignment)
+- [x] `toStride()` - Calculer le stride
 
 #### Layouter
-- [ ] `update()` - Mettre à jour tous les layouts
-- [ ] `updateNew()` - Mettre à jour les nouveaux types uniquement
-- [ ] `get()` - Récupérer le layout d'un type
-- [ ] `getStructMembers()` - Récupérer les layouts des membres
-- [ ] `clear()` - Effacer tous les layouts
-- [ ] Calcul pour Scalar
-- [ ] Calcul pour Vector
-- [ ] Calcul pour Matrix
-- [ ] Calcul pour CooperativeMatrix
-- [ ] Calcul pour Pointer/ValuePointer
-- [ ] Calcul pour Array
-- [ ] Calcul pour Struct (avec offsets)
-- [ ] Calcul pour Image/Sampler/AccelerationStructure/RayQuery/BindingArray
+- [x] `update()` - Mettre à jour tous les layouts
+- [x] `updateNew()` - Mettre à jour les nouveaux types uniquement
+- [x] `get()` - Récupérer le layout d'un type
+- [x] `getStructMembers()` - Récupérer les layouts des membres
+- [x] `clear()` - Effacer tous les layouts
+- [x] Calcul pour Scalar
+- [x] Calcul pour Vector
+- [x] Calcul pour Matrix
+- [x] Calcul pour CooperativeMatrix
+- [x] Calcul pour Pointer/ValuePointer
+- [x] Calcul pour Array
+- [x] Calcul pour Struct (avec offsets)
+- [x] Calcul pour Image/Sampler/AccelerationStructure/RayQuery/BindingArray
 
 #### LayoutError
-- [ ] TooLarge
-- [ ] InvalidArrayElementType
-- [ ] InvalidStructMemberType
-- [ ] NonPowerOfTwoWidth
-- [ ] `message()` - Message d'erreur
+- [x] TooLarge
+- [x] InvalidArrayElementType
+- [x] InvalidStructMemberType
+- [x] NonPowerOfTwoWidth
+- [x] `message()` - Message d'erreur
 
 #### Tests
-- [ ] Tests pour Alignment
-- [ ] Tests pour les types scalaires
-- [ ] Tests pour les types vectoriels
-- [ ] Tests pour les types matrices
-- [ ] Tests pour les structs
-- [ ] Tests pour les arrays
-- [ ] Tests pour les erreurs
+- [x] Tests pour Alignment
+- [x] Tests pour les types scalaires
+- [x] Tests pour les types vectoriels
+- [x] Tests pour les types matrices
+- [x] Tests pour les structs
+- [x] Tests pour les arrays
+- [x] Tests pour les erreurs
 
 ---
 
@@ -231,68 +231,68 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Structure des Fichiers
-- [ ] `NameKey.kt` - Clés d'identification
-- [ ] `KeywordSet.kt` - Ensembles de mots-clés
-- [ ] `CaseInsensitiveKeywordSet.kt` - Mots-clés insensibles à la casse
-- [ ] `Namer.kt` - Classe principale
+- [x] `NameKey.kt` - Clés d'identification
+- [x] `KeywordSet.kt` - Ensembles de mots-clés
+- [x] `CaseInsensitiveKeywordSet.kt` - Mots-clés insensibles à la casse
+- [x] `Namer.kt` - Classe principale
 
 #### NameKey
-- [ ] Type(handle)
-- [ ] StructMember(type, index)
-- [ ] Function(handle)
-- [ ] FunctionArgument(function, index)
-- [ ] FunctionLocal(function, variable)
-- [ ] GlobalVariable(handle)
-- [ ] Constant(handle)
-- [ ] Override(handle)
-- [ ] EntryPoint(index)
-- [ ] EntryPointArgument(ep, index)
-- [ ] EntryPointLocal(ep, variable)
-- [ ] ExternalTextureGlobalVariable(global, key)
-- [ ] ExternalTextureFunctionArgument(function, index, key)
-- [ ] FunctionOobLocal(function, type)
-- [ ] EntryPointOobLocal(ep, type)
-- [ ] ExternalTextureNameKey (Plane, Params)
+- [x] Type(handle)
+- [x] StructMember(type, index)
+- [x] Function(handle)
+- [x] FunctionArgument(function, index)
+- [x] FunctionLocal(function, variable)
+- [x] GlobalVariable(handle)
+- [x] Constant(handle)
+- [x] Override(handle)
+- [x] EntryPoint(index)
+- [x] EntryPointArgument(ep, index)
+- [x] EntryPointLocal(ep, variable)
+- [x] ExternalTextureGlobalVariable(global, key)
+- [x] ExternalTextureFunctionArgument(function, index, key)
+- [x] FunctionOobLocal(function, type)
+- [x] EntryPointOobLocal(ep, type)
+- [x] ExternalTextureNameKey (Plane, Params)
 
 #### KeywordSet
-- [ ] Classe KeywordSet
-- [ ] WGSL_KEYWORDS
-- [ ] MSL_KEYWORDS
-- [ ] HLSL_KEYWORDS
-- [ ] GLSL_KEYWORDS
-- [ ] WGSL_BUILTIN_IDENTIFIERS
+- [x] Classe KeywordSet
+- [x] WGSL_KEYWORDS
+- [x] MSL_KEYWORDS
+- [x] HLSL_KEYWORDS
+- [x] GLSL_KEYWORDS
+- [x] WGSL_BUILTIN_IDENTIFIERS
 
 #### Namer
-- [ ] `reset()` - Réinitialiser pour un nouveau module
-- [ ] `call()` - Générer un nom unique
-- [ ] `callOr()` - Générer un nom avec fallback
-- [ ] `sanitize()` - Nettoyer un nom
-- [ ] `ensureUniqueness()` - Garantir l'unicité
-- [ ] `namespace()` - Créer un namespace local
-- [ ] `nameTypes()` - Nommer les types
-- [ ] `nameEntryPoints()` - Nommer les entry points
-- [ ] `nameFunctions()` - Nommer les fonctions
-- [ ] `nameGlobalVariables()` - Nommer les variables globales
-- [ ] `nameConstants()` - Nommer les constantes
-- [ ] `nameOverrides()` - Nommer les overrides
+- [x] `reset()` - Réinitialiser pour un nouveau module
+- [x] `call()` - Générer un nom unique
+- [x] `callOr()` - Générer un nom avec fallback
+- [x] `sanitize()` - Nettoyer un nom
+- [x] `ensureUniqueness()` - Garantir l'unicité
+- [x] `namespace()` - Créer un namespace local
+- [x] `nameTypes()` - Nommer les types
+- [x] `nameEntryPoints()` - Nommer les entry points
+- [x] `nameFunctions()` - Nommer les fonctions
+- [x] `nameGlobalVariables()` - Nommer les variables globales
+- [x] `nameConstants()` - Nommer les constantes
+- [x] `nameOverrides()` - Nommer les overrides
 
 #### Sanitization
-- [ ] Supprimer les caractères non alphanumériques (sauf _)
-- [ ] Remplacer les caractères spéciaux (: < > ,) par _
-- [ ] Convertir __ en _
-- [ ] Supprimer les _ en double
-- [ ] Ajouter préfixe si commence par un chiffre
-- [ ] Utiliser "unnamed" si vide
-- [ ] Éviter les conflits avec les mots-clés
-- [ ] Vérifier les préfixes réservés
+- [x] Supprimer les caractères non alphanumériques (sauf _)
+- [x] Remplacer les caractères spéciaux (: < > ,) par _
+- [x] Convertir __ en _
+- [x] Supprimer les _ en double
+- [x] Ajouter préfixe si commence par un chiffre
+- [x] Utiliser "unnamed" si vide
+- [x] Éviter les conflits avec les mots-clés
+- [x] Vérifier les préfixes réservés
 
 #### Tests
-- [ ] Tests pour sanitize()
-- [ ] Tests pour call()
-- [ ] Tests pour callOr()
-- [ ] Tests pour les mots-clés
-- [ ] Tests pour les préfixes réservés
-- [ ] Tests d'intégration
+- [x] Tests pour sanitize()
+- [x] Tests pour call()
+- [x] Tests pour callOr()
+- [x] Tests pour les mots-clés
+- [x] Tests pour les préfixes réservés
+- [x] Tests d'intégration
 
 ---
 
@@ -303,137 +303,137 @@
 **Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
 
 #### Structure des Fichiers
-- [ ] `ValidationFlags.kt` - Flags de validation
-- [ ] `Capabilities.kt` - Capacités supportées
-- [ ] `ShaderStages.kt` - Étapes de shader
-- [ ] `SubgroupOperationSet.kt` - Opérations de subgroup
-- [ ] `ValidationError.kt` - Erreurs de validation
-- [ ] `Validator.kt` - Classe principale
-- [ ] `ModuleInfo.kt` - Informations du module
-- [ ] `type/TypeError.kt` - Erreurs de type
-- [ ] `function/FunctionError.kt` - Erreurs de fonction
-- [ ] `function/LocalVariableError.kt` - Erreurs de variable locale
-- [ ] `interface/EntryPointError.kt` - Erreurs d'entry point
-- [ ] `interface/GlobalVariableError.kt` - Erreurs de variable globale
-- [ ] `interface/VaryingError.kt` - Erreurs de varying
-- [ ] `expression/ExpressionError.kt` - Erreurs d'expression
-- [ ] `expression/ConstExpressionError.kt` - Erreurs d'expression constante
-- [ ] `compose/ComposeError.kt` - Erreurs de composition
+- [x] `ValidationFlags.kt` - Flags de validation
+- [x] `Capabilities.kt` - Capacités supportées
+- [x] `ShaderStages.kt` - Étapes de shader
+- [x] `SubgroupOperationSet.kt` - Opérations de subgroup
+- [x] `ValidationError.kt` - Erreurs de validation
+- [x] `Validator.kt` - Classe principale
+- [x] `ModuleInfo.kt` - Informations du module
+- [x] `type/TypeError.kt` - Erreurs de type
+- [x] `function/FunctionError.kt` - Erreurs de fonction
+- [x] `function/LocalVariableError.kt` - Erreurs de variable locale
+- [x] `interface/EntryPointError.kt` - Erreurs d'entry point
+- [x] `interface/GlobalVariableError.kt` - Erreurs de variable globale
+- [x] `interface/VaryingError.kt` - Erreurs de varying
+- [x] `expression/ExpressionError.kt` - Erreurs d'expression
+- [x] `expression/ConstExpressionError.kt` - Erreurs d'expression constante
+- [x] `compose/ComposeError.kt` - Erreurs de composition
 
 #### ValidationFlags
-- [ ] EXPRESSIONS
-- [ ] BLOCKS
-- [ ] CONTROL_FLOW_UNIFORMITY
-- [ ] STRUCT_LAYOUTS
-- [ ] CONSTANTS
-- [ ] BINDINGS
-- [ ] ALL, NONE
-- [ ] `or()`, `and()`
+- [x] EXPRESSIONS
+- [x] BLOCKS
+- [x] CONTROL_FLOW_UNIFORMITY
+- [x] STRUCT_LAYOUTS
+- [x] CONSTANTS
+- [x] BINDINGS
+- [x] ALL, NONE
+- [x] `or()`, `and()`
 
 #### Capabilities
-- [ ] IMMEDIATES
-- [ ] FLOAT64
-- [ ] PRIMITIVE_INDEX
-- [ ] TEXTURE_AND_SAMPLER_BINDING_ARRAY
-- [ ] BUFFER_BINDING_ARRAY
-- [ ] STORAGE_TEXTURE_BINDING_ARRAY
-- [ ] STORAGE_BUFFER_BINDING_ARRAY
-- [ ] CLIP_DISTANCES
-- [ ] CULL_DISTANCE
-- [ ] STORAGE_TEXTURE_16BIT_NORM_FORMATS
-- [ ] MULTIVIEW
-- [ ] EARLY_DEPTH_TEST
-- [ ] MULTISAMPLED_SHADING
-- [ ] RAY_QUERY
-- [ ] RAY_HIT_VERTEX_POSITION
-- [ ] DUAL_SOURCE_BLENDING
-- [ ] CUBE_ARRAY_TEXTURES
-- [ ] SHADER_INT64
-- [ ] SHADER_INT64_ATOMIC_MIN_MAX
-- [ ] SHADER_INT64_ATOMIC_ALL_OPS
-- [ ] SHADER_FLOAT32_ATOMIC
-- [ ] TEXTURE_ATOMIC
-- [ ] TEXTURE_INT64_ATOMIC
-- [ ] SHADER_FLOAT16
-- [ ] SHADER_FLOAT16_IN_FLOAT32
-- [ ] TEXTURE_EXTERNAL
-- [ ] SHADER_BARYCENTRICS
-- [ ] MESH_SHADER
-- [ ] MESH_SHADER_POINT_TOPOLOGY
-- [ ] TEXTURE_AND_SAMPLER_BINDING_ARRAY_NON_UNIFORM_INDEXING
-- [ ] BUFFER_BINDING_ARRAY_NON_UNIFORM_INDEXING
-- [ ] STORAGE_TEXTURE_BINDING_ARRAY_NON_UNIFORM_INDEXING
-- [ ] STORAGE_BUFFER_BINDING_ARRAY_NON_UNIFORM_INDEXING
-- [ ] COOPERATIVE_MATRIX
-- [ ] PER_VERTEX
-- [ ] DRAW_INDEX
-- [ ] ACCELERATION_STRUCTURE_BINDING_ARRAY
-- [ ] MEMORY_DECORATION_COHERENT
-- [ ] MEMORY_DECORATION_VOLATILE
-- [ ] SUBGROUP
-- [ ] SUBGROUP_BARRIER
-- [ ] SUBGROUP_VERTEX_STAGE
-- [ ] RAY_TRACING_PIPELINE
+- [x] IMMEDIATES
+- [x] FLOAT64
+- [x] PRIMITIVE_INDEX
+- [x] TEXTURE_AND_SAMPLER_BINDING_ARRAY
+- [x] BUFFER_BINDING_ARRAY
+- [x] STORAGE_TEXTURE_BINDING_ARRAY
+- [x] STORAGE_BUFFER_BINDING_ARRAY
+- [x] CLIP_DISTANCES
+- [x] CULL_DISTANCE
+- [x] STORAGE_TEXTURE_16BIT_NORM_FORMATS
+- [x] MULTIVIEW
+- [x] EARLY_DEPTH_TEST
+- [x] MULTISAMPLED_SHADING
+- [x] RAY_QUERY
+- [x] RAY_HIT_VERTEX_POSITION
+- [x] DUAL_SOURCE_BLENDING
+- [x] CUBE_ARRAY_TEXTURES
+- [x] SHADER_INT64
+- [x] SHADER_INT64_ATOMIC_MIN_MAX
+- [x] SHADER_INT64_ATOMIC_ALL_OPS
+- [x] SHADER_FLOAT32_ATOMIC
+- [x] TEXTURE_ATOMIC
+- [x] TEXTURE_INT64_ATOMIC
+- [x] SHADER_FLOAT16
+- [x] SHADER_FLOAT16_IN_FLOAT32
+- [x] TEXTURE_EXTERNAL
+- [x] SHADER_BARYCENTRICS
+- [x] MESH_SHADER
+- [x] MESH_SHADER_POINT_TOPOLOGY
+- [x] TEXTURE_AND_SAMPLER_BINDING_ARRAY_NON_UNIFORM_INDEXING
+- [x] BUFFER_BINDING_ARRAY_NON_UNIFORM_INDEXING
+- [x] STORAGE_TEXTURE_BINDING_ARRAY_NON_UNIFORM_INDEXING
+- [x] STORAGE_BUFFER_BINDING_ARRAY_NON_UNIFORM_INDEXING
+- [x] COOPERATIVE_MATRIX
+- [x] PER_VERTEX
+- [x] DRAW_INDEX
+- [x] ACCELERATION_STRUCTURE_BINDING_ARRAY
+- [x] MEMORY_DECORATION_COHERENT
+- [x] MEMORY_DECORATION_VOLATILE
+- [x] SUBGROUP
+- [x] SUBGROUP_BARRIER
+- [x] SUBGROUP_VERTEX_STAGE
+- [x] RAY_TRACING_PIPELINE
 
 #### Validator
-- [ ] `validate()` - Valider un module
-- [ ] `validateQuiet()` - Valider sans exception
-- [ ] `validateThrow()` - Valider avec exception
-- [ ] `validateTypes()` - Valider les types
-- [ ] `validateConstants()` - Valider les constantes
-- [ ] `validateOverrides()` - Valider les overrides
-- [ ] `validateFunctions()` - Valider les fonctions
-- [ ] `validateEntryPoints()` - Valider les entry points
-- [ ] `validateGlobalVariables()` - Valider les variables globales
-- [ ] `validateExpressions()` - Valider les expressions
-- [ ] `validateStatements()` - Valider les statements
+- [x] `validate()` - Valider un module
+- [x] `validateQuiet()` - Valider sans exception
+- [x] `validateThrow()` - Valider avec exception
+- [x] `validateTypes()` - Valider les types
+- [x] `validateConstants()` - Valider les constantes
+- [x] `validateOverrides()` - Valider les overrides
+- [x] `validateFunctions()` - Valider les fonctions
+- [x] `validateEntryPoints()` - Valider les entry points
+- [x] `validateGlobalVariables()` - Valider les variables globales
+- [x] `validateExpressions()` - Valider les expressions
+- [x] `validateStatements()` - Valider les statements
 
 #### Validation des Types
-- [ ] Scalar (width valide)
-- [ ] Vector (width scalaire valide)
-- [ ] Matrix (dimensions valides)
-- [ ] Struct (offsets alignés, span correct)
-- [ ] Array (taille positive)
-- [ ] Pointer
-- [ ] Image/Sampler
+- [x] Scalar (width valide)
+- [x] Vector (width scalaire valide)
+- [x] Matrix (dimensions valides)
+- [x] Struct (offsets alignés, span correct)
+- [x] Array (taille positive)
+- [x] Pointer
+- [x] Image/Sampler
 
 #### Validation des Constantes
-- [ ] Initialiseur est une expression constante
-- [ ] Type correspond
-- [ ] Type est constructible
+- [x] Initialiseur est une expression constante
+- [x] Type correspond
+- [x] Type est constructible
 
 #### Validation des Overrides
-- [ ] Type est scalaire
-- [ ] ID est unique
-- [ ] Initialiseur est valide
+- [x] Type est scalaire
+- [x] ID est unique
+- [x] Initialiseur est valide
 
 #### Validation des Fonctions
-- [ ] Arguments ont des types valides
-- [ ] Type de retour est valide
-- [ ] Variables locales ont des types valides
-- [ ] Initialiseurs des variables locales sont valides
-- [ ] Corps de la fonction est valide
+- [x] Arguments ont des types valides
+- [x] Type de retour est valide
+- [x] Variables locales ont des types valides
+- [x] Initialiseurs des variables locales sont valides
+- [x] Corps de la fonction est valide
 
 #### Validation des Entry Points
-- [ ] Nom n'est pas vide
-- [ ] Stage est supportée
-- [ ] Pas de binding sur les arguments
-- [ ] early_depth_test est supporté
-- [ ] workgroup_size est valide
-- [ ] Bindings sont uniques
+- [x] Nom n'est pas vide
+- [x] Stage est supportée
+- [x] Pas de binding sur les arguments
+- [x] early_depth_test est supporté
+- [x] workgroup_size est valide
+- [x] Bindings sont uniques
 
 #### Validation des Variables Globales
-- [ ] Type est valide
-- [ ] Binding est valide pour VariableClass
-- [ ] Binding est unique
-- [ ] Initialiseur est une expression constante
+- [x] Type est valide
+- [x] Binding est valide pour VariableClass
+- [x] Binding est unique
+- [x] Initialiseur est une expression constante
 
 #### Tests
-- [ ] Tests pour un module vide
-- [ ] Tests pour un module valide
-- [ ] Tests pour chaque type d'erreur
-- [ ] Tests pour ValidationFlags
-- [ ] Tests pour Capabilities
+- [x] Tests pour un module vide
+- [x] Tests pour un module valide
+- [x] Tests pour chaque type d'erreur
+- [x] Tests pour ValidationFlags
+- [x] Tests pour Capabilities
 
 ---
 
@@ -442,214 +442,214 @@
 ### `wgsl:core/src/main/kotlin/dev/gfxrs/naga/proc/`
 
 #### Constant Evaluator
-- [ ] ConstValue.kt
-- [ ] ConstantEvaluator.kt
-- [ ] ConstantEvaluationError.kt
-- [ ] ConstantExpressionChecker.kt
+- [x] ConstValue.kt
+- [x] ConstantEvaluator.kt
+- [x] ConstantEvaluationError.kt
+- [x] ConstantExpressionChecker.kt
 
 #### Typifier
-- [ ] TypeResolution.kt
-- [ ] Typifier.kt
-- [ ] TypeError.kt
-- [ ] TypeCompatibility.kt
+- [x] TypeResolution.kt
+- [x] Typifier.kt
+- [x] TypeError.kt
+- [x] TypeCompatibility.kt
 
 #### Layouter
-- [ ] Alignment.kt
-- [ ] TypeLayout.kt
-- [ ] StructMemberLayout.kt
-- [ ] Layouter.kt
-- [ ] LayoutError.kt
+- [x] Alignment.kt
+- [x] TypeLayout.kt
+- [x] StructMemberLayout.kt
+- [x] Layouter.kt
+- [x] LayoutError.kt
 
 #### Namer
-- [ ] NameKey.kt
-- [ ] KeywordSet.kt
-- [ ] CaseInsensitiveKeywordSet.kt
-- [ ] Namer.kt
+- [x] NameKey.kt
+- [x] KeywordSet.kt
+- [x] CaseInsensitiveKeywordSet.kt
+- [x] Namer.kt
 
 ### `wgsl:core/src/main/kotlin/dev/gfxrs/naga/valid/`
 
 #### Root
-- [ ] ValidationFlags.kt
-- [ ] Capabilities.kt
-- [ ] ShaderStages.kt
-- [ ] SubgroupOperationSet.kt
-- [ ] ValidationError.kt
-- [ ] Validator.kt
-- [ ] ModuleInfo.kt
+- [x] ValidationFlags.kt
+- [x] Capabilities.kt
+- [x] ShaderStages.kt
+- [x] SubgroupOperationSet.kt
+- [x] ValidationError.kt
+- [x] Validator.kt
+- [x] ModuleInfo.kt
 
 #### type/
-- [ ] TypeError.kt
-- [ ] TypeFlags.kt
+- [x] TypeError.kt
+- [x] TypeFlags.kt
 
 #### function/
-- [ ] FunctionError.kt
-- [ ] LocalVariableError.kt
-- [ ] CallError.kt
-- [ ] SubgroupError.kt
+- [x] FunctionError.kt
+- [x] LocalVariableError.kt
+- [x] CallError.kt
+- [x] SubgroupError.kt
 
 #### interface/
-- [ ] EntryPointError.kt
-- [ ] GlobalVariableError.kt
-- [ ] VaryingError.kt
+- [x] EntryPointError.kt
+- [x] GlobalVariableError.kt
+- [x] VaryingError.kt
 
 #### expression/
-- [ ] ExpressionError.kt
-- [ ] ConstExpressionError.kt
-- [ ] LiteralError.kt
+- [x] ExpressionError.kt
+- [x] ConstExpressionError.kt
+- [x] LiteralError.kt
 
 #### compose/
-- [ ] ComposeError.kt
+- [x] ComposeError.kt
 
 #### handles/
-- [ ] InvalidHandleError.kt
+- [x] InvalidHandleError.kt
 
 #### immediates/
-- [ ] ImmediateSlots.kt
+- [x] ImmediateSlots.kt
 
 ---
 
 ## 🎯 CHECKLIST DES TESTS
 
 ### Tests Constant Evaluator
-- [ ] `ConstantEvaluatorTest.kt`
-  - [ ] Tests pour les scalaires
-  - [ ] Tests pour les vecteurs
-  - [ ] Tests pour les matrices
-  - [ ] Tests pour les tableaux
-  - [ ] Tests pour les opérations arithmétiques
-  - [ ] Tests pour les opérations logiques
-  - [ ] Tests pour les opérations bits
-  - [ ] Tests pour les constructeurs
-  - [ ] Tests pour les conversions
-  - [ ] Tests pour les fonctions mathématiques
-  - [ ] Tests pour les erreurs
+- [x] `ConstantEvaluatorTest.kt`
+  - [x] Tests pour les scalaires
+  - [x] Tests pour les vecteurs
+  - [x] Tests pour les matrices
+  - [x] Tests pour les tableaux
+  - [x] Tests pour les opérations arithmétiques
+  - [x] Tests pour les opérations logiques
+  - [x] Tests pour les opérations bits
+  - [x] Tests pour les constructeurs
+  - [x] Tests pour les conversions
+  - [x] Tests pour les fonctions mathématiques
+  - [x] Tests pour les erreurs
 
 ### Tests Typifier
-- [ ] `TypifierTest.kt`
-  - [ ] Tests pour l'inférence des littéraux
-  - [ ] Tests pour l'inférence des opérations
-  - [ ] Tests pour la compatibilité des types
-  - [ ] Tests pour les erreurs
+- [x] `TypifierTest.kt`
+  - [x] Tests pour l'inférence des littéraux
+  - [x] Tests pour l'inférence des opérations
+  - [x] Tests pour la compatibilité des types
+  - [x] Tests pour les erreurs
 
 ### Tests Layouter
-- [ ] `AlignmentTest.kt`
-- [ ] `LayouterTest.kt`
-  - [ ] Tests pour tous les types
-  - [ ] Tests pour les structs
-  - [ ] Tests pour les erreurs
+- [x] `AlignmentTest.kt`
+- [x] `LayouterTest.kt`
+  - [x] Tests pour tous les types
+  - [x] Tests pour les structs
+  - [x] Tests pour les erreurs
 
 ### Tests Namer
-- [ ] `NamerTest.kt`
-  - [ ] Tests pour sanitize()
-  - [ ] Tests pour call()
-  - [ ] Tests pour les mots-clés
-  - [ ] Tests d'intégration
+- [x] `NamerTest.kt`
+  - [x] Tests pour sanitize()
+  - [x] Tests pour call()
+  - [x] Tests pour les mots-clés
+  - [x] Tests d'intégration
 
 ### Tests Validator
-- [ ] `ValidatorTest.kt`
-  - [ ] Tests pour un module vide
-  - [ ] Tests pour un module valide
-  - [ ] Tests pour chaque type d'erreur
-  - [ ] Tests pour ValidationFlags
-  - [ ] Tests pour Capabilities
+- [x] `ValidatorTest.kt`
+  - [x] Tests pour un module vide
+  - [x] Tests pour un module valide
+  - [x] Tests pour chaque type d'erreur
+  - [x] Tests pour ValidationFlags
+  - [x] Tests pour Capabilities
 
 ---
 
 ## 📈 CRITÈRES D'ACCEPTATION
 
 ### Phase 3 Complète
-- [ ] Tous les fichiers de plan sont créés et complets
-- [ ] Tous les fichiers source Kotlin sont implémentés
-- [ ] Tous les tests unitaires passent
-- [ ] L'intégration avec les autres phases fonctionne
-- [ ] La documentation est complète
-- [ ] Les exemples fonctionnent
+- [x] Tous les fichiers de plan sont créés et complets
+- [x] Tous les fichiers source Kotlin sont implémentés
+- [x] Tous les tests unitaires passent
+- [x] L'intégration avec les autres phases fonctionne
+- [x] La documentation est complète
+- [x] Les exemples fonctionnent
 
 ### Critères de Qualité
-- [ ] Code propre et bien structuré
-- [ ] Respect des conventions Kotlin
-- [ ] Nommage cohérent
-- [ ] Documentation complète (KDoc)
-- [ ] Gestion d'erreur robuste
-- [ ] Performance acceptable (3-10x plus lent que Rust)
+- [x] Code propre et bien structuré
+- [x] Respect des conventions Kotlin
+- [x] Nommage cohérent
+- [x] Documentation complète (KDoc)
+- [x] Gestion d'erreur robuste
+- [x] Performance acceptable (3-10x plus lent que Rust)
 
 ### Critères de Couverture
-- [ ] Couverture de test > 90%
-- [ ] Tous les cas d'usage sont couverts
-- [ ] Tous les cas d'erreur sont testés
-- [ ] Intégration testée avec les autres modules
+- [x] Couverture de test > 90%
+- [x] Tous les cas d'usage sont couverts
+- [x] Tous les cas d'erreur sont testés
+- [x] Intégration testée avec les autres modules
 
 ---
 
 ## 📅 PLANNING DÉTAILLÉ
 
 ### Semaine 1-2 : Constant Evaluator
-- [ ] Implémenter ConstValue.kt (2-4h)
-- [ ] Implémenter ConstantEvaluator.kt - base (4-8h)
-- [ ] Implémenter l'évaluation des scalaires (4h)
-- [ ] Implémenter l'évaluation des vecteurs (4h)
-- [ ] Implémenter l'évaluation des matrices (4h)
-- [ ] Implémenter l'évaluation des tableaux (4h)
-- [ ] Implémenter les opérations arithmétiques (4h)
-- [ ] Implémenter les opérations logiques (2h)
-- [ ] Implémenter les opérations bits (2h)
-- [ ] Implémenter les constructeurs (4h)
-- [ ] Implémenter les conversions (4h)
-- [ ] Implémenter les fonctions mathématiques (8h)
-- [ ] Tests Constant Evaluator (8-12h)
+- [x] Implémenter ConstValue.kt (2-4h)
+- [x] Implémenter ConstantEvaluator.kt - base (4-8h)
+- [x] Implémenter l'évaluation des scalaires (4h)
+- [x] Implémenter l'évaluation des vecteurs (4h)
+- [x] Implémenter l'évaluation des matrices (4h)
+- [x] Implémenter l'évaluation des tableaux (4h)
+- [x] Implémenter les opérations arithmétiques (4h)
+- [x] Implémenter les opérations logiques (2h)
+- [x] Implémenter les opérations bits (2h)
+- [x] Implémenter les constructeurs (4h)
+- [x] Implémenter les conversions (4h)
+- [x] Implémenter les fonctions mathématiques (8h)
+- [x] Tests Constant Evaluator (8-12h)
 
 ### Semaine 3-4 : Typifier
-- [ ] Implémenter TypeResolution.kt (2h)
-- [ ] Implémenter Typifier.kt - base (4-8h)
-- [ ] Implémenter l'inférence des littéraux (2h)
-- [ ] Implémenter l'inférence des opérations (8-12h)
-- [ ] Implémenter la vérification de compatibilité (4h)
-- [ ] Tests Typifier (8-12h)
+- [x] Implémenter TypeResolution.kt (2h)
+- [x] Implémenter Typifier.kt - base (4-8h)
+- [x] Implémenter l'inférence des littéraux (2h)
+- [x] Implémenter l'inférence des opérations (8-12h)
+- [x] Implémenter la vérification de compatibilité (4h)
+- [x] Tests Typifier (8-12h)
 
 ### Semaine 5-6 : Layouter
-- [ ] Implémenter Alignment.kt (2-4h)
-- [ ] Implémenter TypeLayout.kt (2h)
-- [ ] Implémenter StructMemberLayout.kt (2h)
-- [ ] Implémenter Layouter.kt - base (4-8h)
-- [ ] Implémenter le calcul par type (8-12h)
-- [ ] Implémenter le layout des structs (8-12h)
-- [ ] Implémenter LayoutError.kt (2h)
-- [ ] Tests Layouter (8-12h)
-- [ ] Intégration avec Validator (4h)
+- [x] Implémenter Alignment.kt (2-4h)
+- [x] Implémenter TypeLayout.kt (2h)
+- [x] Implémenter StructMemberLayout.kt (2h)
+- [x] Implémenter Layouter.kt - base (4-8h)
+- [x] Implémenter le calcul par type (8-12h)
+- [x] Implémenter le layout des structs (8-12h)
+- [x] Implémenter LayoutError.kt (2h)
+- [x] Tests Layouter (8-12h)
+- [x] Intégration avec Validator (4h)
 
 ### Semaine 7-8 : Namer
-- [ ] Implémenter NameKey.kt (4-6h)
-- [ ] Implémenter KeywordSet.kt (2-4h)
-- [ ] Implémenter CaseInsensitiveKeywordSet.kt (2h)
-- [ ] Implémenter Namer.kt - base (4-8h)
-- [ ] Implémenter sanitize() (4-6h)
-- [ ] Implémenter call() et l'unicité (4h)
-- [ ] Implémenter le naming des types (4-6h)
-- [ ] Implémenter le naming des fonctions (4h)
-- [ ] Implémenter le naming des variables (4h)
-- [ ] Implémenter le naming des constantes (2h)
-- [ ] Implémenter les namespaces (4h)
-- [ ] Tests Namer (8-12h)
-- [ ] Intégration avec les backends (4h)
+- [x] Implémenter NameKey.kt (4-6h)
+- [x] Implémenter KeywordSet.kt (2-4h)
+- [x] Implémenter CaseInsensitiveKeywordSet.kt (2h)
+- [x] Implémenter Namer.kt - base (4-8h)
+- [x] Implémenter sanitize() (4-6h)
+- [x] Implémenter call() et l'unicité (4h)
+- [x] Implémenter le naming des types (4-6h)
+- [x] Implémenter le naming des fonctions (4h)
+- [x] Implémenter le naming des variables (4h)
+- [x] Implémenter le naming des constantes (2h)
+- [x] Implémenter les namespaces (4h)
+- [x] Tests Namer (8-12h)
+- [x] Intégration avec les backends (4h)
 
 ### Semaine 9-12 : Validator
-- [ ] Implémenter ValidationFlags.kt (2-4h)
-- [ ] Implémenter Capabilities.kt (4-6h)
-- [ ] Implémenter ShaderStages.kt (2h)
-- [ ] Implémenter SubgroupOperationSet.kt (2h)
-- [ ] Implémenter ValidationError.kt (4-6h)
-- [ ] Implémenter les classes d'erreur spécifiques (16-24h)
-- [ ] Implémenter Validator.kt - base (8-12h)
-- [ ] Implémenter validateTypes() (8h)
-- [ ] Implémenter validateConstants() (4h)
-- [ ] Implémenter validateOverrides() (4h)
-- [ ] Implémenter validateFunctions() (12-16h)
-- [ ] Implémenter validateEntryPoints() (8h)
-- [ ] Implémenter validateGlobalVariables() (8h)
-- [ ] Implémenter validateExpressions() (16-24h)
-- [ ] Implémenter validateStatements() (16-24h)
-- [ ] Tests Validator (24-40h)
-- [ ] Intégration avec les backends (8h)
+- [x] Implémenter ValidationFlags.kt (2-4h)
+- [x] Implémenter Capabilities.kt (4-6h)
+- [x] Implémenter ShaderStages.kt (2h)
+- [x] Implémenter SubgroupOperationSet.kt (2h)
+- [x] Implémenter ValidationError.kt (4-6h)
+- [x] Implémenter les classes d'erreur spécifiques (16-24h)
+- [x] Implémenter Validator.kt - base (8-12h)
+- [x] Implémenter validateTypes() (8h)
+- [x] Implémenter validateConstants() (4h)
+- [x] Implémenter validateOverrides() (4h)
+- [x] Implémenter validateFunctions() (12-16h)
+- [x] Implémenter validateEntryPoints() (8h)
+- [x] Implémenter validateGlobalVariables() (8h)
+- [x] Implémenter validateExpressions() (16-24h)
+- [x] Implémenter validateStatements() (16-24h)
+- [x] Tests Validator (24-40h)
+- [x] Intégration avec les backends (8h)
 
 ---
 
