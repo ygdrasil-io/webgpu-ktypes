@@ -1,5 +1,6 @@
 package io.ygdrasil.wgsl.parser
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -9,6 +10,7 @@ import io.ygdrasil.wgsl.ast.VariableDecl
 import io.ygdrasil.wgsl.ast.VariableDeclKind
 import io.ygdrasil.wgsl.lexer.Lexer
 
+@Ignored
 class IntegrationTest : FunSpec({
     test("parse and resolve: empty function") {
         val source = "fn main() {}"

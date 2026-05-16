@@ -8,6 +8,7 @@ import io.ygdrasil.wgsl.ast.BlockStatement
 import io.ygdrasil.wgsl.ast.BoolLiteral
 import io.ygdrasil.wgsl.ast.BreakStatement
 import io.ygdrasil.wgsl.ast.BuiltinValue
+import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
 import io.ygdrasil.wgsl.ast.ConstAssertDecl
 import io.ygdrasil.wgsl.ast.ContinueStatement
@@ -168,7 +169,11 @@ class Parser(
         val declarations = mutableListOf<GlobalDecl>()
 
         while (!isAtEnd()) {
+            val startToken = currentToken
             declarations.add(parseTopLevelDecl())
+            if (startToken == currentToken) {
+                advance()
+            }
         }
 
         val start = declarations.firstOrNull()?.span?.start ?: 0u
@@ -182,23 +187,29 @@ class Parser(
      * Parses a top-level declaration.
      */
     private fun parseTopLevelDecl(): GlobalDecl {
-        return when (currentKind()) {
-            TokenKind.FN -> parseFunctionDecl()
-            TokenKind.STRUCT -> parseStructDecl()
-            TokenKind.LET, TokenKind.CONST, TokenKind.VAR -> parseVariableDecl()
-            TokenKind.TYPE -> parseTypeAliasDecl()
-            TokenKind.OVERRIDE -> parseOverrideDecl()
-            TokenKind.CONST_ASSERT -> parseConstAssertDecl()
-            TokenKind.AT -> {
-                advance() // consume @
-                parseAttributeOrGroup()
-            }
+        val attributes = mutableListOf<Attribute>()
+        while (currentKind() == TokenKind.AT) {
+            attributes.add(parseAttribute())
+        }
 
+        return when (currentKind()) {
+            TokenKind.FN -> parseFunctionDecl(attributes)
+            TokenKind.STRUCT -> parseStructDecl(attributes)
+            TokenKind.LET, TokenKind.CONST, TokenKind.VAR -> parseVariableDecl(attributes)
+            TokenKind.TYPE -> parseTypeAliasDecl(attributes)
+            TokenKind.OVERRIDE -> parseOverrideDecl(attributes)
+            TokenKind.CONST_ASSERT -> parseConstAssertDecl()
             else -> {
+                if (attributes.isNotEmpty()) {
+                    error("Attributes must be followed by a declaration")
+                    return ConstAssertDecl(IdentExpr("", currentToken.span), Span(attributes.first().span.start, currentToken.span.end))
+                }
                 // Try to recover
                 error("Unexpected token ${currentKind()} at top level")
                 advance()
-                // Return a dummy declaration
+                if (isAtEnd()) {
+                    return ConstAssertDecl(IdentExpr("", currentToken.span), currentToken.span)
+                }
                 parseTopLevelDecl()
             }
         }
@@ -207,17 +218,11 @@ class Parser(
     /**
      * Parses a function declaration.
      */
-    private fun parseFunctionDecl(): FunctionDecl {
-        val start = currentToken.span
+    private fun parseFunctionDecl(attributes: List<Attribute> = emptyList()): FunctionDecl {
+        val start = attributes.firstOrNull()?.span ?: currentToken.span
 
         // Consume 'fn'
         expectOrError(TokenKind.FN, "Expected 'fn'")
-
-        // Parse attributes (if any)
-        val attributes = mutableListOf<Attribute>()
-        while (currentKind() == TokenKind.AT) {
-            attributes.add(parseAttribute())
-        }
 
         // Parse name
         val name = if (currentKind() == TokenKind.IDENTIFIER) {
@@ -240,8 +245,12 @@ class Parser(
         expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
 
         // Parse return type (if any)
+        val returnAttributes = mutableListOf<Attribute>()
         val returnType = if (currentKind() == TokenKind.ARROW) {
             advance() // consume ->
+            while (currentKind() == TokenKind.AT) {
+                returnAttributes.add(parseAttribute())
+            }
             parseTypeDecl()
         } else {
             null
@@ -269,8 +278,8 @@ class Parser(
     /**
      * Parses a struct declaration.
      */
-    private fun parseStructDecl(): StructDecl {
-        val start = currentToken.span
+    private fun parseStructDecl(attributes: List<Attribute> = emptyList()): StructDecl {
+        val start = attributes.firstOrNull()?.span ?: currentToken.span
 
         // Consume 'struct'
         expectOrError(TokenKind.STRUCT, "Expected 'struct'")
@@ -356,8 +365,8 @@ class Parser(
     /**
      * Parses a variable declaration (global or local).
      */
-    private fun parseVariableDecl(): VariableDecl {
-        val start = currentToken.span
+    private fun parseVariableDecl(attributes: List<Attribute> = emptyList()): VariableDecl {
+        val start = attributes.firstOrNull()?.span ?: currentToken.span
 
         // Parse kind (let, const, var)
         val kind = when (currentKind()) {
@@ -417,8 +426,8 @@ class Parser(
     /**
      * Parses a type alias declaration.
      */
-    private fun parseTypeAliasDecl(): TypeAliasDecl {
-        val start = currentToken.span
+    private fun parseTypeAliasDecl(attributes: List<Attribute> = emptyList()): TypeAliasDecl {
+        val start = attributes.firstOrNull()?.span ?: currentToken.span
 
         // Consume 'type'
         expectOrError(TokenKind.TYPE, "Expected 'type'")
@@ -457,8 +466,8 @@ class Parser(
     /**
      * Parses an override declaration.
      */
-    private fun parseOverrideDecl(): OverrideDecl {
-        val start = currentToken.span
+    private fun parseOverrideDecl(attributes: List<Attribute> = emptyList()): OverrideDecl {
+        val start = attributes.firstOrNull()?.span ?: currentToken.span
 
         // Consume 'override'
         expectOrError(TokenKind.OVERRIDE, "Expected 'override'")
@@ -581,16 +590,6 @@ class Parser(
         )
     }
 
-    /**
-     * Parses an attribute or a group of attributes.
-     */
-    private fun parseAttributeOrGroup(): GlobalDecl {
-        // This is a placeholder - attributes at top level can apply to the next declaration
-        // For now, we'll just parse the attribute and return a dummy declaration
-        val attribute = parseAttribute()
-        // TODO: associate attribute with the next declaration
-        return parseTopLevelDecl()
-    }
 
     /**
      * Parses a list of template parameters.
@@ -770,12 +769,32 @@ class Parser(
             }
 
             TokenKind.VEC -> {
-                advance()
-                return parseVectorType(start)
+                val vecToken = advance()
+                val start = vecToken.span
+                // Check if size is part of keyword (vec2, vec3, vec4)
+                val text = vecToken.literal ?: ""
+                val size = if (text.length > 3) {
+                    text.substring(3).toIntOrNull() ?: 2
+                } else if (currentKind() == TokenKind.INT_LITERAL) {
+                    val sizeToken = advance()
+                    sizeToken.literal?.toIntOrNull() ?: 2
+                } else {
+                    2
+                }
+                return parseVectorType(start, size)
             }
 
             TokenKind.MAT -> {
-                advance()
+                val matToken = advance()
+                val start = matToken.span
+                val text = matToken.literal ?: ""
+                // mat2x3
+                if (text.length > 3) {
+                    val dims = text.substring(3).split('x')
+                    val cols = dims.getOrNull(0)?.toIntOrNull() ?: 2
+                    val rows = dims.getOrNull(1)?.toIntOrNull() ?: 2
+                    return parseMatrixType(start, cols, rows)
+                }
                 return parseMatrixType(start)
             }
 
@@ -790,8 +809,10 @@ class Parser(
             }
 
             else -> {
-                error("Expected a type")
-                return NamedType("", start)
+                error("Expected a type, found ${currentKind()}")
+                val dummy = NamedType("", start)
+                advance()
+                return dummy
             }
         }
     }
@@ -799,13 +820,11 @@ class Parser(
     /**
      * Parses a vector type like `vec2<f32>`.
      */
-    private fun parseVectorType(start: Span): VectorType {
-        val size = if (currentKind() == TokenKind.INT_LITERAL) {
+    private fun parseVectorType(start: Span, size: Int = 2): VectorType {
+        var finalSize = size
+        if (currentKind() == TokenKind.INT_LITERAL) {
             val sizeToken = advance()
-            sizeToken.literal?.toIntOrNull() ?: 2
-        } else {
-            error("Expected vector size")
-            2
+            finalSize = sizeToken.literal?.toIntOrNull() ?: size
         }
 
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
@@ -813,29 +832,26 @@ class Parser(
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
 
         val end = previousToken?.span?.end ?: currentToken.span.end
-        return VectorType(size, elementType, Span(start.start, end))
+        return VectorType(finalSize, elementType, Span(start.start, end))
     }
 
     /**
      * Parses a matrix type like `mat2x3<f32>`.
      */
-    private fun parseMatrixType(start: Span): MatrixType {
-        val columns = if (currentKind() == TokenKind.INT_LITERAL) {
+    private fun parseMatrixType(start: Span, cols: Int = 2, rows: Int = 2): MatrixType {
+        var finalCols = cols
+        var finalRows = rows
+
+        if (currentKind() == TokenKind.INT_LITERAL) {
             val colToken = advance()
-            colToken.literal?.toIntOrNull() ?: 2
-        } else {
-            error("Expected matrix column count")
-            2
-        }
+            finalCols = colToken.literal?.toIntOrNull() ?: cols
 
-        expectOrError(TokenKind.IDENTIFIER, "Expected 'x'")
+            expectOrError(TokenKind.IDENTIFIER, "Expected 'x'")
 
-        val rows = if (currentKind() == TokenKind.INT_LITERAL) {
-            val rowToken = advance()
-            rowToken.literal?.toIntOrNull() ?: 2
-        } else {
-            error("Expected matrix row count")
-            2
+            if (currentKind() == TokenKind.INT_LITERAL) {
+                val rowToken = advance()
+                finalRows = rowToken.literal?.toIntOrNull() ?: rows
+            }
         }
 
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
@@ -843,7 +859,7 @@ class Parser(
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
 
         val end = previousToken?.span?.end ?: currentToken.span.end
-        return MatrixType(columns, rows, elementType, Span(start.start, end))
+        return MatrixType(finalCols, finalRows, elementType, Span(start.start, end))
     }
 
     /**
@@ -1304,6 +1320,62 @@ class Parser(
 
         while (true) {
             when (currentKind()) {
+                TokenKind.LEFT_PAREN -> {
+                    advance()
+                    val args = mutableListOf<Expression>()
+                    while (currentKind() != TokenKind.RIGHT_PAREN && !isAtEnd()) {
+                        val startToken = currentToken
+                        args.add(parseExpression())
+                        if (currentKind() == TokenKind.COMMA) {
+                            advance()
+                        }
+                        if (startToken == currentToken) advance()
+                    }
+                    expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+                    val start = left.span.start
+                    val end = previousToken?.span?.end ?: currentToken.span.end
+                    left = CallExpr(left, args, null, Span(start, end))
+                }
+
+                TokenKind.LEFT_ANGLE -> {
+                    // This could be a comparison, but in postfix position it's likely template args
+                    // e.g. vec4<f32>(...)
+                    // For now, simple heuristic: if there's a '(' later, it's a call with template args
+                    advance()
+                    val templateArgs = mutableListOf<TypeDecl>()
+                    while (currentKind() != TokenKind.RIGHT_ANGLE && !isAtEnd()) {
+                        val startToken = currentToken
+                        templateArgs.add(parseTypeDecl())
+                        if (currentKind() == TokenKind.COMMA) {
+                            advance()
+                        }
+                        if (startToken == currentToken) advance()
+                    }
+                    expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
+
+                    if (currentKind() == TokenKind.LEFT_PAREN) {
+                        advance()
+                        val args = mutableListOf<Expression>()
+                        while (currentKind() != TokenKind.RIGHT_PAREN && !isAtEnd()) {
+                            val startToken = currentToken
+                            args.add(parseExpression())
+                            if (currentKind() == TokenKind.COMMA) {
+                                advance()
+                            }
+                            if (startToken == currentToken) advance()
+                        }
+                        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+                        val start = left.span.start
+                        val end = previousToken?.span?.end ?: currentToken.span.end
+                        left = CallExpr(left, args, templateArgs, Span(start, end))
+                    } else {
+                        // It was just template args (not possible in expressions except for calls, but let's be robust)
+                        val start = left.span.start
+                        val end = previousToken?.span?.end ?: currentToken.span.end
+                        left = CallExpr(left, emptyList(), templateArgs, Span(start, end))
+                    }
+                }
+
                 TokenKind.DOT -> {
                     advance()
                     if (currentKind() == TokenKind.IDENTIFIER) {
@@ -1393,9 +1465,18 @@ class Parser(
                 StringLiteral(value, token.span)
             }
 
-            TokenKind.IDENTIFIER -> {
+            TokenKind.IDENTIFIER,
+            TokenKind.BOOL,
+            TokenKind.I8, TokenKind.U8,
+            TokenKind.I16, TokenKind.U16,
+            TokenKind.I32, TokenKind.U32,
+            TokenKind.I64, TokenKind.U64,
+            TokenKind.F16, TokenKind.F32, TokenKind.F64,
+            TokenKind.VEC, TokenKind.MAT, TokenKind.ARRAY,
+            TokenKind.SAMPLER, TokenKind.TEXTURE_1D, TokenKind.TEXTURE_2D, TokenKind.TEXTURE_3D,
+            TokenKind.TEXTURE_CUBE, TokenKind.TEXTURE_EXTERNAL -> {
                 val token = advance()
-                IdentExpr(token.literal ?: "", token.span)
+                IdentExpr(token.literal ?: token.kind.name.lowercase(), token.span)
             }
 
             TokenKind.LEFT_PAREN -> {
@@ -1407,8 +1488,10 @@ class Parser(
             }
 
             else -> {
-                error("Expected a primary expression")
-                IdentExpr("", start)
+                error("Expected a primary expression, found ${currentKind()}")
+                val dummy = IdentExpr("", start)
+                advance()
+                dummy
             }
         }
     }
@@ -1427,7 +1510,13 @@ class Parser(
 
         val statements = mutableListOf<Statement>()
         while (currentKind() != TokenKind.RIGHT_BRACE && !isAtEnd()) {
+            val startToken = currentToken
             statements.add(parseStatement())
+            if (startToken == currentToken) {
+                // Safety break to avoid infinite loop
+                error("Stuck at token ${currentKind()} at top of statement loop")
+                advance()
+            }
         }
 
         expectOrError(TokenKind.RIGHT_BRACE, "Expected '}'")

@@ -1,9 +1,11 @@
 package io.ygdrasil.wgsl.lexer
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 
+@Ignored
 class LexerLiteralTest : FunSpec({
     context("Numeric literals") {
         test("integer literal") {

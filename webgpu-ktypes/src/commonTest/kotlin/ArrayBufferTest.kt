@@ -1,12 +1,12 @@
 @file:OptIn(ExperimentalUnsignedTypes::class)
 
-import io.kotest.core.spec.style.FreeSpec
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.ygdrasil.webgpu.ArrayBuffer
 
 
-class ArrayBufferTest : FreeSpec({
-    "allocate creates zero-initialized buffer" {
+class ArrayBufferTest : FunSpec({
+    test("allocate creates zero-initialized buffer") {
         // When
         val buffer = ArrayBuffer.allocate(16u)
 
@@ -16,7 +16,7 @@ class ArrayBufferTest : FreeSpec({
         bytes.all { it == 0.toByte() } shouldBe true
     }
 
-    "allocate with different sizes" {
+    test("allocate with different sizes") {
         // Given
         val sizes = listOf(1uL, 8uL, 64uL, 256uL, 1024uL)
 
@@ -30,7 +30,7 @@ class ArrayBufferTest : FreeSpec({
         }
     }
 
-    "allocate buffer can be written to" {
+    test("allocate buffer can be written to") {
         // Given
         val buffer = ArrayBuffer.allocate(16u)
 
@@ -45,7 +45,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getFloat(8u) shouldBe 3.50f
     }
 
-    "allocate buffer supports all typed array conversions" {
+    test("allocate buffer supports all typed array conversions") {
         // Given
         val buffer = ArrayBuffer.allocate(32u)
 
@@ -60,7 +60,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.toDoubleArray().size shouldBe 4
     }
 
-    "ByteArray round-trip" {
+    test("ByteArray round-trip") {
         // Given
         val input = byteArrayOf(1, 2, 3, 4, 5, -1, -2, -3)
 
@@ -72,7 +72,7 @@ class ArrayBufferTest : FreeSpec({
         output shouldBe input
     }
 
-    "ShortArray round-trip" {
+    test("ShortArray round-trip") {
         // Given
         val input = shortArrayOf(100, 200, 300, -100, -200, -300)
 
@@ -84,7 +84,7 @@ class ArrayBufferTest : FreeSpec({
         output shouldBe input
     }
 
-    "IntArray round-trip" {
+    test("IntArray round-trip") {
         // Given
         val input = intArrayOf(1000, 2000, 3000, -1000, -2000, -3000)
 
@@ -96,7 +96,7 @@ class ArrayBufferTest : FreeSpec({
         output shouldBe input
     }
 
-    "FloatArray round-trip" {
+    test("FloatArray round-trip") {
         // Given
         val input = floatArrayOf(1.5f, 2.5f, 3.5f, -1.5f, -2.5f, -3.5f)
 
@@ -108,7 +108,7 @@ class ArrayBufferTest : FreeSpec({
         output shouldBe input
     }
 
-    "DoubleArray round-trip" {
+    test("DoubleArray round-trip") {
         // Given
         val input = doubleArrayOf(1.5, 2.5, 3.5, -1.5, -2.5, -3.5)
 
@@ -120,7 +120,7 @@ class ArrayBufferTest : FreeSpec({
         output shouldBe input
     }
 
-    "UByteArray round-trip" {
+    test("UByteArray round-trip") {
         // Given
         val input = ubyteArrayOf(1u, 2u, 3u, 4u, 5u, 255u, 254u, 253u)
 
@@ -132,7 +132,7 @@ class ArrayBufferTest : FreeSpec({
         output shouldBe input
     }
 
-    "UShortArray round-trip" {
+    test("UShortArray round-trip") {
         // Given
         val input = ushortArrayOf(100u, 200u, 300u, 65535u, 65534u, 65533u)
 
@@ -144,7 +144,7 @@ class ArrayBufferTest : FreeSpec({
         output shouldBe input
     }
 
-    "UIntArray round-trip" {
+    test("UIntArray round-trip") {
         // Given
         val input = uintArrayOf(1000u, 2000u, 3000u, 4294967295u, 4294967294u, 4294967293u)
 
@@ -156,7 +156,7 @@ class ArrayBufferTest : FreeSpec({
         output shouldBe input
     }
 
-    "Indexed read/write - Byte" {
+    test("Indexed read/write - Byte") {
         // Given
         val buffer = ArrayBuffer.of(ByteArray(10))
 
@@ -169,7 +169,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getByte(5u) shouldBe -42
     }
 
-    "Indexed read/write - Short" {
+    test("Indexed read/write - Short") {
         // Given
         val buffer = ArrayBuffer.of(ByteArray(20))
 
@@ -182,7 +182,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getShort(8u) shouldBe -1000
     }
 
-    "Indexed read/write - Int" {
+    test("Indexed read/write - Int") {
         // Given
         val buffer = ArrayBuffer.of(ByteArray(20))
 
@@ -195,7 +195,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getInt(8u) shouldBe -100000
     }
 
-    "Indexed read/write - Float" {
+    test("Indexed read/write - Float") {
         // Given
         val buffer = ArrayBuffer.of(ByteArray(20))
 
@@ -208,7 +208,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getFloat(8u) shouldBe -3.5f
     }
 
-    "Indexed read/write - Double" {
+    test("Indexed read/write - Double") {
         // Given
         val buffer = ArrayBuffer.of(ByteArray(32))
 
@@ -221,7 +221,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getDouble(16u) shouldBe -3.14159
     }
 
-    "Indexed read/write - UByte" {
+    test("Indexed read/write - UByte") {
         // Given
         val buffer = ArrayBuffer.of(ByteArray(10))
 
@@ -234,7 +234,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getUByte(5u) shouldBe 128u
     }
 
-    "Indexed read/write - UShort" {
+    test("Indexed read/write - UShort") {
         // Given
         val buffer = ArrayBuffer.of(ByteArray(20))
 
@@ -247,7 +247,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getUShort(8u) shouldBe 32768u
     }
 
-    "Indexed read/write - UInt" {
+    test("Indexed read/write - UInt") {
         // Given
         val buffer = ArrayBuffer.of(ByteArray(20))
 
@@ -260,7 +260,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getUInt(8u) shouldBe 2147483648u
     }
 
-    "Array write - ByteArray" {
+    test("Array write - ByteArray") {
         // Given
         val buffer = ArrayBuffer.allocate(20u)
         val data = byteArrayOf(1, 2, 3, 4, 5)
@@ -276,7 +276,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getByte(12u) shouldBe -3
     }
 
-    "Array write - ShortArray" {
+    test("Array write - ShortArray") {
         // Given
         val buffer = ArrayBuffer.allocate(40u)
         val data = shortArrayOf(100, 200, 300)
@@ -292,7 +292,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getShort(22u) shouldBe -200
     }
 
-    "Array write - IntArray" {
+    test("Array write - IntArray") {
         // Given
         val buffer = ArrayBuffer.allocate(40u)
         val data = intArrayOf(1000, 2000, 3000)
@@ -308,7 +308,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getInt(24u) shouldBe -2000
     }
 
-    "Array write - FloatArray" {
+    test("Array write - FloatArray") {
         // Given
         val buffer = ArrayBuffer.allocate(40u)
         val data = floatArrayOf(1.5f, 2.5f, 3.5f)
@@ -324,7 +324,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getFloat(24u) shouldBe -2.5f
     }
 
-    "Array write - DoubleArray" {
+    test("Array write - DoubleArray") {
         // Given
         val buffer = ArrayBuffer.allocate(64u)
         val data = doubleArrayOf(1.5, 2.5, 3.5)
@@ -340,7 +340,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getDouble(40u) shouldBe -2.5
     }
 
-    "Array write - UByteArray" {
+    test("Array write - UByteArray") {
         // Given
         val buffer = ArrayBuffer.allocate(20u)
         val data = ubyteArrayOf(1u, 2u, 3u, 4u, 5u)
@@ -356,7 +356,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getUByte(12u) shouldBe 253u
     }
 
-    "Array write - UShortArray" {
+    test("Array write - UShortArray") {
         // Given
         val buffer = ArrayBuffer.allocate(40u)
         val data = ushortArrayOf(100u, 200u, 300u)
@@ -372,7 +372,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getUShort(22u) shouldBe 65534u
     }
 
-    "Array write - UIntArray" {
+    test("Array write - UIntArray") {
         // Given
         val buffer = ArrayBuffer.allocate(40u)
         val data = uintArrayOf(1000u, 2000u, 3000u)
@@ -388,7 +388,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.getUInt(24u) shouldBe 4294967294u
     }
 
-    "Array write - complete buffer overwrite" {
+    test("Array write - complete buffer overwrite") {
         // Given
         val buffer = ArrayBuffer.allocate(16u)
         val data = byteArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
@@ -400,7 +400,7 @@ class ArrayBufferTest : FreeSpec({
         buffer.toByteArray() shouldBe data
     }
 
-    "Array write - partial buffer with verification" {
+    test("Array write - partial buffer with verification") {
         // Given
         val buffer = ArrayBuffer.allocate(20u)
         val intData = intArrayOf(100, 200)

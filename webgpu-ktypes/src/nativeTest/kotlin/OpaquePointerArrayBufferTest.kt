@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalForeignApi::class, ExperimentalUnsignedTypes::class)
 
-import io.kotest.core.spec.style.FreeSpec
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.ygdrasil.webgpu.ArrayBuffer
 import kotlinx.cinterop.*
@@ -9,9 +9,9 @@ import kotlinx.cinterop.*
  * Tests for ArrayBuffer.wrap() method which is native-specific.
  * This method allows wrapping an existing native pointer without copying data.
  */
-class OpaquePointerArrayBufferTest : FreeSpec({
+class OpaquePointerArrayBufferTest : FunSpec({
 
-    "ArrayBuffer.wrap() - create buffer from existing memory pointer" {
+    test("ArrayBuffer.wrap() - create buffer from existing memory pointer") {
         // Given - allocate native memory and fill it with data
         val size = 5
         val ptr = nativeHeap.allocArray<ByteVar>(size)
@@ -30,7 +30,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         nativeHeap.free(ptr)
     }
 
-    "ArrayBuffer.wrap() - modifications in wrapped buffer are visible" {
+    test("ArrayBuffer.wrap() - modifications in wrapped buffer are visible") {
         // Given - allocate native memory
         val size = 5
         val ptr = nativeHeap.allocArray<ByteVar>(size)
@@ -52,7 +52,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         nativeHeap.free(ptr)
     }
 
-    "ArrayBuffer.wrap() - wrapping IntArray memory" {
+    test("ArrayBuffer.wrap() - wrapping IntArray memory") {
         // Given - allocate int array memory
         val size = 4
         val ptr = nativeHeap.allocArray<IntVar>(size)
@@ -74,7 +74,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         nativeHeap.free(ptr)
     }
 
-    "ArrayBuffer.wrap() - wrapping FloatArray memory" {
+    test("ArrayBuffer.wrap() - wrapping FloatArray memory") {
         // Given - allocate float array memory
         val size = 4
         val ptr = nativeHeap.allocArray<FloatVar>(size)
@@ -96,7 +96,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         nativeHeap.free(ptr)
     }
 
-    "ArrayBuffer.wrap() - wrapping DoubleArray memory" {
+    test("ArrayBuffer.wrap() - wrapping DoubleArray memory") {
         // Given - allocate double array memory
         val size = 4
         val ptr = nativeHeap.allocArray<DoubleVar>(size)
@@ -118,7 +118,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         nativeHeap.free(ptr)
     }
 
-    "ArrayBuffer.wrap() - partial buffer wrapping" {
+    test("ArrayBuffer.wrap() - partial buffer wrapping") {
         // Given - allocate 10 bytes
         val size = 10
         val ptr = nativeHeap.allocArray<ByteVar>(size)
@@ -137,7 +137,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         nativeHeap.free(ptr)
     }
 
-    "ArrayBuffer.wrap() - read and write all data types" {
+    test("ArrayBuffer.wrap() - read and write all data types") {
         // Given - allocate native memory large enough for all types
         val bufferSize = 64
         val ptr = nativeHeap.allocArray<ByteVar>(bufferSize)
@@ -168,7 +168,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         nativeHeap.free(ptr)
     }
 
-    "ArrayBuffer.allocate() - create zero-initialized buffer" {
+    test("ArrayBuffer.allocate() - create zero-initialized buffer") {
         // When - allocate a new buffer
         val buffer = ArrayBuffer.allocate(10u)
 
@@ -177,7 +177,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         buffer.toByteArray() shouldBe ByteArray(10) { 0 }
     }
 
-    "ArrayBuffer.allocate() - write and read values" {
+    test("ArrayBuffer.allocate() - write and read values") {
         // Given - allocate a new buffer
         val buffer = ArrayBuffer.allocate(32u)
 
@@ -202,7 +202,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         buffer.getUInt(28u) shouldBe 4294967295u
     }
 
-    "ArrayBuffer.allocate() - convert to typed arrays" {
+    test("ArrayBuffer.allocate() - convert to typed arrays") {
         // Given - allocate a buffer and fill it with data
         val buffer = ArrayBuffer.allocate(16u)
         buffer.setInt(0u, 100)
@@ -217,7 +217,7 @@ class OpaquePointerArrayBufferTest : FreeSpec({
         intArray shouldBe intArrayOf(100, 200, 300, 400)
     }
 
-    "ArrayBuffer.allocate() - memory is automatically managed" {
+    test("ArrayBuffer.allocate() - memory is automatically managed") {
         // When - allocate multiple buffers (they should be automatically freed by GC)
         repeat(100) {
             val buffer = ArrayBuffer.allocate(1024u)

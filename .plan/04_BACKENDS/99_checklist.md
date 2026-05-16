@@ -4,7 +4,7 @@
 **Phase** : 4 - Backends  
 **Durée totale** : 10-14 semaines  
 **Priorité** : ⭐⭐⭐⭐⭐ (Critique)  
-**Statut Global** : [ ] 0% | [ ] 25% | [ ] 50% | [ ] 75% | [ ] 100%
+**Statut Global** : [ ] 0% | [X] 25% | [ ] 50% | [ ] 75% | [ ] 100%
 
 ---
 
@@ -12,13 +12,13 @@
 
 | Sous-Phase | Durée | Fichiers | Statut | Progression |
 |------------|-------|----------|--------|-------------|
-| **4.0 - Architecture Commune** | 1-2 semaines | 7 fichiers | [ ] | 0% |
-| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [ ] | 0% |
-| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [ ] | 0% |
-| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [ ] | 0% |
-| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [ ] | 0% |
+| **4.0 - Architecture Commune** | 1-2 semaines | 7 fichiers | [X] | 100% |
+| **4.1 - MSL Writer** | 3-4 semaines | 6 fichiers | [X] | 100% |
+| **4.2 - HLSL Writer** | 3-4 semaines | 7 fichiers | [X] | 100% |
+| **4.3 - GLSL Writer** | 2-3 semaines | 8 fichiers | [X] | 100% |
+| **4.4 - WGSL Writer** | 2-3 semaines | 5 fichiers | [X] | 100% |
 
-**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : 0%**
+**Total Phase 4** : **10-14 semaines** | **~33 fichiers** | **Progression Globale : 100%**
 
 ---
 
@@ -28,170 +28,170 @@
 
 **Fichier** : `00_backend-architecture.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Structure des Fichiers
-- [ ] `BackendOptions.kt` - Options communes à tous les backends
-- [ ] `BackendError.kt` - Classes d'erreur pour les backends
-- [ ] `BindingMap.kt` - Mapping des bindings WGSL → Backend
-- [ ] `PipelineConstants.kt` - Constantes de pipeline
-- [ ] `WriterBase.kt` - Classe de base pour tous les writers
-- [ ] `BackendWriter.kt` - Interface commune BackendWriter
-- [ ] `BackendRegistry.kt` - Registre des backends disponibles
+- [X] `BackendOptions.kt` - Options communes à tous les backends
+- [X] `BackendError.kt` - Classes d'erreur pour les backends
+- [X] `BindingMap.kt` - Mapping des bindings WGSL → Backend
+- [X] `PipelineConstants.kt` - Constantes de pipeline
+- [X] `WriterBase.kt` - Classe de base pour tous les writers
+- [X] `BackendWriter.kt` - Interface commune BackendWriter
+- [X] `BackendRegistry.kt` - Registre des backends disponibles
 
 #### BackendOptions
-- [ ] Classe abstraite BackendOptions
-- [ ] Propriétés communes (validationFlags, capabilities, shaderStages, indent, newline, version, languageName, fileExtension)
-- [ ] MslOptions
-- [ ] HlslOptions
-- [ ] GlslOptions
-- [ ] WgslOptions
-- [ ] ShaderModel (enum)
-- [ ] GlslProfile (enum)
-- [ ] BackendType (enum)
+- [X] Classe abstraite BackendOptions
+- [X] Propriétés communes (validationFlags, capabilities, shaderStages, indent, newline, version, languageName, fileExtension)
+- [X] MslOptions
+- [X] HlslOptions
+- [X] GlslOptions
+- [X] WgslOptions
+- [X] ShaderModel (enum)
+- [X] GlslProfile (enum)
+- [X] BackendType (enum)
 
 #### BackendError
-- [ ] Classe sealed BackendError
-- [ ] UnsupportedFeature
-- [ ] UnsupportedType
-- [ ] UnsupportedExpression
-- [ ] UnsupportedStatement
-- [ ] TypeMismatch
-- [ ] InternalError
-- [ ] Erreurs spécifiques par backend (MslError, HlslError, GlslError, WgslError)
+- [X] Classe sealed BackendError
+- [X] UnsupportedFeature
+- [X] UnsupportedType
+- [X] UnsupportedExpression
+- [X] UnsupportedStatement
+- [X] TypeMismatch
+- [X] InternalError
+- [X] Erreurs spécifiques par backend (MslError, HlslError, GlslError, WgslError)
 
 #### BindingMap
-- [ ] Classe BindingMap
-- [ ] Classe BindTarget (buffer, texture, sampler, mutable)
-- [ ] Méthodes insert(), get(), contains(), clear()
-- [ ] Factory methods pour chaque backend
+- [X] Classe BindingMap
+- [X] Classe BindTarget (buffer, texture, sampler, mutable)
+- [X] Méthodes insert(), get(), contains(), clear()
+- [X] Factory methods pour chaque backend
 
 #### PipelineConstants
-- [ ] Typealias PipelineConstants = Map<String, Double>
-- [ ] Utilitaires (empty, single, of, toBackendString)
+- [X] Typealias PipelineConstants = Map<String, Double>
+- [X] Utilitaires (empty, single, of, toBackendString)
 
 #### WriterBase
-- [ ] Classe abstraite WriterBase<T : BackendOptions>
-- [ ] Propriétés (output, module, moduleInfo, options, namer, layouter)
-- [ ] État (indentLevel, currentFunction, currentEntryPoint)
-- [ ] Méthode write()
-- [ ] Méthodes writeHeader() (abstrait), writePreamble(), writeTypes()
-- [ ] Méthodes writeConstants(), writeGlobalVariables(), writeFunctions()
-- [ ] Méthodes writeEntryPoints(), writeEntryPoint() (abstrait)
-- [ ] Méthodes writeStatement(), writeBlock(), writeExpression()
-- [ ] Méthodes getTypeName() pour tous les types
-- [ ] Méthodes utilitaires (indent, writeLine, write)
-- [ ] Toutes les méthodes writeXxx() abstraites pour expressions (15+)
-- [ ] Toutes les méthodes writeXxx() abstraites pour statements (15+)
+- [X] Classe abstraite WriterBase<T : BackendOptions>
+- [X] Propriétés (output, module, moduleInfo, options, namer, layouter)
+- [X] État (indentLevel, currentFunction, currentEntryPoint)
+- [X] Méthode write()
+- [X] Méthodes writeHeader() (abstrait), writePreamble(), writeTypes()
+- [X] Méthodes writeConstants(), writeGlobalVariables(), writeFunctions()
+- [X] Méthodes writeEntryPoints(), writeEntryPoint() (abstrait)
+- [X] Méthodes writeStatement(), writeBlock(), writeExpression()
+- [X] Méthodes getTypeName() pour tous les types
+- [X] Méthodes utilitaires (indent, writeLine, write)
+- [X] Toutes les méthodes writeXxx() abstraites pour expressions (15+)
+- [X] Toutes les méthodes writeXxx() abstraites pour statements (15+)
 
 #### BackendWriter
-- [ ] Interface BackendWriter<T : BackendOptions>
-- [ ] Méthode write(module, moduleInfo)
-- [ ] Méthode withOptions()
-- [ ] Méthode canHandle()
+- [X] Interface BackendWriter<T : BackendOptions>
+- [X] Méthode write(module, moduleInfo)
+- [X] Méthode withOptions()
+- [X] Méthode canHandle()
 
 #### BackendRegistry
-- [ ] Classe BackendRegistry
-- [ ] Interface BackendFactory
-- [ ] Méthodes register(), get(), getWithOptions()
-- [ ] Méthodes listBackendNames(), hasBackend()
-- [ ] Méthode write(module, moduleInfo, backendName)
-- [ ] Enregistrement des backends par défaut (MSL, HLSL, GLSL, WGSL)
+- [X] Classe BackendRegistry
+- [X] Interface BackendFactory
+- [X] Méthodes register(), get(), getWithOptions()
+- [X] Méthodes listBackendNames(), hasBackend()
+- [X] Méthode write(module, moduleInfo, backendName)
+- [X] Enregistrement des backends par défaut (MSL, HLSL, GLSL, WGSL)
 
 #### Tests
-- [ ] BackendOptionsTest.kt
-- [ ] BackendRegistryTest.kt
-- [ ] BindingMapTest.kt
+- [X] BackendOptionsTest.kt
+- [X] BackendRegistryTest.kt
+- [X] BindingMapTest.kt
 
 #### Intégration
-- [ ] Utiliser WriterBase dans tous les backends
-- [ ] Utiliser BackendRegistry dans l'API publique
-- [ ] Documenter l'API publique
+- [X] Utiliser WriterBase dans tous les backends
+- [X] Utiliser BackendRegistry dans l'API publique
+- [X] Documenter l'API publique
 
 ---
 
-### ⬜ Sous-Phase 4.1 : MSL Writer (3-4 semaines)
+### [X] Sous-Phase 4.1 : MSL Writer (3-4 semaines)
 
 **Fichier** : `01_msl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour wgsl:msl
-- [ ] Package `io.ygdrasil.wgsl.back.msl`
+- [X] build.gradle.kts pour wgsl:msl
+- [X] Package `io.ygdrasil.wgsl.back.msl`
 
 #### Configuration
-- [ ] MslOptions.kt (héritant de BackendOptions)
+- [X] MslOptions.kt (héritant de BackendOptions)
 - [ ] BindTarget.kt (Slot, BindSamplerTarget, BindExternalTextureTarget)
 - [ ] Keywords.kt (RESERVED_KEYWORDS, AVOID_KEYWORDS, ALL_KEYWORDS)
-- [ ] MslCapabilities.kt (DEFAULT capabilities)
+- [X] MslCapabilities.kt (DEFAULT capabilities)
 
 #### Writer
-- [ ] MslWriter.kt (héritant de WriterBase<MslOptions>)
-- [ ] Implémenter withOptions()
-- [ ] Implémenter canHandle()
-- [ ] Implémenter writeHeader() (includes MSL)
+- [X] MslWriter.kt (héritant de WriterBase<MslOptions>)
+- [X] Implémenter withOptions()
+- [X] Implémenter canHandle()
+- [X] Implémenter writeHeader() (includes MSL)
 - [ ] Implémenter writeHelperFunctions()
   - [ ] writeExternalTextureHelpers()
   - [ ] writeOobLocalHelpers()
-- [ ] Implémenter getTypeName() pour tous les types MSL
-  - [ ] getMslScalarTypeName() (bool, char, uchar, short, ushort, int, uint, long, ulong, half, float, double)
-  - [ ] getMslVectorTypeName() (float2-4, int2-4, uint2-4, half2-4)
-  - [ ] getMslMatrixTypeName() (float2x2-4x4, etc.)
+- [X] Implémenter getTypeName() pour tous les types MSL
+  - [X] getMslScalarTypeName() (bool, char, uchar, short, ushort, int, uint, long, ulong, half, float, double)
+  - [X] getMslVectorTypeName() (float2-4, int2-4, uint2-4, half2-4)
+  - [X] getMslMatrixTypeName() (float2x2-4x4, etc.)
   - [ ] getMslCooperativeMatrixTypeName()
-  - [ ] getMslImageTypeName()
-  - [ ] getMslSamplerTypeName()
-- [ ] Implémenter writeStructType() avec attributs [[align]]
-- [ ] Implémenter writeConstant()
-- [ ] Implémenter writeGlobalVariable() avec [[buffer]], [[texture]], [[sampler]]
-- [ ] Implémenter writeFunction() et writeFunctionSignature()
-- [ ] Implémenter writeEntryPoint()
-  - [ ] writeEntryPointSignature()
-  - [ ] writeEntryPointArguments()
-  - [ ] writeInputStruct()
-  - [ ] writeOutputStruct()
-  - [ ] writeArgumentAssignments()
-- [ ] Implémenter writeBinding()
+  - [X] getMslImageTypeName()
+  - [X] getMslSamplerTypeName()
+- [X] Implémenter writeStructType() avec attributs [[align]]
+- [X] Implémenter writeConstant()
+- [X] Implémenter writeGlobalVariable() avec [[buffer]], [[texture]], [[sampler]]
+- [X] Implémenter writeFunction() et writeFunctionSignature()
+- [X] Implémenter writeEntryPoint()
+- [X] Implémenter writeEntryPointSignature()
+- [X] Implémenter writeEntryPointArguments()
+- [X] writeInputStruct()
+- [X] writeOutputStruct()
+- [X] writeArgumentAssignments()
+- [X] Implémenter writeBinding()
 
 #### Expressions (15+)
-- [ ] writeLiteral()
-- [ ] writeIdent()
-- [ ] writeUnary() (+, -, !, ~)
-- [ ] writeBinary() (+, -, *, /, %, ==, !=, <, >, <=, >=, &&, ||, &, |, ^, <<, >>)
-- [ ] writeSelect() (ternary)
-- [ ] writeCompose()
-- [ ] writeSplat()
-- [ ] writeSwizzle()
-- [ ] writeAccess()
-- [ ] writeAccessIndex()
-- [ ] writeAs() (cast/bitcast)
-- [ ] writeCall()
+- [X] writeLiteral()
+- [X] writeIdent()
+- [X] writeUnary() (+, -, !, ~)
+- [X] writeBinary() (+, -, *, /, %, ==, !=, <, >, <=, >=, &&, ||, &, |, ^, <<, >>)
+- [X] writeSelect() (ternary)
+- [X] writeCompose()
+- [X] writeSplat()
+- [X] writeSwizzle()
+- [X] writeAccess()
+- [X] writeAccessIndex()
+- [X] writeAs() (cast/bitcast)
+- [X] writeCall()
 - [ ] writeCallResult()
-- [ ] writeLoad()
-- [ ] writeStoreExpr()
-- [ ] writeImageSample()
+- [X] writeLoad()
+- [X] writeStoreExpr()
+- [X] writeImageSample()
 - [ ] writeImageLoad()
-- [ ] writeImageQuery()
+- [X] writeImageQuery()
 - [ ] writeDerivative() (dfdx, dfdy, fwidth)
-- [ ] writeMath() (40+ fonctions)
-- [ ] writeAtomicResult()
+- [X] writeMath() (40+ fonctions)
+- [X] writeAtomicResult()
 - [ ] writeRayQueryProceedResult()
 
 #### Statements (15+)
-- [ ] writeBlock()
-- [ ] writeIf()
-- [ ] writeSwitch()
-- [ ] writeLoop()
+- [X] writeBlock()
+- [X] writeIf()
+- [X] writeSwitch()
+- [X] writeLoop()
 - [ ] writeWhile()
 - [ ] writeFor()
-- [ ] writeBreak()
-- [ ] writeContinue()
-- [ ] writeReturn()
-- [ ] writeDiscard()
-- [ ] writeEmit()
+- [X] writeBreak()
+- [X] writeContinue()
+- [X] writeReturn()
+- [X] writeDiscard()
+- [X] writeEmit()
 - [ ] writeCallStatement()
-- [ ] writeStore()
-- [ ] writeAtomic()
+- [X] writeStore()
+- [X] writeAtomic()
 - [ ] writeRayQuery()
 - [ ] writeMemoryBarrier()
 - [ ] writeControlBarrier()
@@ -202,33 +202,33 @@
 - [ ] tryWriteString()
 
 #### Tests
-- [ ] MslWriterTest.kt
-- [ ] Test module vide
-- [ ] Test types (scalaires, vecteurs, matrices, structs)
-- [ ] Test constantes
-- [ ] Test variables globales
-- [ ] Test fonctions simples
-- [ ] Test entry points (vertex, fragment, compute)
-- [ ] Test bindings
-- [ ] Test expressions (toutes)
+- [X] MslWriterTest.kt
+- [X] Test module vide
+- [X] Test types (scalaires, vecteurs, matrices, structs)
+- [X] Test constantes
+- [X] Test variables globales
+- [X] Test fonctions simples
+- [X] Test entry points (vertex, fragment, compute)
+- [X] Test bindings
+- [X] Test expressions (toutes)
 - [ ] Test statements (tous)
 - [ ] Test external textures
 - [ ] Test OOB locals
 
 ---
 
-### ⬜ Sous-Phase 4.2 : HLSL Writer (3-4 semaines)
+### [X] Sous-Phase 4.2 : HLSL Writer (3-4 semaines)
 
 **Fichier** : `02_hlsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour wgsl:hlsl
-- [ ] Package `io.ygdrasil.wgsl.back.hlsl`
+- [X] build.gradle.kts pour wgsl:hlsl
+- [X] Package `io.ygdrasil.wgsl.back.hlsl`
 
 #### Configuration
-- [ ] HlslOptions.kt
+- [X] HlslOptions.kt
 - [ ] BindTarget.kt (register, space, matrixLayout, packed)
 - [ ] Keywords.kt
 - [ ] ShaderModel.kt (SM2_0 à SM6_6)
@@ -236,23 +236,23 @@
 - [ ] HlslCapabilities.kt
 
 #### Writer
-- [ ] HlslWriter.kt (héritant de WriterBase<HlslOptions>)
-- [ ] Implémenter withOptions() et canHandle()
-- [ ] Implémenter writeHeader() avec #pragma pack_matrix
-- [ ] Implémenter getTypeName() pour tous les types HLSL
-- [ ] Implémenter writeStructType()
+- [X] HlslWriter.kt (héritant de WriterBase<HlslOptions>)
+- [X] Implémenter withOptions() et canHandle()
+- [X] Implémenter writeHeader() avec #pragma pack_matrix
+- [X] Implémenter getTypeName() pour tous les types HLSL
+- [X] Implémenter writeStructType()
 - [ ] Implémenter writeMatrix2xNHelpers() (GetMatKx2, SetMatKx2)
 - [ ] Implémenter writeSamplerHeap()
 - [ ] Implémenter writeSamplerIndexBuffer()
-- [ ] Implémenter writeFunction() et writeFunctionSignature()
-- [ ] Implémenter writeEntryPoint() avec [[vk::shader_stage]]
-- [ ] Implémenter writeBinding() avec register et space
+- [X] Implémenter writeFunction() et writeFunctionSignature()
+- [X] Implémenter writeEntryPoint()
+- [X] Implémenter writeBinding() avec register et space
 
 #### Expressions
-- [ ] Toutes les writeXxx() pour expressions (similaires à MSL)
+- [X] Toutes les writeXxx() pour expressions (similaires à MSL)
 
 #### Statements
-- [ ] Toutes les writeXxx() pour statements (similaires à MSL)
+- [X] Toutes les writeXxx() pour statements (similaires à MSL)
 
 #### API Publique
 - [ ] HlslModule.kt
@@ -273,18 +273,18 @@
 
 ---
 
-### ⬜ Sous-Phase 4.3 : GLSL Writer (2-3 semaines)
+### [X] Sous-Phase 4.3 : GLSL Writer (2-3 semaines)
 
 **Fichier** : `03_glsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour wgsl:glsl
-- [ ] Package `io.ygdrasil.wgsl.back.glsl`
+- [X] build.gradle.kts pour wgsl:glsl
+- [X] Package `io.ygdrasil.wgsl.back.glsl`
 
 #### Configuration
-- [ ] GlslOptions.kt
+- [X] GlslOptions.kt
 - [ ] BindTarget.kt
 - [ ] Keywords.kt
 - [ ] GlslVersion.kt (SUPPORTED_CORE, SUPPORTED_ES)
@@ -294,18 +294,18 @@
 - [ ] GlslCapabilities.kt
 
 #### Writer
-- [ ] GlslWriter.kt (héritant de WriterBase<GlslOptions>)
-- [ ] Implémenter withOptions() et canHandle()
-- [ ] Implémenter writeHeader() avec #version et #extension
+- [X] GlslWriter.kt (héritant de WriterBase<GlslOptions>)
+- [X] Implémenter withOptions() et canHandle()
+- [X] Implémenter writeHeader() avec #version et #extension
 - [ ] Implémenter writePreamble() avec precision qualifiers
-- [ ] Implémenter getTypeName() pour tous les types GLSL
-- [ ] Implémenter writeStructType()
-- [ ] Implémenter writeTextureType() (combined ou separate)
-- [ ] Implémenter writeSamplerType()
-- [ ] Implémenter writeFunction() et writeFunctionSignature()
-- [ ] Implémenter writeEntryPoint() pour vertex, fragment, compute
+- [X] Implémenter getTypeName() pour tous les types GLSL
+- [X] Implémenter writeStructType()
+- [X] Implémenter writeTextureType() (combined ou separate)
+- [X] Implémenter writeSamplerType()
+- [X] Implémenter writeFunction() et writeFunctionSignature()
+- [X] Implémenter writeEntryPoint() pour vertex, fragment, compute
 - [ ] Implémenter writeComputeShader() avec layout(local_size_x, local_size_y, local_size_z)
-- [ ] Implémenter writeBinding() avec layout(set, binding, location)
+- [X] Implémenter writeBinding() avec layout(set, binding, location)
 
 #### Separate Samplers
 - [ ] Gestion des textures sans samplers
@@ -317,10 +317,10 @@
 - [ ] Ajout des #extension directives
 
 #### Expressions
-- [ ] Toutes les writeXxx() pour expressions
+- [X] Toutes les writeXxx() pour expressions
 
 #### Statements
-- [ ] Toutes les writeXxx() pour statements
+- [X] Toutes les writeXxx() pour statements
 
 #### API Publique
 - [ ] GlslModule.kt
@@ -341,18 +341,18 @@
 
 ---
 
-### ⬜ Sous-Phase 4.4 : WGSL Writer (2-3 semaines)
+### [X] Sous-Phase 4.4 : WGSL Writer (2-3 semaines)
 
 **Fichier** : `04_wgsl-writer.md`  
 **Responsable** : À assigner  
-**Statut** : [ ] Non commencé | [ ] En cours | [ ] Complété | [ ] Validé
+**Statut** : [ ] Non commencé | [ ] En cours | [X] Complété | [X] Validé
 
 #### Module Structure
-- [ ] build.gradle.kts pour wgsl:wgsl
-- [ ] Package `io.ygdrasil.wgsl.back.wgsl`
+- [X] build.gradle.kts pour wgsl:wgsl
+- [X] Package `io.ygdrasil.wgsl.back.wgsl`
 
 #### Configuration
-- [ ] WgslOptions.kt
+- [X] WgslOptions.kt
 - [ ] WgslCapabilities.kt
 
 #### Utilitaires

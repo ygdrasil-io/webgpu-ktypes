@@ -40,11 +40,11 @@
 ## 📁 Structure des Répertoires
 
 ### Répertoires de Test
-- [ ] Créer `tests/golden/` pour les fichiers golden
-  - [ ] `tests/golden/inputs/` pour les fichiers WGSL d'entrée
-  - [ ] `tests/golden/outputs/` pour les fichiers de sortie générés
+- [X] Créer `tests/golden/` pour les fichiers golden
+  - [X] `tests/golden/inputs/` pour les fichiers WGSL d'entrée
+  - [X] `tests/golden/outputs/` pour les fichiers de sortie générés
     - [ ] `tests/golden/outputs/ir/` pour la sérialisation IR
-    - [ ] `tests/golden/outputs/msl/` pour le code MSL
+    - [X] `tests/golden/outputs/msl/` pour le code MSL
     - [ ] `tests/golden/outputs/hlsl/` pour le code HLSL
     - [ ] `tests/golden/outputs/glsl/` pour le code GLSL
     - [ ] `tests/golden/outputs/wgsl/` pour le round-trip WGSL
@@ -56,7 +56,8 @@
   - [ ] `tests/roundtrip/reports/` pour les rapports
 
 ### Répertoires de Code
-- [ ] Créer `src/test/kotlin/dev/gfxrs/naga/test/golden/` pour les tests golden
+- [X] Créer `wgsl:tests` module dans `wgsl/tests/`
+- [X] Créer `GoldenTestBase.kt` dans `wgsl/tests/src/jvmTest/kotlin/io/ygdrasil/wgsl/tests/`
 - [ ] Créer `src/test/kotlin/dev/gfxrs/naga/test/validator/` pour les validateurs natifs
 - [ ] Créer `src/test/kotlin/dev/gfxrs/naga/test/roundtrip/` pour les tests de round-trip
 
@@ -297,7 +298,7 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 
 ### Tests des Golden Files
 - [ ] Créer `IrGoldenTests.kt` pour les tests IR
-- [ ] Créer `MslGoldenTests.kt` pour les tests MSL
+- [X] Créer `MslGoldenTests.kt` pour les tests MSL
 - [ ] Créer `HlslGoldenTests.kt` pour les tests HLSL
 - [ ] Créer `GlslGoldenTests.kt` pour les tests GLSL
 - [ ] Créer `WgslRoundTripTests.kt` pour les tests de round-trip

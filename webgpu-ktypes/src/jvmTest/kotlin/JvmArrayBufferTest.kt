@@ -1,15 +1,15 @@
-import io.kotest.core.spec.style.FreeSpec
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.ygdrasil.webgpu.ArrayBuffer
 import java.lang.foreign.Arena
 import java.lang.foreign.MemorySegment
 import java.lang.foreign.ValueLayout
 
-class JvmArrayBufferTest: FreeSpec({
+class JvmArrayBufferTest: FunSpec({
 
-    "ArrayBuffer.wrap with MemorySegment" - {
+    context("ArrayBuffer.wrap with MemorySegment") {
 
-        "should wrap native memory segment" {
+        test("should wrap native memory segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(16L)
 
@@ -19,7 +19,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should read and write bytes to wrapped segment" {
+        test("should read and write bytes to wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(10L)
                 val buffer = ArrayBuffer.wrap(segment)
@@ -32,7 +32,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should read and write shorts to wrapped segment" {
+        test("should read and write shorts to wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(10L)
                 val buffer = ArrayBuffer.wrap(segment)
@@ -45,7 +45,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should read and write ints to wrapped segment" {
+        test("should read and write ints to wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(16L)
                 val buffer = ArrayBuffer.wrap(segment)
@@ -58,7 +58,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should read and write floats to wrapped segment" {
+        test("should read and write floats to wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(16L)
                 val buffer = ArrayBuffer.wrap(segment)
@@ -71,7 +71,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should read and write doubles to wrapped segment" {
+        test("should read and write doubles to wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(32L)
                 val buffer = ArrayBuffer.wrap(segment)
@@ -84,7 +84,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should read and write unsigned bytes to wrapped segment" {
+        test("should read and write unsigned bytes to wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(10L)
                 val buffer = ArrayBuffer.wrap(segment)
@@ -97,7 +97,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should read and write unsigned shorts to wrapped segment" {
+        test("should read and write unsigned shorts to wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(10L)
                 val buffer = ArrayBuffer.wrap(segment)
@@ -110,7 +110,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should read and write unsigned ints to wrapped segment" {
+        test("should read and write unsigned ints to wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(16L)
                 val buffer = ArrayBuffer.wrap(segment)
@@ -123,7 +123,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should convert wrapped segment to byte array" {
+        test("should convert wrapped segment to byte array") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(5L)
                 segment.set(ValueLayout.JAVA_BYTE, 0L, 1.toByte())
@@ -139,7 +139,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should convert wrapped segment to int array" {
+        test("should convert wrapped segment to int array") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(12L)
                 segment.set(ValueLayout.JAVA_INT_UNALIGNED, 0L, 100)
@@ -153,7 +153,7 @@ class JvmArrayBufferTest: FreeSpec({
             }
         }
 
-        "should wrap segment from existing array" {
+        test("should wrap segment from existing array") {
             val original = byteArrayOf(10, 20, 30, 40, 50)
             val segment = MemorySegment.ofArray(original)
 
@@ -165,7 +165,7 @@ class JvmArrayBufferTest: FreeSpec({
             buffer.getByte(4u) shouldBe 50
         }
 
-        "should reflect changes in wrapped segment" {
+        test("should reflect changes in wrapped segment") {
             Arena.ofConfined().use { arena ->
                 val segment = arena.allocate(4L)
                 segment.set(ValueLayout.JAVA_INT_UNALIGNED, 0L, 999)

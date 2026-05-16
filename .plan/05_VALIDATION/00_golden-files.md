@@ -51,27 +51,29 @@ Tout écart signale une régression ou une modification intentionnelle du compor
 ├── tests/
 │   ├── golden/
 │   │   ├── inputs/
-│   │   │   └── wgsl/
-│   │   │       ├── expressions.wgsl
-│   │   │       ├── functions.wgsl
-│   │   │       ├── types.wgsl
-│   │   │       ├── control-flow.wgsl
-│   │   │       ├── builtins.wgsl
-│   │   │       └── ...
+│   │   │   ├── expressions.wgsl
+│   │   │   ├── functions.wgsl
+│   │   │   ├── types.wgsl
+│   │   │   ├── control-flow.wgsl
+│   │   │   ├── builtins.wgsl
+│   │   │   └── ...
 │   │   └── outputs/
 │   │       ├── ir/
 │   │       │   └── *.json
 │   │       ├── msl/
-│   │       │   └── *.msl
+│   │       │   └── *.metal
 │   │       ├── hlsl/
 │   │       │   └── *.hlsl
 │   │       ├── glsl/
 │   │       │   └── *.glsl
 │   │       └── wgsl/
 │   │           └── *.wgsl
-│   └── snapshots/
-│       └── *.snap  (tests de snapshot)
-└── src/test/kotlin/... (code de test)
+└── wgsl/
+    └── tests/
+        └── src/jvmTest/kotlin/io/ygdrasil/wgsl/tests/
+            ├── GoldenTestBase.kt
+            ├── MslGoldenTest.kt
+            └── ...
 ```
 
 ### Répertoire Source Rust
@@ -143,163 +145,83 @@ Valide que la sérialisation WGSL est cohérente avec l'entrée.
 
 ### Dépendances
 
+Les tests utilisent **Kotest** et sont localisés dans le module `:wgsl:tests`.
+
 ```kotlin
-// build.gradle.kts
+// wgsl/tests/build.gradle.kts
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testImplementation("org.assertj:assertj-core:3.24.2")
-    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+    implementation(project(":wgsl:core"))
+    implementation(project(":wgsl:msl"))
+    // ... autres backends
+    
+    testImplementation(libs.bundles.kotest)
 }
 ```
 
 ### Classe de Base pour les Tests Golden
 
 ```kotlin
-// src/test/kotlin/dev/gfxrs/naga/test/GoldenTestBase.kt
+// wgsl/tests/src/jvmTest/kotlin/io/ygdrasil/wgsl/tests/GoldenTestBase.kt
 
-package io.ygdrasil.wgsl.test
+package io.ygdrasil.wgsl.tests
 
-import io.ygdrasil.wgsl.backends.msl.writeMsl
-import io.ygdrasil.wgsl.backends.hlsl.writeHlsl
-import io.ygdrasil.wgsl.backends.glsl.writeGlsl
-import io.ygdrasil.wgsl.backends.wgsl.writeWgsl
-import io.ygdrasil.wgsl.frontends.wgsl.parseWgsl
-import io.ygdrasil.wgsl serializeIrToJson
-import kotlinx.serialization.json.Json
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.ygdrasil.wgsl.back.BackendRegistry
+import io.ygdrasil.wgsl.parser.Lowerer
+import io.ygdrasil.wgsl.parser.TypeResolver
+import io.ygdrasil.wgsl.parser.parseWgsl
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
-import kotlin.io.path.exists
-import kotlin.io.path.readText
-import kotlin.test.assertEquals
 
-/**
- * Base class for golden file tests.
- * 
- * Provides utilities for:
- * - Loading input WGSL files
- * - Parsing to IR
- * - Generating output for various backends
- * - Comparing against golden files
- * - Updating golden files (when GOLDEN_UPDATE env var is set)
- */
-abstract class GoldenTestBase {
-    
-    protected val goldenDir: Path = Paths.get("tests/golden")
-    protected val inputDir: Path = goldenDir.resolve("inputs/wgsl")
-    protected val outputDir: Path = goldenDir.resolve("outputs")
-    
-    protected val irOutputDir: Path = outputDir.resolve("ir")
-    protected val mslOutputDir: Path = outputDir.resolve("msl")
-    protected val hlslOutputDir: Path = outputDir.resolve("hlsl")
-    protected val glslOutputDir: Path = outputDir.resolve("glsl")
-    protected val wgslOutputDir: Path = outputDir.resolve("wgsl")
-    
-    protected val updateGolden: Boolean = 
-        System.getenv("GOLDEN_UPDATE")?.toBoolean() ?: false
-    
-    protected val jsonFormatter: Json = Json {
-        prettyPrint = true
-        ignoreUnknownKeys = true
-        isLenient = true
-    }
-    
-    /**
-     * Load WGSL source from file
-     */
-    protected fun loadWgsl(name: String): String {
-        val path = inputDir.resolve("$name.wgsl")
-        require(path.exists()) { "WGSL input file not found: $path" }
-        return path.readText()
-    }
-    
-    /**
-     * Parse WGSL to IR Module
-     */
-    protected fun parseToIr(source: String): Result<Module> = parseWgsl(source)
-    
-    /**
-     * Generate MSL from IR
-     */
-    protected fun generateMsl(module: Module): String = writeMsl(module)
-    
-    /**
-     * Generate HLSL from IR
-     */
-    protected fun generateHlsl(module: Module): String = writeHlsl(module)
-    
-    /**
-     * Generate GLSL from IR
-     */
-    protected fun generateGlsl(module: Module): String = writeGlsl(module)
-    
-    /**
-     * Generate WGSL from IR
-     */
-    protected fun generateWgsl(module: Module): String = writeWgsl(module)
-    
-    /**
-     * Serialize IR to JSON
-     */
-    protected fun serializeIr(module: Module): String = serializeIrToJson(module)
-    
-    /**
-     * Get golden file path
-     */
-    protected fun getGoldenPath(
-        name: String,
-        backend: BackendType
-    ): Path = when (backend) {
-        BackendType.IR -> irOutputDir.resolve("$name.ir.json")
-        BackendType.MSL -> mslOutputDir.resolve("$name.msl")
-        BackendType.HLSL -> hlslOutputDir.resolve("$name.hlsl")
-        BackendType.GLSL -> glslOutputDir.resolve("$name.glsl")
-        BackendType.WGSL -> wgslOutputDir.resolve("$name.wgsl")
-    }
-    
-    /**
-     * Assert output matches golden file, or update if GOLDEN_UPDATE is set
-     */
-    protected fun assertOrUpdateGolden(
-        name: String,
-        backend: BackendType,
-        actual: String
-    ) {
-        val goldenPath = getGoldenPath(name, backend)
-        
-        if (updateGolden) {
-            // Create parent directories if needed
-            goldenPath.parent?.let { parent ->
-                if (!parent.exists()) {
-                    Files.createDirectories(parent)
+abstract class GoldenTestBase(val backendName: String) : FunSpec({
+
+    registerAllBackends()
+    val goldenUpdate = System.getenv("GOLDEN_UPDATE")?.toBoolean() ?: false
+    val rootDir = findProjectRoot()
+    val inputDir = rootDir.resolve("tests/golden/inputs")
+    val outputBaseDir = rootDir.resolve("tests/golden/outputs")
+
+    context("$backendName Golden Tests") {
+        val inputFiles = Files.list(inputDir)
+            .filter { it.toString().endsWith(".wgsl") }
+            .toList()
+
+        inputFiles.forEach { inputFile ->
+            val fileName = inputFile.fileName.toString()
+            test("Golden test: $fileName") {
+                val source = Files.readString(inputFile)
+                
+                // 1. Parse
+                val unit = parseWgsl(source)
+                
+                // 2. Resolve types
+                val resolver = TypeResolver()
+                val resolutionResult = resolver.resolve(unit)
+                
+                // 3. Lower to IR
+                val lowerer = Lowerer()
+                val module = lowerer.lower(resolutionResult.resolvedUnit)
+                
+                // 4. Generate backend code
+                val writer = BackendRegistry.DEFAULT.get(backendName) 
+                val output = writer.write(module, io.ygdrasil.wgsl.valid.ModuleInfo())
+                
+                // 5. Compare or Update
+                val outputFile = outputBaseDir.resolve(backendName)
+                    .resolve(fileName.replace(".wgsl", getExtension(backendName)))
+                
+                if (goldenUpdate || !Files.exists(outputFile)) {
+                    Files.writeString(outputFile, output)
+                } else {
+                    val expected = Files.readString(outputFile)
+                    output shouldBe expected
                 }
             }
-            // Update golden file
-            goldenPath.writeText(actual)
-            println("[GOLDEN UPDATE] Updated: $goldenPath")
-        } else {
-            // Assert against golden file
-            require(goldenPath.exists()) {
-                "Golden file not found: $goldenPath. Run with GOLDEN_UPDATE=true to create."
-            }
-            val expected = goldenPath.readText()
-            
-            // Normalize line endings for comparison
-            val normalizedActual = actual.replace("\r\n", "\n").replace("\r", "\n")
-            val normalizedExpected = expected.replace("\r\n", "\n").replace("\r", "\n")
-            
-            assertEquals(
-                normalizedExpected,
-                normalizedActual,
-                "Golden file mismatch: $goldenPath"
-            )
         }
     }
-    
-    enum class BackendType {
-        IR, MSL, HLSL, GLSL, WGSL
-    }
-}
+})
+```
 ```
 
 ### Tests Concrets

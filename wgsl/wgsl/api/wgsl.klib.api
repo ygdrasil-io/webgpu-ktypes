@@ -1371,6 +1371,21 @@ final class io.ygdrasil.wgsl.ast/WhileStatement : io.ygdrasil.wgsl.ast/Statement
     final fun toString(): kotlin/String // io.ygdrasil.wgsl.ast/WhileStatement.toString|toString(){}[0]
 }
 
+final class io.ygdrasil.wgsl.back.wgsl/WgslWriter : io.ygdrasil.wgsl.back/BackendWriter<io.ygdrasil.wgsl.back/WgslOptions>, io.ygdrasil.wgsl.back/WriterBase<io.ygdrasil.wgsl.back/WgslOptions> { // io.ygdrasil.wgsl.back.wgsl/WgslWriter|null[0]
+    constructor <init>(kotlin.text/StringBuilder, io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.valid/ModuleInfo, io.ygdrasil.wgsl.back/WgslOptions, io.ygdrasil.wgsl.proc/Namer, io.ygdrasil.wgsl.proc/Layouter) // io.ygdrasil.wgsl.back.wgsl/WgslWriter.<init>|<init>(kotlin.text.StringBuilder;io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.valid.ModuleInfo;io.ygdrasil.wgsl.back.WgslOptions;io.ygdrasil.wgsl.proc.Namer;io.ygdrasil.wgsl.proc.Layouter){}[0]
+
+    final fun canHandle(io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.valid/ModuleInfo): kotlin/Boolean // io.ygdrasil.wgsl.back.wgsl/WgslWriter.canHandle|canHandle(io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.valid.ModuleInfo){}[0]
+    final fun withOptions(io.ygdrasil.wgsl.back/WgslOptions): io.ygdrasil.wgsl.back/BackendWriter<io.ygdrasil.wgsl.back/WgslOptions> // io.ygdrasil.wgsl.back.wgsl/WgslWriter.withOptions|withOptions(io.ygdrasil.wgsl.back.WgslOptions){}[0]
+    final fun write(io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.valid/ModuleInfo): kotlin/String // io.ygdrasil.wgsl.back.wgsl/WgslWriter.write|write(io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.valid.ModuleInfo){}[0]
+}
+
+final class io.ygdrasil.wgsl.back.wgsl/WgslWriterFactory : io.ygdrasil.wgsl.back/BackendRegistry.BackendFactory { // io.ygdrasil.wgsl.back.wgsl/WgslWriterFactory|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.back.wgsl/WgslWriterFactory.<init>|<init>(){}[0]
+
+    final fun create(): io.ygdrasil.wgsl.back/BackendWriter<*> // io.ygdrasil.wgsl.back.wgsl/WgslWriterFactory.create|create(){}[0]
+    final fun createWithOptions(io.ygdrasil.wgsl.back/BackendOptions): io.ygdrasil.wgsl.back/BackendWriter<*> // io.ygdrasil.wgsl.back.wgsl/WgslWriterFactory.createWithOptions|createWithOptions(io.ygdrasil.wgsl.back.BackendOptions){}[0]
+}
+
 final class io.ygdrasil.wgsl.lexer/Lexer : io.ygdrasil.wgsl.lexer/TokenStream { // io.ygdrasil.wgsl.lexer/Lexer|null[0]
     constructor <init>(kotlin/String) // io.ygdrasil.wgsl.lexer/Lexer.<init>|<init>(kotlin.String){}[0]
 
@@ -1722,6 +1737,12 @@ final class io.ygdrasil.wgsl.parser/ErrorRecovery { // io.ygdrasil.wgsl.parser/E
     }
 }
 
+final class io.ygdrasil.wgsl.parser/Lowerer { // io.ygdrasil.wgsl.parser/Lowerer|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.parser/Lowerer.<init>|<init>(){}[0]
+
+    final fun lower(io.ygdrasil.wgsl.ast/TranslationUnit): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.parser/Lowerer.lower|lower(io.ygdrasil.wgsl.ast.TranslationUnit){}[0]
+}
+
 final class io.ygdrasil.wgsl.parser/ModuleIndexer { // io.ygdrasil.wgsl.parser/ModuleIndexer|null[0]
     constructor <init>() // io.ygdrasil.wgsl.parser/ModuleIndexer.<init>|<init>(){}[0]
 
@@ -1950,6 +1971,10 @@ sealed class io.ygdrasil.wgsl.ast/TypeDecl { // io.ygdrasil.wgsl.ast/TypeDecl|nu
         abstract fun <get-span>(): io.ygdrasil.wgsl.ir/Span // io.ygdrasil.wgsl.ast/TypeDecl.span.<get-span>|<get-span>(){}[0]
 }
 
+final object io.ygdrasil.wgsl.back.wgsl/WgslModule { // io.ygdrasil.wgsl.back.wgsl/WgslModule|null[0]
+    final fun writeString(io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.valid/ModuleInfo = ..., io.ygdrasil.wgsl.back/WgslOptions = ...): kotlin/String // io.ygdrasil.wgsl.back.wgsl/WgslModule.writeString|writeString(io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.valid.ModuleInfo;io.ygdrasil.wgsl.back.WgslOptions){}[0]
+}
+
 final val io.ygdrasil.wgsl.lexer/isBinaryOperator // io.ygdrasil.wgsl.lexer/isBinaryOperator|@io.ygdrasil.wgsl.lexer.TokenKind{}isBinaryOperator[0]
     final fun (io.ygdrasil.wgsl.lexer/TokenKind).<get-isBinaryOperator>(): kotlin/Boolean // io.ygdrasil.wgsl.lexer/isBinaryOperator.<get-isBinaryOperator>|<get-isBinaryOperator>@io.ygdrasil.wgsl.lexer.TokenKind(){}[0]
 final val io.ygdrasil.wgsl.lexer/isKeyword // io.ygdrasil.wgsl.lexer/isKeyword|@io.ygdrasil.wgsl.lexer.TokenKind{}isKeyword[0]
@@ -1966,6 +1991,7 @@ final val io.ygdrasil.wgsl.lexer/isUnaryOperator // io.ygdrasil.wgsl.lexer/isUna
     final fun (io.ygdrasil.wgsl.lexer/TokenKind).<get-isUnaryOperator>(): kotlin/Boolean // io.ygdrasil.wgsl.lexer/isUnaryOperator.<get-isUnaryOperator>|<get-isUnaryOperator>@io.ygdrasil.wgsl.lexer.TokenKind(){}[0]
 
 final fun (io.ygdrasil.wgsl.lexer/TokenKind).io.ygdrasil.wgsl.lexer/precedence(): kotlin/Int // io.ygdrasil.wgsl.lexer/precedence|precedence@io.ygdrasil.wgsl.lexer.TokenKind(){}[0]
+final fun io.ygdrasil.wgsl.back.wgsl/registerWgslBackend() // io.ygdrasil.wgsl.back.wgsl/registerWgslBackend|registerWgslBackend(){}[0]
 final fun io.ygdrasil.wgsl.lexer/tokenize(kotlin/String): kotlin.collections/List<io.ygdrasil.wgsl.lexer/Token> // io.ygdrasil.wgsl.lexer/tokenize|tokenize(kotlin.String){}[0]
 final fun io.ygdrasil.wgsl.lexer/tokenizeSignificant(kotlin/String): kotlin.collections/List<io.ygdrasil.wgsl.lexer/Token> // io.ygdrasil.wgsl.lexer/tokenizeSignificant|tokenizeSignificant(kotlin.String){}[0]
 final fun io.ygdrasil.wgsl.parser/parseWgsl(kotlin/String): io.ygdrasil.wgsl.ast/TranslationUnit // io.ygdrasil.wgsl.parser/parseWgsl|parseWgsl(kotlin.String){}[0]

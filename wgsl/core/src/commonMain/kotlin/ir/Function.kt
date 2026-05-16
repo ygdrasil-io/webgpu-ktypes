@@ -37,6 +37,11 @@ data class Function(
     val expressions: Arena<Expression>,
 
     /**
+     * The blocks in the function.
+     */
+    val blocks: Arena<Block>,
+
+    /**
      * The body of the function (a block of statements).
      */
     val body: Handle<Block>,
@@ -279,6 +284,7 @@ enum class BuiltinFunction {
     Fma,
     Fract,
     Frexp,
+    InverseSqrt,
     Ldexp,
     Length,
     Ln,

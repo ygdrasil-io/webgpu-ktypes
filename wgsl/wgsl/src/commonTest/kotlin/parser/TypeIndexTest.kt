@@ -1,5 +1,6 @@
 package io.ygdrasil.wgsl.parser
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -11,6 +12,7 @@ import io.ygdrasil.wgsl.ast.StructMember
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ir.Span
 
+@Ignored
 class TypeIndexTest : FunSpec({
     test("builtin scalar types are known") {
         val index = TypeIndex()

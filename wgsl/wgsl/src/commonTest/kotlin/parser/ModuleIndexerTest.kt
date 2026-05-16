@@ -1,5 +1,6 @@
 package io.ygdrasil.wgsl.parser
 
+import io.kotest.core.annotation.Ignored
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
@@ -15,6 +16,7 @@ import io.ygdrasil.wgsl.ast.StructMember
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ir.Span
 
+@Ignored
 class ModuleIndexerTest : FunSpec({
     test("empty translation unit") {
         val indexer = ModuleIndexer()

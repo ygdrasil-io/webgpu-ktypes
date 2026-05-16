@@ -40,3 +40,4 @@ kotlin-ide/
 .teamcity/
 .npmrc
 *.hprof
+/.junie/

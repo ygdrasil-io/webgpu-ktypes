@@ -111,16 +111,17 @@
 - [x] Implémenter Validator
 - [x] **Livrable** : Module IR validé et optimisé, tests de processing (6 tests)
 
-### 🔴 **Phase 4 : Backends (8-10 semaines)**
-- [ ] Implémenter l'architecture commune des backends
-- [ ] Implémenter MSL Writer (priorité pour Apple)
-- [ ] Implémenter HLSL Writer (priorité pour Windows/DX12)
-- [ ] Implémenter GLSL Writer
-- [ ] Implémenter WGSL Writer
-- [ ] **Livrable** : IR → MSL/HLSL/GLSL/WGSL fonctionnels
+### ✅ **Phase 4 : Backends (8-10 semaines)**
+- [x] Implémenter l'architecture commune des backends
+- [x] Implémenter MSL Writer
+- [x] Implémenter HLSL Writer
+- [x] Implémenter GLSL Writer
+- [x] Implémenter WGSL Writer
+- [x] **Livrable** : IR → MSL/HLSL/GLSL/WGSL fonctionnels
+- [x] **Tests** : Tous les tests de backends utilisent **Kotest FunSpec**
 
-### 🔴 **Phase 5 : Validation (2-3 semaines)**
-- [ ] Configurer les golden files Rust
+### 🚧 **Phase 5 : Validation (2-3 semaines)**
+- [/] Configurer les golden files
 - [ ] Intégrer spirv-val pour SPIR-V
 - [ ] Intégrer glslangValidator pour GLSL
 - [ ] Intégrer Metal compiler pour MSL
@@ -264,6 +265,69 @@
 
 ---
 
+## 🧪 STRUCTURATION DES TESTS
+
+### **Framework Standard : Kotest FunSpec**
+
+**Tous les nouveaux tests doivent utiliser Kotest FunSpec** pour maintenir la cohérence dans le codebase.
+
+**Structure de base :**
+```kotlin
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+
+class MonModuleTest : FunSpec({
+    test("nom du test simple") {
+        // Code de test
+        result shouldBe expected
+    }
+
+    context("description du contexte") {
+        test("comportement spécifique") {
+            // Code de test dans un contexte
+        }
+    }
+})
+```
+
+**Bonnes pratiques :**
+- Utiliser `test("...")` pour les tests individuels
+- Utiliser `context("...")` pour regrouper les tests par scénario
+- Préférer les matchers Kotest (`shouldBe`, `shouldHaveSize`, etc.)
+- Nommer les tests de manière descriptive
+
+**Exemple complet :**
+```kotlin
+class ParserTest : FunSpec({
+    context("Parsing des expressions") {
+        test("parse une addition simple") {
+            val result = parse("1 + 2")
+            result shouldBe Add(Constant(1), Constant(2))
+        }
+
+        test("parse une multiplication imbriquée") {
+            val result = parse("(1 + 2) * 3")
+            result shouldBe Multiply(Add(Constant(1), Constant(2)), Constant(3))
+        }
+    }
+
+    context("Gestion des erreurs") {
+        test("échec sur syntaxe invalide") {
+            shouldThrow<ParseError> {
+                parse("1 +*")
+            }
+        }
+    }
+})
+```
+
+**Migration des tests existants :**
+- Convertir les tests `kotlin.test` (@Test) vers FunSpec
+- Convertir les tests FreeSpec vers FunSpec pour uniformisation
+- Conserver la convention de nommage : `<Nom>Test.kt`
+
+---
+
 ## 🔧 OUTILS DE QUALITÉ DE CODE
 
 - **Qodana** : Analyse statique via GitHub Actions (Workflow: `.github/workflows/qodana_code_quality.yml`)
@@ -290,8 +354,9 @@
    - ✅ Résolution de types
    - ✅ Gestion d'erreurs et récupération
 5. **Phase 3 terminée ✅** : Traitement IR complet (ConstantEvaluator, Typifier, Layouter, Namer, Validator)
-6. **Phase 4** : Backends (Architecture, MSL, HLSL, GLSL, WGSL)
-7. Valider chaque étape avec les tests correspondants
+6. **Phase 4 terminée ✅** : Backends (Architecture, MSL, HLSL, GLSL, WGSL)
+7. **Phase 5** : Validation (En cours)
+8. Valider chaque étape avec les tests correspondants
 
 **Fichier à consulter en premier** : `/Users/chaos/RustroverProjects/wgpu/naga/src/front/wgsl/mod.rs`
 

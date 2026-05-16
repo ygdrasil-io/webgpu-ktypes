@@ -2,65 +2,53 @@
 
 package io.ygdrasil.webgpu
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import kotlin.js.JsAny
 import kotlin.js.JsNumber
 import kotlin.js.JsArray
-import kotlin.js.get
-import kotlin.js.length
-import kotlin.js.js
-import kotlin.js.toInt
-import kotlin.js.toJsBigInt
-import kotlin.js.toJsNumber
-import kotlin.js.toJsReference
 
-class JsArrayInteropTest {
+class JsArrayInteropTest : FunSpec({
 
-    @Test
-    fun jsArray_vararg_creation_and_indexing() {
+    test("jsArray vararg creation and indexing") {
         val arr: JsArray<JsNumber> = jsArray(1.asJsNumber(), 2.asJsNumber(), 3.asJsNumber())
-        assertEquals(3, arr.length, "JsArray length should match number of elements")
-        assertEquals(1L, arr.bridge_get(0).toLong())
-        assertEquals(2L, arr.bridge_get(1).toLong())
-        assertEquals(3L, arr.bridge_get(2).toLong())
+        arr.length shouldBe 3
+        arr.bridge_get(0).toLong() shouldBe 1L
+        arr.bridge_get(1).toLong() shouldBe 2L
+        arr.bridge_get(2).toLong() shouldBe 3L
     }
 
-    @Test
-    fun jsArray_extension_map_to_kotlin_list() {
+    test("jsArray extension map to kotlin list") {
         val arr = jsArray(10.asJsNumber(), 20.asJsNumber(), 30.asJsNumber())
         val mapped: List<Long> = arr.map { it.toLong() }
-        assertEquals(listOf(10L, 20L, 30L), mapped)
+        mapped shouldBe listOf(10L, 20L, 30L)
     }
 
-    @Test
-    fun collection_mapJsArray_to_jsarray() {
+    test("collection mapJsArray to jsarray") {
         val src = listOf(7, 8, 9, Int.MAX_VALUE, Int.MIN_VALUE)
         val jsArr = src.mapJsArray { it.asJsNumber() }
-        assertEquals(src.size, jsArr.length)
-        assertEquals(7L, jsArr.bridge_get(0).toLong())
-        assertEquals(7, jsArr.bridge_get(0).toInt())
-        assertEquals(8L, jsArr.bridge_get(1).toLong())
-        assertEquals(8, jsArr.bridge_get(1).toInt())
-        assertEquals(9L, jsArr.bridge_get(2).toLong())
-        assertEquals(9, jsArr.bridge_get(2).toInt())
-        assertEquals(Int.MAX_VALUE.toLong(), jsArr.bridge_get(3).toLong())
-        assertEquals(Int.MAX_VALUE, jsArr.bridge_get(3).toInt())
-        assertEquals(Int.MIN_VALUE.toLong(), jsArr.bridge_get(4).toLong())
-        assertEquals(Int.MIN_VALUE, jsArr.bridge_get(4).toInt())
+        jsArr.length shouldBe src.size
+        jsArr.bridge_get(0).toLong() shouldBe 7L
+        jsArr.bridge_get(0).toInt() shouldBe 7
+        jsArr.bridge_get(1).toLong() shouldBe 8L
+        jsArr.bridge_get(1).toInt() shouldBe 8
+        jsArr.bridge_get(2).toLong() shouldBe 9L
+        jsArr.bridge_get(2).toInt() shouldBe 9
+        jsArr.bridge_get(3).toLong() shouldBe Int.MAX_VALUE.toLong()
+        jsArr.bridge_get(3).toInt() shouldBe Int.MAX_VALUE
+        jsArr.bridge_get(4).toLong() shouldBe Int.MIN_VALUE.toLong()
+        jsArr.bridge_get(4).toInt() shouldBe Int.MIN_VALUE
     }
 
-    @Test
-    fun createJsObject_is_mutable_and_holds_properties() {
+    test("createJsObject is mutable and holds properties") {
         val o = createJsObject<TestJs>()
-        assertNotNull(o)
+        o shouldNotBe null
         // assign a property via JS and read it back
         o.x = 42.toJsNumber()
-        assertEquals(42L, o.x.toLong())
+        o.x.toLong() shouldBe 42L
     }
-
-}
+})
 
 // js and wasmjs footprint mismatch
 expect fun<A: JsAny> JsArray<A>.bridge_get(index: Int): A

@@ -42,7 +42,7 @@ data class Module(
     /**
      * Entry points for this module (shader entry points).
      */
-    val entryPoints: List<EntryPoint> = emptyList(),
+    val entryPoints: MutableList<EntryPoint> = mutableListOf(),
 
     /**
      * Special types used in this module.
@@ -75,7 +75,7 @@ data class Module(
             globalExpressions: Arena<Expression> = Arena(),
             globalVariables: Arena<GlobalVariable> = Arena(),
             functions: Arena<Function> = Arena(),
-            entryPoints: List<EntryPoint> = emptyList(),
+            entryPoints: MutableList<EntryPoint> = mutableListOf(),
             specialTypes: SpecialTypes = SpecialTypes(),
         ): Module {
             return Module(
@@ -84,7 +84,7 @@ data class Module(
                 globalExpressions = globalExpressions,
                 globalVariables = globalVariables,
                 functions = functions,
-                entryPoints = entryPoints,
+                entryPoints = entryPoints.toMutableList(),
                 specialTypes = specialTypes,
             )
         }
