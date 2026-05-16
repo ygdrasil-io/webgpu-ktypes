@@ -21,7 +21,7 @@ class HlslWriter(
 ) : WriterBase<HlslOptions>(output, module, moduleInfo, options, namer, layouter), BackendWriter<HlslOptions> {
 
     override fun write(module: Module, moduleInfo: ModuleInfo): String {
-        return write()
+        return HlslWriter(StringBuilder(), module, moduleInfo, options, namer, layouter).write()
     }
 
     override fun withOptions(options: HlslOptions): BackendWriter<HlslOptions> {

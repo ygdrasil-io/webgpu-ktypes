@@ -77,7 +77,9 @@ abstract class WriterBase<T : BackendOptions>(
     }
 
     protected open fun writeFunctions() {
+        println("[DEBUG_LOG] Writing ${module.functions.size} functions")
         module.functions.forEachWithHandle { handle, func ->
+            println("[DEBUG_LOG] Writing function ${func.name}")
             writeFunction(func, handle)
         }
     }

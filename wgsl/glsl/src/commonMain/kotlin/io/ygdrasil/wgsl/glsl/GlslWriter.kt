@@ -21,7 +21,7 @@ class GlslWriter(
 ) : WriterBase<GlslOptions>(output, module, moduleInfo, options, namer, layouter), BackendWriter<GlslOptions> {
 
     override fun write(module: Module, moduleInfo: ModuleInfo): String {
-        return write()
+        return GlslWriter(StringBuilder(), module, moduleInfo, options, namer, layouter).write()
     }
 
     override fun withOptions(options: GlslOptions): BackendWriter<GlslOptions> {

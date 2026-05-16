@@ -20,7 +20,7 @@ class MslWriter(
 ) : WriterBase<MslOptions>(output, module, moduleInfo, options, namer, layouter), BackendWriter<MslOptions> {
 
     override fun write(module: Module, moduleInfo: ModuleInfo): String {
-        return write()
+        return MslWriter(StringBuilder(), module, moduleInfo, options, namer, layouter).write()
     }
 
     override fun withOptions(options: MslOptions): BackendWriter<MslOptions> {

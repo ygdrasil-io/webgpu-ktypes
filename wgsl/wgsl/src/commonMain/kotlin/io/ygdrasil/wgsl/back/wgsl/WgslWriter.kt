@@ -20,7 +20,7 @@ class WgslWriter(
 ) : WriterBase<WgslOptions>(output, module, moduleInfo, options, namer, layouter), BackendWriter<WgslOptions> {
 
     override fun write(module: Module, moduleInfo: ModuleInfo): String {
-        return write()
+        return WgslWriter(StringBuilder(), module, moduleInfo, options, namer, layouter).write()
     }
 
     override fun withOptions(options: WgslOptions): BackendWriter<WgslOptions> {
