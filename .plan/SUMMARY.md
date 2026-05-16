@@ -112,7 +112,7 @@
 - [x] **Livrable** : Module IR validé et optimisé, tests de processing (6 tests)
 
 ### 🔴 **Phase 4 : Backends (8-10 semaines)**
-- [ ] Implémenter l'architecture commune des backends
+- [x] Implémenter l'architecture commune des backends
 - [ ] Implémenter MSL Writer (priorité pour Apple)
 - [ ] Implémenter HLSL Writer (priorité pour Windows/DX12)
 - [ ] Implémenter GLSL Writer

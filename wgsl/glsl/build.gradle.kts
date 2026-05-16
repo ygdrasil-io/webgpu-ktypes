@@ -71,6 +71,11 @@ kotlin {
     }
 
     sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":wgsl:core"))
+            }
+        }
 
         commonTest {
             dependencies {

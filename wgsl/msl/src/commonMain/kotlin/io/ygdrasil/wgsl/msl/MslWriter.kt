@@ -1,0 +1,59 @@
+package io.ygdrasil.wgsl.msl
+
+import io.ygdrasil.wgsl.arena.Handle
+import io.ygdrasil.wgsl.back.MslOptions
+import io.ygdrasil.wgsl.back.WriterBase
+import io.ygdrasil.wgsl.back.BackendWriter
+import io.ygdrasil.wgsl.ir.*
+import io.ygdrasil.wgsl.ir.Function
+import io.ygdrasil.wgsl.proc.Layouter
+import io.ygdrasil.wgsl.proc.Namer
+import io.ygdrasil.wgsl.valid.ModuleInfo
+
+class MslWriter(
+    output: StringBuilder,
+    module: Module,
+    moduleInfo: ModuleInfo,
+    options: MslOptions,
+    namer: Namer,
+    layouter: Layouter
+) : WriterBase<MslOptions>(output, module, moduleInfo, options, namer, layouter), BackendWriter<MslOptions> {
+
+    override fun write(module: Module, moduleInfo: ModuleInfo): String {
+        return write()
+    }
+
+    override fun withOptions(options: MslOptions): BackendWriter<MslOptions> {
+        return MslWriter(StringBuilder(), module, moduleInfo, options, namer, layouter)
+    }
+
+    override fun canHandle(module: Module, moduleInfo: ModuleInfo): Boolean = true
+
+    override fun writeHeader() {
+        writeLine("#include <metal_stdlib>")
+        writeLine("using namespace metal;")
+    }
+
+    override fun writeStructType(handle: Handle<Type>, structInner: TypeInner.Struct, name: String) {
+        writeLine("struct $name {")
+        indent {
+            for (member in structInner.members) {
+                val memberName = member.name
+                val typeName = getTypeName(member.type)
+                writeLine("$typeName $memberName;")
+            }
+        }
+        writeLine("};")
+    }
+
+    override fun writeFunctionSignature(func: Function, name: String) {
+        val returnType = func.returnType?.let { getTypeName(it) } ?: "void"
+        write("$returnType $name(")
+        // Arguments...
+        write(")")
+    }
+
+    override fun writeEntryPoint(ep: EntryPoint, index: Int) {
+        writeLine("// Entry point: ${ep.name}")
+    }
+}
