@@ -75,7 +75,7 @@ kotlin {
 
         commonMain {
             dependencies {
-                implementation(libs.kotlinx.serialization.json)
+                api(libs.kotlinx.serialization.json)
             }
         }
 

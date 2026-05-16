@@ -10,6 +10,48 @@ open annotation class io.ygdrasil.wgsl.ir/DiagnosticBuilderDsl : kotlin/Annotati
     constructor <init>() // io.ygdrasil.wgsl.ir/DiagnosticBuilderDsl.<init>|<init>(){}[0]
 }
 
+final enum class io.ygdrasil.wgsl.back/BackendType : kotlin/Enum<io.ygdrasil.wgsl.back/BackendType> { // io.ygdrasil.wgsl.back/BackendType|null[0]
+    enum entry GLSL // io.ygdrasil.wgsl.back/BackendType.GLSL|null[0]
+    enum entry HLSL // io.ygdrasil.wgsl.back/BackendType.HLSL|null[0]
+    enum entry MSL // io.ygdrasil.wgsl.back/BackendType.MSL|null[0]
+    enum entry WGSL // io.ygdrasil.wgsl.back/BackendType.WGSL|null[0]
+
+    final val entries // io.ygdrasil.wgsl.back/BackendType.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<io.ygdrasil.wgsl.back/BackendType> // io.ygdrasil.wgsl.back/BackendType.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): io.ygdrasil.wgsl.back/BackendType // io.ygdrasil.wgsl.back/BackendType.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<io.ygdrasil.wgsl.back/BackendType> // io.ygdrasil.wgsl.back/BackendType.values|values#static(){}[0]
+}
+
+final enum class io.ygdrasil.wgsl.back/GlslProfile : kotlin/Enum<io.ygdrasil.wgsl.back/GlslProfile> { // io.ygdrasil.wgsl.back/GlslProfile|null[0]
+    enum entry CORE // io.ygdrasil.wgsl.back/GlslProfile.CORE|null[0]
+    enum entry ES // io.ygdrasil.wgsl.back/GlslProfile.ES|null[0]
+
+    final val entries // io.ygdrasil.wgsl.back/GlslProfile.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<io.ygdrasil.wgsl.back/GlslProfile> // io.ygdrasil.wgsl.back/GlslProfile.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): io.ygdrasil.wgsl.back/GlslProfile // io.ygdrasil.wgsl.back/GlslProfile.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<io.ygdrasil.wgsl.back/GlslProfile> // io.ygdrasil.wgsl.back/GlslProfile.values|values#static(){}[0]
+}
+
+final enum class io.ygdrasil.wgsl.back/ShaderModel : kotlin/Enum<io.ygdrasil.wgsl.back/ShaderModel> { // io.ygdrasil.wgsl.back/ShaderModel|null[0]
+    enum entry SM5_0 // io.ygdrasil.wgsl.back/ShaderModel.SM5_0|null[0]
+    enum entry SM5_1 // io.ygdrasil.wgsl.back/ShaderModel.SM5_1|null[0]
+    enum entry SM6_0 // io.ygdrasil.wgsl.back/ShaderModel.SM6_0|null[0]
+    enum entry SM6_1 // io.ygdrasil.wgsl.back/ShaderModel.SM6_1|null[0]
+    enum entry SM6_2 // io.ygdrasil.wgsl.back/ShaderModel.SM6_2|null[0]
+    enum entry SM6_3 // io.ygdrasil.wgsl.back/ShaderModel.SM6_3|null[0]
+    enum entry SM6_4 // io.ygdrasil.wgsl.back/ShaderModel.SM6_4|null[0]
+    enum entry SM6_5 // io.ygdrasil.wgsl.back/ShaderModel.SM6_5|null[0]
+    enum entry SM6_6 // io.ygdrasil.wgsl.back/ShaderModel.SM6_6|null[0]
+
+    final val entries // io.ygdrasil.wgsl.back/ShaderModel.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<io.ygdrasil.wgsl.back/ShaderModel> // io.ygdrasil.wgsl.back/ShaderModel.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): io.ygdrasil.wgsl.back/ShaderModel // io.ygdrasil.wgsl.back/ShaderModel.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<io.ygdrasil.wgsl.back/ShaderModel> // io.ygdrasil.wgsl.back/ShaderModel.values|values#static(){}[0]
+}
+
 final enum class io.ygdrasil.wgsl.ir/AddressSpace : kotlin/Enum<io.ygdrasil.wgsl.ir/AddressSpace> { // io.ygdrasil.wgsl.ir/AddressSpace|null[0]
     enum entry Function // io.ygdrasil.wgsl.ir/AddressSpace.Function|null[0]
     enum entry Private // io.ygdrasil.wgsl.ir/AddressSpace.Private|null[0]
@@ -127,6 +169,7 @@ final enum class io.ygdrasil.wgsl.ir/BuiltinFunction : kotlin/Enum<io.ygdrasil.w
     enum entry Fma // io.ygdrasil.wgsl.ir/BuiltinFunction.Fma|null[0]
     enum entry Fract // io.ygdrasil.wgsl.ir/BuiltinFunction.Fract|null[0]
     enum entry Frexp // io.ygdrasil.wgsl.ir/BuiltinFunction.Frexp|null[0]
+    enum entry InverseSqrt // io.ygdrasil.wgsl.ir/BuiltinFunction.InverseSqrt|null[0]
     enum entry Ldexp // io.ygdrasil.wgsl.ir/BuiltinFunction.Ldexp|null[0]
     enum entry Length // io.ygdrasil.wgsl.ir/BuiltinFunction.Length|null[0]
     enum entry Ln // io.ygdrasil.wgsl.ir/BuiltinFunction.Ln|null[0]
@@ -374,6 +417,7 @@ final enum class io.ygdrasil.wgsl.ir/ShaderStage : kotlin/Enum<io.ygdrasil.wgsl.
 
 final enum class io.ygdrasil.wgsl.ir/StorageClass : kotlin/Enum<io.ygdrasil.wgsl.ir/StorageClass> { // io.ygdrasil.wgsl.ir/StorageClass|null[0]
     enum entry Function // io.ygdrasil.wgsl.ir/StorageClass.Function|null[0]
+    enum entry Handle // io.ygdrasil.wgsl.ir/StorageClass.Handle|null[0]
     enum entry Private // io.ygdrasil.wgsl.ir/StorageClass.Private|null[0]
     enum entry PushConstant // io.ygdrasil.wgsl.ir/StorageClass.PushConstant|null[0]
     enum entry Storage // io.ygdrasil.wgsl.ir/StorageClass.Storage|null[0]
@@ -446,8 +490,76 @@ final enum class io.ygdrasil.wgsl.ir/VectorSize : kotlin/Enum<io.ygdrasil.wgsl.i
     }
 }
 
+abstract interface <#A: io.ygdrasil.wgsl.back/BackendOptions> io.ygdrasil.wgsl.back/BackendWriter { // io.ygdrasil.wgsl.back/BackendWriter|null[0]
+    abstract fun canHandle(io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.valid/ModuleInfo): kotlin/Boolean // io.ygdrasil.wgsl.back/BackendWriter.canHandle|canHandle(io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.valid.ModuleInfo){}[0]
+    abstract fun withOptions(#A): io.ygdrasil.wgsl.back/BackendWriter<#A> // io.ygdrasil.wgsl.back/BackendWriter.withOptions|withOptions(1:0){}[0]
+    abstract fun write(io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.valid/ModuleInfo): kotlin/String // io.ygdrasil.wgsl.back/BackendWriter.write|write(io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.valid.ModuleInfo){}[0]
+}
+
 abstract interface io.ygdrasil.wgsl.arena/Equatable { // io.ygdrasil.wgsl.arena/Equatable|null[0]
     abstract fun isEquivalentTo(kotlin/Any): kotlin/Boolean // io.ygdrasil.wgsl.arena/Equatable.isEquivalentTo|isEquivalentTo(kotlin.Any){}[0]
+}
+
+abstract class <#A: io.ygdrasil.wgsl.back/BackendOptions> io.ygdrasil.wgsl.back/WriterBase { // io.ygdrasil.wgsl.back/WriterBase|null[0]
+    constructor <init>(kotlin.text/StringBuilder, io.ygdrasil.wgsl.ir/Module, io.ygdrasil.wgsl.valid/ModuleInfo, #A, io.ygdrasil.wgsl.proc/Namer, io.ygdrasil.wgsl.proc/Layouter) // io.ygdrasil.wgsl.back/WriterBase.<init>|<init>(kotlin.text.StringBuilder;io.ygdrasil.wgsl.ir.Module;io.ygdrasil.wgsl.valid.ModuleInfo;1:0;io.ygdrasil.wgsl.proc.Namer;io.ygdrasil.wgsl.proc.Layouter){}[0]
+
+    final val layouter // io.ygdrasil.wgsl.back/WriterBase.layouter|{}layouter[0]
+        final fun <get-layouter>(): io.ygdrasil.wgsl.proc/Layouter // io.ygdrasil.wgsl.back/WriterBase.layouter.<get-layouter>|<get-layouter>(){}[0]
+    final val module // io.ygdrasil.wgsl.back/WriterBase.module|{}module[0]
+        final fun <get-module>(): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.back/WriterBase.module.<get-module>|<get-module>(){}[0]
+    final val moduleInfo // io.ygdrasil.wgsl.back/WriterBase.moduleInfo|{}moduleInfo[0]
+        final fun <get-moduleInfo>(): io.ygdrasil.wgsl.valid/ModuleInfo // io.ygdrasil.wgsl.back/WriterBase.moduleInfo.<get-moduleInfo>|<get-moduleInfo>(){}[0]
+    final val namer // io.ygdrasil.wgsl.back/WriterBase.namer|{}namer[0]
+        final fun <get-namer>(): io.ygdrasil.wgsl.proc/Namer // io.ygdrasil.wgsl.back/WriterBase.namer.<get-namer>|<get-namer>(){}[0]
+    final val options // io.ygdrasil.wgsl.back/WriterBase.options|{}options[0]
+        final fun <get-options>(): #A // io.ygdrasil.wgsl.back/WriterBase.options.<get-options>|<get-options>(){}[0]
+    final val output // io.ygdrasil.wgsl.back/WriterBase.output|{}output[0]
+        final fun <get-output>(): kotlin.text/StringBuilder // io.ygdrasil.wgsl.back/WriterBase.output.<get-output>|<get-output>(){}[0]
+
+    final var currentFunction // io.ygdrasil.wgsl.back/WriterBase.currentFunction|{}currentFunction[0]
+        final fun <get-currentFunction>(): io.ygdrasil.wgsl.ir/Function? // io.ygdrasil.wgsl.back/WriterBase.currentFunction.<get-currentFunction>|<get-currentFunction>(){}[0]
+        final fun <set-currentFunction>(io.ygdrasil.wgsl.ir/Function?) // io.ygdrasil.wgsl.back/WriterBase.currentFunction.<set-currentFunction>|<set-currentFunction>(io.ygdrasil.wgsl.ir.Function?){}[0]
+    final var indentLevel // io.ygdrasil.wgsl.back/WriterBase.indentLevel|{}indentLevel[0]
+        final fun <get-indentLevel>(): kotlin/Int // io.ygdrasil.wgsl.back/WriterBase.indentLevel.<get-indentLevel>|<get-indentLevel>(){}[0]
+        final fun <set-indentLevel>(kotlin/Int) // io.ygdrasil.wgsl.back/WriterBase.indentLevel.<set-indentLevel>|<set-indentLevel>(kotlin.Int){}[0]
+
+    abstract fun writeEntryPoint(io.ygdrasil.wgsl.ir/EntryPoint, kotlin/Int) // io.ygdrasil.wgsl.back/WriterBase.writeEntryPoint|writeEntryPoint(io.ygdrasil.wgsl.ir.EntryPoint;kotlin.Int){}[0]
+    abstract fun writeFunctionSignature(io.ygdrasil.wgsl.ir/Function, kotlin/String) // io.ygdrasil.wgsl.back/WriterBase.writeFunctionSignature|writeFunctionSignature(io.ygdrasil.wgsl.ir.Function;kotlin.String){}[0]
+    abstract fun writeHeader() // io.ygdrasil.wgsl.back/WriterBase.writeHeader|writeHeader(){}[0]
+    abstract fun writeStructType(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>, io.ygdrasil.wgsl.ir/TypeInner.Struct, kotlin/String) // io.ygdrasil.wgsl.back/WriterBase.writeStructType|writeStructType(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.ir.TypeInner.Struct;kotlin.String){}[0]
+    final fun indent(kotlin/Function0<kotlin/Unit>) // io.ygdrasil.wgsl.back/WriterBase.indent|indent(kotlin.Function0<kotlin.Unit>){}[0]
+    final fun write(kotlin/String) // io.ygdrasil.wgsl.back/WriterBase.write|write(kotlin.String){}[0]
+    final fun writeLine(kotlin/String = ...) // io.ygdrasil.wgsl.back/WriterBase.writeLine|writeLine(kotlin.String){}[0]
+    open fun getBinaryOperator(io.ygdrasil.wgsl.ir/BinaryOperator): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getBinaryOperator|getBinaryOperator(io.ygdrasil.wgsl.ir.BinaryOperator){}[0]
+    open fun getBuiltinFunctionName(io.ygdrasil.wgsl.ir/BuiltinFunction): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getBuiltinFunctionName|getBuiltinFunctionName(io.ygdrasil.wgsl.ir.BuiltinFunction){}[0]
+    open fun getConstantName(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Constant>): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getConstantName|getConstantName(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Constant>){}[0]
+    open fun getExpressionType(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>): io.ygdrasil.wgsl.ir/Type // io.ygdrasil.wgsl.back/WriterBase.getExpressionType|getExpressionType(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+    open fun getFunctionArgumentName(kotlin/Int): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getFunctionArgumentName|getFunctionArgumentName(kotlin.Int){}[0]
+    open fun getFunctionName(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Function>): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getFunctionName|getFunctionName(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Function>){}[0]
+    open fun getGlobalVariableName(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/GlobalVariable>): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getGlobalVariableName|getGlobalVariableName(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.GlobalVariable>){}[0]
+    open fun getLocalVariableName(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/LocalVariable>): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getLocalVariableName|getLocalVariableName(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.LocalVariable>){}[0]
+    open fun getScalarTypeName(io.ygdrasil.wgsl.ir/TypeInner.Scalar): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getScalarTypeName|getScalarTypeName(io.ygdrasil.wgsl.ir.TypeInner.Scalar){}[0]
+    open fun getTypeName(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getTypeName|getTypeName(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+    open fun getUnaryOperator(io.ygdrasil.wgsl.ir/UnaryOperator): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.getUnaryOperator|getUnaryOperator(io.ygdrasil.wgsl.ir.UnaryOperator){}[0]
+    open fun write(): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.write|write(){}[0]
+    open fun writeAtomic(kotlin/String, io.ygdrasil.wgsl.ir/AtomicFunction, kotlin.collections/List<kotlin/String>): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeAtomic|writeAtomic(kotlin.String;io.ygdrasil.wgsl.ir.AtomicFunction;kotlin.collections.List<kotlin.String>){}[0]
+    open fun writeBitcast(kotlin/String, io.ygdrasil.wgsl.ir/Type): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeBitcast|writeBitcast(kotlin.String;io.ygdrasil.wgsl.ir.Type){}[0]
+    open fun writeBlock(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Block>) // io.ygdrasil.wgsl.back/WriterBase.writeBlock|writeBlock(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Block>){}[0]
+    open fun writeConstantInner(io.ygdrasil.wgsl.ir/ConstantInner): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeConstantInner|writeConstantInner(io.ygdrasil.wgsl.ir.ConstantInner){}[0]
+    open fun writeConstants() // io.ygdrasil.wgsl.back/WriterBase.writeConstants|writeConstants(){}[0]
+    open fun writeEntryPoints() // io.ygdrasil.wgsl.back/WriterBase.writeEntryPoints|writeEntryPoints(){}[0]
+    open fun writeExpression(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeExpression|writeExpression(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+    open fun writeFunction(io.ygdrasil.wgsl.ir/Function, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Function>) // io.ygdrasil.wgsl.back/WriterBase.writeFunction|writeFunction(io.ygdrasil.wgsl.ir.Function;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Function>){}[0]
+    open fun writeFunctions() // io.ygdrasil.wgsl.back/WriterBase.writeFunctions|writeFunctions(){}[0]
+    open fun writeGlobalVariables() // io.ygdrasil.wgsl.back/WriterBase.writeGlobalVariables|writeGlobalVariables(){}[0]
+    open fun writeLiteralValue(io.ygdrasil.wgsl.ir/LiteralValue): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeLiteralValue|writeLiteralValue(io.ygdrasil.wgsl.ir.LiteralValue){}[0]
+    open fun writePreamble() // io.ygdrasil.wgsl.back/WriterBase.writePreamble|writePreamble(){}[0]
+    open fun writeRelational(io.ygdrasil.wgsl.ir/RelationalFunction, kotlin.collections/List<kotlin/String>): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeRelational|writeRelational(io.ygdrasil.wgsl.ir.RelationalFunction;kotlin.collections.List<kotlin.String>){}[0]
+    open fun writeSample(kotlin/String, kotlin/String?, kotlin/String, io.ygdrasil.wgsl.ir/SampleLevel?, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>?): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeSample|writeSample(kotlin.String;kotlin.String?;kotlin.String;io.ygdrasil.wgsl.ir.SampleLevel?;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>?){}[0]
+    open fun writeScalarValue(io.ygdrasil.wgsl.ir/ScalarValue): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeScalarValue|writeScalarValue(io.ygdrasil.wgsl.ir.ScalarValue){}[0]
+    open fun writeStatement(io.ygdrasil.wgsl.ir/Statement) // io.ygdrasil.wgsl.back/WriterBase.writeStatement|writeStatement(io.ygdrasil.wgsl.ir.Statement){}[0]
+    open fun writeTextureQuery(kotlin/String, io.ygdrasil.wgsl.ir/TextureQueryKind): kotlin/String // io.ygdrasil.wgsl.back/WriterBase.writeTextureQuery|writeTextureQuery(kotlin.String;io.ygdrasil.wgsl.ir.TextureQueryKind){}[0]
+    open fun writeTypes() // io.ygdrasil.wgsl.back/WriterBase.writeTypes|writeTypes(){}[0]
 }
 
 final class <#A: io.ygdrasil.wgsl.arena/Equatable> io.ygdrasil.wgsl.arena/UniqueArena { // io.ygdrasil.wgsl.arena/UniqueArena|null[0]
@@ -559,6 +671,237 @@ final class <#A: kotlin/Any?> io.ygdrasil.wgsl.arena/Arena : kotlin.collections/
         final fun <#A2: kotlin/Any?> serializer(kotlinx.serialization/KSerializer<#A2>): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.arena/Arena<#A2>> // io.ygdrasil.wgsl.arena/Arena.Companion.serializer|serializer(kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // io.ygdrasil.wgsl.arena/Arena.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
     }
+}
+
+final class io.ygdrasil.wgsl.back/BackendException : kotlin/Exception { // io.ygdrasil.wgsl.back/BackendException|null[0]
+    constructor <init>(io.ygdrasil.wgsl.back/BackendError) // io.ygdrasil.wgsl.back/BackendException.<init>|<init>(io.ygdrasil.wgsl.back.BackendError){}[0]
+
+    final val error // io.ygdrasil.wgsl.back/BackendException.error|{}error[0]
+        final fun <get-error>(): io.ygdrasil.wgsl.back/BackendError // io.ygdrasil.wgsl.back/BackendException.error.<get-error>|<get-error>(){}[0]
+}
+
+final class io.ygdrasil.wgsl.back/BackendRegistry { // io.ygdrasil.wgsl.back/BackendRegistry|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.back/BackendRegistry.<init>|<init>(){}[0]
+
+    final fun get(kotlin/String): io.ygdrasil.wgsl.back/BackendWriter<*>? // io.ygdrasil.wgsl.back/BackendRegistry.get|get(kotlin.String){}[0]
+    final fun listBackendNames(): kotlin.collections/List<kotlin/String> // io.ygdrasil.wgsl.back/BackendRegistry.listBackendNames|listBackendNames(){}[0]
+    final fun register(kotlin/String, io.ygdrasil.wgsl.back/BackendRegistry.BackendFactory) // io.ygdrasil.wgsl.back/BackendRegistry.register|register(kotlin.String;io.ygdrasil.wgsl.back.BackendRegistry.BackendFactory){}[0]
+
+    abstract interface BackendFactory { // io.ygdrasil.wgsl.back/BackendRegistry.BackendFactory|null[0]
+        abstract fun create(): io.ygdrasil.wgsl.back/BackendWriter<*> // io.ygdrasil.wgsl.back/BackendRegistry.BackendFactory.create|create(){}[0]
+        abstract fun createWithOptions(io.ygdrasil.wgsl.back/BackendOptions): io.ygdrasil.wgsl.back/BackendWriter<*> // io.ygdrasil.wgsl.back/BackendRegistry.BackendFactory.createWithOptions|createWithOptions(io.ygdrasil.wgsl.back.BackendOptions){}[0]
+    }
+
+    final object Companion { // io.ygdrasil.wgsl.back/BackendRegistry.Companion|null[0]
+        final val DEFAULT // io.ygdrasil.wgsl.back/BackendRegistry.Companion.DEFAULT|{}DEFAULT[0]
+            final fun <get-DEFAULT>(): io.ygdrasil.wgsl.back/BackendRegistry // io.ygdrasil.wgsl.back/BackendRegistry.Companion.DEFAULT.<get-DEFAULT>|<get-DEFAULT>(){}[0]
+    }
+}
+
+final class io.ygdrasil.wgsl.back/BindingMap { // io.ygdrasil.wgsl.back/BindingMap|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.back/BindingMap.<init>|<init>(){}[0]
+
+    final fun clear() // io.ygdrasil.wgsl.back/BindingMap.clear|clear(){}[0]
+    final fun contains(io.ygdrasil.wgsl.ir/Binding): kotlin/Boolean // io.ygdrasil.wgsl.back/BindingMap.contains|contains(io.ygdrasil.wgsl.ir.Binding){}[0]
+    final fun get(io.ygdrasil.wgsl.ir/Binding): io.ygdrasil.wgsl.back/BindingMap.BindTarget? // io.ygdrasil.wgsl.back/BindingMap.get|get(io.ygdrasil.wgsl.ir.Binding){}[0]
+    final fun insert(io.ygdrasil.wgsl.ir/Binding, io.ygdrasil.wgsl.back/BindingMap.BindTarget) // io.ygdrasil.wgsl.back/BindingMap.insert|insert(io.ygdrasil.wgsl.ir.Binding;io.ygdrasil.wgsl.back.BindingMap.BindTarget){}[0]
+
+    final class BindTarget { // io.ygdrasil.wgsl.back/BindingMap.BindTarget|null[0]
+        constructor <init>(kotlin/Int? = ..., kotlin/Int? = ..., kotlin/Int? = ..., kotlin/Boolean = ...) // io.ygdrasil.wgsl.back/BindingMap.BindTarget.<init>|<init>(kotlin.Int?;kotlin.Int?;kotlin.Int?;kotlin.Boolean){}[0]
+
+        final val buffer // io.ygdrasil.wgsl.back/BindingMap.BindTarget.buffer|{}buffer[0]
+            final fun <get-buffer>(): kotlin/Int? // io.ygdrasil.wgsl.back/BindingMap.BindTarget.buffer.<get-buffer>|<get-buffer>(){}[0]
+        final val mutable // io.ygdrasil.wgsl.back/BindingMap.BindTarget.mutable|{}mutable[0]
+            final fun <get-mutable>(): kotlin/Boolean // io.ygdrasil.wgsl.back/BindingMap.BindTarget.mutable.<get-mutable>|<get-mutable>(){}[0]
+        final val sampler // io.ygdrasil.wgsl.back/BindingMap.BindTarget.sampler|{}sampler[0]
+            final fun <get-sampler>(): kotlin/Int? // io.ygdrasil.wgsl.back/BindingMap.BindTarget.sampler.<get-sampler>|<get-sampler>(){}[0]
+        final val texture // io.ygdrasil.wgsl.back/BindingMap.BindTarget.texture|{}texture[0]
+            final fun <get-texture>(): kotlin/Int? // io.ygdrasil.wgsl.back/BindingMap.BindTarget.texture.<get-texture>|<get-texture>(){}[0]
+
+        final fun component1(): kotlin/Int? // io.ygdrasil.wgsl.back/BindingMap.BindTarget.component1|component1(){}[0]
+        final fun component2(): kotlin/Int? // io.ygdrasil.wgsl.back/BindingMap.BindTarget.component2|component2(){}[0]
+        final fun component3(): kotlin/Int? // io.ygdrasil.wgsl.back/BindingMap.BindTarget.component3|component3(){}[0]
+        final fun component4(): kotlin/Boolean // io.ygdrasil.wgsl.back/BindingMap.BindTarget.component4|component4(){}[0]
+        final fun copy(kotlin/Int? = ..., kotlin/Int? = ..., kotlin/Int? = ..., kotlin/Boolean = ...): io.ygdrasil.wgsl.back/BindingMap.BindTarget // io.ygdrasil.wgsl.back/BindingMap.BindTarget.copy|copy(kotlin.Int?;kotlin.Int?;kotlin.Int?;kotlin.Boolean){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/BindingMap.BindTarget.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/BindingMap.BindTarget.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/BindingMap.BindTarget.toString|toString(){}[0]
+    }
+
+    final object Companion { // io.ygdrasil.wgsl.back/BindingMap.Companion|null[0]
+        final fun defaultGlsl(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/BindingMap.Companion.defaultGlsl|defaultGlsl(){}[0]
+        final fun defaultHlsl(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/BindingMap.Companion.defaultHlsl|defaultHlsl(){}[0]
+        final fun defaultMsl(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/BindingMap.Companion.defaultMsl|defaultMsl(){}[0]
+    }
+}
+
+final class io.ygdrasil.wgsl.back/GlslOptions : io.ygdrasil.wgsl.back/BackendOptions { // io.ygdrasil.wgsl.back/GlslOptions|null[0]
+    constructor <init>(io.ygdrasil.wgsl.valid/ValidationFlags = ..., io.ygdrasil.wgsl.valid/Capabilities = ..., io.ygdrasil.wgsl.valid/ShaderStages = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ..., io.ygdrasil.wgsl.back/BindingMap = ..., io.ygdrasil.wgsl.back/GlslProfile = ..., kotlin/Boolean = ...) // io.ygdrasil.wgsl.back/GlslOptions.<init>|<init>(io.ygdrasil.wgsl.valid.ValidationFlags;io.ygdrasil.wgsl.valid.Capabilities;io.ygdrasil.wgsl.valid.ShaderStages;kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String;io.ygdrasil.wgsl.back.BindingMap;io.ygdrasil.wgsl.back.GlslProfile;kotlin.Boolean){}[0]
+
+    final val bindingMap // io.ygdrasil.wgsl.back/GlslOptions.bindingMap|{}bindingMap[0]
+        final fun <get-bindingMap>(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/GlslOptions.bindingMap.<get-bindingMap>|<get-bindingMap>(){}[0]
+    final val capabilities // io.ygdrasil.wgsl.back/GlslOptions.capabilities|{}capabilities[0]
+        final fun <get-capabilities>(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/GlslOptions.capabilities.<get-capabilities>|<get-capabilities>(){}[0]
+    final val es // io.ygdrasil.wgsl.back/GlslOptions.es|{}es[0]
+        final fun <get-es>(): kotlin/Boolean // io.ygdrasil.wgsl.back/GlslOptions.es.<get-es>|<get-es>(){}[0]
+    final val fileExtension // io.ygdrasil.wgsl.back/GlslOptions.fileExtension|{}fileExtension[0]
+        final fun <get-fileExtension>(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.fileExtension.<get-fileExtension>|<get-fileExtension>(){}[0]
+    final val indent // io.ygdrasil.wgsl.back/GlslOptions.indent|{}indent[0]
+        final fun <get-indent>(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.indent.<get-indent>|<get-indent>(){}[0]
+    final val languageName // io.ygdrasil.wgsl.back/GlslOptions.languageName|{}languageName[0]
+        final fun <get-languageName>(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.languageName.<get-languageName>|<get-languageName>(){}[0]
+    final val newline // io.ygdrasil.wgsl.back/GlslOptions.newline|{}newline[0]
+        final fun <get-newline>(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.newline.<get-newline>|<get-newline>(){}[0]
+    final val profile // io.ygdrasil.wgsl.back/GlslOptions.profile|{}profile[0]
+        final fun <get-profile>(): io.ygdrasil.wgsl.back/GlslProfile // io.ygdrasil.wgsl.back/GlslOptions.profile.<get-profile>|<get-profile>(){}[0]
+    final val shaderStages // io.ygdrasil.wgsl.back/GlslOptions.shaderStages|{}shaderStages[0]
+        final fun <get-shaderStages>(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/GlslOptions.shaderStages.<get-shaderStages>|<get-shaderStages>(){}[0]
+    final val validationFlags // io.ygdrasil.wgsl.back/GlslOptions.validationFlags|{}validationFlags[0]
+        final fun <get-validationFlags>(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/GlslOptions.validationFlags.<get-validationFlags>|<get-validationFlags>(){}[0]
+    final val version // io.ygdrasil.wgsl.back/GlslOptions.version|{}version[0]
+        final fun <get-version>(): kotlin/String? // io.ygdrasil.wgsl.back/GlslOptions.version.<get-version>|<get-version>(){}[0]
+
+    final fun component1(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/GlslOptions.component1|component1(){}[0]
+    final fun component10(): io.ygdrasil.wgsl.back/GlslProfile // io.ygdrasil.wgsl.back/GlslOptions.component10|component10(){}[0]
+    final fun component11(): kotlin/Boolean // io.ygdrasil.wgsl.back/GlslOptions.component11|component11(){}[0]
+    final fun component2(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/GlslOptions.component2|component2(){}[0]
+    final fun component3(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/GlslOptions.component3|component3(){}[0]
+    final fun component4(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.component4|component4(){}[0]
+    final fun component5(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.component5|component5(){}[0]
+    final fun component6(): kotlin/String? // io.ygdrasil.wgsl.back/GlslOptions.component6|component6(){}[0]
+    final fun component7(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.component7|component7(){}[0]
+    final fun component8(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.component8|component8(){}[0]
+    final fun component9(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/GlslOptions.component9|component9(){}[0]
+    final fun copy(io.ygdrasil.wgsl.valid/ValidationFlags = ..., io.ygdrasil.wgsl.valid/Capabilities = ..., io.ygdrasil.wgsl.valid/ShaderStages = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ..., io.ygdrasil.wgsl.back/BindingMap = ..., io.ygdrasil.wgsl.back/GlslProfile = ..., kotlin/Boolean = ...): io.ygdrasil.wgsl.back/GlslOptions // io.ygdrasil.wgsl.back/GlslOptions.copy|copy(io.ygdrasil.wgsl.valid.ValidationFlags;io.ygdrasil.wgsl.valid.Capabilities;io.ygdrasil.wgsl.valid.ShaderStages;kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String;io.ygdrasil.wgsl.back.BindingMap;io.ygdrasil.wgsl.back.GlslProfile;kotlin.Boolean){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/GlslOptions.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/GlslOptions.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/GlslOptions.toString|toString(){}[0]
+}
+
+final class io.ygdrasil.wgsl.back/HlslOptions : io.ygdrasil.wgsl.back/BackendOptions { // io.ygdrasil.wgsl.back/HlslOptions|null[0]
+    constructor <init>(io.ygdrasil.wgsl.valid/ValidationFlags = ..., io.ygdrasil.wgsl.valid/Capabilities = ..., io.ygdrasil.wgsl.valid/ShaderStages = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ..., io.ygdrasil.wgsl.back/BindingMap = ..., io.ygdrasil.wgsl.back/ShaderModel = ...) // io.ygdrasil.wgsl.back/HlslOptions.<init>|<init>(io.ygdrasil.wgsl.valid.ValidationFlags;io.ygdrasil.wgsl.valid.Capabilities;io.ygdrasil.wgsl.valid.ShaderStages;kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String;io.ygdrasil.wgsl.back.BindingMap;io.ygdrasil.wgsl.back.ShaderModel){}[0]
+
+    final val bindingMap // io.ygdrasil.wgsl.back/HlslOptions.bindingMap|{}bindingMap[0]
+        final fun <get-bindingMap>(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/HlslOptions.bindingMap.<get-bindingMap>|<get-bindingMap>(){}[0]
+    final val capabilities // io.ygdrasil.wgsl.back/HlslOptions.capabilities|{}capabilities[0]
+        final fun <get-capabilities>(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/HlslOptions.capabilities.<get-capabilities>|<get-capabilities>(){}[0]
+    final val fileExtension // io.ygdrasil.wgsl.back/HlslOptions.fileExtension|{}fileExtension[0]
+        final fun <get-fileExtension>(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.fileExtension.<get-fileExtension>|<get-fileExtension>(){}[0]
+    final val indent // io.ygdrasil.wgsl.back/HlslOptions.indent|{}indent[0]
+        final fun <get-indent>(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.indent.<get-indent>|<get-indent>(){}[0]
+    final val languageName // io.ygdrasil.wgsl.back/HlslOptions.languageName|{}languageName[0]
+        final fun <get-languageName>(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.languageName.<get-languageName>|<get-languageName>(){}[0]
+    final val newline // io.ygdrasil.wgsl.back/HlslOptions.newline|{}newline[0]
+        final fun <get-newline>(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.newline.<get-newline>|<get-newline>(){}[0]
+    final val shaderModel // io.ygdrasil.wgsl.back/HlslOptions.shaderModel|{}shaderModel[0]
+        final fun <get-shaderModel>(): io.ygdrasil.wgsl.back/ShaderModel // io.ygdrasil.wgsl.back/HlslOptions.shaderModel.<get-shaderModel>|<get-shaderModel>(){}[0]
+    final val shaderStages // io.ygdrasil.wgsl.back/HlslOptions.shaderStages|{}shaderStages[0]
+        final fun <get-shaderStages>(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/HlslOptions.shaderStages.<get-shaderStages>|<get-shaderStages>(){}[0]
+    final val validationFlags // io.ygdrasil.wgsl.back/HlslOptions.validationFlags|{}validationFlags[0]
+        final fun <get-validationFlags>(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/HlslOptions.validationFlags.<get-validationFlags>|<get-validationFlags>(){}[0]
+    final val version // io.ygdrasil.wgsl.back/HlslOptions.version|{}version[0]
+        final fun <get-version>(): kotlin/String? // io.ygdrasil.wgsl.back/HlslOptions.version.<get-version>|<get-version>(){}[0]
+
+    final fun component1(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/HlslOptions.component1|component1(){}[0]
+    final fun component10(): io.ygdrasil.wgsl.back/ShaderModel // io.ygdrasil.wgsl.back/HlslOptions.component10|component10(){}[0]
+    final fun component2(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/HlslOptions.component2|component2(){}[0]
+    final fun component3(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/HlslOptions.component3|component3(){}[0]
+    final fun component4(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.component4|component4(){}[0]
+    final fun component5(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.component5|component5(){}[0]
+    final fun component6(): kotlin/String? // io.ygdrasil.wgsl.back/HlslOptions.component6|component6(){}[0]
+    final fun component7(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.component7|component7(){}[0]
+    final fun component8(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.component8|component8(){}[0]
+    final fun component9(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/HlslOptions.component9|component9(){}[0]
+    final fun copy(io.ygdrasil.wgsl.valid/ValidationFlags = ..., io.ygdrasil.wgsl.valid/Capabilities = ..., io.ygdrasil.wgsl.valid/ShaderStages = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ..., io.ygdrasil.wgsl.back/BindingMap = ..., io.ygdrasil.wgsl.back/ShaderModel = ...): io.ygdrasil.wgsl.back/HlslOptions // io.ygdrasil.wgsl.back/HlslOptions.copy|copy(io.ygdrasil.wgsl.valid.ValidationFlags;io.ygdrasil.wgsl.valid.Capabilities;io.ygdrasil.wgsl.valid.ShaderStages;kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String;io.ygdrasil.wgsl.back.BindingMap;io.ygdrasil.wgsl.back.ShaderModel){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/HlslOptions.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/HlslOptions.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/HlslOptions.toString|toString(){}[0]
+}
+
+final class io.ygdrasil.wgsl.back/MslOptions : io.ygdrasil.wgsl.back/BackendOptions { // io.ygdrasil.wgsl.back/MslOptions|null[0]
+    constructor <init>(io.ygdrasil.wgsl.valid/ValidationFlags = ..., io.ygdrasil.wgsl.valid/Capabilities = ..., io.ygdrasil.wgsl.valid/ShaderStages = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ..., io.ygdrasil.wgsl.back/BindingMap = ..., kotlin/Boolean = ..., kotlin/Int = ...) // io.ygdrasil.wgsl.back/MslOptions.<init>|<init>(io.ygdrasil.wgsl.valid.ValidationFlags;io.ygdrasil.wgsl.valid.Capabilities;io.ygdrasil.wgsl.valid.ShaderStages;kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String;io.ygdrasil.wgsl.back.BindingMap;kotlin.Boolean;kotlin.Int){}[0]
+
+    final val bindingMap // io.ygdrasil.wgsl.back/MslOptions.bindingMap|{}bindingMap[0]
+        final fun <get-bindingMap>(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/MslOptions.bindingMap.<get-bindingMap>|<get-bindingMap>(){}[0]
+    final val bufferSizeAlignment // io.ygdrasil.wgsl.back/MslOptions.bufferSizeAlignment|{}bufferSizeAlignment[0]
+        final fun <get-bufferSizeAlignment>(): kotlin/Int // io.ygdrasil.wgsl.back/MslOptions.bufferSizeAlignment.<get-bufferSizeAlignment>|<get-bufferSizeAlignment>(){}[0]
+    final val capabilities // io.ygdrasil.wgsl.back/MslOptions.capabilities|{}capabilities[0]
+        final fun <get-capabilities>(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/MslOptions.capabilities.<get-capabilities>|<get-capabilities>(){}[0]
+    final val fileExtension // io.ygdrasil.wgsl.back/MslOptions.fileExtension|{}fileExtension[0]
+        final fun <get-fileExtension>(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.fileExtension.<get-fileExtension>|<get-fileExtension>(){}[0]
+    final val indent // io.ygdrasil.wgsl.back/MslOptions.indent|{}indent[0]
+        final fun <get-indent>(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.indent.<get-indent>|<get-indent>(){}[0]
+    final val inlineSamplers // io.ygdrasil.wgsl.back/MslOptions.inlineSamplers|{}inlineSamplers[0]
+        final fun <get-inlineSamplers>(): kotlin/Boolean // io.ygdrasil.wgsl.back/MslOptions.inlineSamplers.<get-inlineSamplers>|<get-inlineSamplers>(){}[0]
+    final val languageName // io.ygdrasil.wgsl.back/MslOptions.languageName|{}languageName[0]
+        final fun <get-languageName>(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.languageName.<get-languageName>|<get-languageName>(){}[0]
+    final val newline // io.ygdrasil.wgsl.back/MslOptions.newline|{}newline[0]
+        final fun <get-newline>(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.newline.<get-newline>|<get-newline>(){}[0]
+    final val shaderStages // io.ygdrasil.wgsl.back/MslOptions.shaderStages|{}shaderStages[0]
+        final fun <get-shaderStages>(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/MslOptions.shaderStages.<get-shaderStages>|<get-shaderStages>(){}[0]
+    final val validationFlags // io.ygdrasil.wgsl.back/MslOptions.validationFlags|{}validationFlags[0]
+        final fun <get-validationFlags>(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/MslOptions.validationFlags.<get-validationFlags>|<get-validationFlags>(){}[0]
+    final val version // io.ygdrasil.wgsl.back/MslOptions.version|{}version[0]
+        final fun <get-version>(): kotlin/String? // io.ygdrasil.wgsl.back/MslOptions.version.<get-version>|<get-version>(){}[0]
+
+    final fun component1(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/MslOptions.component1|component1(){}[0]
+    final fun component10(): kotlin/Boolean // io.ygdrasil.wgsl.back/MslOptions.component10|component10(){}[0]
+    final fun component11(): kotlin/Int // io.ygdrasil.wgsl.back/MslOptions.component11|component11(){}[0]
+    final fun component2(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/MslOptions.component2|component2(){}[0]
+    final fun component3(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/MslOptions.component3|component3(){}[0]
+    final fun component4(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.component4|component4(){}[0]
+    final fun component5(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.component5|component5(){}[0]
+    final fun component6(): kotlin/String? // io.ygdrasil.wgsl.back/MslOptions.component6|component6(){}[0]
+    final fun component7(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.component7|component7(){}[0]
+    final fun component8(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.component8|component8(){}[0]
+    final fun component9(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/MslOptions.component9|component9(){}[0]
+    final fun copy(io.ygdrasil.wgsl.valid/ValidationFlags = ..., io.ygdrasil.wgsl.valid/Capabilities = ..., io.ygdrasil.wgsl.valid/ShaderStages = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ..., io.ygdrasil.wgsl.back/BindingMap = ..., kotlin/Boolean = ..., kotlin/Int = ...): io.ygdrasil.wgsl.back/MslOptions // io.ygdrasil.wgsl.back/MslOptions.copy|copy(io.ygdrasil.wgsl.valid.ValidationFlags;io.ygdrasil.wgsl.valid.Capabilities;io.ygdrasil.wgsl.valid.ShaderStages;kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String;io.ygdrasil.wgsl.back.BindingMap;kotlin.Boolean;kotlin.Int){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/MslOptions.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/MslOptions.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/MslOptions.toString|toString(){}[0]
+}
+
+final class io.ygdrasil.wgsl.back/WgslOptions : io.ygdrasil.wgsl.back/BackendOptions { // io.ygdrasil.wgsl.back/WgslOptions|null[0]
+    constructor <init>(io.ygdrasil.wgsl.valid/ValidationFlags = ..., io.ygdrasil.wgsl.valid/Capabilities = ..., io.ygdrasil.wgsl.valid/ShaderStages = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ..., io.ygdrasil.wgsl.back/BindingMap = ..., kotlin/Boolean = ..., kotlin/Boolean = ...) // io.ygdrasil.wgsl.back/WgslOptions.<init>|<init>(io.ygdrasil.wgsl.valid.ValidationFlags;io.ygdrasil.wgsl.valid.Capabilities;io.ygdrasil.wgsl.valid.ShaderStages;kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String;io.ygdrasil.wgsl.back.BindingMap;kotlin.Boolean;kotlin.Boolean){}[0]
+
+    final val bindingMap // io.ygdrasil.wgsl.back/WgslOptions.bindingMap|{}bindingMap[0]
+        final fun <get-bindingMap>(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/WgslOptions.bindingMap.<get-bindingMap>|<get-bindingMap>(){}[0]
+    final val capabilities // io.ygdrasil.wgsl.back/WgslOptions.capabilities|{}capabilities[0]
+        final fun <get-capabilities>(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/WgslOptions.capabilities.<get-capabilities>|<get-capabilities>(){}[0]
+    final val debug // io.ygdrasil.wgsl.back/WgslOptions.debug|{}debug[0]
+        final fun <get-debug>(): kotlin/Boolean // io.ygdrasil.wgsl.back/WgslOptions.debug.<get-debug>|<get-debug>(){}[0]
+    final val fileExtension // io.ygdrasil.wgsl.back/WgslOptions.fileExtension|{}fileExtension[0]
+        final fun <get-fileExtension>(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.fileExtension.<get-fileExtension>|<get-fileExtension>(){}[0]
+    final val indent // io.ygdrasil.wgsl.back/WgslOptions.indent|{}indent[0]
+        final fun <get-indent>(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.indent.<get-indent>|<get-indent>(){}[0]
+    final val languageName // io.ygdrasil.wgsl.back/WgslOptions.languageName|{}languageName[0]
+        final fun <get-languageName>(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.languageName.<get-languageName>|<get-languageName>(){}[0]
+    final val newline // io.ygdrasil.wgsl.back/WgslOptions.newline|{}newline[0]
+        final fun <get-newline>(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.newline.<get-newline>|<get-newline>(){}[0]
+    final val prettyPrint // io.ygdrasil.wgsl.back/WgslOptions.prettyPrint|{}prettyPrint[0]
+        final fun <get-prettyPrint>(): kotlin/Boolean // io.ygdrasil.wgsl.back/WgslOptions.prettyPrint.<get-prettyPrint>|<get-prettyPrint>(){}[0]
+    final val shaderStages // io.ygdrasil.wgsl.back/WgslOptions.shaderStages|{}shaderStages[0]
+        final fun <get-shaderStages>(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/WgslOptions.shaderStages.<get-shaderStages>|<get-shaderStages>(){}[0]
+    final val validationFlags // io.ygdrasil.wgsl.back/WgslOptions.validationFlags|{}validationFlags[0]
+        final fun <get-validationFlags>(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/WgslOptions.validationFlags.<get-validationFlags>|<get-validationFlags>(){}[0]
+    final val version // io.ygdrasil.wgsl.back/WgslOptions.version|{}version[0]
+        final fun <get-version>(): kotlin/String? // io.ygdrasil.wgsl.back/WgslOptions.version.<get-version>|<get-version>(){}[0]
+
+    final fun component1(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/WgslOptions.component1|component1(){}[0]
+    final fun component10(): kotlin/Boolean // io.ygdrasil.wgsl.back/WgslOptions.component10|component10(){}[0]
+    final fun component11(): kotlin/Boolean // io.ygdrasil.wgsl.back/WgslOptions.component11|component11(){}[0]
+    final fun component2(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/WgslOptions.component2|component2(){}[0]
+    final fun component3(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/WgslOptions.component3|component3(){}[0]
+    final fun component4(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.component4|component4(){}[0]
+    final fun component5(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.component5|component5(){}[0]
+    final fun component6(): kotlin/String? // io.ygdrasil.wgsl.back/WgslOptions.component6|component6(){}[0]
+    final fun component7(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.component7|component7(){}[0]
+    final fun component8(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.component8|component8(){}[0]
+    final fun component9(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/WgslOptions.component9|component9(){}[0]
+    final fun copy(io.ygdrasil.wgsl.valid/ValidationFlags = ..., io.ygdrasil.wgsl.valid/Capabilities = ..., io.ygdrasil.wgsl.valid/ShaderStages = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String? = ..., kotlin/String = ..., kotlin/String = ..., io.ygdrasil.wgsl.back/BindingMap = ..., kotlin/Boolean = ..., kotlin/Boolean = ...): io.ygdrasil.wgsl.back/WgslOptions // io.ygdrasil.wgsl.back/WgslOptions.copy|copy(io.ygdrasil.wgsl.valid.ValidationFlags;io.ygdrasil.wgsl.valid.Capabilities;io.ygdrasil.wgsl.valid.ShaderStages;kotlin.String;kotlin.String;kotlin.String?;kotlin.String;kotlin.String;io.ygdrasil.wgsl.back.BindingMap;kotlin.Boolean;kotlin.Boolean){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/WgslOptions.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/WgslOptions.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/WgslOptions.toString|toString(){}[0]
 }
 
 final class io.ygdrasil.wgsl.ir/Binding { // io.ygdrasil.wgsl.ir/Binding|null[0]
@@ -833,8 +1176,10 @@ final class io.ygdrasil.wgsl.ir/Expression { // io.ygdrasil.wgsl.ir/Expression|n
 }
 
 final class io.ygdrasil.wgsl.ir/Function { // io.ygdrasil.wgsl.ir/Function|null[0]
-    constructor <init>(kotlin/String, kotlin.collections/List<io.ygdrasil.wgsl.ir/FunctionParameter>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>? = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/LocalVariable>, io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Block>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>? = ...) // io.ygdrasil.wgsl.ir/Function.<init>|<init>(kotlin.String;kotlin.collections.List<io.ygdrasil.wgsl.ir.FunctionParameter>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>?;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.LocalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Block>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>?){}[0]
+    constructor <init>(kotlin/String, kotlin.collections/List<io.ygdrasil.wgsl.ir/FunctionParameter>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>? = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/LocalVariable>, io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression>, io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Block>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Block>, io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>? = ...) // io.ygdrasil.wgsl.ir/Function.<init>|<init>(kotlin.String;kotlin.collections.List<io.ygdrasil.wgsl.ir.FunctionParameter>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>?;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.LocalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Block>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Block>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>?){}[0]
 
+    final val blocks // io.ygdrasil.wgsl.ir/Function.blocks|{}blocks[0]
+        final fun <get-blocks>(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Block> // io.ygdrasil.wgsl.ir/Function.blocks.<get-blocks>|<get-blocks>(){}[0]
     final val body // io.ygdrasil.wgsl.ir/Function.body|{}body[0]
         final fun <get-body>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Block> // io.ygdrasil.wgsl.ir/Function.body.<get-body>|<get-body>(){}[0]
     final val expressions // io.ygdrasil.wgsl.ir/Function.expressions|{}expressions[0]
@@ -855,9 +1200,10 @@ final class io.ygdrasil.wgsl.ir/Function { // io.ygdrasil.wgsl.ir/Function|null[
     final fun component3(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>? // io.ygdrasil.wgsl.ir/Function.component3|component3(){}[0]
     final fun component4(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/LocalVariable> // io.ygdrasil.wgsl.ir/Function.component4|component4(){}[0]
     final fun component5(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/Function.component5|component5(){}[0]
-    final fun component6(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Block> // io.ygdrasil.wgsl.ir/Function.component6|component6(){}[0]
-    final fun component7(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>? // io.ygdrasil.wgsl.ir/Function.component7|component7(){}[0]
-    final fun copy(kotlin/String = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/FunctionParameter> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>? = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/LocalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Block> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>? = ...): io.ygdrasil.wgsl.ir/Function // io.ygdrasil.wgsl.ir/Function.copy|copy(kotlin.String;kotlin.collections.List<io.ygdrasil.wgsl.ir.FunctionParameter>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>?;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.LocalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Block>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>?){}[0]
+    final fun component6(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Block> // io.ygdrasil.wgsl.ir/Function.component6|component6(){}[0]
+    final fun component7(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Block> // io.ygdrasil.wgsl.ir/Function.component7|component7(){}[0]
+    final fun component8(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>? // io.ygdrasil.wgsl.ir/Function.component8|component8(){}[0]
+    final fun copy(kotlin/String = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/FunctionParameter> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>? = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/LocalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Block> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Block> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>? = ...): io.ygdrasil.wgsl.ir/Function // io.ygdrasil.wgsl.ir/Function.copy|copy(kotlin.String;kotlin.collections.List<io.ygdrasil.wgsl.ir.FunctionParameter>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>?;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.LocalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Block>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Block>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/Function.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/Function.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/Function.toString|toString(){}[0]
@@ -988,7 +1334,7 @@ final class io.ygdrasil.wgsl.ir/LocalVariable { // io.ygdrasil.wgsl.ir/LocalVari
 }
 
 final class io.ygdrasil.wgsl.ir/Module { // io.ygdrasil.wgsl.ir/Module|null[0]
-    constructor <init>(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? = ..., io.ygdrasil.wgsl.ir/DocComments? = ...) // io.ygdrasil.wgsl.ir/Module.<init>|<init>(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>?;io.ygdrasil.wgsl.ir.DocComments?){}[0]
+    constructor <init>(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/MutableList<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? = ..., io.ygdrasil.wgsl.ir/DocComments? = ...) // io.ygdrasil.wgsl.ir/Module.<init>|<init>(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.MutableList<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>?;io.ygdrasil.wgsl.ir.DocComments?){}[0]
 
     final val constants // io.ygdrasil.wgsl.ir/Module.constants|{}constants[0]
         final fun <get-constants>(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> // io.ygdrasil.wgsl.ir/Module.constants.<get-constants>|<get-constants>(){}[0]
@@ -999,7 +1345,7 @@ final class io.ygdrasil.wgsl.ir/Module { // io.ygdrasil.wgsl.ir/Module|null[0]
     final val docComments // io.ygdrasil.wgsl.ir/Module.docComments|{}docComments[0]
         final fun <get-docComments>(): io.ygdrasil.wgsl.ir/DocComments? // io.ygdrasil.wgsl.ir/Module.docComments.<get-docComments>|<get-docComments>(){}[0]
     final val entryPoints // io.ygdrasil.wgsl.ir/Module.entryPoints|{}entryPoints[0]
-        final fun <get-entryPoints>(): kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> // io.ygdrasil.wgsl.ir/Module.entryPoints.<get-entryPoints>|<get-entryPoints>(){}[0]
+        final fun <get-entryPoints>(): kotlin.collections/MutableList<io.ygdrasil.wgsl.ir/EntryPoint> // io.ygdrasil.wgsl.ir/Module.entryPoints.<get-entryPoints>|<get-entryPoints>(){}[0]
     final val functions // io.ygdrasil.wgsl.ir/Module.functions|{}functions[0]
         final fun <get-functions>(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> // io.ygdrasil.wgsl.ir/Module.functions.<get-functions>|<get-functions>(){}[0]
     final val globalExpressions // io.ygdrasil.wgsl.ir/Module.globalExpressions|{}globalExpressions[0]
@@ -1017,11 +1363,11 @@ final class io.ygdrasil.wgsl.ir/Module { // io.ygdrasil.wgsl.ir/Module|null[0]
     final fun component3(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.ir/Module.component3|component3(){}[0]
     final fun component4(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> // io.ygdrasil.wgsl.ir/Module.component4|component4(){}[0]
     final fun component5(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> // io.ygdrasil.wgsl.ir/Module.component5|component5(){}[0]
-    final fun component6(): kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> // io.ygdrasil.wgsl.ir/Module.component6|component6(){}[0]
+    final fun component6(): kotlin.collections/MutableList<io.ygdrasil.wgsl.ir/EntryPoint> // io.ygdrasil.wgsl.ir/Module.component6|component6(){}[0]
     final fun component7(): io.ygdrasil.wgsl.ir/SpecialTypes // io.ygdrasil.wgsl.ir/Module.component7|component7(){}[0]
     final fun component8(): io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> // io.ygdrasil.wgsl.ir/Module.component8|component8(){}[0]
     final fun component9(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? // io.ygdrasil.wgsl.ir/Module.component9|component9(){}[0]
-    final fun copy(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? = ..., io.ygdrasil.wgsl.ir/DocComments? = ...): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.ir/Module.copy|copy(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>?;io.ygdrasil.wgsl.ir.DocComments?){}[0]
+    final fun copy(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/MutableList<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/DiagnosticFilterNode> = ..., io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/DiagnosticFilterNode>? = ..., io.ygdrasil.wgsl.ir/DocComments? = ...): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.ir/Module.copy|copy(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.MutableList<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>;io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.DiagnosticFilterNode>?;io.ygdrasil.wgsl.ir.DocComments?){}[0]
     final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.ir/Module.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.ir/Module.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // io.ygdrasil.wgsl.ir/Module.toString|toString(){}[0]
@@ -1038,7 +1384,7 @@ final class io.ygdrasil.wgsl.ir/Module { // io.ygdrasil.wgsl.ir/Module|null[0]
     final object Companion { // io.ygdrasil.wgsl.ir/Module.Companion|null[0]
         final val $childSerializers // io.ygdrasil.wgsl.ir/Module.Companion.$childSerializers|{}$childSerializers[0]
 
-        final fun create(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/List<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ...): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.ir/Module.Companion.create|create(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.List<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes){}[0]
+        final fun create(io.ygdrasil.wgsl.arena/UniqueArena<io.ygdrasil.wgsl.ir/Type> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Constant> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Expression> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/GlobalVariable> = ..., io.ygdrasil.wgsl.arena/Arena<io.ygdrasil.wgsl.ir/Function> = ..., kotlin.collections/MutableList<io.ygdrasil.wgsl.ir/EntryPoint> = ..., io.ygdrasil.wgsl.ir/SpecialTypes = ...): io.ygdrasil.wgsl.ir/Module // io.ygdrasil.wgsl.ir/Module.Companion.create|create(io.ygdrasil.wgsl.arena.UniqueArena<io.ygdrasil.wgsl.ir.Type>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Constant>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Expression>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.GlobalVariable>;io.ygdrasil.wgsl.arena.Arena<io.ygdrasil.wgsl.ir.Function>;kotlin.collections.MutableList<io.ygdrasil.wgsl.ir.EntryPoint>;io.ygdrasil.wgsl.ir.SpecialTypes){}[0]
         final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.ir/Module> // io.ygdrasil.wgsl.ir/Module.Companion.serializer|serializer(){}[0]
     }
 }
@@ -1342,6 +1688,134 @@ final class io.ygdrasil.wgsl.proc/Validator { // io.ygdrasil.wgsl.proc/Validator
     final fun validate(io.ygdrasil.wgsl.ir/Module): kotlin.collections/List<io.ygdrasil.wgsl.proc/ValidationError> // io.ygdrasil.wgsl.proc/Validator.validate|validate(io.ygdrasil.wgsl.ir.Module){}[0]
 }
 
+final class io.ygdrasil.wgsl.valid/Capabilities { // io.ygdrasil.wgsl.valid/Capabilities|null[0]
+    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...) // io.ygdrasil.wgsl.valid/Capabilities.<init>|<init>(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
+
+    final val float64 // io.ygdrasil.wgsl.valid/Capabilities.float64|{}float64[0]
+        final fun <get-float64>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/Capabilities.float64.<get-float64>|<get-float64>(){}[0]
+    final val rayQuery // io.ygdrasil.wgsl.valid/Capabilities.rayQuery|{}rayQuery[0]
+        final fun <get-rayQuery>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/Capabilities.rayQuery.<get-rayQuery>|<get-rayQuery>(){}[0]
+    final val shaderInt64 // io.ygdrasil.wgsl.valid/Capabilities.shaderInt64|{}shaderInt64[0]
+        final fun <get-shaderInt64>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/Capabilities.shaderInt64.<get-shaderInt64>|<get-shaderInt64>(){}[0]
+
+    final fun component1(): kotlin/Boolean // io.ygdrasil.wgsl.valid/Capabilities.component1|component1(){}[0]
+    final fun component2(): kotlin/Boolean // io.ygdrasil.wgsl.valid/Capabilities.component2|component2(){}[0]
+    final fun component3(): kotlin/Boolean // io.ygdrasil.wgsl.valid/Capabilities.component3|component3(){}[0]
+    final fun copy(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.valid/Capabilities.copy|copy(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.valid/Capabilities.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.valid/Capabilities.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.valid/Capabilities.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<io.ygdrasil.wgsl.valid/Capabilities> { // io.ygdrasil.wgsl.valid/Capabilities.$serializer|null[0]
+        final val descriptor // io.ygdrasil.wgsl.valid/Capabilities.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.valid/Capabilities.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // io.ygdrasil.wgsl.valid/Capabilities.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.valid/Capabilities.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, io.ygdrasil.wgsl.valid/Capabilities) // io.ygdrasil.wgsl.valid/Capabilities.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;io.ygdrasil.wgsl.valid.Capabilities){}[0]
+    }
+
+    final object Companion { // io.ygdrasil.wgsl.valid/Capabilities.Companion|null[0]
+        final val ALL // io.ygdrasil.wgsl.valid/Capabilities.Companion.ALL|{}ALL[0]
+            final fun <get-ALL>(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.valid/Capabilities.Companion.ALL.<get-ALL>|<get-ALL>(){}[0]
+        final val NONE // io.ygdrasil.wgsl.valid/Capabilities.Companion.NONE|{}NONE[0]
+            final fun <get-NONE>(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.valid/Capabilities.Companion.NONE.<get-NONE>|<get-NONE>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.valid/Capabilities> // io.ygdrasil.wgsl.valid/Capabilities.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class io.ygdrasil.wgsl.valid/ModuleInfo { // io.ygdrasil.wgsl.valid/ModuleInfo|null[0]
+    constructor <init>() // io.ygdrasil.wgsl.valid/ModuleInfo.<init>|<init>(){}[0]
+
+    final object Companion { // io.ygdrasil.wgsl.valid/ModuleInfo.Companion|null[0]
+        final fun empty(): io.ygdrasil.wgsl.valid/ModuleInfo // io.ygdrasil.wgsl.valid/ModuleInfo.Companion.empty|empty(){}[0]
+    }
+}
+
+final class io.ygdrasil.wgsl.valid/ShaderStages { // io.ygdrasil.wgsl.valid/ShaderStages|null[0]
+    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...) // io.ygdrasil.wgsl.valid/ShaderStages.<init>|<init>(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
+
+    final val compute // io.ygdrasil.wgsl.valid/ShaderStages.compute|{}compute[0]
+        final fun <get-compute>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ShaderStages.compute.<get-compute>|<get-compute>(){}[0]
+    final val fragment // io.ygdrasil.wgsl.valid/ShaderStages.fragment|{}fragment[0]
+        final fun <get-fragment>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ShaderStages.fragment.<get-fragment>|<get-fragment>(){}[0]
+    final val vertex // io.ygdrasil.wgsl.valid/ShaderStages.vertex|{}vertex[0]
+        final fun <get-vertex>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ShaderStages.vertex.<get-vertex>|<get-vertex>(){}[0]
+
+    final fun component1(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ShaderStages.component1|component1(){}[0]
+    final fun component2(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ShaderStages.component2|component2(){}[0]
+    final fun component3(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ShaderStages.component3|component3(){}[0]
+    final fun copy(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.valid/ShaderStages.copy|copy(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.valid/ShaderStages.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.valid/ShaderStages.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.valid/ShaderStages.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<io.ygdrasil.wgsl.valid/ShaderStages> { // io.ygdrasil.wgsl.valid/ShaderStages.$serializer|null[0]
+        final val descriptor // io.ygdrasil.wgsl.valid/ShaderStages.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.valid/ShaderStages.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // io.ygdrasil.wgsl.valid/ShaderStages.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.valid/ShaderStages.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, io.ygdrasil.wgsl.valid/ShaderStages) // io.ygdrasil.wgsl.valid/ShaderStages.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;io.ygdrasil.wgsl.valid.ShaderStages){}[0]
+    }
+
+    final object Companion { // io.ygdrasil.wgsl.valid/ShaderStages.Companion|null[0]
+        final val ALL // io.ygdrasil.wgsl.valid/ShaderStages.Companion.ALL|{}ALL[0]
+            final fun <get-ALL>(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.valid/ShaderStages.Companion.ALL.<get-ALL>|<get-ALL>(){}[0]
+        final val NONE // io.ygdrasil.wgsl.valid/ShaderStages.Companion.NONE|{}NONE[0]
+            final fun <get-NONE>(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.valid/ShaderStages.Companion.NONE.<get-NONE>|<get-NONE>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.valid/ShaderStages> // io.ygdrasil.wgsl.valid/ShaderStages.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final class io.ygdrasil.wgsl.valid/ValidationFlags { // io.ygdrasil.wgsl.valid/ValidationFlags|null[0]
+    constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...) // io.ygdrasil.wgsl.valid/ValidationFlags.<init>|<init>(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
+
+    final val bindings // io.ygdrasil.wgsl.valid/ValidationFlags.bindings|{}bindings[0]
+        final fun <get-bindings>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.bindings.<get-bindings>|<get-bindings>(){}[0]
+    final val blocks // io.ygdrasil.wgsl.valid/ValidationFlags.blocks|{}blocks[0]
+        final fun <get-blocks>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.blocks.<get-blocks>|<get-blocks>(){}[0]
+    final val constants // io.ygdrasil.wgsl.valid/ValidationFlags.constants|{}constants[0]
+        final fun <get-constants>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.constants.<get-constants>|<get-constants>(){}[0]
+    final val controlFlowUniformity // io.ygdrasil.wgsl.valid/ValidationFlags.controlFlowUniformity|{}controlFlowUniformity[0]
+        final fun <get-controlFlowUniformity>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.controlFlowUniformity.<get-controlFlowUniformity>|<get-controlFlowUniformity>(){}[0]
+    final val expressions // io.ygdrasil.wgsl.valid/ValidationFlags.expressions|{}expressions[0]
+        final fun <get-expressions>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.expressions.<get-expressions>|<get-expressions>(){}[0]
+    final val structLayouts // io.ygdrasil.wgsl.valid/ValidationFlags.structLayouts|{}structLayouts[0]
+        final fun <get-structLayouts>(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.structLayouts.<get-structLayouts>|<get-structLayouts>(){}[0]
+
+    final fun component1(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.component1|component1(){}[0]
+    final fun component2(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.component2|component2(){}[0]
+    final fun component3(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.component3|component3(){}[0]
+    final fun component4(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.component4|component4(){}[0]
+    final fun component5(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.component5|component5(){}[0]
+    final fun component6(): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.component6|component6(){}[0]
+    final fun copy(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.valid/ValidationFlags.copy|copy(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.valid/ValidationFlags.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.valid/ValidationFlags.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.ygdrasil.wgsl.valid/ValidationFlags.toString|toString(){}[0]
+
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<io.ygdrasil.wgsl.valid/ValidationFlags> { // io.ygdrasil.wgsl.valid/ValidationFlags.$serializer|null[0]
+        final val descriptor // io.ygdrasil.wgsl.valid/ValidationFlags.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // io.ygdrasil.wgsl.valid/ValidationFlags.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // io.ygdrasil.wgsl.valid/ValidationFlags.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.valid/ValidationFlags.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, io.ygdrasil.wgsl.valid/ValidationFlags) // io.ygdrasil.wgsl.valid/ValidationFlags.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;io.ygdrasil.wgsl.valid.ValidationFlags){}[0]
+    }
+
+    final object Companion { // io.ygdrasil.wgsl.valid/ValidationFlags.Companion|null[0]
+        final val ALL // io.ygdrasil.wgsl.valid/ValidationFlags.Companion.ALL|{}ALL[0]
+            final fun <get-ALL>(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.valid/ValidationFlags.Companion.ALL.<get-ALL>|<get-ALL>(){}[0]
+        final val NONE // io.ygdrasil.wgsl.valid/ValidationFlags.Companion.NONE|{}NONE[0]
+            final fun <get-NONE>(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.valid/ValidationFlags.Companion.NONE.<get-NONE>|<get-NONE>(){}[0]
+
+        final fun serializer(): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.valid/ValidationFlags> // io.ygdrasil.wgsl.valid/ValidationFlags.Companion.serializer|serializer(){}[0]
+    }
+}
+
 final value class <#A: kotlin/Any?> io.ygdrasil.wgsl.arena/Handle { // io.ygdrasil.wgsl.arena/Handle|null[0]
     constructor <init>(kotlin/Int) // io.ygdrasil.wgsl.arena/Handle.<init>|<init>(kotlin.Int){}[0]
 
@@ -1390,6 +1864,120 @@ final value class <#A: kotlin/Any?> io.ygdrasil.wgsl.arena/Range { // io.ygdrasi
         final fun <#A2: kotlin/Any?> serializer(kotlinx.serialization/KSerializer<#A2>): kotlinx.serialization/KSerializer<io.ygdrasil.wgsl.arena/Range<#A2>> // io.ygdrasil.wgsl.arena/Range.Companion.serializer|serializer(kotlinx.serialization.KSerializer<0:0>){0§<kotlin.Any?>}[0]
         final fun serializer(kotlin/Array<out kotlinx.serialization/KSerializer<*>>...): kotlinx.serialization/KSerializer<*> // io.ygdrasil.wgsl.arena/Range.Companion.serializer|serializer(kotlin.Array<out|kotlinx.serialization.KSerializer<*>>...){}[0]
     }
+}
+
+sealed class io.ygdrasil.wgsl.back/BackendError { // io.ygdrasil.wgsl.back/BackendError|null[0]
+    abstract val message // io.ygdrasil.wgsl.back/BackendError.message|{}message[0]
+        abstract fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.message.<get-message>|<get-message>(){}[0]
+
+    final class GenericError : io.ygdrasil.wgsl.back/BackendError { // io.ygdrasil.wgsl.back/BackendError.GenericError|null[0]
+        constructor <init>(kotlin/String) // io.ygdrasil.wgsl.back/BackendError.GenericError.<init>|<init>(kotlin.String){}[0]
+
+        final val message // io.ygdrasil.wgsl.back/BackendError.GenericError.message|{}message[0]
+            final fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.GenericError.message.<get-message>|<get-message>(){}[0]
+
+        final fun component1(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.GenericError.component1|component1(){}[0]
+        final fun copy(kotlin/String = ...): io.ygdrasil.wgsl.back/BackendError.GenericError // io.ygdrasil.wgsl.back/BackendError.GenericError.copy|copy(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/BackendError.GenericError.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/BackendError.GenericError.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.GenericError.toString|toString(){}[0]
+    }
+
+    final class InternalError : io.ygdrasil.wgsl.back/BackendError { // io.ygdrasil.wgsl.back/BackendError.InternalError|null[0]
+        constructor <init>(kotlin/Throwable) // io.ygdrasil.wgsl.back/BackendError.InternalError.<init>|<init>(kotlin.Throwable){}[0]
+
+        final val cause // io.ygdrasil.wgsl.back/BackendError.InternalError.cause|{}cause[0]
+            final fun <get-cause>(): kotlin/Throwable // io.ygdrasil.wgsl.back/BackendError.InternalError.cause.<get-cause>|<get-cause>(){}[0]
+        final val message // io.ygdrasil.wgsl.back/BackendError.InternalError.message|{}message[0]
+            final fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.InternalError.message.<get-message>|<get-message>(){}[0]
+
+        final fun component1(): kotlin/Throwable // io.ygdrasil.wgsl.back/BackendError.InternalError.component1|component1(){}[0]
+        final fun copy(kotlin/Throwable = ...): io.ygdrasil.wgsl.back/BackendError.InternalError // io.ygdrasil.wgsl.back/BackendError.InternalError.copy|copy(kotlin.Throwable){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/BackendError.InternalError.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/BackendError.InternalError.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.InternalError.toString|toString(){}[0]
+    }
+
+    final class UnsupportedExpression : io.ygdrasil.wgsl.back/BackendError { // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression|null[0]
+        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression>) // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+
+        final val expr // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.expr|{}expr[0]
+            final fun <get-expr>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.expr.<get-expr>|<get-expr>(){}[0]
+        final val message // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.message|{}message[0]
+            final fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.message.<get-message>|<get-message>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Expression> = ...): io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Expression>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedExpression.toString|toString(){}[0]
+    }
+
+    final class UnsupportedFeature : io.ygdrasil.wgsl.back/BackendError { // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature|null[0]
+        constructor <init>(kotlin/String) // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.<init>|<init>(kotlin.String){}[0]
+
+        final val feature // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.feature|{}feature[0]
+            final fun <get-feature>(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.feature.<get-feature>|<get-feature>(){}[0]
+        final val message // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.message|{}message[0]
+            final fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.message.<get-message>|<get-message>(){}[0]
+
+        final fun component1(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.component1|component1(){}[0]
+        final fun copy(kotlin/String = ...): io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.copy|copy(kotlin.String){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedFeature.toString|toString(){}[0]
+    }
+
+    final class UnsupportedStatement : io.ygdrasil.wgsl.back/BackendError { // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement|null[0]
+        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Statement>) // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Statement>){}[0]
+
+        final val message // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.message|{}message[0]
+            final fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.message.<get-message>|<get-message>(){}[0]
+        final val stmt // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.stmt|{}stmt[0]
+            final fun <get-stmt>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Statement> // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.stmt.<get-stmt>|<get-stmt>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Statement> // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Statement> = ...): io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Statement>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedStatement.toString|toString(){}[0]
+    }
+
+    final class UnsupportedType : io.ygdrasil.wgsl.back/BackendError { // io.ygdrasil.wgsl.back/BackendError.UnsupportedType|null[0]
+        constructor <init>(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type>) // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.<init>|<init>(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+
+        final val message // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.message|{}message[0]
+            final fun <get-message>(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.message.<get-message>|<get-message>(){}[0]
+        final val type // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.type|{}type[0]
+            final fun <get-type>(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.type.<get-type>|<get-type>(){}[0]
+
+        final fun component1(): io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.component1|component1(){}[0]
+        final fun copy(io.ygdrasil.wgsl.arena/Handle<io.ygdrasil.wgsl.ir/Type> = ...): io.ygdrasil.wgsl.back/BackendError.UnsupportedType // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.copy|copy(io.ygdrasil.wgsl.arena.Handle<io.ygdrasil.wgsl.ir.Type>){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.ygdrasil.wgsl.back/BackendError.UnsupportedType.toString|toString(){}[0]
+    }
+}
+
+sealed class io.ygdrasil.wgsl.back/BackendOptions { // io.ygdrasil.wgsl.back/BackendOptions|null[0]
+    abstract val bindingMap // io.ygdrasil.wgsl.back/BackendOptions.bindingMap|{}bindingMap[0]
+        abstract fun <get-bindingMap>(): io.ygdrasil.wgsl.back/BindingMap // io.ygdrasil.wgsl.back/BackendOptions.bindingMap.<get-bindingMap>|<get-bindingMap>(){}[0]
+    abstract val capabilities // io.ygdrasil.wgsl.back/BackendOptions.capabilities|{}capabilities[0]
+        abstract fun <get-capabilities>(): io.ygdrasil.wgsl.valid/Capabilities // io.ygdrasil.wgsl.back/BackendOptions.capabilities.<get-capabilities>|<get-capabilities>(){}[0]
+    abstract val fileExtension // io.ygdrasil.wgsl.back/BackendOptions.fileExtension|{}fileExtension[0]
+        abstract fun <get-fileExtension>(): kotlin/String // io.ygdrasil.wgsl.back/BackendOptions.fileExtension.<get-fileExtension>|<get-fileExtension>(){}[0]
+    abstract val indent // io.ygdrasil.wgsl.back/BackendOptions.indent|{}indent[0]
+        abstract fun <get-indent>(): kotlin/String // io.ygdrasil.wgsl.back/BackendOptions.indent.<get-indent>|<get-indent>(){}[0]
+    abstract val languageName // io.ygdrasil.wgsl.back/BackendOptions.languageName|{}languageName[0]
+        abstract fun <get-languageName>(): kotlin/String // io.ygdrasil.wgsl.back/BackendOptions.languageName.<get-languageName>|<get-languageName>(){}[0]
+    abstract val newline // io.ygdrasil.wgsl.back/BackendOptions.newline|{}newline[0]
+        abstract fun <get-newline>(): kotlin/String // io.ygdrasil.wgsl.back/BackendOptions.newline.<get-newline>|<get-newline>(){}[0]
+    abstract val shaderStages // io.ygdrasil.wgsl.back/BackendOptions.shaderStages|{}shaderStages[0]
+        abstract fun <get-shaderStages>(): io.ygdrasil.wgsl.valid/ShaderStages // io.ygdrasil.wgsl.back/BackendOptions.shaderStages.<get-shaderStages>|<get-shaderStages>(){}[0]
+    abstract val validationFlags // io.ygdrasil.wgsl.back/BackendOptions.validationFlags|{}validationFlags[0]
+        abstract fun <get-validationFlags>(): io.ygdrasil.wgsl.valid/ValidationFlags // io.ygdrasil.wgsl.back/BackendOptions.validationFlags.<get-validationFlags>|<get-validationFlags>(){}[0]
+    abstract val version // io.ygdrasil.wgsl.back/BackendOptions.version|{}version[0]
+        abstract fun <get-version>(): kotlin/String? // io.ygdrasil.wgsl.back/BackendOptions.version.<get-version>|<get-version>(){}[0]
 }
 
 sealed class io.ygdrasil.wgsl.ir/ArraySize : io.ygdrasil.wgsl.arena/Equatable { // io.ygdrasil.wgsl.ir/ArraySize|null[0]

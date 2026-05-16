@@ -190,6 +190,370 @@ public final class io/ygdrasil/wgsl/arena/UniqueArenaKt {
 	public static final fun uniqueArenaOf ([Lio/ygdrasil/wgsl/arena/Equatable;)Lio/ygdrasil/wgsl/arena/UniqueArena;
 }
 
+public abstract class io/ygdrasil/wgsl/back/BackendError {
+	public abstract fun getMessage ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendError$GenericError : io/ygdrasil/wgsl/back/BackendError {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lio/ygdrasil/wgsl/back/BackendError$GenericError;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/back/BackendError$GenericError;Ljava/lang/String;ILjava/lang/Object;)Lio/ygdrasil/wgsl/back/BackendError$GenericError;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendError$InternalError : io/ygdrasil/wgsl/back/BackendError {
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Lio/ygdrasil/wgsl/back/BackendError$InternalError;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/back/BackendError$InternalError;Ljava/lang/Throwable;ILjava/lang/Object;)Lio/ygdrasil/wgsl/back/BackendError$InternalError;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCause ()Ljava/lang/Throwable;
+	public fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendError$UnsupportedExpression : io/ygdrasil/wgsl/back/BackendError {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-Weu6vOY ()I
+	public final fun copy-GlugwBY (I)Lio/ygdrasil/wgsl/back/BackendError$UnsupportedExpression;
+	public static synthetic fun copy-GlugwBY$default (Lio/ygdrasil/wgsl/back/BackendError$UnsupportedExpression;IILjava/lang/Object;)Lio/ygdrasil/wgsl/back/BackendError$UnsupportedExpression;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExpr-Weu6vOY ()I
+	public fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendError$UnsupportedFeature : io/ygdrasil/wgsl/back/BackendError {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lio/ygdrasil/wgsl/back/BackendError$UnsupportedFeature;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/back/BackendError$UnsupportedFeature;Ljava/lang/String;ILjava/lang/Object;)Lio/ygdrasil/wgsl/back/BackendError$UnsupportedFeature;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFeature ()Ljava/lang/String;
+	public fun getMessage ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendError$UnsupportedStatement : io/ygdrasil/wgsl/back/BackendError {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-Weu6vOY ()I
+	public final fun copy-GlugwBY (I)Lio/ygdrasil/wgsl/back/BackendError$UnsupportedStatement;
+	public static synthetic fun copy-GlugwBY$default (Lio/ygdrasil/wgsl/back/BackendError$UnsupportedStatement;IILjava/lang/Object;)Lio/ygdrasil/wgsl/back/BackendError$UnsupportedStatement;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMessage ()Ljava/lang/String;
+	public final fun getStmt-Weu6vOY ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendError$UnsupportedType : io/ygdrasil/wgsl/back/BackendError {
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-Weu6vOY ()I
+	public final fun copy-GlugwBY (I)Lio/ygdrasil/wgsl/back/BackendError$UnsupportedType;
+	public static synthetic fun copy-GlugwBY$default (Lio/ygdrasil/wgsl/back/BackendError$UnsupportedType;IILjava/lang/Object;)Lio/ygdrasil/wgsl/back/BackendError$UnsupportedType;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMessage ()Ljava/lang/String;
+	public final fun getType-Weu6vOY ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendException : java/lang/Exception {
+	public fun <init> (Lio/ygdrasil/wgsl/back/BackendError;)V
+	public final fun getError ()Lio/ygdrasil/wgsl/back/BackendError;
+}
+
+public abstract class io/ygdrasil/wgsl/back/BackendOptions {
+	public abstract fun getBindingMap ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public abstract fun getCapabilities ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public abstract fun getFileExtension ()Ljava/lang/String;
+	public abstract fun getIndent ()Ljava/lang/String;
+	public abstract fun getLanguageName ()Ljava/lang/String;
+	public abstract fun getNewline ()Ljava/lang/String;
+	public abstract fun getShaderStages ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public abstract fun getValidationFlags ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public abstract fun getVersion ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendRegistry {
+	public static final field Companion Lio/ygdrasil/wgsl/back/BackendRegistry$Companion;
+	public fun <init> ()V
+	public final fun get (Ljava/lang/String;)Lio/ygdrasil/wgsl/back/BackendWriter;
+	public final fun listBackendNames ()Ljava/util/List;
+	public final fun register (Ljava/lang/String;Lio/ygdrasil/wgsl/back/BackendRegistry$BackendFactory;)V
+}
+
+public abstract interface class io/ygdrasil/wgsl/back/BackendRegistry$BackendFactory {
+	public abstract fun create ()Lio/ygdrasil/wgsl/back/BackendWriter;
+	public abstract fun createWithOptions (Lio/ygdrasil/wgsl/back/BackendOptions;)Lio/ygdrasil/wgsl/back/BackendWriter;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendRegistry$Companion {
+	public final fun getDEFAULT ()Lio/ygdrasil/wgsl/back/BackendRegistry;
+}
+
+public final class io/ygdrasil/wgsl/back/BackendType : java/lang/Enum {
+	public static final field GLSL Lio/ygdrasil/wgsl/back/BackendType;
+	public static final field HLSL Lio/ygdrasil/wgsl/back/BackendType;
+	public static final field MSL Lio/ygdrasil/wgsl/back/BackendType;
+	public static final field WGSL Lio/ygdrasil/wgsl/back/BackendType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/ygdrasil/wgsl/back/BackendType;
+	public static fun values ()[Lio/ygdrasil/wgsl/back/BackendType;
+}
+
+public abstract interface class io/ygdrasil/wgsl/back/BackendWriter {
+	public abstract fun canHandle (Lio/ygdrasil/wgsl/ir/Module;Lio/ygdrasil/wgsl/valid/ModuleInfo;)Z
+	public abstract fun withOptions (Lio/ygdrasil/wgsl/back/BackendOptions;)Lio/ygdrasil/wgsl/back/BackendWriter;
+	public abstract fun write (Lio/ygdrasil/wgsl/ir/Module;Lio/ygdrasil/wgsl/valid/ModuleInfo;)Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BindingMap {
+	public static final field Companion Lio/ygdrasil/wgsl/back/BindingMap$Companion;
+	public fun <init> ()V
+	public final fun clear ()V
+	public final fun contains (Lio/ygdrasil/wgsl/ir/Binding;)Z
+	public final fun get (Lio/ygdrasil/wgsl/ir/Binding;)Lio/ygdrasil/wgsl/back/BindingMap$BindTarget;
+	public final fun insert (Lio/ygdrasil/wgsl/ir/Binding;Lio/ygdrasil/wgsl/back/BindingMap$BindTarget;)V
+}
+
+public final class io/ygdrasil/wgsl/back/BindingMap$BindTarget {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Z)V
+	public synthetic fun <init> (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Integer;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component4 ()Z
+	public final fun copy (Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Z)Lio/ygdrasil/wgsl/back/BindingMap$BindTarget;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/back/BindingMap$BindTarget;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;ZILjava/lang/Object;)Lio/ygdrasil/wgsl/back/BindingMap$BindTarget;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBuffer ()Ljava/lang/Integer;
+	public final fun getMutable ()Z
+	public final fun getSampler ()Ljava/lang/Integer;
+	public final fun getTexture ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/BindingMap$Companion {
+	public final fun defaultGlsl ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public final fun defaultHlsl ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public final fun defaultMsl ()Lio/ygdrasil/wgsl/back/BindingMap;
+}
+
+public final class io/ygdrasil/wgsl/back/GlslOptions : io/ygdrasil/wgsl/back/BackendOptions {
+	public fun <init> ()V
+	public fun <init> (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;Lio/ygdrasil/wgsl/back/GlslProfile;Z)V
+	public synthetic fun <init> (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;Lio/ygdrasil/wgsl/back/GlslProfile;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public final fun component10 ()Lio/ygdrasil/wgsl/back/GlslProfile;
+	public final fun component11 ()Z
+	public final fun component2 ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public final fun component3 ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public final fun copy (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;Lio/ygdrasil/wgsl/back/GlslProfile;Z)Lio/ygdrasil/wgsl/back/GlslOptions;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/back/GlslOptions;Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;Lio/ygdrasil/wgsl/back/GlslProfile;ZILjava/lang/Object;)Lio/ygdrasil/wgsl/back/GlslOptions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBindingMap ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public fun getCapabilities ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public final fun getEs ()Z
+	public fun getFileExtension ()Ljava/lang/String;
+	public fun getIndent ()Ljava/lang/String;
+	public fun getLanguageName ()Ljava/lang/String;
+	public fun getNewline ()Ljava/lang/String;
+	public final fun getProfile ()Lio/ygdrasil/wgsl/back/GlslProfile;
+	public fun getShaderStages ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public fun getValidationFlags ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/GlslProfile : java/lang/Enum {
+	public static final field CORE Lio/ygdrasil/wgsl/back/GlslProfile;
+	public static final field ES Lio/ygdrasil/wgsl/back/GlslProfile;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/ygdrasil/wgsl/back/GlslProfile;
+	public static fun values ()[Lio/ygdrasil/wgsl/back/GlslProfile;
+}
+
+public final class io/ygdrasil/wgsl/back/HlslOptions : io/ygdrasil/wgsl/back/BackendOptions {
+	public fun <init> ()V
+	public fun <init> (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;Lio/ygdrasil/wgsl/back/ShaderModel;)V
+	public synthetic fun <init> (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;Lio/ygdrasil/wgsl/back/ShaderModel;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public final fun component10 ()Lio/ygdrasil/wgsl/back/ShaderModel;
+	public final fun component2 ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public final fun component3 ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public final fun copy (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;Lio/ygdrasil/wgsl/back/ShaderModel;)Lio/ygdrasil/wgsl/back/HlslOptions;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/back/HlslOptions;Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;Lio/ygdrasil/wgsl/back/ShaderModel;ILjava/lang/Object;)Lio/ygdrasil/wgsl/back/HlslOptions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBindingMap ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public fun getCapabilities ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public fun getFileExtension ()Ljava/lang/String;
+	public fun getIndent ()Ljava/lang/String;
+	public fun getLanguageName ()Ljava/lang/String;
+	public fun getNewline ()Ljava/lang/String;
+	public final fun getShaderModel ()Lio/ygdrasil/wgsl/back/ShaderModel;
+	public fun getShaderStages ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public fun getValidationFlags ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/MslOptions : io/ygdrasil/wgsl/back/BackendOptions {
+	public fun <init> ()V
+	public fun <init> (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;ZI)V
+	public synthetic fun <init> (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;ZIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public final fun component10 ()Z
+	public final fun component11 ()I
+	public final fun component2 ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public final fun component3 ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public final fun copy (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;ZI)Lio/ygdrasil/wgsl/back/MslOptions;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/back/MslOptions;Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;ZIILjava/lang/Object;)Lio/ygdrasil/wgsl/back/MslOptions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBindingMap ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public final fun getBufferSizeAlignment ()I
+	public fun getCapabilities ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public fun getFileExtension ()Ljava/lang/String;
+	public fun getIndent ()Ljava/lang/String;
+	public final fun getInlineSamplers ()Z
+	public fun getLanguageName ()Ljava/lang/String;
+	public fun getNewline ()Ljava/lang/String;
+	public fun getShaderStages ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public fun getValidationFlags ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/ygdrasil/wgsl/back/ShaderModel : java/lang/Enum {
+	public static final field SM5_0 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static final field SM5_1 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static final field SM6_0 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static final field SM6_1 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static final field SM6_2 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static final field SM6_3 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static final field SM6_4 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static final field SM6_5 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static final field SM6_6 Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/ygdrasil/wgsl/back/ShaderModel;
+	public static fun values ()[Lio/ygdrasil/wgsl/back/ShaderModel;
+}
+
+public final class io/ygdrasil/wgsl/back/WgslOptions : io/ygdrasil/wgsl/back/BackendOptions {
+	public fun <init> ()V
+	public fun <init> (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;ZZ)V
+	public synthetic fun <init> (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public final fun component10 ()Z
+	public final fun component11 ()Z
+	public final fun component2 ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public final fun component3 ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public final fun copy (Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;ZZ)Lio/ygdrasil/wgsl/back/WgslOptions;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/back/WgslOptions;Lio/ygdrasil/wgsl/valid/ValidationFlags;Lio/ygdrasil/wgsl/valid/Capabilities;Lio/ygdrasil/wgsl/valid/ShaderStages;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/back/BindingMap;ZZILjava/lang/Object;)Lio/ygdrasil/wgsl/back/WgslOptions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getBindingMap ()Lio/ygdrasil/wgsl/back/BindingMap;
+	public fun getCapabilities ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public final fun getDebug ()Z
+	public fun getFileExtension ()Ljava/lang/String;
+	public fun getIndent ()Ljava/lang/String;
+	public fun getLanguageName ()Ljava/lang/String;
+	public fun getNewline ()Ljava/lang/String;
+	public final fun getPrettyPrint ()Z
+	public fun getShaderStages ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public fun getValidationFlags ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class io/ygdrasil/wgsl/back/WriterBase {
+	public fun <init> (Ljava/lang/StringBuilder;Lio/ygdrasil/wgsl/ir/Module;Lio/ygdrasil/wgsl/valid/ModuleInfo;Lio/ygdrasil/wgsl/back/BackendOptions;Lio/ygdrasil/wgsl/proc/Namer;Lio/ygdrasil/wgsl/proc/Layouter;)V
+	protected fun getBinaryOperator (Lio/ygdrasil/wgsl/ir/BinaryOperator;)Ljava/lang/String;
+	protected fun getBuiltinFunctionName (Lio/ygdrasil/wgsl/ir/BuiltinFunction;)Ljava/lang/String;
+	protected fun getConstantName-GlugwBY (I)Ljava/lang/String;
+	protected final fun getCurrentFunction ()Lio/ygdrasil/wgsl/ir/Function;
+	protected fun getExpressionType-GlugwBY (I)Lio/ygdrasil/wgsl/ir/Type;
+	protected fun getFunctionArgumentName (I)Ljava/lang/String;
+	protected fun getFunctionName-GlugwBY (I)Ljava/lang/String;
+	protected fun getGlobalVariableName-GlugwBY (I)Ljava/lang/String;
+	protected final fun getIndentLevel ()I
+	protected final fun getLayouter ()Lio/ygdrasil/wgsl/proc/Layouter;
+	protected fun getLocalVariableName-GlugwBY (I)Ljava/lang/String;
+	protected final fun getModule ()Lio/ygdrasil/wgsl/ir/Module;
+	protected final fun getModuleInfo ()Lio/ygdrasil/wgsl/valid/ModuleInfo;
+	protected final fun getNamer ()Lio/ygdrasil/wgsl/proc/Namer;
+	protected final fun getOptions ()Lio/ygdrasil/wgsl/back/BackendOptions;
+	protected final fun getOutput ()Ljava/lang/StringBuilder;
+	protected fun getScalarTypeName (Lio/ygdrasil/wgsl/ir/TypeInner$Scalar;)Ljava/lang/String;
+	protected fun getTypeName-GlugwBY (I)Ljava/lang/String;
+	protected fun getUnaryOperator (Lio/ygdrasil/wgsl/ir/UnaryOperator;)Ljava/lang/String;
+	protected final fun indent (Lkotlin/jvm/functions/Function0;)V
+	protected final fun setCurrentFunction (Lio/ygdrasil/wgsl/ir/Function;)V
+	protected final fun setIndentLevel (I)V
+	public fun write ()Ljava/lang/String;
+	protected final fun write (Ljava/lang/String;)V
+	protected fun writeAtomic (Ljava/lang/String;Lio/ygdrasil/wgsl/ir/AtomicFunction;Ljava/util/List;)Ljava/lang/String;
+	protected fun writeBitcast (Ljava/lang/String;Lio/ygdrasil/wgsl/ir/Type;)Ljava/lang/String;
+	protected fun writeBlock-GlugwBY (I)V
+	protected fun writeConstantInner (Lio/ygdrasil/wgsl/ir/ConstantInner;)Ljava/lang/String;
+	protected fun writeConstants ()V
+	protected abstract fun writeEntryPoint (Lio/ygdrasil/wgsl/ir/EntryPoint;I)V
+	protected fun writeEntryPoints ()V
+	protected fun writeExpression-GlugwBY (I)Ljava/lang/String;
+	protected fun writeFunction-fIIqAgA (Lio/ygdrasil/wgsl/ir/Function;I)V
+	protected abstract fun writeFunctionSignature (Lio/ygdrasil/wgsl/ir/Function;Ljava/lang/String;)V
+	protected fun writeFunctions ()V
+	protected fun writeGlobalVariables ()V
+	protected abstract fun writeHeader ()V
+	protected final fun writeLine (Ljava/lang/String;)V
+	public static synthetic fun writeLine$default (Lio/ygdrasil/wgsl/back/WriterBase;Ljava/lang/String;ILjava/lang/Object;)V
+	protected fun writeLiteralValue (Lio/ygdrasil/wgsl/ir/LiteralValue;)Ljava/lang/String;
+	protected fun writePreamble ()V
+	protected fun writeRelational (Lio/ygdrasil/wgsl/ir/RelationalFunction;Ljava/util/List;)Ljava/lang/String;
+	protected fun writeSample-KKVCBHo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/ygdrasil/wgsl/ir/SampleLevel;Lio/ygdrasil/wgsl/arena/Handle;)Ljava/lang/String;
+	protected fun writeScalarValue (Lio/ygdrasil/wgsl/ir/ScalarValue;)Ljava/lang/String;
+	protected fun writeStatement (Lio/ygdrasil/wgsl/ir/Statement;)V
+	protected abstract fun writeStructType-gLNdcEg (ILio/ygdrasil/wgsl/ir/TypeInner$Struct;Ljava/lang/String;)V
+	protected fun writeTextureQuery (Ljava/lang/String;Lio/ygdrasil/wgsl/ir/TextureQueryKind;)Ljava/lang/String;
+	protected fun writeTypes ()V
+}
+
 public final class io/ygdrasil/wgsl/ir/AddressSpace : java/lang/Enum {
 	public static final field Companion Lio/ygdrasil/wgsl/ir/AddressSpace$Companion;
 	public static final field Function Lio/ygdrasil/wgsl/ir/AddressSpace;
@@ -428,6 +792,7 @@ public final class io/ygdrasil/wgsl/ir/BuiltinFunction : java/lang/Enum {
 	public static final field Fma Lio/ygdrasil/wgsl/ir/BuiltinFunction;
 	public static final field Fract Lio/ygdrasil/wgsl/ir/BuiltinFunction;
 	public static final field Frexp Lio/ygdrasil/wgsl/ir/BuiltinFunction;
+	public static final field InverseSqrt Lio/ygdrasil/wgsl/ir/BuiltinFunction;
 	public static final field Ldexp Lio/ygdrasil/wgsl/ir/BuiltinFunction;
 	public static final field Length Lio/ygdrasil/wgsl/ir/BuiltinFunction;
 	public static final field Ln Lio/ygdrasil/wgsl/ir/BuiltinFunction;
@@ -1451,18 +1816,20 @@ public final class io/ygdrasil/wgsl/ir/ExpressionKind$ValuePointer : io/ygdrasil
 
 public final class io/ygdrasil/wgsl/ir/Function {
 	public static final field Companion Lio/ygdrasil/wgsl/ir/Function$Companion;
-	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lio/ygdrasil/wgsl/arena/Handle;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;ILio/ygdrasil/wgsl/arena/Handle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lio/ygdrasil/wgsl/arena/Handle;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;ILio/ygdrasil/wgsl/arena/Handle;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lio/ygdrasil/wgsl/arena/Handle;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;ILio/ygdrasil/wgsl/arena/Handle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Lio/ygdrasil/wgsl/arena/Handle;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;ILio/ygdrasil/wgsl/arena/Handle;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/util/List;
 	public final fun component3-wiBSyKM ()Lio/ygdrasil/wgsl/arena/Handle;
 	public final fun component4 ()Lio/ygdrasil/wgsl/arena/Arena;
 	public final fun component5 ()Lio/ygdrasil/wgsl/arena/Arena;
-	public final fun component6-Weu6vOY ()I
-	public final fun component7-wiBSyKM ()Lio/ygdrasil/wgsl/arena/Handle;
-	public final fun copy-B8pwsqg (Ljava/lang/String;Ljava/util/List;Lio/ygdrasil/wgsl/arena/Handle;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;ILio/ygdrasil/wgsl/arena/Handle;)Lio/ygdrasil/wgsl/ir/Function;
-	public static synthetic fun copy-B8pwsqg$default (Lio/ygdrasil/wgsl/ir/Function;Ljava/lang/String;Ljava/util/List;Lio/ygdrasil/wgsl/arena/Handle;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;ILio/ygdrasil/wgsl/arena/Handle;ILjava/lang/Object;)Lio/ygdrasil/wgsl/ir/Function;
+	public final fun component6 ()Lio/ygdrasil/wgsl/arena/Arena;
+	public final fun component7-Weu6vOY ()I
+	public final fun component8-wiBSyKM ()Lio/ygdrasil/wgsl/arena/Handle;
+	public final fun copy-mocFTlw (Ljava/lang/String;Ljava/util/List;Lio/ygdrasil/wgsl/arena/Handle;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;ILio/ygdrasil/wgsl/arena/Handle;)Lio/ygdrasil/wgsl/ir/Function;
+	public static synthetic fun copy-mocFTlw$default (Lio/ygdrasil/wgsl/ir/Function;Ljava/lang/String;Ljava/util/List;Lio/ygdrasil/wgsl/arena/Handle;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;Lio/ygdrasil/wgsl/arena/Arena;ILio/ygdrasil/wgsl/arena/Handle;ILjava/lang/Object;)Lio/ygdrasil/wgsl/ir/Function;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBlocks ()Lio/ygdrasil/wgsl/arena/Arena;
 	public final fun getBody-Weu6vOY ()I
 	public final fun getExpressions ()Lio/ygdrasil/wgsl/arena/Arena;
 	public final fun getLocalVariables ()Lio/ygdrasil/wgsl/arena/Arena;
@@ -2268,6 +2635,7 @@ public final class io/ygdrasil/wgsl/ir/Statement$Switch : io/ygdrasil/wgsl/ir/St
 public final class io/ygdrasil/wgsl/ir/StorageClass : java/lang/Enum {
 	public static final field Companion Lio/ygdrasil/wgsl/ir/StorageClass$Companion;
 	public static final field Function Lio/ygdrasil/wgsl/ir/StorageClass;
+	public static final field Handle Lio/ygdrasil/wgsl/ir/StorageClass;
 	public static final field Private Lio/ygdrasil/wgsl/ir/StorageClass;
 	public static final field PushConstant Lio/ygdrasil/wgsl/ir/StorageClass;
 	public static final field Storage Lio/ygdrasil/wgsl/ir/StorageClass;
@@ -2674,5 +3042,125 @@ public final class io/ygdrasil/wgsl/proc/ValidationError {
 public final class io/ygdrasil/wgsl/proc/Validator {
 	public fun <init> ()V
 	public final fun validate (Lio/ygdrasil/wgsl/ir/Module;)Ljava/util/List;
+}
+
+public final class io/ygdrasil/wgsl/valid/Capabilities {
+	public static final field Companion Lio/ygdrasil/wgsl/valid/Capabilities$Companion;
+	public fun <init> ()V
+	public fun <init> (ZZZ)V
+	public synthetic fun <init> (ZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun copy (ZZZ)Lio/ygdrasil/wgsl/valid/Capabilities;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/valid/Capabilities;ZZZILjava/lang/Object;)Lio/ygdrasil/wgsl/valid/Capabilities;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFloat64 ()Z
+	public final fun getRayQuery ()Z
+	public final fun getShaderInt64 ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class io/ygdrasil/wgsl/valid/Capabilities$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lio/ygdrasil/wgsl/valid/Capabilities$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lio/ygdrasil/wgsl/valid/Capabilities;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lio/ygdrasil/wgsl/valid/Capabilities;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class io/ygdrasil/wgsl/valid/Capabilities$Companion {
+	public final fun getALL ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public final fun getNONE ()Lio/ygdrasil/wgsl/valid/Capabilities;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class io/ygdrasil/wgsl/valid/ModuleInfo {
+	public static final field Companion Lio/ygdrasil/wgsl/valid/ModuleInfo$Companion;
+	public fun <init> ()V
+}
+
+public final class io/ygdrasil/wgsl/valid/ModuleInfo$Companion {
+	public final fun empty ()Lio/ygdrasil/wgsl/valid/ModuleInfo;
+}
+
+public final class io/ygdrasil/wgsl/valid/ShaderStages {
+	public static final field Companion Lio/ygdrasil/wgsl/valid/ShaderStages$Companion;
+	public fun <init> ()V
+	public fun <init> (ZZZ)V
+	public synthetic fun <init> (ZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun copy (ZZZ)Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/valid/ShaderStages;ZZZILjava/lang/Object;)Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCompute ()Z
+	public final fun getFragment ()Z
+	public final fun getVertex ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class io/ygdrasil/wgsl/valid/ShaderStages$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lio/ygdrasil/wgsl/valid/ShaderStages$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lio/ygdrasil/wgsl/valid/ShaderStages;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class io/ygdrasil/wgsl/valid/ShaderStages$Companion {
+	public final fun getALL ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public final fun getNONE ()Lio/ygdrasil/wgsl/valid/ShaderStages;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class io/ygdrasil/wgsl/valid/ValidationFlags {
+	public static final field Companion Lio/ygdrasil/wgsl/valid/ValidationFlags$Companion;
+	public fun <init> ()V
+	public fun <init> (ZZZZZZ)V
+	public synthetic fun <init> (ZZZZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()Z
+	public final fun copy (ZZZZZZ)Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public static synthetic fun copy$default (Lio/ygdrasil/wgsl/valid/ValidationFlags;ZZZZZZILjava/lang/Object;)Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBindings ()Z
+	public final fun getBlocks ()Z
+	public final fun getConstants ()Z
+	public final fun getControlFlowUniformity ()Z
+	public final fun getExpressions ()Z
+	public final fun getStructLayouts ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class io/ygdrasil/wgsl/valid/ValidationFlags$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lio/ygdrasil/wgsl/valid/ValidationFlags$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lio/ygdrasil/wgsl/valid/ValidationFlags;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class io/ygdrasil/wgsl/valid/ValidationFlags$Companion {
+	public final fun getALL ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public final fun getNONE ()Lio/ygdrasil/wgsl/valid/ValidationFlags;
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
