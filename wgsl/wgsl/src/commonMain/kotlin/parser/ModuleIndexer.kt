@@ -60,7 +60,7 @@ class ModuleIndexer {
      */
     fun reorderDeclarations(unit: TranslationUnit): TranslationUnit {
         val dependencyGraph = buildDependencyGraph(unit)
-        val sortedNames = topologicalSort(dependencyGraph).reversed()
+        val sortedNames = topologicalSort(dependencyGraph)
 
         // Map names back to declarations
         val nameToDecl = mutableMapOf<String, GlobalDecl>()
@@ -448,7 +448,6 @@ class ModuleIndexer {
      * @throws CycleDetectedException if a cycle is detected
      */
     fun topologicalSort(graph: Map<String, Set<String>>): List<String> {
-        // Calculate in-degrees
         val inDegree = mutableMapOf<String, Int>()
         val allNodes = graph.keys.toSet()
 
@@ -456,9 +455,12 @@ class ModuleIndexer {
             inDegree[node] = 0
         }
 
+        val adjacencyList = mutableMapOf<String, MutableSet<String>>()
         for (node in allNodes) {
             for (dep in graph[node] ?: emptySet()) {
-                inDegree[dep] = inDegree.getOrElse(dep, { 0 }) + 1
+                // node depends on dep, so dep -> node
+                inDegree[node] = inDegree.getOrElse(node, { 0 }) + 1
+                adjacencyList.getOrPut(dep) { mutableSetOf() }.add(node)
             }
         }
 
@@ -477,12 +479,10 @@ class ModuleIndexer {
             sortedNames.add(node)
 
             // Reduce in-degree of dependents
-            for (dependent in allNodes) {
-                if (graph[dependent]?.contains(node) == true) {
-                    inDegree[dependent] = inDegree[dependent]!! - 1
-                    if (inDegree[dependent] == 0) {
-                        queue.add(dependent)
-                    }
+            for (dependent in adjacencyList[node] ?: emptySet()) {
+                inDegree[dependent] = inDegree[dependent]!! - 1
+                if (inDegree[dependent] == 0) {
+                    queue.add(dependent)
                 }
             }
         }

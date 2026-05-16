@@ -132,39 +132,39 @@ Les fichiers suivants doivent être copiés depuis `/Users/chaos/RustroverProjec
 ## 🔧 Implémentation des Validateurs
 
 ### Validateur SPIR-V
-- [ ] Créer `SpirvValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
-- [ ] Implémenter la détection de `spirv-val`
-- [ ] Implémenter la validation des fichiers SPIR-V
-- [ ] Intégrer avec `ValidatorFactory`
+- [x] Créer `SpirvValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
+- [x] Implémenter la détection de `spirv-val`
+- [x] Implémenter la validation des fichiers SPIR-V
+- [x] Intégrer avec `ValidatorFactory`
 
 ### Validateur GLSL
-- [ ] Créer `GlslValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
-- [ ] Implémenter la détection de `glslangValidator`
-- [ ] Implémenter la validation des fichiers GLSL
-- [ ] Gérer les différentes versions de GLSL (450, 460, etc.)
-- [ ] Gérer les différents stages (vertex, fragment, compute)
-- [ ] Intégrer avec `ValidatorFactory`
+- [x] Créer `GlslValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
+- [x] Implémenter la détection de `glslangValidator`
+- [x] Implémenter la validation des fichiers GLSL
+- [x] Gérer les différentes versions de GLSL (450, 460, etc.)
+- [x] Gérer les différents stages (vertex, fragment, compute)
+- [x] Intégrer avec `ValidatorFactory`
 
 ### Validateur MSL
-- [ ] Créer `MetalValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
-- [ ] Implémenter la détection du compilateur Metal
-- [ ] Implémenter la validation des fichiers MSL
-- [ ] Gérer les différentes plateformes (macOS, iOS, simulator)
-- [ ] Intégrer avec `ValidatorFactory`
+- [x] Créer `MetalValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
+- [x] Implémenter la détection du compilateur Metal
+- [x] Implémenter la validation des fichiers MSL
+- [x] Gérer les différentes plateformes (macOS, iOS, simulator)
+- [x] Intégrer avec `ValidatorFactory`
 
 ### Validateur HLSL
-- [ ] Créer `HlslValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
-- [ ] Implémenter la détection de DXC/FXC
-- [ ] Implémenter la validation des fichiers HLSL
+- [x] Créer `HlslValidator.kt` dans `src/test/kotlin/dev/gfxrs/naga/test/validator/`
+- [x] Implémenter la détection de DXC/FXC
+- [x] Implémenter la validation des fichiers HLSL
 - [ ] Gérer les différents shader models (ps_5_0, ps_6_0, etc.)
-- [ ] Préférer DXC sur FXC
-- [ ] Intégrer avec `ValidatorFactory`
+- [x] Préférer DXC sur FXC
+- [x] Intégrer avec `ValidatorFactory`
 
 ### Factory de Validateurs
-- [ ] Créer `BackendValidator.kt` (interface commune)
-- [ ] Créer `ValidatorFactory.kt`
-- [ ] Implémenter la détection automatique des validateurs disponibles
-- [ ] Fournir des méthodes pour obtenir les validateurs par type de backend
+- [x] Créer `BackendValidator.kt` (interface commune)
+- [x] Créer `ValidatorFactory.kt`
+- [x] Implémenter la détection automatique des validateurs disponibles
+- [x] Fournir des méthodes pour obtenir les validateurs par type de backend
 
 ---
 

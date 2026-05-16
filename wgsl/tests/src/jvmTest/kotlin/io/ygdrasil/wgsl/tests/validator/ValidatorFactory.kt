@@ -13,6 +13,14 @@ object ValidatorFactory {
             validators[BackendType.GLSL] = GlslValidator()
         }
 
+        if (SpirvValidator.isAvailable()) {
+            validators[BackendType.SPIRV] = SpirvValidator()
+        }
+
+        if (HlslValidator.isAvailable()) {
+            validators[BackendType.HLSL] = HlslValidator()
+        }
+
         // Metal is disabled because it requires Metal Toolchain which might not be installed
         /*
         if (MetalValidator.isAvailable()) {

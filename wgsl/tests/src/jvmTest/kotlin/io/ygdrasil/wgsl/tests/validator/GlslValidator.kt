@@ -41,6 +41,18 @@ class GlslValidator : BackendValidator {
                     else -> add("-V") // Default to Vulkan 450
                 }
 
+                // Stage
+                val stageArg = when (stage) {
+                    ShaderStage.VERTEX -> "vert"
+                    ShaderStage.FRAGMENT -> "frag"
+                    ShaderStage.COMPUTE -> "comp"
+                    null -> null
+                }
+                if (stageArg != null) {
+                    add("-S")
+                    add(stageArg)
+                }
+
                 add(tempFile.absolutePath)
             }
 
