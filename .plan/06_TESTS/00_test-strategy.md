@@ -1182,6 +1182,11 @@ object TestUtils {
    - Utiliser `@Disabled` pour les tests temporairement désactivés
    - Utiliser `@Tag` pour catégoriser les tests
 
+6. **Décomposition des Tests**
+   - Décomposer les fichiers de test trop volumineux ou complexes en plusieurs fichiers thématiques (ex: `LexerKeywordTest`, `LexerLiteralTest`).
+   - Faciliter la revue de code et la maintenance.
+   - Un fichier de test idéal ne devrait pas dépasser 300-500 lignes.
+
 ### Exemple de Test Bien Structuré
 
 ```kotlin

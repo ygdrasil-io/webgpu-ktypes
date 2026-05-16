@@ -260,6 +260,7 @@
 3. **Minimalisme** : Éviter les dépendances externes sauf kotlinx.serialization et coroutines
 4. **Performance** : Optimiser uniquement après avoir une version fonctionnelle
 5. **Documentation** : Documenter chaque module avec des exemples d'utilisation
+6. **Lisibilité des Tests** : Décomposer les tests complexes en fichiers thématiques pour faciliter la review
 
 ---
 
