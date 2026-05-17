@@ -12,6 +12,8 @@ class IrWriter(private val options: IrOptions = IrOptions()) : BackendWriter<IrO
 
     private val json = Json {
         prettyPrint = true
+        allowStructuredMapKeys = true
+        classDiscriminator = "__type"
     }
 
     override fun write(module: Module, moduleInfo: ModuleInfo): String {

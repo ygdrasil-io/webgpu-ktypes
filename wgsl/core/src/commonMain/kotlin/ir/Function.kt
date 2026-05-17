@@ -133,36 +133,43 @@ sealed class Statement {
     /**
      * Empty statement (no-op).
      */
+    @Serializable
     object Nop : Statement()
 
     /**
      * Block of statements.
      */
+    @Serializable
     data class Block(val block: Handle<io.ygdrasil.wgsl.ir.Block>) : Statement()
 
     /**
      * Variable declaration statement.
      */
+    @Serializable
     data class Declare(val variable: Handle<LocalVariable>) : Statement()
 
     /**
      * Initialize a variable with an expression.
      */
+    @Serializable
     data class Init(val variable: Handle<LocalVariable>) : Statement()
 
     /**
      * Assign a value to a pointer.
      */
+    @Serializable
     data class Assign(val pointer: Handle<Expression>, val value: Handle<Expression>) : Statement()
 
     /**
      * Emit a range of expressions.
      */
+    @Serializable
     data class Emit(val range: Range<Expression>) : Statement()
 
     /**
      * If statement.
      */
+    @Serializable
     data class If(
         val condition: Handle<Expression>,
         val accept: Handle<io.ygdrasil.wgsl.ir.Block>,
@@ -172,6 +179,7 @@ sealed class Statement {
     /**
      * Switch statement.
      */
+    @Serializable
     data class Switch(
         val selector: Handle<Expression>,
         val body: Handle<io.ygdrasil.wgsl.ir.Block>,
@@ -182,6 +190,7 @@ sealed class Statement {
     /**
      * Loop statement.
      */
+    @Serializable
     data class Loop(
         val body: Handle<io.ygdrasil.wgsl.ir.Block>,
         val continuing: Handle<io.ygdrasil.wgsl.ir.Block>? = null
@@ -190,26 +199,31 @@ sealed class Statement {
     /**
      * Break statement.
      */
+    @Serializable
     object Break : Statement()
 
     /**
      * Continue statement.
      */
+    @Serializable
     object Continue : Statement()
 
     /**
      * Return statement.
      */
+    @Serializable
     data class Return(val value: Handle<Expression>? = null) : Statement()
 
     /**
      * Discard statement.
      */
+    @Serializable
     object Discard : Statement()
 
     /**
      * Kill statement.
      */
+    @Serializable
     object Kill : Statement()
 }
 
@@ -234,7 +248,9 @@ data class Case(
  */
 @Serializable
 sealed class CaseSelector : Equatable {
+    @Serializable
     class Value(val value: ScalarValue) : CaseSelector()
+    @Serializable
     class Default : CaseSelector()
 
     override fun isEquivalentTo(other: Any): Boolean {
