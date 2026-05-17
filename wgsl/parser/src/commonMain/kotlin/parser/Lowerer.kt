@@ -35,6 +35,7 @@ class Lowerer {
 
     private val module = IrModule()
     private val typeMap = mutableMapOf<TypeDecl, Handle<IrType>>()
+    private val structNameMap = mutableMapOf<String, Handle<IrType>>()
     private val globalVarMap = mutableMapOf<String, Handle<IrGlobalVariable>>()
     private val functionMap = mutableMapOf<String, Handle<IrFunction>>()
 
@@ -90,13 +91,30 @@ class Lowerer {
     }
 
     private fun lowerType(typeDecl: TypeDecl): Handle<IrType> {
+        // Check if we have a struct by name
+        if (typeDecl is StructType) {
+            val handle = structNameMap[typeDecl.name]
+            if (handle != null) {
+                return handle
+            }
+        }
+        
         return typeMap.getOrPut(typeDecl) {
             val inner = when (typeDecl) {
-                is ScalarType -> IrTypeInner.Scalar(lowerScalarKind(typeDecl.kind), 4)
+                is ScalarType -> {
+                    val width = when (typeDecl.kind) {
+                        ScalarKind.BOOL -> 1
+                        else -> 4
+                    }
+                    IrTypeInner.Scalar(lowerScalarKind(typeDecl.kind), width)
+                }
                 is VectorType -> IrTypeInner.Vector(lowerVectorSize(typeDecl.size), lowerType(typeDecl.elementType))
                 is MatrixType -> IrTypeInner.Matrix(lowerVectorSize(typeDecl.columns), lowerVectorSize(typeDecl.rows), lowerType(typeDecl.elementType))
                 is ArrayType -> IrTypeInner.Array(lowerType(typeDecl.elementType), IrArraySize.Dynamic(Handle<IrExpression>(0)))
-                is StructType -> IrTypeInner.Struct(emptyList()) 
+                is StructType -> {
+                    // Fallback: create empty struct (shouldn't happen if all structs are processed first)
+                    IrTypeInner.Struct(emptyList())
+                }
                 is PointerType -> IrTypeInner.Pointer(
                     lowerType(typeDecl.elementType),
                     lowerAddressSpace(typeDecl.storageClass),
@@ -183,6 +201,7 @@ class Lowerer {
         val type = IrType(IrTypeInner.Struct(members))
         val handle = module.types.append(type)
         typeMap[StructType(decl.name, decl.span)] = handle
+        structNameMap[decl.name] = handle
     }
 
     private fun lowerTypeAlias(decl: TypeAliasDecl) {
