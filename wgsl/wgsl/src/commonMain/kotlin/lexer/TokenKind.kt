@@ -61,6 +61,11 @@ enum class TokenKind {
     PRIVATE,
     FUNCTION,
 
+    // Keywords - Access modes
+    READ,
+    WRITE,
+    READ_WRITE,
+
     // Keywords - Attribute-related
     AT,
     LOCATION,
@@ -74,6 +79,13 @@ enum class TokenKind {
     COMPUTE,
     FRAGMENT,
     VERTEX,
+
+    // Keywords - Layout annotations
+    PACKED,
+    ALIGNED,
+
+    // Keywords - Template constraints
+    WHERE,
 
     // Keywords - Built-in scalar types
     BOOL,
@@ -92,6 +104,7 @@ enum class TokenKind {
     // Keywords - Built-in texture and sampler types
     SAMPLER,
     TEXTURE_1D,
+    TEXTURE_1D_ARRAY,
     TEXTURE_2D,
     TEXTURE_2D_ARRAY,
     TEXTURE_3D,
@@ -226,15 +239,21 @@ val TokenKind.isKeyword: Boolean
         TokenKind.ARRAY, TokenKind.MAT, TokenKind.VEC, TokenKind.PTR -> true
         // Storage classes
         TokenKind.UNIFORM, TokenKind.STORAGE, TokenKind.WORKGROUP, TokenKind.PRIVATE, TokenKind.FUNCTION -> true
+        // Access modes
+        TokenKind.READ, TokenKind.WRITE, TokenKind.READ_WRITE -> true
         // Attributes
         TokenKind.AT, TokenKind.LOCATION, TokenKind.BUILTIN, TokenKind.ENABLE, TokenKind.REQUIRES,
         TokenKind.INTERPOLATE, TokenKind.INVARIANT, TokenKind.MUST_USE, TokenKind.OVERRIDE,
         TokenKind.COMPUTE, TokenKind.FRAGMENT, TokenKind.VERTEX -> true
+        // Layout annotations
+        TokenKind.PACKED, TokenKind.ALIGNED -> true
+        // Template constraints
+        TokenKind.WHERE -> true
         // Built-in types
         TokenKind.BOOL, TokenKind.I8, TokenKind.U8, TokenKind.I16, TokenKind.U16, TokenKind.I32,
         TokenKind.U32, TokenKind.I64, TokenKind.U64, TokenKind.F16, TokenKind.F32, TokenKind.F64 -> true
 
-        TokenKind.TEXTURE_1D, TokenKind.TEXTURE_2D, TokenKind.TEXTURE_2D_ARRAY, TokenKind.TEXTURE_3D,
+        TokenKind.TEXTURE_1D, TokenKind.TEXTURE_1D_ARRAY, TokenKind.TEXTURE_2D, TokenKind.TEXTURE_2D_ARRAY, TokenKind.TEXTURE_3D,
         TokenKind.TEXTURE_CUBE, TokenKind.TEXTURE_CUBE_ARRAY, TokenKind.TEXTURE_MULTISAMPLED_2D,
         TokenKind.TEXTURE_DEPTH_2D, TokenKind.TEXTURE_DEPTH_2D_ARRAY, TokenKind.TEXTURE_DEPTH_CUBE,
         TokenKind.TEXTURE_DEPTH_CUBE_ARRAY, TokenKind.TEXTURE_DEPTH_MULTISAMPLED_2D,

@@ -55,7 +55,7 @@ class LexerExpressionTest : FunSpec({
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
                 TokenKind.IF, TokenKind.LEFT_PAREN, TokenKind.IDENTIFIER,
-                TokenKind.GT, TokenKind.INT_LITERAL, TokenKind.RIGHT_PAREN,
+                TokenKind.RIGHT_ANGLE, TokenKind.INT_LITERAL, TokenKind.RIGHT_PAREN,
                 TokenKind.LEFT_BRACE, TokenKind.RETURN, TokenKind.SEMICOLON,
                 TokenKind.RIGHT_BRACE
             )

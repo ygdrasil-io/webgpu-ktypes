@@ -751,6 +751,11 @@ class Lexer(
         "private" -> TokenKind.PRIVATE
         "function" -> TokenKind.FUNCTION
 
+        // Access modes
+        "read" -> TokenKind.READ
+        "write" -> TokenKind.WRITE
+        "read_write" -> TokenKind.READ_WRITE
+
         // Attributes
         "location" -> TokenKind.LOCATION
         "builtin" -> TokenKind.BUILTIN
@@ -763,6 +768,13 @@ class Lexer(
         "compute" -> TokenKind.COMPUTE
         "fragment" -> TokenKind.FRAGMENT
         "vertex" -> TokenKind.VERTEX
+
+        // Layout annotations
+        "packed" -> TokenKind.PACKED
+        "aligned" -> TokenKind.ALIGNED
+
+        // Template constraints
+        "where" -> TokenKind.WHERE
 
         // Built-in types
         "bool" -> TokenKind.BOOL
@@ -779,6 +791,7 @@ class Lexer(
         "f64" -> TokenKind.F64
         "sampler" -> TokenKind.SAMPLER
         "texture_1d" -> TokenKind.TEXTURE_1D
+        "texture_1d_array" -> TokenKind.TEXTURE_1D_ARRAY
         "texture_2d" -> TokenKind.TEXTURE_2D
         "texture_2d_array" -> TokenKind.TEXTURE_2D_ARRAY
         "texture_3d" -> TokenKind.TEXTURE_3D

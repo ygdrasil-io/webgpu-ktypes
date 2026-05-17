@@ -60,13 +60,13 @@ class LexerOperatorTest : FunSpec({
         test("less than operator") {
             val tokens = tokenizeSignificant("<")
             tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.LT
+            tokens[0].kind shouldBe TokenKind.LEFT_ANGLE
         }
 
         test("greater than operator") {
             val tokens = tokenizeSignificant(">")
             tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.GT
+            tokens[0].kind shouldBe TokenKind.RIGHT_ANGLE
         }
 
         test("logical and operator") {
