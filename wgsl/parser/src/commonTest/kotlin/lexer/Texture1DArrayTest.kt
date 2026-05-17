@@ -8,7 +8,7 @@ import io.kotest.matchers.shouldBe
  * Tests for WGSL texture_1d_array type keyword.
  * Part of the WGSL texture types family.
  */
-class WgslTexture1DArrayTest : FunSpec({
+class Texture1DArrayTest : FunSpec({
     context("Texture 1D Array Type") {
         test("texture_1d_array keyword is recognized") {
             val source = "texture_1d_array"

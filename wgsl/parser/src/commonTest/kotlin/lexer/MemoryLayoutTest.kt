@@ -8,7 +8,7 @@ import io.kotest.matchers.shouldBe
  * Tests for WGSL memory layout keywords (packed, aligned).
  * These are used in struct member annotations to control memory layout.
  */
-class WgslMemoryLayoutTest : FunSpec({
+class MemoryLayoutTest : FunSpec({
     context("Memory Layout Keywords") {
         test("packed keyword is recognized") {
             val source = "packed"

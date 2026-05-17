@@ -9,7 +9,7 @@ import io.kotest.matchers.shouldBe
  * Tests for WGSL pointer access mode keywords (read, write, read_write).
  * These are used in pointer type declarations like: ptr<storage, i32, read>
  */
-class WgslPointerAccessModeTest : FunSpec({
+class PointerAccessModeTest : FunSpec({
     context("Pointer Access Mode Keywords") {
         test("read keyword is recognized as access mode") {
             val source = "read"

@@ -9,7 +9,7 @@ import io.ygdrasil.wgsl.lexer.Lexer
  * Ensures that attributes like @invariant and @must_use are properly recognized
  * and handled during parsing of WGSL shader code.
  */
-class WgslAttributeValidationTest : FunSpec({
+class AttributeValidationTest : FunSpec({
     context("Attribute Recognition") {
         test("INVARIANT attribute on function is parsed correctly") {
             val source = """

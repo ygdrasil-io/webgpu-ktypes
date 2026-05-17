@@ -8,7 +8,7 @@ import io.kotest.matchers.shouldBe
  * Tests for WGSL template constraint keyword (where).
  * Used in generic type declarations to specify constraints.
  */
-class WgslTemplateConstraintTest : FunSpec({
+class TemplateConstraintTest : FunSpec({
     context("Template Constraint Keywords") {
         test("where keyword is recognized") {
             val source = "where"
