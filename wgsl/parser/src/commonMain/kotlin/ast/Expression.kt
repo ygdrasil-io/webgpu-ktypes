@@ -206,3 +206,14 @@ data class SwizzleExpr(
     val components: List<String>,
     override val span: Span,
 ) : Expression()
+
+/**
+ * A bitcast expression (e.g., `bitcast<f32>(x)`).
+ */
+data class BitcastExpr(
+    /** The expression being cast. */
+    val expr: Expression,
+    /** The target type. */
+    val type: TypeDecl,
+    override val span: Span,
+) : Expression()

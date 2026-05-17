@@ -120,6 +120,7 @@ enum class StorageClass {
     UNIFORM,
     STORAGE,
     HANDLE,
+    PUSH_CONSTANT,
 }
 
 /**
@@ -180,6 +181,13 @@ data class TextureType(
  */
 data class ConstantType(
     val expression: Expression,
+    override val span: Span,
+) : TypeDecl()
+
+/**
+ * A ray_query type.
+ */
+data class RayQueryType(
     override val span: Span,
 ) : TypeDecl()
 
