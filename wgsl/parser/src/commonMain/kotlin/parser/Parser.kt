@@ -21,6 +21,7 @@ import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
 import io.ygdrasil.wgsl.ast.DiagnosticDirective
 import io.ygdrasil.wgsl.ast.DiscardStatement
+import io.ygdrasil.wgsl.ast.EmptyStatement
 import io.ygdrasil.wgsl.ast.EnableDirective
 import io.ygdrasil.wgsl.ast.EntryPointAttribute
 import io.ygdrasil.wgsl.ast.Expression
@@ -160,7 +161,8 @@ class Parser(
      */
     private fun error(message: String) {
         val span = currentToken.span
-        errors.add(ParseError(message, span))
+        val error = ParseError(message, span)
+        errors.add(error)
         hasError = true
     }
 
@@ -331,16 +333,14 @@ class Parser(
         expectOrError(TokenKind.LEFT_BRACE, "Expected '{'")
         val members = mutableListOf<StructMember>()
         while (currentKind() != TokenKind.RIGHT_BRACE && !isAtEnd()) {
+            if (expect(TokenKind.SEMICOLON)) continue
             members.add(parseStructMember())
-            if (currentKind() == TokenKind.COMMA) {
-                advance()
-            }
         }
         expectOrError(TokenKind.RIGHT_BRACE, "Expected '}'")
 
         val end = previousToken?.span?.end ?: currentToken.span.end
         return StructDecl(
-            attributes = emptyList(), // TODO: parse attributes
+            attributes = attributes,
             name = name,
             templateParams = templateParams,
             members = members,
@@ -709,6 +709,8 @@ class Parser(
             params.add(parseTemplateParam())
             if (currentKind() == TokenKind.COMMA) {
                 advance()
+            } else if (currentKind() != TokenKind.RIGHT_ANGLE) {
+                // If not followed by comma or end of list, it's an error, but let's be lenient for now
             }
         }
 
@@ -1077,6 +1079,7 @@ class Parser(
 
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
         val elementType = parseTypeDecl()
+        if (currentKind() == TokenKind.COMMA) advance()
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
 
         val end = previousToken?.span?.end ?: currentToken.span.end
@@ -1104,6 +1107,7 @@ class Parser(
 
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
         val elementType = parseTypeDecl()
+        if (currentKind() == TokenKind.COMMA) advance()
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
 
         val end = previousToken?.span?.end ?: currentToken.span.end
@@ -1139,6 +1143,7 @@ class Parser(
                     stride = strideToken.literal?.toIntOrNull()
                 }
             }
+            if (currentKind() == TokenKind.COMMA) advance()
         }
 
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
@@ -1194,6 +1199,9 @@ class Parser(
     private fun parseAtomicType(start: Span): AtomicType {
         expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
         val elementType = parseTypeDecl()
+        if (currentKind() == TokenKind.COMMA) {
+            advance()
+        }
         expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
         val end = previousToken?.span?.end ?: currentToken.span.end
         return AtomicType(elementType, Span(start.start, end))
@@ -1894,6 +1902,10 @@ class Parser(
     private fun parseStatement(): Statement {
         val start = currentToken.span
 
+        if (expect(TokenKind.SEMICOLON)) {
+            return EmptyStatement(Span(start.start, previousToken?.span?.end ?: start.end))
+        }
+
         return when (currentKind()) {
             TokenKind.LEFT_BRACE -> parseBlockStatement()
             TokenKind.IF -> parseIfStatement()
@@ -1901,6 +1913,10 @@ class Parser(
             TokenKind.LOOP -> parseLoopStatement()
             TokenKind.WHILE -> parseWhileStatement()
             TokenKind.FOR -> parseForStatement()
+            TokenKind.DIAGNOSTIC -> {
+                val directive = parseDiagnosticDirective()
+                ExpressionStatement(IdentExpr("diagnostic", directive.span), directive.span) // TODO: Better AST representation for local diagnostics
+            }
             TokenKind.BREAK -> {
                 advance()
                 if (currentKind() == TokenKind.IF) {

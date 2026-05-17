@@ -2,6 +2,7 @@ package io.ygdrasil.wgsl.parser
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.shouldBe
 import io.ygdrasil.wgsl.lexer.Lexer
 
 /**
@@ -113,6 +114,22 @@ class AttributeValidationTest : FunSpec({
             val parser = Parser(lexer)
             val unit = parser.parse()
             unit.declarations.shouldNotBeEmpty()
+        }
+    }
+
+    context("Global attributes") {
+        test("attributes on global variables") {
+            val source = "@group(0) @binding(0) var<uniform> a: i32;"
+            val parser = Parser(Lexer(source))
+            parser.parse()
+            parser.errors shouldBe emptyList()
+        }
+
+        test("attributes on override") {
+            val source = "@id(1) override a: i32 = 1;"
+            val parser = Parser(Lexer(source))
+            parser.parse()
+            parser.errors shouldBe emptyList()
         }
     }
 })

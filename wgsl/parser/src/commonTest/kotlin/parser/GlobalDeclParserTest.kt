@@ -52,4 +52,46 @@ class GlobalDeclParserTest : FunSpec({
         override.type shouldBe null
         override.initializer.shouldBeInstanceOf<IntLiteral>()
     }
+
+    test("trailing comma in function parameters") {
+        val source = "fn f(a: i32,) {}"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("trailing comma in template parameters") {
+        val source = "struct S<T,> { a: T; }"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("optional semicolon after function") {
+        val source = "fn f() {};"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("trailing semicolon in struct body") {
+        val source = "struct S { a: i32; ; };"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("attributes on struct") {
+        val source = "@must_use struct S { a: i32; }"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("no comma between struct members") {
+        val source = "struct S { a: i32; b: f32; }"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
 })

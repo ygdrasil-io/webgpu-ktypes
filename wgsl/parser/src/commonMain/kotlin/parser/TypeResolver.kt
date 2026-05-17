@@ -19,6 +19,7 @@ import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
 import io.ygdrasil.wgsl.ast.DiagnosticDirective
 import io.ygdrasil.wgsl.ast.DiscardStatement
+import io.ygdrasil.wgsl.ast.EmptyStatement
 import io.ygdrasil.wgsl.ast.EnableDirective
 import io.ygdrasil.wgsl.ast.Expression
 import io.ygdrasil.wgsl.ast.ExpressionStatement
@@ -737,6 +738,8 @@ class TypeResolver(
                 val resolvedExpr = resolveExpression(stmt.expression, unresolved)
                 ConstAssertStatement(resolvedExpr, stmt.span)
             }
+
+            is EmptyStatement -> stmt
         }
     }
 
@@ -1037,6 +1040,7 @@ class TypeResolver(
             is PhonyAssignmentStatement -> validateExpression(stmt.expression, errors)
             is ExpressionStatement -> validateExpression(stmt.expr, errors)
             is ConstAssertStatement -> validateExpression(stmt.expression, errors)
+            is EmptyStatement -> {}
         }
     }
 

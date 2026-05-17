@@ -13,6 +13,13 @@ sealed class Statement {
 }
 
 /**
+ * An empty statement (just a semicolon).
+ */
+data class EmptyStatement(
+    override val span: Span,
+) : Statement()
+
+/**
  * A block statement (compound statement).
  */
 data class BlockStatement(

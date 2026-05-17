@@ -119,4 +119,18 @@ class TypeParserTest : FunSpec({
         constantExpr.shouldBeInstanceOf<IntLiteral>()
         constantExpr.value shouldBe 5
     }
+
+    test("parse types with trailing commas") {
+        val sources = listOf(
+            "vec3<f32,>",
+            "atomic<i32,>",
+            "array<f32, 4,>",
+            "binding_array<sampler, 5,>"
+        )
+        for (source in sources) {
+            val parser = Parser(Lexer(source))
+            val type = parser.parseTypeDecl()
+            parser.errors shouldBe emptyList()
+        }
+    }
 })

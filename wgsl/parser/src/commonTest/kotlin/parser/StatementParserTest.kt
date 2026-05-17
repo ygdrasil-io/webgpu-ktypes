@@ -57,4 +57,39 @@ class StatementParserTest : FunSpec({
         unit.declarations shouldHaveSize 1
         unit.declarations[0].shouldBeInstanceOf<ConstAssertDecl>()
     }
+
+    test("trailing comma in function arguments") {
+        val source = "fn f() { g(1,); }"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("empty statement") {
+        val source = "fn f() { ; }"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("multiple empty statements") {
+        val source = "fn f() { ;; }"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("diagnostic in function") {
+        val source = "fn f() { diagnostic(off, derivative_uniformity); }"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
+
+    test("diagnostic in block") {
+        val source = "fn f() { { diagnostic(error, derivative_uniformity); } }"
+        val parser = Parser(Lexer(source))
+        parser.parse()
+        parser.errors shouldBe emptyList()
+    }
 })
