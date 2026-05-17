@@ -201,3 +201,12 @@ data class ExpressionStatement(
     val expr: Expression,
     override val span: Span,
 ) : Statement()
+
+/**
+ * A const assertion statement.
+ */
+data class ConstAssertStatement(
+    /** The expression to assert. */
+    val expression: Expression,
+    override val span: Span,
+) : Statement()

@@ -313,6 +313,12 @@ class Lowerer {
                 IrStatement.If(cond, accept, reject)
             }
             is BlockStatement -> IrStatement.Block(lowerBlock(astStmt))
+            is ConstAssertStatement -> {
+                // Const assertions are evaluated at compile time and produce no runtime code.
+                // We still lower the expression to ensure it's valid, but we don't emit any statement.
+                lowerExpression(astStmt.expression)
+                IrStatement.Nop
+            }
             is VariableDeclStatement -> {
                 val type = astStmt.type?.let { lowerType(it) } ?: lowerInferredType(astStmt.initializer)
                 val localVar = IrLocalVariable(

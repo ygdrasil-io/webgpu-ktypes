@@ -12,6 +12,7 @@ import io.ygdrasil.wgsl.ast.BuiltinValue
 import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
 import io.ygdrasil.wgsl.ast.ConstAssertDecl
+import io.ygdrasil.wgsl.ast.ConstAssertStatement
 import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
 import io.ygdrasil.wgsl.ast.DiscardStatement
@@ -583,6 +584,28 @@ class Parser(
 
         val end = previousToken?.span?.end ?: currentToken.span.end
         return ConstAssertDecl(
+            expression = expression,
+            span = Span(start.start, end)
+        )
+    }
+
+    /**
+     * Parses a const assert statement (for use inside function bodies).
+     */
+    private fun parseConstAssertStatement(): ConstAssertStatement {
+        val start = currentToken.span
+
+        // Consume 'const_assert'
+        expectOrError(TokenKind.CONST_ASSERT, "Expected 'const_assert'")
+        expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
+
+        val expression = parseExpression()
+
+        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+
+        val end = previousToken?.span?.end ?: currentToken.span.end
+        return ConstAssertStatement(
             expression = expression,
             span = Span(start.start, end)
         )
@@ -1669,6 +1692,7 @@ class Parser(
             }
 
             TokenKind.LET, TokenKind.CONST, TokenKind.VAR -> parseVariableDeclStatement()
+            TokenKind.CONST_ASSERT -> parseConstAssertStatement()
             else -> {
                 // Expression or assignment or increment/decrement
                 val expr = parseExpression()

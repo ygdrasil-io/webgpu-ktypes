@@ -10,6 +10,7 @@ import io.ygdrasil.wgsl.ast.BreakStatement
 import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
 import io.ygdrasil.wgsl.ast.ConstAssertDecl
+import io.ygdrasil.wgsl.ast.ConstAssertStatement
 import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
 import io.ygdrasil.wgsl.ast.DiscardStatement
@@ -688,6 +689,11 @@ class TypeResolver(
                 val resolvedExpr = resolveExpression(stmt.expr, unresolved)
                 stmt.copy(expr = resolvedExpr)
             }
+
+            is ConstAssertStatement -> {
+                val resolvedExpr = resolveExpression(stmt.expression, unresolved)
+                ConstAssertStatement(resolvedExpr, stmt.span)
+            }
         }
     }
 
@@ -973,6 +979,7 @@ class TypeResolver(
 
             is IncDecStatement -> validateExpression(stmt.expr, errors)
             is ExpressionStatement -> validateExpression(stmt.expr, errors)
+            is ConstAssertStatement -> validateExpression(stmt.expression, errors)
         }
     }
 
