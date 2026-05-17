@@ -5,8 +5,10 @@ import io.ygdrasil.wgsl.ast.AssignmentStatement
 import io.ygdrasil.wgsl.ast.AtomicType
 import io.ygdrasil.wgsl.ast.Attribute
 import io.ygdrasil.wgsl.ast.BinaryExpr
+import io.ygdrasil.wgsl.ast.BitcastExpr
 import io.ygdrasil.wgsl.ast.BlockStatement
 import io.ygdrasil.wgsl.ast.BoolLiteral
+import io.ygdrasil.wgsl.ast.BreakIfStatement
 import io.ygdrasil.wgsl.ast.BreakStatement
 import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
@@ -15,7 +17,9 @@ import io.ygdrasil.wgsl.ast.ConstAssertStatement
 import io.ygdrasil.wgsl.ast.ConstantType
 import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
+import io.ygdrasil.wgsl.ast.DiagnosticDirective
 import io.ygdrasil.wgsl.ast.DiscardStatement
+import io.ygdrasil.wgsl.ast.EnableDirective
 import io.ygdrasil.wgsl.ast.Expression
 import io.ygdrasil.wgsl.ast.ExpressionStatement
 import io.ygdrasil.wgsl.ast.FloatLiteral
@@ -33,8 +37,11 @@ import io.ygdrasil.wgsl.ast.MemberAccessExpr
 import io.ygdrasil.wgsl.ast.NamedType
 import io.ygdrasil.wgsl.ast.OverrideDecl
 import io.ygdrasil.wgsl.ast.Param
+import io.ygdrasil.wgsl.ast.PhonyAssignmentStatement
 import io.ygdrasil.wgsl.ast.PointerType
+import io.ygdrasil.wgsl.ast.RayQueryType
 import io.ygdrasil.wgsl.ast.ReferenceType
+import io.ygdrasil.wgsl.ast.RequiresDirective
 import io.ygdrasil.wgsl.ast.ReturnStatement
 import io.ygdrasil.wgsl.ast.SamplerType
 import io.ygdrasil.wgsl.ast.ScalarKind
@@ -202,6 +209,7 @@ class TypeResolver(
             is TypeAliasDecl -> resolveTypeAliasDecl(decl, unresolved)
             is OverrideDecl -> resolveOverrideDecl(decl, unresolved)
             is ConstAssertDecl -> resolveConstAssertDecl(decl, unresolved)
+            is EnableDirective, is RequiresDirective, is DiagnosticDirective -> decl
         }
     }
 
@@ -263,8 +271,9 @@ class TypeResolver(
         decl: OverrideDecl,
         unresolved: MutableList<UnresolvedReferenceError>
     ): OverrideDecl {
-        val resolvedFunction = resolveFunctionDecl(decl.function, unresolved)
-        return decl.copy(function = resolvedFunction)
+        val resolvedType = decl.type?.let { resolveTypeDecl(it, unresolved) }
+        val resolvedInitializer = decl.initializer?.let { resolveExpression(it, unresolved) }
+        return decl.copy(type = resolvedType, initializer = resolvedInitializer)
     }
 
     private fun resolveConstAssertDecl(
@@ -357,6 +366,7 @@ class TypeResolver(
             }
 
             is ConstantType -> type
+            is RayQueryType -> type
         }
     }
 
@@ -501,6 +511,12 @@ class TypeResolver(
             is SwizzleExpr -> {
                 val resolvedObject = resolveExpression(expr.objectExpr, unresolved)
                 expr.copy(objectExpr = resolvedObject)
+            }
+
+            is BitcastExpr -> {
+                val resolvedExpr = resolveExpression(expr.expr, unresolved)
+                val resolvedType = resolveTypeDecl(expr.type, unresolved)
+                expr.copy(expr = resolvedExpr, type = resolvedType)
             }
         }
     }
@@ -702,6 +718,16 @@ class TypeResolver(
                 stmt.copy(expr = resolvedExpr)
             }
 
+            is BreakIfStatement -> {
+                val resolvedCondition = resolveExpression(stmt.condition, unresolved)
+                stmt.copy(condition = resolvedCondition)
+            }
+
+            is PhonyAssignmentStatement -> {
+                val resolvedExpr = resolveExpression(stmt.expression, unresolved)
+                stmt.copy(expression = resolvedExpr)
+            }
+
             is ExpressionStatement -> {
                 val resolvedExpr = resolveExpression(stmt.expr, unresolved)
                 stmt.copy(expr = resolvedExpr)
@@ -721,9 +747,9 @@ class TypeResolver(
         val resolvedCases = body.cases.map { case ->
             when (case) {
                 is Case -> {
-                    val resolvedValue = resolveExpression(case.value, unresolved)
+                    val resolvedSelectors = case.selectors.map { resolveExpression(it, unresolved) }
                     val resolvedBody = resolveBlockStatement(case.body, unresolved)
-                    case.copy(value = resolvedValue, body = resolvedBody)
+                    case.copy(selectors = resolvedSelectors, body = resolvedBody)
                 }
 
                 is DefaultCase -> {
@@ -766,6 +792,7 @@ class TypeResolver(
             is TypeAliasDecl -> validateTypeAliasDecl(decl, errors)
             is OverrideDecl -> validateOverrideDecl(decl, errors)
             is ConstAssertDecl -> validateConstAssertDecl(decl, errors)
+            is EnableDirective, is RequiresDirective, is DiagnosticDirective -> {}
         }
     }
 
@@ -810,7 +837,8 @@ class TypeResolver(
         decl: OverrideDecl,
         errors: MutableList<UnresolvedReferenceError>
     ) {
-        validateFunctionDecl(decl.function, errors)
+        decl.type?.let { validateTypeDecl(it, errors) }
+        decl.initializer?.let { validateExpression(it, errors) }
     }
 
     private fun validateConstAssertDecl(
@@ -881,6 +909,7 @@ class TypeResolver(
             is SamplerType -> {}
             is TextureType -> type.elementType?.let { validateTypeDecl(it, errors) }
             is ConstantType -> validateExpression(type.expression, errors)
+            is RayQueryType -> {}
         }
     }
 
@@ -938,6 +967,10 @@ class TypeResolver(
             }
 
             is SwizzleExpr -> validateExpression(expr.objectExpr, errors)
+            is BitcastExpr -> {
+                validateExpression(expr.expr, errors)
+                validateTypeDecl(expr.type, errors)
+            }
         }
     }
 
@@ -1000,6 +1033,8 @@ class TypeResolver(
             }
 
             is IncDecStatement -> validateExpression(stmt.expr, errors)
+            is BreakIfStatement -> validateExpression(stmt.condition, errors)
+            is PhonyAssignmentStatement -> validateExpression(stmt.expression, errors)
             is ExpressionStatement -> validateExpression(stmt.expr, errors)
             is ConstAssertStatement -> validateExpression(stmt.expression, errors)
         }
@@ -1012,7 +1047,9 @@ class TypeResolver(
         for (case in body.cases) {
             when (case) {
                 is Case -> {
-                    validateExpression(case.value, errors)
+                    for (selector in case.selectors) {
+                        validateExpression(selector, errors)
+                    }
                     validateBlockStatement(case.body, errors)
                 }
 

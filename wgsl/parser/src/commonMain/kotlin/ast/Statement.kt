@@ -62,11 +62,13 @@ sealed class SwitchCase {
 }
 
 /**
- * A normal case with a value.
+ * A normal case with values.
  */
 data class Case(
-    /** The value to match. */
-    val value: Expression,
+    /** The values to match. */
+    val selectors: List<Expression>,
+    /** Whether this case includes the default selector. */
+    val isDefault: Boolean,
     /** The body of the case. */
     val body: BlockStatement,
     override val span: Span,
@@ -128,6 +130,14 @@ data class BreakStatement(
 ) : Statement()
 
 /**
+ * A break if statement (used in continuing blocks).
+ */
+data class BreakIfStatement(
+    val condition: Expression,
+    override val span: Span,
+) : Statement()
+
+/**
  * A continue statement.
  */
 data class ContinueStatement(
@@ -179,6 +189,14 @@ data class AssignmentStatement(
     val rhs: Expression,
     /** The operator (null for simple assignment). */
     val op: BinaryOperator?,
+    override val span: Span,
+) : Statement()
+
+/**
+ * A phony assignment statement (_ = expr).
+ */
+data class PhonyAssignmentStatement(
+    val expression: Expression,
     override val span: Span,
 ) : Statement()
 

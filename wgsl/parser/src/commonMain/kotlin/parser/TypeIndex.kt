@@ -75,8 +75,15 @@ class TypeIndex {
             }
 
             is OverrideDecl -> {
-                // Index the function inside the override
-                functions[declaration.function.name] = declaration.function
+                // Index as a global constant
+                globalConstants[declaration.name] = VariableDecl(
+                    kind = VariableDeclKind.CONST,
+                    attributes = declaration.attributes,
+                    name = declaration.name,
+                    type = declaration.type,
+                    initializer = declaration.initializer,
+                    span = declaration.span
+                )
             }
 
             else -> {}

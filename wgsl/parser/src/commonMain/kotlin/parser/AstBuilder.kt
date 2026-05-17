@@ -2,19 +2,25 @@ package io.ygdrasil.wgsl.parser
 
 import io.ygdrasil.wgsl.ast.ArrayType
 import io.ygdrasil.wgsl.ast.AssignmentStatement
+import io.ygdrasil.wgsl.ast.AtomicType
 import io.ygdrasil.wgsl.ast.Attribute
 import io.ygdrasil.wgsl.ast.BinaryExpr
 import io.ygdrasil.wgsl.ast.BinaryOperator
+import io.ygdrasil.wgsl.ast.BitcastExpr
 import io.ygdrasil.wgsl.ast.BlockStatement
 import io.ygdrasil.wgsl.ast.BoolLiteral
+import io.ygdrasil.wgsl.ast.BreakIfStatement
 import io.ygdrasil.wgsl.ast.BreakStatement
 import io.ygdrasil.wgsl.ast.BuiltinValue
 import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
 import io.ygdrasil.wgsl.ast.ConstAssertDecl
+import io.ygdrasil.wgsl.ast.ConstantType
 import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
+import io.ygdrasil.wgsl.ast.DiagnosticDirective
 import io.ygdrasil.wgsl.ast.DiscardStatement
+import io.ygdrasil.wgsl.ast.EnableDirective
 import io.ygdrasil.wgsl.ast.EntryPointAttribute
 import io.ygdrasil.wgsl.ast.Expression
 import io.ygdrasil.wgsl.ast.ExpressionStatement
@@ -34,9 +40,13 @@ import io.ygdrasil.wgsl.ast.MemberAccessExpr
 import io.ygdrasil.wgsl.ast.NamedType
 import io.ygdrasil.wgsl.ast.OverrideDecl
 import io.ygdrasil.wgsl.ast.Param
+import io.ygdrasil.wgsl.ast.PhonyAssignmentStatement
 import io.ygdrasil.wgsl.ast.PointerType
+import io.ygdrasil.wgsl.ast.RayQueryType
 import io.ygdrasil.wgsl.ast.ReferenceType
+import io.ygdrasil.wgsl.ast.RequiresDirective
 import io.ygdrasil.wgsl.ast.ReturnStatement
+import io.ygdrasil.wgsl.ast.SamplerType
 import io.ygdrasil.wgsl.ast.ScalarKind
 import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.Statement
@@ -51,6 +61,8 @@ import io.ygdrasil.wgsl.ast.SwitchStatement
 import io.ygdrasil.wgsl.ast.SwizzleExpr
 import io.ygdrasil.wgsl.ast.TemplateParam
 import io.ygdrasil.wgsl.ast.TemplateType
+import io.ygdrasil.wgsl.ast.TextureKind
+import io.ygdrasil.wgsl.ast.TextureType
 import io.ygdrasil.wgsl.ast.TernaryExpr
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ast.TypeAliasDecl
@@ -159,12 +171,38 @@ class AstBuilder {
 
     fun OverrideDecl(
         attributes: List<Attribute> = emptyList(),
-        entryPoint: EntryPointAttribute,
-        function: FunctionDecl,
+        name: String,
+        type: TypeDecl? = null,
+        initializer: Expression? = null,
         span: Span = Span.UNDEFINED
     ): OverrideDecl {
         _declarationCount++
-        return OverrideDecl(attributes, entryPoint, function, span)
+        return OverrideDecl(attributes, name, type, initializer, span)
+    }
+
+    fun EnableDirective(
+        extensions: List<String>,
+        span: Span = Span.UNDEFINED
+    ): EnableDirective {
+        _declarationCount++
+        return EnableDirective(extensions, span)
+    }
+
+    fun RequiresDirective(
+        features: List<String>,
+        span: Span = Span.UNDEFINED
+    ): RequiresDirective {
+        _declarationCount++
+        return RequiresDirective(features, span)
+    }
+
+    fun DiagnosticDirective(
+        severity: String,
+        rule: String,
+        span: Span = Span.UNDEFINED
+    ): DiagnosticDirective {
+        _declarationCount++
+        return DiagnosticDirective(severity, rule, span)
     }
 
     fun ConstAssertDecl(
@@ -255,6 +293,47 @@ class AstBuilder {
     ): TemplateType {
         _typeCount++
         return TemplateType(name, args, span)
+    }
+
+    fun AtomicType(
+        elementType: TypeDecl,
+        span: Span = Span.UNDEFINED
+    ): AtomicType {
+        _typeCount++
+        return AtomicType(elementType, span)
+    }
+
+    fun SamplerType(
+        isComparison: Boolean,
+        span: Span = Span.UNDEFINED
+    ): SamplerType {
+        _typeCount++
+        return SamplerType(isComparison, span)
+    }
+
+    fun TextureType(
+        kind: TextureKind,
+        elementType: TypeDecl? = null,
+        accessMode: String? = null,
+        span: Span = Span.UNDEFINED
+    ): TextureType {
+        _typeCount++
+        return TextureType(kind, elementType, accessMode, span)
+    }
+
+    fun ConstantType(
+        expression: Expression,
+        span: Span = Span.UNDEFINED
+    ): ConstantType {
+        _typeCount++
+        return ConstantType(expression, span)
+    }
+
+    fun RayQueryType(
+        span: Span = Span.UNDEFINED
+    ): RayQueryType {
+        _typeCount++
+        return RayQueryType(span)
     }
 
     // ========== Expressions ==========
@@ -376,6 +455,15 @@ class AstBuilder {
         return SwizzleExpr(objectExpr, components, span)
     }
 
+    fun BitcastExpr(
+        expr: Expression,
+        type: TypeDecl,
+        span: Span = Span.UNDEFINED
+    ): BitcastExpr {
+        _expressionCount++
+        return BitcastExpr(expr, type, span)
+    }
+
     // ========== Statements ==========
 
     fun BlockStatement(
@@ -413,11 +501,12 @@ class AstBuilder {
     }
 
     fun Case(
-        value: Expression,
+        selectors: List<Expression>,
+        isDefault: Boolean = false,
         body: BlockStatement,
         span: Span = Span.UNDEFINED
     ): Case {
-        return Case(value, body, span)
+        return Case(selectors, isDefault, body, span)
     }
 
     fun DefaultCase(
@@ -464,6 +553,14 @@ class AstBuilder {
         return BreakStatement(span)
     }
 
+    fun BreakIfStatement(
+        condition: Expression,
+        span: Span = Span.UNDEFINED
+    ): BreakIfStatement {
+        _statementCount++
+        return BreakIfStatement(condition, span)
+    }
+
     fun ContinueStatement(
         span: Span = Span.UNDEFINED
     ): ContinueStatement {
@@ -507,6 +604,14 @@ class AstBuilder {
     ): AssignmentStatement {
         _statementCount++
         return AssignmentStatement(lhs, rhs, op, span)
+    }
+
+    fun PhonyAssignmentStatement(
+        expression: Expression,
+        span: Span = Span.UNDEFINED
+    ): PhonyAssignmentStatement {
+        _statementCount++
+        return PhonyAssignmentStatement(expression, span)
     }
 
     fun IncDecStatement(

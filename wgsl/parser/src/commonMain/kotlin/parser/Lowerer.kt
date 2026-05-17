@@ -149,6 +149,7 @@ class Lowerer {
         io.ygdrasil.wgsl.ast.StorageClass.UNIFORM -> IrAddressSpace.Uniform
         io.ygdrasil.wgsl.ast.StorageClass.STORAGE -> IrAddressSpace.Storage
         io.ygdrasil.wgsl.ast.StorageClass.HANDLE -> IrAddressSpace.Private // Fallback
+        io.ygdrasil.wgsl.ast.StorageClass.PUSH_CONSTANT -> IrAddressSpace.Private // Fallback
     }
 
     private fun lowerStorageClass(storageClass: io.ygdrasil.wgsl.ast.StorageClass): IrStorageClass = when (storageClass) {
@@ -158,6 +159,7 @@ class Lowerer {
         io.ygdrasil.wgsl.ast.StorageClass.UNIFORM -> IrStorageClass.Uniform
         io.ygdrasil.wgsl.ast.StorageClass.STORAGE -> IrStorageClass.Storage
         io.ygdrasil.wgsl.ast.StorageClass.HANDLE -> IrStorageClass.Handle
+        io.ygdrasil.wgsl.ast.StorageClass.PUSH_CONSTANT -> IrStorageClass.PushConstant
     }
 
     private fun lowerStruct(decl: StructDecl) {

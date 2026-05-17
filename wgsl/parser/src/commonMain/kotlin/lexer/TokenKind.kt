@@ -48,6 +48,7 @@ enum class TokenKind {
     CONST_ASSERT,
     ALIAS,
     DIAGNOSTIC,
+    STATIC_ASSERT,
 
     // Keywords - Type constructors
     ARRAY,
@@ -77,6 +78,7 @@ enum class TokenKind {
     INVARIANT,
     MUST_USE,
     OVERRIDE,
+    BITCAST,
     COMPUTE,
     FRAGMENT,
     VERTEX,
@@ -124,6 +126,7 @@ enum class TokenKind {
     TEXTURE_STORAGE_2D_ARRAY,
     TEXTURE_STORAGE_3D,
     ATOMIC,
+    RAY_QUERY,
 
     // Keywords - Address spaces
     HANDLE,
@@ -241,7 +244,7 @@ val TokenKind.isKeyword: Boolean
         TokenKind.LOOP, TokenKind.WHILE, TokenKind.FOR, TokenKind.BREAK, TokenKind.CONTINUE,
         TokenKind.RETURN, TokenKind.DISCARD, TokenKind.CONTINUING -> true
         // Declarations
-        TokenKind.FN, TokenKind.LET, TokenKind.CONST, TokenKind.VAR, TokenKind.TYPE, TokenKind.STRUCT, TokenKind.CONST_ASSERT, TokenKind.ALIAS, TokenKind.DIAGNOSTIC -> true
+        TokenKind.FN, TokenKind.LET, TokenKind.CONST, TokenKind.VAR, TokenKind.TYPE, TokenKind.STRUCT, TokenKind.CONST_ASSERT, TokenKind.STATIC_ASSERT, TokenKind.ALIAS, TokenKind.DIAGNOSTIC -> true
         // Type constructors
         TokenKind.ARRAY, TokenKind.MAT, TokenKind.VEC, TokenKind.PTR -> true
         // Storage classes
@@ -251,7 +254,7 @@ val TokenKind.isKeyword: Boolean
         // Attributes
         TokenKind.AT, TokenKind.LOCATION, TokenKind.BUILTIN, TokenKind.ENABLE, TokenKind.REQUIRES,
         TokenKind.INTERPOLATE, TokenKind.INVARIANT, TokenKind.MUST_USE, TokenKind.OVERRIDE,
-        TokenKind.COMPUTE, TokenKind.FRAGMENT, TokenKind.VERTEX -> true
+        TokenKind.BITCAST, TokenKind.COMPUTE, TokenKind.FRAGMENT, TokenKind.VERTEX -> true
         // Layout annotations
         TokenKind.PACKED, TokenKind.ALIGNED -> true
         // Template constraints
@@ -266,7 +269,7 @@ val TokenKind.isKeyword: Boolean
         TokenKind.TEXTURE_DEPTH_CUBE_ARRAY, TokenKind.TEXTURE_DEPTH_MULTISAMPLED_2D,
         TokenKind.TEXTURE_EXTERNAL, TokenKind.TEXTURE_STORAGE_1D, TokenKind.TEXTURE_STORAGE_2D,
         TokenKind.TEXTURE_STORAGE_2D_ARRAY, TokenKind.TEXTURE_STORAGE_3D,
-        TokenKind.SAMPLER, TokenKind.SAMPLER_COMPARISON, TokenKind.ATOMIC, TokenKind.HANDLE -> true
+        TokenKind.SAMPLER, TokenKind.SAMPLER_COMPARISON, TokenKind.ATOMIC, TokenKind.RAY_QUERY, TokenKind.HANDLE -> true
         // Built-in values
         TokenKind.TRUE, TokenKind.FALSE, TokenKind.POSITION, TokenKind.VERTEX_INDEX,
         TokenKind.INSTANCE_INDEX, TokenKind.FRONT_FACING, TokenKind.PRIMITIVE_INDEX,

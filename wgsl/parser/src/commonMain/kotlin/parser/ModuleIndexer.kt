@@ -4,12 +4,17 @@ import io.ygdrasil.wgsl.ast.ArrayType
 import io.ygdrasil.wgsl.ast.AssignmentStatement
 import io.ygdrasil.wgsl.ast.AtomicType
 import io.ygdrasil.wgsl.ast.BinaryExpr
+import io.ygdrasil.wgsl.ast.BitcastExpr
 import io.ygdrasil.wgsl.ast.BlockStatement
+import io.ygdrasil.wgsl.ast.BreakIfStatement
 import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
+import io.ygdrasil.wgsl.ast.ConstAssertDecl
 import io.ygdrasil.wgsl.ast.ConstAssertStatement
 import io.ygdrasil.wgsl.ast.ConstantType
 import io.ygdrasil.wgsl.ast.DefaultCase
+import io.ygdrasil.wgsl.ast.DiagnosticDirective
+import io.ygdrasil.wgsl.ast.EnableDirective
 import io.ygdrasil.wgsl.ast.Expression
 import io.ygdrasil.wgsl.ast.ExpressionStatement
 import io.ygdrasil.wgsl.ast.ForStatement
@@ -24,8 +29,11 @@ import io.ygdrasil.wgsl.ast.MatrixType
 import io.ygdrasil.wgsl.ast.MemberAccessExpr
 import io.ygdrasil.wgsl.ast.NamedType
 import io.ygdrasil.wgsl.ast.OverrideDecl
+import io.ygdrasil.wgsl.ast.PhonyAssignmentStatement
 import io.ygdrasil.wgsl.ast.PointerType
+import io.ygdrasil.wgsl.ast.RayQueryType
 import io.ygdrasil.wgsl.ast.ReferenceType
+import io.ygdrasil.wgsl.ast.RequiresDirective
 import io.ygdrasil.wgsl.ast.ReturnStatement
 import io.ygdrasil.wgsl.ast.SamplerType
 import io.ygdrasil.wgsl.ast.ScalarType
@@ -165,12 +173,16 @@ class ModuleIndexer {
             }
 
             is OverrideDecl -> {
-                // The function itself might have dependencies
-                dependencies.addAll(findDependenciesInDeclaration(decl.function, allNames))
+                if (decl.type != null) {
+                    dependencies.addAll(findDependenciesInType(decl.type, allNames))
+                }
+                if (decl.initializer != null) {
+                    dependencies.addAll(findDependenciesInExpression(decl.initializer, allNames))
+                }
             }
 
-            is io.ygdrasil.wgsl.ast.ConstAssertDecl -> {
-                dependencies.addAll(findDependenciesInExpression(decl.expression, allNames))
+            is EnableDirective, is RequiresDirective, is DiagnosticDirective, is ConstAssertDecl -> {
+                // Directives and ConstAssertDecl have no named dependencies that affect global ordering
             }
         }
 
@@ -260,8 +272,16 @@ class ModuleIndexer {
                 dependencies.addAll(findDependenciesInExpression(stmt.rhs, allNames))
             }
 
+            is PhonyAssignmentStatement -> {
+                dependencies.addAll(findDependenciesInExpression(stmt.expression, allNames))
+            }
+
             is IncDecStatement -> {
                 dependencies.addAll(findDependenciesInExpression(stmt.expr, allNames))
+            }
+
+            is BreakIfStatement -> {
+                dependencies.addAll(findDependenciesInExpression(stmt.condition, allNames))
             }
 
             is ReturnStatement -> {
@@ -291,7 +311,9 @@ class ModuleIndexer {
         for (case in body.cases) {
             when (case) {
                 is Case -> {
-                    dependencies.addAll(findDependenciesInExpression(case.value, allNames))
+                    for (selector in case.selectors) {
+                        dependencies.addAll(findDependenciesInExpression(selector, allNames))
+                    }
                     dependencies.addAll(findDependenciesInBlock(case.body, allNames))
                 }
 
@@ -362,6 +384,11 @@ class ModuleIndexer {
 
             is SwizzleExpr -> {
                 dependencies.addAll(findDependenciesInExpression(expr.objectExpr, allNames))
+            }
+
+            is BitcastExpr -> {
+                dependencies.addAll(findDependenciesInExpression(expr.expr, allNames))
+                dependencies.addAll(findDependenciesInType(expr.type, allNames))
             }
 
             else -> {}
@@ -445,6 +472,10 @@ class ModuleIndexer {
             is ConstantType -> {
                 dependencies.addAll(findDependenciesInExpression(type.expression, allNames))
             }
+
+            is RayQueryType -> {
+                // No dependencies
+            }
         }
 
         return dependencies
@@ -459,7 +490,7 @@ class ModuleIndexer {
             is StructDecl -> decl.name
             is VariableDecl -> decl.name
             is TypeAliasDecl -> decl.name
-            is OverrideDecl -> decl.function.name
+            is OverrideDecl -> decl.name
             else -> null
         }
         return if (name.isNullOrEmpty()) null else name

@@ -747,6 +747,7 @@ class Lexer(
         "alias" -> TokenKind.ALIAS
         "struct" -> TokenKind.STRUCT
         "const_assert" -> TokenKind.CONST_ASSERT
+        "static_assert" -> TokenKind.STATIC_ASSERT
         "diagnostic" -> TokenKind.DIAGNOSTIC
 
         // Type constructors
@@ -788,6 +789,7 @@ class Lexer(
         "invariant" -> TokenKind.INVARIANT
         "must_use" -> TokenKind.MUST_USE
         "override" -> TokenKind.OVERRIDE
+        "bitcast" -> TokenKind.BITCAST
         "compute" -> TokenKind.COMPUTE
         "fragment" -> TokenKind.FRAGMENT
         "vertex" -> TokenKind.VERTEX
@@ -833,6 +835,7 @@ class Lexer(
         "texture_storage_2d_array" -> TokenKind.TEXTURE_STORAGE_2D_ARRAY
         "texture_storage_3d" -> TokenKind.TEXTURE_STORAGE_3D
         "atomic" -> TokenKind.ATOMIC
+        "ray_query" -> TokenKind.RAY_QUERY
         "handle" -> TokenKind.HANDLE
 
         // Built-in values

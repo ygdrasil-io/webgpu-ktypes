@@ -6,8 +6,10 @@ import io.ygdrasil.wgsl.ast.AtomicType
 import io.ygdrasil.wgsl.ast.Attribute
 import io.ygdrasil.wgsl.ast.BinaryExpr
 import io.ygdrasil.wgsl.ast.BinaryOperator
+import io.ygdrasil.wgsl.ast.BitcastExpr
 import io.ygdrasil.wgsl.ast.BlockStatement
 import io.ygdrasil.wgsl.ast.BoolLiteral
+import io.ygdrasil.wgsl.ast.BreakIfStatement
 import io.ygdrasil.wgsl.ast.BreakStatement
 import io.ygdrasil.wgsl.ast.BuiltinValue
 import io.ygdrasil.wgsl.ast.CallExpr
@@ -17,7 +19,9 @@ import io.ygdrasil.wgsl.ast.ConstAssertStatement
 import io.ygdrasil.wgsl.ast.ConstantType
 import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
+import io.ygdrasil.wgsl.ast.DiagnosticDirective
 import io.ygdrasil.wgsl.ast.DiscardStatement
+import io.ygdrasil.wgsl.ast.EnableDirective
 import io.ygdrasil.wgsl.ast.EntryPointAttribute
 import io.ygdrasil.wgsl.ast.Expression
 import io.ygdrasil.wgsl.ast.ExpressionStatement
@@ -37,7 +41,10 @@ import io.ygdrasil.wgsl.ast.MemberAccessExpr
 import io.ygdrasil.wgsl.ast.NamedType
 import io.ygdrasil.wgsl.ast.OverrideDecl
 import io.ygdrasil.wgsl.ast.Param
+import io.ygdrasil.wgsl.ast.PhonyAssignmentStatement
 import io.ygdrasil.wgsl.ast.PointerType
+import io.ygdrasil.wgsl.ast.RayQueryType
+import io.ygdrasil.wgsl.ast.RequiresDirective
 import io.ygdrasil.wgsl.ast.ReturnStatement
 import io.ygdrasil.wgsl.ast.SamplerType
 import io.ygdrasil.wgsl.ast.ScalarKind
@@ -184,6 +191,8 @@ class Parser(
         val declarations = mutableListOf<GlobalDecl>()
 
         while (!isAtEnd()) {
+            if (expect(TokenKind.SEMICOLON)) continue
+
             val startToken = currentToken
             declarations.add(parseTopLevelDecl())
             if (startToken == currentToken) {
@@ -208,12 +217,15 @@ class Parser(
         }
 
         return when (currentKind()) {
+            TokenKind.ENABLE -> parseEnableDirective()
+            TokenKind.REQUIRES -> parseRequiresDirective()
+            TokenKind.DIAGNOSTIC -> parseDiagnosticDirective()
             TokenKind.FN -> parseFunctionDecl(attributes)
             TokenKind.STRUCT -> parseStructDecl(attributes)
             TokenKind.LET, TokenKind.CONST, TokenKind.VAR -> parseVariableDecl(attributes)
             TokenKind.TYPE, TokenKind.ALIAS -> parseTypeAliasDecl(attributes)
             TokenKind.OVERRIDE -> parseOverrideDecl(attributes)
-            TokenKind.CONST_ASSERT -> parseConstAssertDecl()
+            TokenKind.CONST_ASSERT, TokenKind.STATIC_ASSERT -> parseConstAssertDecl()
             else -> {
                 if (attributes.isNotEmpty()) {
                     error("Attributes must be followed by a declaration")
@@ -516,61 +528,82 @@ class Parser(
         // Consume 'override'
         expectOrError(TokenKind.OVERRIDE, "Expected 'override'")
 
-        // Parse entry point attribute
-        val entryPoint = when (currentKind()) {
-            TokenKind.COMPUTE -> {
-                advance()
-                EntryPointAttribute.Compute
-            }
+        // Parse name
+        val name = parseIdentifier()
 
-            TokenKind.FRAGMENT -> {
-                advance()
-                val inputs = mutableListOf<FragmentInput>()
-                if (currentKind() == TokenKind.LEFT_PAREN) {
-                    advance()
-                    while (currentKind() != TokenKind.RIGHT_PAREN && !isAtEnd()) {
-                        inputs.add(parseFragmentInput())
-                        if (currentKind() == TokenKind.COMMA) {
-                            advance()
-                        }
-                    }
-                    expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
-                }
-                EntryPointAttribute.Fragment(inputs)
-            }
-
-            TokenKind.VERTEX -> {
-                advance()
-                val outputs = mutableListOf<VertexOutput>()
-                if (currentKind() == TokenKind.LEFT_PAREN) {
-                    advance()
-                    while (currentKind() != TokenKind.RIGHT_PAREN && !isAtEnd()) {
-                        outputs.add(parseVertexOutput())
-                        if (currentKind() == TokenKind.COMMA) {
-                            advance()
-                        }
-                    }
-                    expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
-                }
-                EntryPointAttribute.Vertex(outputs)
-            }
-
-            else -> {
-                error("Expected entry point attribute (compute, fragment, vertex)")
-                EntryPointAttribute.Compute
-            }
+        // Parse type annotation (if any)
+        val type = if (currentKind() == TokenKind.COLON) {
+            advance()
+            parseTypeDecl()
+        } else {
+            null
         }
 
-        // Parse function
-        val function = parseFunctionDecl()
+        // Parse initializer (optional)
+        val initializer = if (currentKind() == TokenKind.ASSIGN) {
+            advance()
+            parseExpression()
+        } else {
+            null
+        }
 
-        val end = function.span.end
+        expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+
+        val end = previousToken?.span?.end ?: currentToken.span.end
         return OverrideDecl(
-            attributes = emptyList(), // TODO: parse attributes
-            entryPoint = entryPoint,
-            function = function,
+            attributes = attributes,
+            name = name,
+            type = type,
+            initializer = initializer,
             span = Span(start.start, end)
         )
+    }
+
+    private fun parseEnableDirective(): EnableDirective {
+        val start = currentToken.span
+        advance() // consume 'enable'
+        val extensions = mutableListOf<String>()
+        extensions.add(parseIdentifier())
+        while (expect(TokenKind.COMMA)) {
+            extensions.add(parseIdentifier())
+        }
+        expectOrError(TokenKind.SEMICOLON, "Expected ';' after enable directive")
+        return EnableDirective(extensions, Span(start.start, previousToken!!.span.end))
+    }
+
+    private fun parseRequiresDirective(): RequiresDirective {
+        val start = currentToken.span
+        advance() // consume 'requires'
+        val features = mutableListOf<String>()
+        features.add(parseIdentifier())
+        while (expect(TokenKind.COMMA)) {
+            features.add(parseIdentifier())
+        }
+        expectOrError(TokenKind.SEMICOLON, "Expected ';' after requires directive")
+        return RequiresDirective(features, Span(start.start, previousToken!!.span.end))
+    }
+
+    private fun parseDiagnosticDirective(): DiagnosticDirective {
+        val start = currentToken.span
+        advance() // consume 'diagnostic'
+        expectOrError(TokenKind.LEFT_PAREN, "Expected '(' after diagnostic")
+        val severity = parseIdentifier()
+        expectOrError(TokenKind.COMMA, "Expected ',' after diagnostic severity")
+        val rule = parseIdentifier()
+        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')' after diagnostic rule")
+        expectOrError(TokenKind.SEMICOLON, "Expected ';' after diagnostic directive")
+        return DiagnosticDirective(severity, rule, Span(start.start, previousToken!!.span.end))
+    }
+
+    private fun parseIdentifier(): String {
+        if (currentKind() == TokenKind.IDENTIFIER) {
+            return advance().literal ?: ""
+        }
+        if (currentToken.isKeyword) {
+            return advance().literal ?: ""
+        }
+        error("Expected identifier, found ${currentKind()}")
+        return ""
     }
 
     /**
@@ -579,13 +612,19 @@ class Parser(
     private fun parseConstAssertDecl(): ConstAssertDecl {
         val start = currentToken.span
 
-        // Consume 'const_assert'
-        expectOrError(TokenKind.CONST_ASSERT, "Expected 'const_assert'")
-        expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
+        // Consume 'const_assert' or 'static_assert'
+        if (currentKind() == TokenKind.CONST_ASSERT || currentKind() == TokenKind.STATIC_ASSERT) {
+            advance()
+        } else {
+            error("Expected 'const_assert' or 'static_assert'")
+        }
+        val hasParen = expect(TokenKind.LEFT_PAREN)
 
         val expression = parseExpression()
 
-        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        if (hasParen) {
+            expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        }
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
 
         val end = previousToken?.span?.end ?: currentToken.span.end
@@ -601,13 +640,19 @@ class Parser(
     private fun parseConstAssertStatement(): ConstAssertStatement {
         val start = currentToken.span
 
-        // Consume 'const_assert'
-        expectOrError(TokenKind.CONST_ASSERT, "Expected 'const_assert'")
-        expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
+        // Consume 'const_assert' or 'static_assert'
+        if (currentKind() == TokenKind.CONST_ASSERT || currentKind() == TokenKind.STATIC_ASSERT) {
+            advance()
+        } else {
+            error("Expected 'const_assert' or 'static_assert'")
+        }
+        val hasParen = expect(TokenKind.LEFT_PAREN)
 
         val expression = parseExpression()
 
-        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        if (hasParen) {
+            expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        }
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
 
         val end = previousToken?.span?.end ?: currentToken.span.end
@@ -884,6 +929,11 @@ class Parser(
                 return SamplerType(true, Span(start.start, previousToken?.span?.end ?: start.end))
             }
 
+            TokenKind.RAY_QUERY -> {
+                advance()
+                return RayQueryType(Span(start.start, previousToken?.span?.end ?: start.end))
+            }
+
             TokenKind.TEXTURE_1D -> {
                 advance()
                 return parseTextureType(start, TextureKind.TEXTURE_1D)
@@ -1112,6 +1162,7 @@ class Parser(
             "uniform" -> StorageClass.UNIFORM
             "storage" -> StorageClass.STORAGE
             "handle" -> StorageClass.HANDLE
+            "push_constant" -> StorageClass.PUSH_CONSTANT
             else -> {
                 error("Unknown storage class: ${storageClassToken.literal}")
                 StorageClass.PRIVATE
@@ -1766,7 +1817,8 @@ class Parser(
             TokenKind.I64, TokenKind.U64,
             TokenKind.F16, TokenKind.F32, TokenKind.F64,
             TokenKind.VEC, TokenKind.MAT, TokenKind.ARRAY,
-            TokenKind.SAMPLER, TokenKind.TEXTURE_1D, TokenKind.TEXTURE_2D, TokenKind.TEXTURE_3D,
+            TokenKind.SAMPLER, TokenKind.SAMPLER_COMPARISON, TokenKind.RAY_QUERY,
+            TokenKind.TEXTURE_1D, TokenKind.TEXTURE_2D, TokenKind.TEXTURE_3D,
             TokenKind.TEXTURE_CUBE, TokenKind.TEXTURE_EXTERNAL,
             TokenKind.BUILTIN, TokenKind.POSITION, TokenKind.VERTEX_INDEX, TokenKind.INSTANCE_INDEX,
             TokenKind.FRONT_FACING, TokenKind.PRIMITIVE_INDEX, TokenKind.SAMPLE_INDEX,
@@ -1784,6 +1836,18 @@ class Parser(
                 expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
                 val end = previousToken?.span?.end ?: currentToken.span.end
                 expr // Return the expression inside parentheses
+            }
+
+            TokenKind.BITCAST -> {
+                advance()
+                expectOrError(TokenKind.LEFT_ANGLE, "Expected '<' after 'bitcast'")
+                val type = parseTypeDecl()
+                expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>' after 'bitcast' type")
+                expectOrError(TokenKind.LEFT_PAREN, "Expected '(' after 'bitcast'")
+                val expr = parseExpression()
+                expectOrError(TokenKind.RIGHT_PAREN, "Expected ')' after 'bitcast' expression")
+                val end = previousToken?.span?.end ?: currentToken.span.end
+                BitcastExpr(expr, type, Span(start.start, end))
             }
 
             else -> {
@@ -1839,8 +1903,19 @@ class Parser(
             TokenKind.FOR -> parseForStatement()
             TokenKind.BREAK -> {
                 advance()
-                expectOrError(TokenKind.SEMICOLON, "Expected ';'")
-                BreakStatement(Span(start.start, previousToken?.span?.end ?: start.end))
+                if (currentKind() == TokenKind.IF) {
+                    advance() // consume 'if'
+                    val hasParen = expect(TokenKind.LEFT_PAREN)
+                    val condition = parseExpression()
+                    if (hasParen) {
+                        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+                    }
+                    expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+                    BreakIfStatement(condition, Span(start.start, previousToken?.span?.end ?: start.end))
+                } else {
+                    expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+                    BreakStatement(Span(start.start, previousToken?.span?.end ?: start.end))
+                }
             }
 
             TokenKind.CONTINUE -> {
@@ -1867,7 +1942,14 @@ class Parser(
             }
 
             TokenKind.LET, TokenKind.CONST, TokenKind.VAR -> parseVariableDeclStatement()
-            TokenKind.CONST_ASSERT -> parseConstAssertStatement()
+            TokenKind.CONST_ASSERT, TokenKind.STATIC_ASSERT -> parseConstAssertStatement()
+            TokenKind.UNDERSCORE -> {
+                advance()
+                expectOrError(TokenKind.ASSIGN, "Expected '=' after '_'")
+                val expr = parseExpression()
+                expectOrError(TokenKind.SEMICOLON, "Expected ';'")
+                PhonyAssignmentStatement(expr, Span(start.start, previousToken?.span?.end ?: start.end))
+            }
             else -> {
                 // Expression or assignment or increment/decrement
                 val expr = parseExpression()
@@ -1928,9 +2010,11 @@ class Parser(
         val start = currentToken.span
 
         expectOrError(TokenKind.IF, "Expected 'if'")
-        expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
+        val hasParen = expect(TokenKind.LEFT_PAREN)
         val condition = parseExpression()
-        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        if (hasParen) {
+            expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        }
 
         val thenBranch = parseStatement()
 
@@ -1952,9 +2036,11 @@ class Parser(
         val start = currentToken.span
 
         expectOrError(TokenKind.SWITCH, "Expected 'switch'")
-        expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
+        val hasParen = expect(TokenKind.LEFT_PAREN)
         val expression = parseExpression()
-        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        if (hasParen) {
+            expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        }
 
         val body = parseSwitchBody()
 
@@ -1985,17 +2071,42 @@ class Parser(
      * Parses a switch case.
      */
     private fun parseSwitchCase(): SwitchCase {
-        if (currentKind() == TokenKind.DEFAULT) {
+        val selectors = mutableListOf<Expression>()
+        var isDefault = false
+
+        if (currentKind() == TokenKind.CASE) {
             advance()
-            expectOrError(TokenKind.COLON, "Expected ':'")
-            val body = parseBlockStatement()
-            return DefaultCase(body, body.span)
+            // First selector
+            if (currentKind() == TokenKind.DEFAULT) {
+                advance()
+                isDefault = true
+            } else {
+                selectors.add(parseExpression())
+            }
+
+            // Additional selectors
+            while (expect(TokenKind.COMMA)) {
+                if (currentKind() == TokenKind.DEFAULT) {
+                    advance()
+                    isDefault = true
+                } else if (currentKind() == TokenKind.COLON) {
+                    // Trailing comma
+                    break
+                } else {
+                    selectors.add(parseExpression())
+                }
+            }
+        } else if (currentKind() == TokenKind.DEFAULT) {
+            advance()
+            isDefault = true
         } else {
-            val value = parseExpression()
-            expectOrError(TokenKind.COLON, "Expected ':'")
-            val body = parseBlockStatement()
-            return Case(value, body, body.span)
+            error("Expected 'case' or 'default'")
         }
+
+        expect(TokenKind.COLON) // Colon is optional after case selectors in some WGSL versions but usually present
+
+        val body = parseBlockStatement()
+        return Case(selectors, isDefault, body, body.span)
     }
 
     /**
@@ -2005,18 +2116,33 @@ class Parser(
         val start = currentToken.span
 
         expectOrError(TokenKind.LOOP, "Expected 'loop'")
+        expectOrError(TokenKind.LEFT_BRACE, "Expected '{'")
 
-        val body = parseBlockStatement()
+        val bodyStatements = mutableListOf<Statement>()
+        var continuing: BlockStatement? = null
 
-        val continuing = if (currentKind() == TokenKind.CONTINUING) {
-            advance()
-            parseBlockStatement()
-        } else {
-            null
+        while (currentKind() != TokenKind.RIGHT_BRACE && !isAtEnd()) {
+            if (expect(TokenKind.SEMICOLON)) continue
+
+            if (currentKind() == TokenKind.CONTINUING) {
+                continuing = parseContinuingStatement()
+                break
+            }
+
+            bodyStatements.add(parseStatement())
         }
 
-        val end = continuing?.span?.end ?: body.span.end
+        expectOrError(TokenKind.RIGHT_BRACE, "Expected '}'")
+
+        val end = previousToken?.span?.end ?: currentToken.span.end
+        val body = BlockStatement(bodyStatements, Span(start.start, end))
+
         return LoopStatement(body, continuing, Span(start.start, end))
+    }
+
+    private fun parseContinuingStatement(): BlockStatement {
+        expectOrError(TokenKind.CONTINUING, "Expected 'continuing'")
+        return parseBlockStatement()
     }
 
     /**
@@ -2026,9 +2152,11 @@ class Parser(
         val start = currentToken.span
 
         expectOrError(TokenKind.WHILE, "Expected 'while'")
-        expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
+        val hasParen = expect(TokenKind.LEFT_PAREN)
         val condition = parseExpression()
-        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        if (hasParen) {
+            expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        }
 
         val body = parseBlockStatement()
 
@@ -2050,7 +2178,7 @@ class Parser(
         val start = currentToken.span
 
         expectOrError(TokenKind.FOR, "Expected 'for'")
-        expectOrError(TokenKind.LEFT_PAREN, "Expected '('")
+        val hasParen = expect(TokenKind.LEFT_PAREN)
 
         // Parse init
         val init = if (currentKind() != TokenKind.SEMICOLON) {
@@ -2071,12 +2199,15 @@ class Parser(
         expectOrError(TokenKind.SEMICOLON, "Expected ';'")
 
         // Parse update
-        val update = if (currentKind() != TokenKind.RIGHT_PAREN) {
+        val update = if (currentKind() != TokenKind.RIGHT_PAREN && currentKind() != TokenKind.LEFT_BRACE) {
             parseExpression()
         } else {
             null
         }
-        expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        
+        if (hasParen) {
+            expectOrError(TokenKind.RIGHT_PAREN, "Expected ')'")
+        }
 
         val body = parseBlockStatement()
 

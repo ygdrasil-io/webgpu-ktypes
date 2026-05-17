@@ -31,6 +31,35 @@ sealed class GlobalDecl {
 }
 
 /**
+ * An enable directive.
+ */
+data class EnableDirective(
+    /** The list of enabled extensions. */
+    val extensions: List<String>,
+    override val span: Span,
+) : GlobalDecl()
+
+/**
+ * A requires directive.
+ */
+data class RequiresDirective(
+    /** The list of required features. */
+    val features: List<String>,
+    override val span: Span,
+) : GlobalDecl()
+
+/**
+ * A diagnostic directive.
+ */
+data class DiagnosticDirective(
+    /** The severity level. */
+    val severity: String,
+    /** The diagnostic rule. */
+    val rule: String,
+    override val span: Span,
+) : GlobalDecl()
+
+/**
  * A function declaration.
  */
 data class FunctionDecl(
@@ -127,15 +156,17 @@ data class TypeAliasDecl(
 ) : GlobalDecl()
 
 /**
- * An override declaration.
+ * An override declaration (pipeline constant).
  */
 data class OverrideDecl(
     /** Attributes on this override. */
     val attributes: List<Attribute>,
-    /** The entry point attribute (compute, fragment, vertex). */
-    val entryPoint: EntryPointAttribute,
-    /** The function being overridden. */
-    val function: FunctionDecl,
+    /** The name of the override. */
+    val name: String,
+    /** The type annotation (null if inferred). */
+    val type: TypeDecl?,
+    /** The initializer expression (optional). */
+    val initializer: Expression?,
     override val span: Span,
 ) : GlobalDecl()
 
