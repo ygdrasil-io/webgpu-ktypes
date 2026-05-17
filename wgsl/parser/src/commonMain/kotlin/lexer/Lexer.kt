@@ -152,6 +152,10 @@ class Lexer(
             '/' -> when (peekChar(1)) {
                 '/' -> lexSingleLineComment(start)
                 '*' -> lexMultiLineComment(start)
+                '=' -> {
+                    consume(); consume()
+                    Token.simple(TokenKind.SLASH_ASSIGN, spanFrom(start))
+                }
                 else -> {
                     consume()
                     Token.simple(TokenKind.SLASH, spanFrom(start))
@@ -159,7 +163,17 @@ class Lexer(
             }
 
             // Identifiers and keywords
-            in 'a'..'z', in 'A'..'Z', '_' -> lexIdentifierOrKeyword(start)
+            in 'a'..'z', in 'A'..'Z' -> lexIdentifierOrKeyword(start)
+
+            // Special handling for underscore
+            '_' -> {
+                if (peekChar(1)?.let { it in 'a'..'z' || it in 'A'..'Z' || it == '_' || it in '0'..'9' } == true) {
+                    lexIdentifierOrKeyword(start)
+                } else {
+                    consume()
+                    Token.simple(TokenKind.UNDERSCORE, spanFrom(start))
+                }
+            }
 
             // Numeric literals
             in '0'..'9' -> lexNumericLiteral(start)
@@ -196,17 +210,6 @@ class Lexer(
                 Token.simple(TokenKind.AT, spanFrom(start))
             }
 
-            // Underscore
-            '_' -> {
-                consume()
-                // Check if it's a standalone underscore or start of identifier
-                if (peekChar()?.let { it in 'a'..'z' || it in 'A'..'Z' || it == '_' || it in '0'..'9' } == true) {
-                    // It's part of an identifier
-                    lexIdentifierOrKeyword(start)
-                } else {
-                    Token.simple(TokenKind.UNDERSCORE, spanFrom(start))
-                }
-            }
 
             else -> {
                 // Unknown character - consume and return as error
@@ -725,6 +728,7 @@ class Lexer(
         "alias" -> TokenKind.ALIAS
         "struct" -> TokenKind.STRUCT
         "const_assert" -> TokenKind.CONST_ASSERT
+        "diagnostic" -> TokenKind.DIAGNOSTIC
 
         // Type constructors
         "array" -> TokenKind.ARRAY
@@ -804,6 +808,11 @@ class Lexer(
         "texture_depth_cube_array" -> TokenKind.TEXTURE_DEPTH_CUBE_ARRAY
         "texture_depth_multisampled_2d" -> TokenKind.TEXTURE_DEPTH_MULTISAMPLED_2D
         "texture_external" -> TokenKind.TEXTURE_EXTERNAL
+        "texture_storage_1d" -> TokenKind.TEXTURE_STORAGE_1D
+        "texture_storage_2d" -> TokenKind.TEXTURE_STORAGE_2D
+        "texture_storage_2d_array" -> TokenKind.TEXTURE_STORAGE_2D_ARRAY
+        "texture_storage_3d" -> TokenKind.TEXTURE_STORAGE_3D
+        "atomic" -> TokenKind.ATOMIC
         "handle" -> TokenKind.HANDLE
 
         // Built-in values

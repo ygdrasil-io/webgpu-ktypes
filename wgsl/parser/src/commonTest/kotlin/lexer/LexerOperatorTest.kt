@@ -6,153 +6,88 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 
-@Ignored
 class LexerOperatorTest : FunSpec({
-    context("Operators") {
-        test("single arithmetic operators") {
-            val tokens = tokenizeSignificant("+")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.PLUS
+    context("WGSL Operators") {
+        test("Arithmetic Operators") {
+            val source = "+ - * / %"
+            val tokens = tokenizeSignificant(source)
+            tokens.map { it.kind } shouldContainExactly listOf(
+                TokenKind.PLUS, TokenKind.MINUS, TokenKind.STAR, TokenKind.SLASH, TokenKind.PERCENT
+            )
         }
 
-        test("single minus operator") {
-            val tokens = tokenizeSignificant("-")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.MINUS
-        }
-
-        test("star operator") {
-            val tokens = tokenizeSignificant("*")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.STAR
-        }
-
-        test("slash operator") {
-            val tokens = tokenizeSignificant("/")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.SLASH
-        }
-
-        test("percent operator") {
-            val tokens = tokenizeSignificant("%")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.PERCENT
-        }
-
-        test("assignment operator") {
-            val tokens = tokenizeSignificant("=")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.ASSIGN
-        }
-
-        test("equality operator") {
-            val tokens = tokenizeSignificant("==")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.EQ
-        }
-
-        test("not equal operator") {
-            val tokens = tokenizeSignificant("!=")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.NEQ
-        }
-
-        test("less than operator") {
-            val tokens = tokenizeSignificant("<")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.LEFT_ANGLE
-        }
-
-        test("greater than operator") {
-            val tokens = tokenizeSignificant(">")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.RIGHT_ANGLE
-        }
-
-        test("logical and operator") {
-            val tokens = tokenizeSignificant("&&")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.AND
-        }
-
-        test("logical or operator") {
-            val tokens = tokenizeSignificant("||")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.OR
-        }
-
-        test("increment and decrement") {
+        test("Increment & Decrement") {
             val source = "++ --"
             val tokens = tokenizeSignificant(source)
-            tokens shouldHaveSize 2
             tokens.map { it.kind } shouldContainExactly listOf(
                 TokenKind.INCREMENT, TokenKind.DECREMENT
             )
         }
 
-        test("arrow operator") {
-            val tokens = tokenizeSignificant("->")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.ARROW
+        test("Assignment Operators") {
+            val source = "= += -= *= /= %= &= |= ^= <<= >>="
+            val tokens = tokenizeSignificant(source)
+            tokens.map { it.kind } shouldContainExactly listOf(
+                TokenKind.ASSIGN, TokenKind.PLUS_ASSIGN, TokenKind.MINUS_ASSIGN,
+                TokenKind.STAR_ASSIGN, TokenKind.SLASH_ASSIGN, TokenKind.PERCENT_ASSIGN,
+                TokenKind.AND_ASSIGN, TokenKind.OR_ASSIGN, TokenKind.XOR_ASSIGN,
+                TokenKind.LEFT_SHIFT_ASSIGN, TokenKind.RIGHT_SHIFT_ASSIGN
+            )
         }
 
-        test("fat arrow") {
-            val tokens = tokenizeSignificant("=>")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.FAT_ARROW
+        test("Comparison Operators") {
+            val source = "== != < > <= >="
+            val tokens = tokenizeSignificant(source)
+            tokens.map { it.kind } shouldContainExactly listOf(
+                TokenKind.EQ, TokenKind.NEQ, TokenKind.LEFT_ANGLE, TokenKind.RIGHT_ANGLE,
+                TokenKind.LTE, TokenKind.GTE
+            )
         }
 
-        test("dot star") {
-            val tokens = tokenizeSignificant(".*")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.DOT_STAR
+        test("Logical Operators") {
+            val source = "&& || !"
+            val tokens = tokenizeSignificant(source)
+            tokens.map { it.kind } shouldContainExactly listOf(
+                TokenKind.AND, TokenKind.OR, TokenKind.NOT
+            )
         }
 
-        test("double colon") {
-            val tokens = tokenizeSignificant("::")
-            tokens shouldHaveSize 1
-            tokens[0].kind shouldBe TokenKind.COLON_COLON
+        test("Bitwise Operators") {
+            val source = "& | ^ ~ << >>"
+            val tokens = tokenizeSignificant(source)
+            tokens.map { it.kind } shouldContainExactly listOf(
+                TokenKind.AMPERSAND, TokenKind.PIPE, TokenKind.CARET, TokenKind.TILDE,
+                TokenKind.LEFT_SHIFT, TokenKind.RIGHT_SHIFT
+            )
+        }
+
+        test("Special Operators") {
+            val source = "-> => .* :: ? _"
+            val tokens = tokenizeSignificant(source)
+            tokens.map { it.kind } shouldContainExactly listOf(
+                TokenKind.ARROW, TokenKind.FAT_ARROW, TokenKind.DOT_STAR,
+                TokenKind.COLON_COLON, TokenKind.QUESTION, TokenKind.UNDERSCORE
+            )
         }
     }
 
-    context("Punctuation") {
-        test("parentheses") {
-            val tokens = tokenizeSignificant("()")
-            tokens shouldHaveSize 2
+    context("WGSL Punctuation") {
+        test("Parentheses, braces and brackets") {
+            val source = "() {} []"
+            val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
-                TokenKind.LEFT_PAREN, TokenKind.RIGHT_PAREN
-            )
-        }
-
-        test("braces") {
-            val tokens = tokenizeSignificant("{}")
-            tokens shouldHaveSize 2
-            tokens.map { it.kind } shouldContainExactly listOf(
-                TokenKind.LEFT_BRACE, TokenKind.RIGHT_BRACE
-            )
-        }
-
-        test("brackets") {
-            val tokens = tokenizeSignificant("[]")
-            tokens shouldHaveSize 2
-            tokens.map { it.kind } shouldContainExactly listOf(
+                TokenKind.LEFT_PAREN, TokenKind.RIGHT_PAREN,
+                TokenKind.LEFT_BRACE, TokenKind.RIGHT_BRACE,
                 TokenKind.LEFT_BRACKET, TokenKind.RIGHT_BRACKET
             )
         }
 
-        test("comma and semicolon") {
-            val tokens = tokenizeSignificant(",;")
-            tokens shouldHaveSize 2
+        test("Separators and delimiters") {
+            val source = ", ; : . @ <>"
+            val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
-                TokenKind.COMMA, TokenKind.SEMICOLON
-            )
-        }
-
-        test("dot and colon") {
-            val tokens = tokenizeSignificant(":.")
-            tokens shouldHaveSize 2
-            tokens.map { it.kind } shouldContainExactly listOf(
-                TokenKind.COLON, TokenKind.DOT
+                TokenKind.COMMA, TokenKind.SEMICOLON, TokenKind.COLON, TokenKind.DOT,
+                TokenKind.AT, TokenKind.LEFT_ANGLE_RIGHT_ANGLE
             )
         }
     }

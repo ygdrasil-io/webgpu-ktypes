@@ -6,7 +6,6 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 
-@Ignored
 class LexerBasicTest : FunSpec({
     context("Basic tokenization") {
         test("empty source") {
