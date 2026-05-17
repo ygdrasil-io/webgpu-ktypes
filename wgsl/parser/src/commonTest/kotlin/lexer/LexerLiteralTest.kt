@@ -27,9 +27,20 @@ class LexerLiteralTest : FunSpec({
         }
 
         test("Floating point numbers (Floats)") {
-            val source = "3.14 1.0e-5 .5 0x1.0p1 3.14f 3.14h 3.14lf"
+            val source = "3.14 1.0e-5 .5 0x1.0p1 3.14f 3.14h 3.14lf 0x1p+0 0x1.8p+1"
             val tokens = tokenizeSignificant(source)
             tokens.forEach { it.kind shouldBe TokenKind.FLOAT_LITERAL }
+        }
+
+        test("Digit separators") {
+            val source = "1_234 0x1_234 3.141_592"
+            val tokens = tokenizeSignificant(source)
+            tokens.map { it.kind } shouldContainExactly listOf(
+                TokenKind.INT_LITERAL, TokenKind.INT_LITERAL, TokenKind.FLOAT_LITERAL
+            )
+            tokens[0].literal shouldBe "1_234"
+            tokens[1].literal shouldBe "0x1_234"
+            tokens[2].literal shouldBe "3.141_592"
         }
 
         test("Negative sign treated as separate operator") {

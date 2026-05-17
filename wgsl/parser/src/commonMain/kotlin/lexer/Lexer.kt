@@ -105,6 +105,25 @@ class Lexer(
         return source.substring(start, index)
     }
 
+    private fun consumeDigits(predicate: (Char) -> Boolean) {
+        while (!isAtEnd) {
+            val c = peekChar()!!
+            if (predicate(c)) {
+                consume()
+            } else if (c == '_') {
+                val next = peekChar(1)
+                if (next != null && predicate(next)) {
+                    consume()
+                    consume()
+                } else {
+                    break
+                }
+            } else {
+                break
+            }
+        }
+    }
+
     /**
      * Consumes a specific string if it matches at the current position.
      * 
@@ -325,7 +344,7 @@ class Lexer(
         consume()
 
         // Consume hex digits
-        consumeWhile { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }
+        consumeDigits { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }
 
         var isFloat = false
 
@@ -333,7 +352,7 @@ class Lexer(
         if (peekChar() == '.') {
             isFloat = true
             consume()
-            consumeWhile { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }
+            consumeDigits { it in '0'..'9' || it in 'a'..'f' || it in 'A'..'F' }
         }
 
         // Optional exponent part
@@ -343,7 +362,7 @@ class Lexer(
             if (peekChar()?.let { it in "+-" } == true) {
                 consume()
             }
-            consumeWhile { it in '0'..'9' }
+            consumeDigits { it in '0'..'9' }
         }
 
         // Suffixes
@@ -378,7 +397,7 @@ class Lexer(
      */
     private fun lexDecimalLiteral(start: SourcePosition, startIndex: Int): Token {
         // Consume digits
-        consumeWhile { it in '0'..'9' }
+        consumeDigits { it in '0'..'9' }
 
         // Check for float parts
         val hasDot = peekChar() == '.'
@@ -431,7 +450,7 @@ class Lexer(
         // Consume fractional part
         if (peekChar() == '.') {
             consume()
-            consumeWhile { it in '0'..'9' }
+            consumeDigits { it in '0'..'9' }
         }
 
         // Consume exponent part
@@ -440,7 +459,7 @@ class Lexer(
             if (peekChar()?.let { it in "+-" } == true) {
                 consume()
             }
-            consumeWhile { it in '0'..'9' }
+            consumeDigits { it in '0'..'9' }
         }
 
         // Check for float suffixes
