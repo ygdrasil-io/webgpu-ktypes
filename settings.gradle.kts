@@ -30,7 +30,7 @@ include("webgpu-ktypes-web")
 include("webgpu-ktypes-specifications")
 
 // WGSL Shader Transpiler modules
-listOf("core", "wgsl", "msl", "hlsl", "glsl", "cli", "tests").forEach { project ->
+listOf("core", "parser", "generator", "cli", "tests", "glsl", "msl", "hlsl").forEach { project ->
     include(":wgsl:$project")
     project(":wgsl:$project").projectDir = file("wgsl/$project")
 }

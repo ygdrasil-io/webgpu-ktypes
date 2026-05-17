@@ -33,7 +33,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.wgsl.core)
-                implementation(projects.wgsl.wgsl)
+                implementation(projects.wgsl.parser)
                 implementation(projects.wgsl.msl)
                 implementation(projects.wgsl.hlsl)
                 implementation(projects.wgsl.glsl)
