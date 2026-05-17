@@ -156,6 +156,8 @@ class TypeResolver(
      * @return ResolutionResult with resolved unit and any errors
      */
     fun resolve(unit: TranslationUnit): ResolutionResult {
+        localScopes.clear()
+        
         // First, index all declarations
         typeIndex.index(unit)
 

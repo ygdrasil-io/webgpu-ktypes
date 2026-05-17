@@ -59,6 +59,8 @@ class Lowerer {
         structNameMap.clear()
         globalVarMap.clear()
         functionMap.clear()
+        localVariablesMap.clear()
+        functionParamsMap.clear()
         currentExpressions = null
         currentBlocks = null
         currentLocalVars = null
