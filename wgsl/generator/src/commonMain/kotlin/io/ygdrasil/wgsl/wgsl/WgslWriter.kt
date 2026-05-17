@@ -1,4 +1,4 @@
-package io.ygdrasil.wgsl.back.wgsl
+package io.ygdrasil.wgsl.wgsl
 
 import io.ygdrasil.wgsl.arena.Handle
 import io.ygdrasil.wgsl.back.WgslOptions

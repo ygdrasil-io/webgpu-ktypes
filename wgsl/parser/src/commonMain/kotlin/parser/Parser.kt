@@ -2,6 +2,7 @@ package io.ygdrasil.wgsl.parser
 
 import io.ygdrasil.wgsl.ast.ArrayType
 import io.ygdrasil.wgsl.ast.AssignmentStatement
+import io.ygdrasil.wgsl.ast.AtomicType
 import io.ygdrasil.wgsl.ast.Attribute
 import io.ygdrasil.wgsl.ast.BinaryExpr
 import io.ygdrasil.wgsl.ast.BinaryOperator
@@ -13,6 +14,7 @@ import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
 import io.ygdrasil.wgsl.ast.ConstAssertDecl
 import io.ygdrasil.wgsl.ast.ConstAssertStatement
+import io.ygdrasil.wgsl.ast.ConstantType
 import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
 import io.ygdrasil.wgsl.ast.DiscardStatement
@@ -37,6 +39,7 @@ import io.ygdrasil.wgsl.ast.OverrideDecl
 import io.ygdrasil.wgsl.ast.Param
 import io.ygdrasil.wgsl.ast.PointerType
 import io.ygdrasil.wgsl.ast.ReturnStatement
+import io.ygdrasil.wgsl.ast.SamplerType
 import io.ygdrasil.wgsl.ast.ScalarKind
 import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.Statement
@@ -48,7 +51,10 @@ import io.ygdrasil.wgsl.ast.SwitchBody
 import io.ygdrasil.wgsl.ast.SwitchCase
 import io.ygdrasil.wgsl.ast.SwitchStatement
 import io.ygdrasil.wgsl.ast.TemplateParam
+import io.ygdrasil.wgsl.ast.TemplateType
 import io.ygdrasil.wgsl.ast.TernaryExpr
+import io.ygdrasil.wgsl.ast.TextureKind
+import io.ygdrasil.wgsl.ast.TextureType
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ast.TypeAliasDecl
 import io.ygdrasil.wgsl.ast.TypeDecl
@@ -759,7 +765,7 @@ class Parser(
     /**
      * Parses a type declaration.
      */
-    private fun parseTypeDecl(): TypeDecl {
+    internal fun parseTypeDecl(): TypeDecl {
         val start = currentToken.span
 
         when (currentKind()) {
@@ -863,9 +869,141 @@ class Parser(
                 return parsePointerType(start)
             }
 
+            TokenKind.ATOMIC -> {
+                advance()
+                return parseAtomicType(start)
+            }
+
+            TokenKind.SAMPLER -> {
+                advance()
+                return SamplerType(false, Span(start.start, previousToken?.span?.end ?: start.end))
+            }
+
+            TokenKind.SAMPLER_COMPARISON -> {
+                advance()
+                return SamplerType(true, Span(start.start, previousToken?.span?.end ?: start.end))
+            }
+
+            TokenKind.TEXTURE_1D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_1D)
+            }
+
+            TokenKind.TEXTURE_1D_ARRAY -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_1D_ARRAY)
+            }
+
+            TokenKind.TEXTURE_2D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_2D)
+            }
+
+            TokenKind.TEXTURE_2D_ARRAY -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_2D_ARRAY)
+            }
+
+            TokenKind.TEXTURE_3D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_3D)
+            }
+
+            TokenKind.TEXTURE_CUBE -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_CUBE)
+            }
+
+            TokenKind.TEXTURE_CUBE_ARRAY -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_CUBE_ARRAY)
+            }
+
+            TokenKind.TEXTURE_MULTISAMPLED_2D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_MULTISAMPLED_2D)
+            }
+
+            TokenKind.TEXTURE_DEPTH_2D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_DEPTH_2D)
+            }
+
+            TokenKind.TEXTURE_DEPTH_2D_ARRAY -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_DEPTH_2D_ARRAY)
+            }
+
+            TokenKind.TEXTURE_DEPTH_CUBE -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_DEPTH_CUBE)
+            }
+
+            TokenKind.TEXTURE_DEPTH_CUBE_ARRAY -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_DEPTH_CUBE_ARRAY)
+            }
+
+            TokenKind.TEXTURE_DEPTH_MULTISAMPLED_2D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_DEPTH_MULTISAMPLED_2D)
+            }
+
+            TokenKind.TEXTURE_EXTERNAL -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_EXTERNAL)
+            }
+
+            TokenKind.TEXTURE_STORAGE_1D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_STORAGE_1D)
+            }
+
+            TokenKind.TEXTURE_STORAGE_2D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_STORAGE_2D)
+            }
+
+            TokenKind.TEXTURE_STORAGE_2D_ARRAY -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_STORAGE_2D_ARRAY)
+            }
+
+            TokenKind.TEXTURE_STORAGE_3D -> {
+                advance()
+                return parseTextureType(start, TextureKind.TEXTURE_STORAGE_3D)
+            }
+
+            TokenKind.INT_LITERAL, TokenKind.FLOAT_LITERAL, TokenKind.TRUE, TokenKind.FALSE -> {
+                val expr = parseExpression()
+                return ConstantType(expr, expr.span)
+            }
+
             TokenKind.IDENTIFIER -> {
                 val nameToken = advance()
-                return NamedType(nameToken.literal ?: "", nameToken.span)
+                val name = nameToken.literal ?: ""
+                if (currentKind() == TokenKind.LEFT_ANGLE) {
+                    advance()
+                    val args = mutableListOf<TypeDecl>()
+                    val oldInsideTemplate = isInsideTemplate
+                    isInsideTemplate = true
+                    try {
+                        while (currentKind() != TokenKind.RIGHT_ANGLE && !isAtEnd()) {
+                            args.add(parseTypeDecl())
+                            if (currentKind() == TokenKind.COMMA) {
+                                advance()
+                            } else if (currentKind() != TokenKind.RIGHT_ANGLE) {
+                                break
+                            }
+                        }
+                    } finally {
+                        isInsideTemplate = oldInsideTemplate
+                    }
+                    expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
+                    val end = previousToken?.span?.end ?: currentToken.span.end
+                    return TemplateType(name, args, Span(start.start, end))
+                }
+                return NamedType(name, nameToken.span)
             }
 
             else -> {
@@ -997,6 +1135,43 @@ class Parser(
 
         val end = previousToken?.span?.end ?: currentToken.span.end
         return PointerType(storageClass, elementType, accessMode, Span(start.start, end))
+    }
+
+    /**
+     * Parses an atomic type like `atomic<i32>`.
+     */
+    private fun parseAtomicType(start: Span): AtomicType {
+        expectOrError(TokenKind.LEFT_ANGLE, "Expected '<'")
+        val elementType = parseTypeDecl()
+        expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
+        val end = previousToken?.span?.end ?: currentToken.span.end
+        return AtomicType(elementType, Span(start.start, end))
+    }
+
+    /**
+     * Parses a texture type.
+     */
+    private fun parseTextureType(start: Span, kind: TextureKind): TextureType {
+        var elementType: TypeDecl? = null
+        var accessMode: String? = null
+
+        if (currentKind() == TokenKind.LEFT_ANGLE) {
+            advance()
+            elementType = parseTypeDecl()
+
+            if (currentKind() == TokenKind.COMMA) {
+                advance()
+                if (currentKind() == TokenKind.READ || currentKind() == TokenKind.WRITE || currentKind() == TokenKind.READ_WRITE) {
+                    accessMode = advance().literal ?: previousToken?.kind?.name?.lowercase()
+                } else if (currentKind() == TokenKind.IDENTIFIER) {
+                    accessMode = advance().literal
+                }
+            }
+
+            expectOrError(TokenKind.RIGHT_ANGLE, "Expected '>'")
+        }
+        val end = previousToken?.span?.end ?: currentToken.span.end
+        return TextureType(kind, elementType, accessMode, Span(start.start, end))
     }
 
     /**

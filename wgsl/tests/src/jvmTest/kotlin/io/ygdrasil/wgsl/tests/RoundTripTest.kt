@@ -1,7 +1,7 @@
 package io.ygdrasil.wgsl.tests
 
 import io.ygdrasil.wgsl.back.BackendRegistry
-import io.ygdrasil.wgsl.back.wgsl.WgslWriterFactory
+import io.ygdrasil.wgsl.wgsl.WgslWriterFactory
 
 class RoundTripTest : GoldenTestBase("wgsl") {
     init {

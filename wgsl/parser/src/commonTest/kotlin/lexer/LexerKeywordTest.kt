@@ -72,10 +72,10 @@ class LexerKeywordTest : FunSpec({
         }
 
         test("Texture and sampler types") {
-            val source = "sampler texture_1d texture_2d texture_2d_array texture_3d texture_cube texture_cube_array texture_multisampled_2d texture_depth_2d texture_depth_2d_array texture_depth_cube texture_depth_cube_array texture_depth_multisampled_2d texture_external texture_storage_1d texture_storage_2d texture_storage_2d_array texture_storage_3d"
+            val source = "sampler texture_1d texture_1d_array texture_2d texture_2d_array texture_3d texture_cube texture_cube_array texture_multisampled_2d texture_depth_2d texture_depth_2d_array texture_depth_cube texture_depth_cube_array texture_depth_multisampled_2d texture_external texture_storage_1d texture_storage_2d texture_storage_2d_array texture_storage_3d"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
-                TokenKind.SAMPLER, TokenKind.TEXTURE_1D, TokenKind.TEXTURE_2D,
+                TokenKind.SAMPLER, TokenKind.TEXTURE_1D, TokenKind.TEXTURE_1D_ARRAY, TokenKind.TEXTURE_2D,
                 TokenKind.TEXTURE_2D_ARRAY, TokenKind.TEXTURE_3D, TokenKind.TEXTURE_CUBE,
                 TokenKind.TEXTURE_CUBE_ARRAY, TokenKind.TEXTURE_MULTISAMPLED_2D,
                 TokenKind.TEXTURE_DEPTH_2D, TokenKind.TEXTURE_DEPTH_2D_ARRAY,

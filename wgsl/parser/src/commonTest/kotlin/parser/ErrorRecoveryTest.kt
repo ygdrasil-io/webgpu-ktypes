@@ -7,7 +7,6 @@ import io.ygdrasil.wgsl.ir.Span
 import io.ygdrasil.wgsl.lexer.Token
 import io.ygdrasil.wgsl.lexer.TokenKind
 
-@Ignored
 class ErrorRecoveryTest : FunSpec({
     test("recovery state initial values") {
         val state = ErrorRecovery.RecoveryState()

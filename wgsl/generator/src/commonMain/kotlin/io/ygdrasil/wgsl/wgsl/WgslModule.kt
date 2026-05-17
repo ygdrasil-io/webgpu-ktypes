@@ -1,4 +1,4 @@
-package io.ygdrasil.wgsl.back.wgsl
+package io.ygdrasil.wgsl.wgsl
 
 import io.ygdrasil.wgsl.back.WgslOptions
 import io.ygdrasil.wgsl.ir.Module

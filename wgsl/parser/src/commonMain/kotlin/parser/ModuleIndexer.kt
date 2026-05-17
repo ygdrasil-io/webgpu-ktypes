@@ -2,10 +2,13 @@ package io.ygdrasil.wgsl.parser
 
 import io.ygdrasil.wgsl.ast.ArrayType
 import io.ygdrasil.wgsl.ast.AssignmentStatement
+import io.ygdrasil.wgsl.ast.AtomicType
 import io.ygdrasil.wgsl.ast.BinaryExpr
 import io.ygdrasil.wgsl.ast.BlockStatement
 import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
+import io.ygdrasil.wgsl.ast.ConstAssertStatement
+import io.ygdrasil.wgsl.ast.ConstantType
 import io.ygdrasil.wgsl.ast.DefaultCase
 import io.ygdrasil.wgsl.ast.Expression
 import io.ygdrasil.wgsl.ast.ExpressionStatement
@@ -24,6 +27,7 @@ import io.ygdrasil.wgsl.ast.OverrideDecl
 import io.ygdrasil.wgsl.ast.PointerType
 import io.ygdrasil.wgsl.ast.ReferenceType
 import io.ygdrasil.wgsl.ast.ReturnStatement
+import io.ygdrasil.wgsl.ast.SamplerType
 import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.Statement
 import io.ygdrasil.wgsl.ast.StructDecl
@@ -33,6 +37,7 @@ import io.ygdrasil.wgsl.ast.SwitchStatement
 import io.ygdrasil.wgsl.ast.SwizzleExpr
 import io.ygdrasil.wgsl.ast.TemplateType
 import io.ygdrasil.wgsl.ast.TernaryExpr
+import io.ygdrasil.wgsl.ast.TextureType
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ast.TypeAliasDecl
 import io.ygdrasil.wgsl.ast.TypeCastExpr
@@ -164,7 +169,9 @@ class ModuleIndexer {
                 dependencies.addAll(findDependenciesInDeclaration(decl.function, allNames))
             }
 
-            else -> {}
+            is io.ygdrasil.wgsl.ast.ConstAssertDecl -> {
+                dependencies.addAll(findDependenciesInExpression(decl.expression, allNames))
+            }
         }
 
         return dependencies
@@ -419,6 +426,24 @@ class ModuleIndexer {
                 for (arg in type.args) {
                     dependencies.addAll(findDependenciesInType(arg, allNames))
                 }
+            }
+
+            is AtomicType -> {
+                dependencies.addAll(findDependenciesInType(type.elementType, allNames))
+            }
+
+            is SamplerType -> {
+                // No dependencies for sampler types
+            }
+
+            is TextureType -> {
+                if (type.elementType != null) {
+                    dependencies.addAll(findDependenciesInType(type.elementType, allNames))
+                }
+            }
+
+            is ConstantType -> {
+                dependencies.addAll(findDependenciesInExpression(type.expression, allNames))
             }
         }
 

@@ -143,3 +143,66 @@ data class TemplateType(
     val args: List<TypeDecl>,
     override val span: Span,
 ) : TypeDecl()
+
+/**
+ * An atomic type like `atomic<i32>`.
+ */
+data class AtomicType(
+    /** The element type. */
+    val elementType: TypeDecl,
+    override val span: Span,
+) : TypeDecl()
+
+/**
+ * A sampler type.
+ */
+data class SamplerType(
+    /** Whether this is a comparison sampler. */
+    val isComparison: Boolean,
+    override val span: Span,
+) : TypeDecl()
+
+/**
+ * A texture type like `texture_2d<f32>`.
+ */
+data class TextureType(
+    /** The texture kind. */
+    val kind: TextureKind,
+    /** The element type (if applicable). */
+    val elementType: TypeDecl? = null,
+    /** The access mode (for storage textures). */
+    val accessMode: String? = null,
+    override val span: Span,
+) : TypeDecl()
+
+/**
+ * A type that is actually a constant expression, used in template arguments.
+ */
+data class ConstantType(
+    val expression: Expression,
+    override val span: Span,
+) : TypeDecl()
+
+/**
+ * Texture kinds in WGSL.
+ */
+enum class TextureKind {
+    TEXTURE_1D,
+    TEXTURE_1D_ARRAY,
+    TEXTURE_2D,
+    TEXTURE_2D_ARRAY,
+    TEXTURE_3D,
+    TEXTURE_CUBE,
+    TEXTURE_CUBE_ARRAY,
+    TEXTURE_MULTISAMPLED_2D,
+    TEXTURE_DEPTH_2D,
+    TEXTURE_DEPTH_2D_ARRAY,
+    TEXTURE_DEPTH_CUBE,
+    TEXTURE_DEPTH_CUBE_ARRAY,
+    TEXTURE_DEPTH_MULTISAMPLED_2D,
+    TEXTURE_EXTERNAL,
+    TEXTURE_STORAGE_1D,
+    TEXTURE_STORAGE_2D,
+    TEXTURE_STORAGE_2D_ARRAY,
+    TEXTURE_STORAGE_3D,
+}

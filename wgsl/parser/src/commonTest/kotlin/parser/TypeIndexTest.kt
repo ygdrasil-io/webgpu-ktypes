@@ -12,7 +12,6 @@ import io.ygdrasil.wgsl.ast.StructMember
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ir.Span
 
-@Ignored
 class TypeIndexTest : FunSpec({
     test("builtin scalar types are known") {
         val index = TypeIndex()

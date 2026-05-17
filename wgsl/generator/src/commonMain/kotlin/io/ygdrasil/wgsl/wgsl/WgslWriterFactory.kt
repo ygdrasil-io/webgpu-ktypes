@@ -1,4 +1,4 @@
-package io.ygdrasil.wgsl.back.wgsl
+package io.ygdrasil.wgsl.wgsl
 
 import io.ygdrasil.wgsl.back.BackendOptions
 import io.ygdrasil.wgsl.back.BackendRegistry

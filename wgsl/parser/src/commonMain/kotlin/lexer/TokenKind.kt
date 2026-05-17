@@ -104,6 +104,7 @@ enum class TokenKind {
 
     // Keywords - Built-in texture and sampler types
     SAMPLER,
+    SAMPLER_COMPARISON,
     TEXTURE_1D,
     TEXTURE_1D_ARRAY,
     TEXTURE_2D,
@@ -265,7 +266,7 @@ val TokenKind.isKeyword: Boolean
         TokenKind.TEXTURE_DEPTH_CUBE_ARRAY, TokenKind.TEXTURE_DEPTH_MULTISAMPLED_2D,
         TokenKind.TEXTURE_EXTERNAL, TokenKind.TEXTURE_STORAGE_1D, TokenKind.TEXTURE_STORAGE_2D,
         TokenKind.TEXTURE_STORAGE_2D_ARRAY, TokenKind.TEXTURE_STORAGE_3D,
-        TokenKind.SAMPLER, TokenKind.ATOMIC, TokenKind.HANDLE -> true
+        TokenKind.SAMPLER, TokenKind.SAMPLER_COMPARISON, TokenKind.ATOMIC, TokenKind.HANDLE -> true
         // Built-in values
         TokenKind.TRUE, TokenKind.FALSE, TokenKind.POSITION, TokenKind.VERTEX_INDEX,
         TokenKind.INSTANCE_INDEX, TokenKind.FRONT_FACING, TokenKind.PRIMITIVE_INDEX,

@@ -10,7 +10,6 @@ import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.lexer.Lexer
 
-@Ignored
 class ParserTest : FunSpec({
     test("parse empty") {
         val lexer = Lexer("")

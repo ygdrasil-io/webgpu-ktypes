@@ -13,7 +13,6 @@ import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ir.Span
 
-@Ignored
 class TypeResolverTest : FunSpec({
     test("resolve empty unit") {
         val resolver = TypeResolver()

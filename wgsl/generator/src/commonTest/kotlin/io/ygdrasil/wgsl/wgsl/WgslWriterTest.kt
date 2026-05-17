@@ -1,12 +1,16 @@
-package io.ygdrasil.wgsl.back.wgsl
+package io.ygdrasil.wgsl.wgsl
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.string.shouldContain
 import io.ygdrasil.wgsl.arena.Arena
-import io.ygdrasil.wgsl.ir.*
+import io.ygdrasil.wgsl.ir.Block
+import io.ygdrasil.wgsl.ir.Expression
 import io.ygdrasil.wgsl.ir.Function
-import io.ygdrasil.wgsl.valid.ModuleInfo
-import io.ygdrasil.wgsl.back.wgsl.WgslWriter
+import io.ygdrasil.wgsl.ir.Module
+import io.ygdrasil.wgsl.ir.ScalarKind
+import io.ygdrasil.wgsl.ir.StructMember
+import io.ygdrasil.wgsl.ir.Type
+import io.ygdrasil.wgsl.ir.TypeInner
 
 class WgslWriterTest : FunSpec({
 
@@ -24,15 +28,19 @@ class WgslWriterTest : FunSpec({
 
         // Add a struct
         module.types.append(
-            Type(TypeInner.Struct(listOf(
-                StructMember("a", f32Handle, null, 0)
-            )))
+            Type(
+                TypeInner.Struct(
+                    listOf(
+                        StructMember("a", f32Handle, null, 0)
+                    )
+                )
+            )
         )
 
         // Add a function
         val expressions = Arena<Expression>()
-        val blocks = Arena<io.ygdrasil.wgsl.ir.Block>()
-        val body = blocks.append(io.ygdrasil.wgsl.ir.Block(emptyList()))
+        val blocks = Arena<Block>()
+        val body = blocks.append(Block(emptyList()))
 
         module.functions.append(
             Function(

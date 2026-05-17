@@ -9,7 +9,6 @@ import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.VectorType
 import io.ygdrasil.wgsl.ir.Span
 
-@Ignored
 class BuilderTest : FunSpec({
     test("create scalar type with scalarType method") {
         val builder = AstBuilder()

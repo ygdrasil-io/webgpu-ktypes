@@ -16,7 +16,6 @@ import io.ygdrasil.wgsl.ast.StructMember
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ir.Span
 
-@Ignored
 class ModuleIndexerTest : FunSpec({
     test("empty translation unit") {
         val indexer = ModuleIndexer()

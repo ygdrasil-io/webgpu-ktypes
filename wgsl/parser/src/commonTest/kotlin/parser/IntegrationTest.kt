@@ -10,7 +10,6 @@ import io.ygdrasil.wgsl.ast.VariableDecl
 import io.ygdrasil.wgsl.ast.VariableDeclKind
 import io.ygdrasil.wgsl.lexer.Lexer
 
-@Ignored
 class IntegrationTest : FunSpec({
     test("parse and resolve: empty function") {
         val source = "fn main() {}"

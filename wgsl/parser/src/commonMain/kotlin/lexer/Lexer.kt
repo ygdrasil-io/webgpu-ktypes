@@ -794,6 +794,7 @@ class Lexer(
         "f32" -> TokenKind.F32
         "f64" -> TokenKind.F64
         "sampler" -> TokenKind.SAMPLER
+        "sampler_comparison" -> TokenKind.SAMPLER_COMPARISON
         "texture_1d" -> TokenKind.TEXTURE_1D
         "texture_1d_array" -> TokenKind.TEXTURE_1D_ARRAY
         "texture_2d" -> TokenKind.TEXTURE_2D

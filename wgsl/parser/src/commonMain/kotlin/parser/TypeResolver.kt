@@ -2,6 +2,7 @@ package io.ygdrasil.wgsl.parser
 
 import io.ygdrasil.wgsl.ast.ArrayType
 import io.ygdrasil.wgsl.ast.AssignmentStatement
+import io.ygdrasil.wgsl.ast.AtomicType
 import io.ygdrasil.wgsl.ast.Attribute
 import io.ygdrasil.wgsl.ast.BinaryExpr
 import io.ygdrasil.wgsl.ast.BlockStatement
@@ -11,6 +12,7 @@ import io.ygdrasil.wgsl.ast.CallExpr
 import io.ygdrasil.wgsl.ast.Case
 import io.ygdrasil.wgsl.ast.ConstAssertDecl
 import io.ygdrasil.wgsl.ast.ConstAssertStatement
+import io.ygdrasil.wgsl.ast.ConstantType
 import io.ygdrasil.wgsl.ast.ContinueStatement
 import io.ygdrasil.wgsl.ast.DefaultCase
 import io.ygdrasil.wgsl.ast.DiscardStatement
@@ -34,6 +36,7 @@ import io.ygdrasil.wgsl.ast.Param
 import io.ygdrasil.wgsl.ast.PointerType
 import io.ygdrasil.wgsl.ast.ReferenceType
 import io.ygdrasil.wgsl.ast.ReturnStatement
+import io.ygdrasil.wgsl.ast.SamplerType
 import io.ygdrasil.wgsl.ast.ScalarKind
 import io.ygdrasil.wgsl.ast.ScalarType
 import io.ygdrasil.wgsl.ast.Statement
@@ -46,6 +49,7 @@ import io.ygdrasil.wgsl.ast.SwitchStatement
 import io.ygdrasil.wgsl.ast.SwizzleExpr
 import io.ygdrasil.wgsl.ast.TemplateType
 import io.ygdrasil.wgsl.ast.TernaryExpr
+import io.ygdrasil.wgsl.ast.TextureType
 import io.ygdrasil.wgsl.ast.TranslationUnit
 import io.ygdrasil.wgsl.ast.TypeAliasDecl
 import io.ygdrasil.wgsl.ast.TypeCastExpr
@@ -340,6 +344,19 @@ class TypeResolver(
                 val resolvedArgs = type.args.map { resolveTypeDecl(it, unresolved) }
                 type.copy(args = resolvedArgs)
             }
+
+            is AtomicType -> {
+                val resolvedElement = resolveTypeDecl(type.elementType, unresolved)
+                type.copy(elementType = resolvedElement)
+            }
+
+            is SamplerType -> type
+            is TextureType -> {
+                val resolvedElement = type.elementType?.let { resolveTypeDecl(it, unresolved) }
+                type.copy(elementType = resolvedElement)
+            }
+
+            is ConstantType -> type
         }
     }
 
@@ -859,6 +876,11 @@ class TypeResolver(
                     validateTypeDecl(arg, errors)
                 }
             }
+
+            is AtomicType -> validateTypeDecl(type.elementType, errors)
+            is SamplerType -> {}
+            is TextureType -> type.elementType?.let { validateTypeDecl(it, errors) }
+            is ConstantType -> validateExpression(type.expression, errors)
         }
     }
 
