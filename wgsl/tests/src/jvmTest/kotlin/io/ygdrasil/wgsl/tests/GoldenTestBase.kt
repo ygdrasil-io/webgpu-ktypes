@@ -17,10 +17,32 @@ import java.nio.file.Paths
 
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Custom exception for golden test failures with clean error messages.
+ * Stack trace is logged separately to keep stdout clean.
+ */
+class GoldenTestException(
+    val fileName: String,
+    val backend: String,
+    val phase: String,
+    message: String,
+    cause: Throwable? = null
+) : RuntimeException("[$backend] $phase failed for $fileName: $message", cause)
+
+/**
+ * Centralized error handler that logs the full exception but throws a clean error.
+ */
+private fun handleGoldenError(fileName: String, backend: String, phase: String, e: Throwable): Nothing {
+    val simpleMessage = "[$backend] $phase failed for $fileName: ${e.message}"
+    logger.error(e) { simpleMessage }
+    throw GoldenTestException(fileName, backend, phase, e.message ?: "Unknown error", e)
+}
+
 abstract class GoldenTestBase(val backendName: String) : FunSpec({
 
     registerAllBackends()
     val goldenUpdate = System.getenv("GOLDEN_UPDATE")?.toBoolean() ?: false
+    val goldenFilter = System.getenv("GOLDEN_FILTER")?.takeIf { it.isNotEmpty() }
     val rootDir = findProjectRoot()
     val inputDir = rootDir.resolve("tests/golden/inputs")
     val outputBaseDir = rootDir.resolve("tests/golden/outputs")
@@ -28,6 +50,7 @@ abstract class GoldenTestBase(val backendName: String) : FunSpec({
     context("$backendName Golden Tests") {
         val inputFiles = Files.list(inputDir)
             .filter { it.toString().endsWith(".wgsl") }
+            .filter { goldenFilter == null || it.fileName.toString().contains(goldenFilter) }
             .toList()
 
         inputFiles.forEach { inputFile ->
@@ -38,25 +61,45 @@ abstract class GoldenTestBase(val backendName: String) : FunSpec({
                 
                 // 1. Parse
                 logger.debug { "Parsing..." }
-                val unit = parseWgsl(source)
+                val unit = try {
+                    parseWgsl(source)
+                } catch (e: Exception) {
+                    handleGoldenError(fileName, backendName, "parse", e)
+                }
                 
                 // 2. Resolve types
                 logger.debug { "Resolving types..." }
                 val resolver = TypeResolver()
-                val resolutionResult = resolver.resolve(unit)
+                val resolutionResult = try {
+                    resolver.resolve(unit)
+                } catch (e: Exception) {
+                    handleGoldenError(fileName, backendName, "type-resolution", e)
+                }
                 if (!resolutionResult.isSuccess) {
-                    throw RuntimeException("Type resolution failed: ${resolutionResult.unresolvedReferences}")
+                    throw GoldenTestException(
+                        fileName, backendName, "type-resolution",
+                        "Unresolved references: ${resolutionResult.unresolvedReferences}"
+                    )
                 }
                 
                 // 3. Lower to IR
                 logger.debug { "Lowering to IR..." }
                 val lowerer = Lowerer()
-                val module = lowerer.lower(resolutionResult.resolvedUnit)
+                val module = try {
+                    lowerer.lower(resolutionResult.resolvedUnit)
+                } catch (e: Exception) {
+                    handleGoldenError(fileName, backendName, "lowering", e)
+                }
                 
                 // 4. Generate backend code
                 logger.debug { "Generating backend code for $backendName..." }
-                val writer = BackendRegistry.DEFAULT.get(backendName) ?: throw RuntimeException("Backend $backendName not found")
-                val output = writer.write(module, io.ygdrasil.wgsl.valid.ModuleInfo())
+                val writer = BackendRegistry.DEFAULT.get(backendName)
+                    ?: throw GoldenTestException(fileName, backendName, "backend-lookup", "Backend $backendName not found")
+                val output = try {
+                    writer.write(module, io.ygdrasil.wgsl.valid.ModuleInfo())
+                } catch (e: Exception) {
+                    handleGoldenError(fileName, backendName, "code-generation", e)
+                }
                 
                 // 5. Compare or Update
                 val outputFile = outputBaseDir.resolve(backendName).resolve(fileName.replace(".wgsl", getExtension(backendName)))
@@ -69,9 +112,17 @@ abstract class GoldenTestBase(val backendName: String) : FunSpec({
                     if (backendName.lowercase() == "wgsl") {
                         val normalizedActual = WgslNormalizer.normalize(output)
                         val normalizedExpected = WgslNormalizer.normalize(expected)
-                        normalizedActual shouldBe normalizedExpected
+                        try {
+                            normalizedActual shouldBe normalizedExpected
+                        } catch (e: AssertionError) {
+                            handleGoldenError(fileName, backendName, "comparison", e)
+                        }
                     } else {
-                        output shouldBe expected
+                        try {
+                            output shouldBe expected
+                        } catch (e: AssertionError) {
+                            handleGoldenError(fileName, backendName, "comparison", e)
+                        }
                     }
                 }
 
@@ -95,10 +146,17 @@ abstract class GoldenTestBase(val backendName: String) : FunSpec({
                     }
 
                     val validator = ValidatorFactory.getValidator(type)!!
-                    val validationResult = validator.validate(output, stage = stage)
+                    val validationResult = try {
+                        validator.validate(output, stage = stage)
+                    } catch (e: Exception) {
+                        handleGoldenError(fileName, backendName, "validation", e)
+                    }
                     if (validationResult.isFailure) {
                         logger.debug { "Native validation FAILED for $fileName ($backendName): ${validationResult.output}" }
-                        throw RuntimeException("Native validation failed for $fileName:\n${validationResult.output}")
+                        throw GoldenTestException(
+                            fileName, backendName, "native-validation",
+                            "Validation failed: ${validationResult.output}"
+                        )
                     } else {
                         logger.debug { "Native validation SUCCESS for $fileName ($backendName)" }
                     }
