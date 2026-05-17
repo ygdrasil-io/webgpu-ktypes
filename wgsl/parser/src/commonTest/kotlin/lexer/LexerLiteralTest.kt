@@ -27,20 +27,23 @@ class LexerLiteralTest : FunSpec({
         }
 
         test("Floating point numbers (Floats)") {
-            val source = "3.14 1.0e-5 .5 0x1.0p1 3.14f 3.14h 3.14lf 0x1p+0 0x1.8p+1"
+            val source = "3.14 1.0e-5 .5 0x1.0p1 3.14f 3.14h 3.14lf 0x1p+0 0x1.8p+1 0x.1p1"
             val tokens = tokenizeSignificant(source)
             tokens.forEach { it.kind shouldBe TokenKind.FLOAT_LITERAL }
+            tokens.last().literal shouldBe "0x.1p1"
         }
 
         test("Digit separators") {
-            val source = "1_234 0x1_234 3.141_592"
+            val source = "1_234 0x1_234 3.141_592 42_ identifier"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
-                TokenKind.INT_LITERAL, TokenKind.INT_LITERAL, TokenKind.FLOAT_LITERAL
+                TokenKind.INT_LITERAL, TokenKind.INT_LITERAL, TokenKind.FLOAT_LITERAL,
+                TokenKind.INT_LITERAL, TokenKind.UNDERSCORE, TokenKind.IDENTIFIER
             )
             tokens[0].literal shouldBe "1_234"
             tokens[1].literal shouldBe "0x1_234"
             tokens[2].literal shouldBe "3.141_592"
+            tokens[3].literal shouldBe "42"
         }
 
         test("Negative sign treated as separate operator") {
@@ -63,9 +66,17 @@ class LexerLiteralTest : FunSpec({
 
     context("WGSL String Literals") {
         test("Strings with escapes") {
-            val source = "\"\" \"hello\" \"he\\\"llo\" \"he\\\\llo\""
+            val source = "\"\" \"hello\" \"he\\\"llo\" \"he\\\\llo\" \"\\n\\r\\t\" \"\\u{1F600}\" \"\\x41\""
             val tokens = tokenizeSignificant(source)
             tokens.forEach { it.kind shouldBe TokenKind.STRING_LITERAL }
+            
+            tokens[0].literal shouldBe ""
+            tokens[1].literal shouldBe "hello"
+            tokens[2].literal shouldBe "he\"llo"
+            tokens[3].literal shouldBe "he\\llo"
+            tokens[4].literal shouldBe "\n\r\t"
+            tokens[5].literal shouldBe "\uD83D\uDE00" // 😀
+            tokens[6].literal shouldBe "A"
         }
     }
 })

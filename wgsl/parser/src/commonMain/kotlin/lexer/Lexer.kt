@@ -285,14 +285,20 @@ class Lexer(
             }
         }
 
-        // Consume until */ or end
-        while (!isAtEnd) {
-            if (peekChar() == '*' && peekChar(1) == '/') {
+        var depth = 1
+        // Consume until matched */ or end
+        while (!isAtEnd && depth > 0) {
+            if (peekChar() == '/' && peekChar(1) == '*') {
                 consume()
                 consume()
-                break
+                depth++
+            } else if (peekChar() == '*' && peekChar(1) == '/') {
+                consume()
+                consume()
+                depth--
+            } else {
+                consume()
             }
-            consume()
         }
 
         val kind = if (isDocComment) TokenKind.DOC_COMMENT else TokenKind.MULTI_LINE_COMMENT
@@ -482,36 +488,80 @@ class Lexer(
         // Consume opening quote
         consume()
 
-        val startIndex = index
+        val content = StringBuilder()
 
         // Consume until closing quote or end
         while (!isAtEnd) {
-            when (peekChar()!!) {
+            val char = peekChar()!!
+            when (char) {
                 '"' -> {
                     consume()
-                    break
+                    return Token.stringLiteral(content.toString(), spanFrom(start))
                 }
 
                 '\\' -> {
-                    // Handle escape sequences
-                    consume()
-                    if (!isAtEnd) {
-                        consume() // Consume the escaped character
+                    consume() // consume \
+                    if (isAtEnd) break
+                    val escapeChar = consume()!!
+                    when (escapeChar) {
+                        'n' -> content.append('\n')
+                        'r' -> content.append('\r')
+                        't' -> content.append('\t')
+                        '\\' -> content.append('\\')
+                        '"' -> content.append('"')
+                        '\'' -> content.append('\'')
+                        '0' -> content.append('\u0000')
+                        'x' -> {
+                            val hex = StringBuilder()
+                            for (i in 0 until 2) {
+                                if (!isAtEnd && peekChar()!!.isHexDigit()) {
+                                    hex.append(consume())
+                                }
+                            }
+                            if (hex.length == 2) {
+                                content.append(hex.toString().toInt(16).toChar())
+                            }
+                        }
+                        'u' -> {
+                            if (peekChar() == '{') {
+                                consume() // {
+                                val hex = StringBuilder()
+                                while (!isAtEnd && peekChar() != '}') {
+                                    val h = peekChar()!!
+                                    if (h.isHexDigit()) {
+                                        hex.append(consume())
+                                    } else {
+                                        break
+                                    }
+                                }
+                                if (peekChar() == '}') consume() // }
+                                if (hex.isNotEmpty()) {
+                                    try {
+                                        val codePoint = hex.toString().toInt(16)
+                                        content.append(String(Character.toChars(codePoint)))
+                                    } catch (e: Exception) {
+                                        // Ignore invalid code point
+                                    }
+                                }
+                            }
+                        }
+                        else -> content.append(escapeChar)
                     }
                 }
 
                 '\n', '\r' -> {
-                    // Unterminated string literal - still consume for error recovery
-                    consume()
+                    // Unterminated string literal
+                    break
                 }
 
-                else -> consume()
+                else -> content.append(consume())
             }
         }
 
-        val text = source.substring(startIndex - 1, index) // Include quotes
-        return Token.stringLiteral(text, spanFrom(start))
+        return Token.stringLiteral(content.toString(), spanFrom(start))
     }
+
+    private fun Char.isHexDigit(): Boolean = this in '0'..'9' || this in 'a'..'f' || this in 'A'..'F'
 
     /**
      * Lexes an operator or punctuation token.
