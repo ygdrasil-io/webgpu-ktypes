@@ -30,9 +30,7 @@ kotlin {
             dependencies {
                 implementation(project(":wgsl:core"))
                 implementation(project(":wgsl:parser"))
-                implementation(project(":wgsl:msl"))
-                implementation(project(":wgsl:hlsl"))
-                implementation(project(":wgsl:glsl"))
+                implementation(project(":wgsl:generator"))
             }
         }
 

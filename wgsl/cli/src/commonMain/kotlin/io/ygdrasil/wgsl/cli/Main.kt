@@ -9,9 +9,9 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 import io.ygdrasil.wgsl.back.BackendWriter
-import io.ygdrasil.wgsl.glsl.GlslWriterFactory
-import io.ygdrasil.wgsl.hlsl.HlslWriterFactory
-import io.ygdrasil.wgsl.msl.MslWriterFactory
+import io.ygdrasil.wgsl.generator.glsl.GlslWriterFactory
+import io.ygdrasil.wgsl.generator.hlsl.HlslWriterFactory
+import io.ygdrasil.wgsl.generator.msl.MslWriterFactory
 import io.ygdrasil.wgsl.back.wgsl.WgslWriterFactory
 import java.io.File
 

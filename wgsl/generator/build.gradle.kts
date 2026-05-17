@@ -1,11 +1,13 @@
 @file:OptIn(ExperimentalKotlinGradlePluginApi::class)
 
+import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     publish
     kotlin("multiplatform")
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotest)
     alias(libs.plugins.ksp)
 }
@@ -16,9 +18,48 @@ kotlin {
         enabled = true
     }
 
+    js {
+        browser()
+        nodejs()
+    }
+
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_25
+        }
+    }
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    watchosArm64()
+    watchosSimulatorArm64()
+    watchosX64()
+    macosArm64()
+    macosX64()
+    linuxArm64()
+    linuxX64()
+    mingwX64()
+    androidNativeArm64()
+    androidNativeX64()
+
+    androidLibrary {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
+
+        namespace = "io.ygdrasil.webgpu.ktypes"
+        compileSdk = 36
+        minSdk = 28
+    }
+
+
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        nodejs()
+        compilerOptions {
+            freeCompilerArgs.add("-opt-in=kotlin.js.ExperimentalWasmJsInterop")
         }
     }
 
@@ -32,10 +73,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.wgsl.core)
-                implementation(projects.wgsl.parser)
-                implementation(projects.wgsl.generator)
-                implementation(libs.clikt)
+                implementation(project(":wgsl:core"))
+                implementation(project(":wgsl:parser"))
             }
         }
 
@@ -48,6 +87,7 @@ kotlin {
         jvmTest {
             dependencies {
                 implementation(libs.kotest.runner.junit5)
+                implementation(libs.kotlin.reflect)
                 implementation(libs.logback.classic)
             }
         }
