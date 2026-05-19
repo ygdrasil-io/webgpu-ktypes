@@ -430,3 +430,12 @@ val TokenKind.isRightAssociative: Boolean
 
         else -> false
     }
+
+/**
+ * Returns true if this token is a builtin value keyword that can be used as a struct member name.
+ * These keywords should be accepted after a DOT token to form MemberAccessExpr.
+ */
+val TokenKind.isBuiltinValue: Boolean
+    get() = this in listOf(
+        TokenKind.POSITION,
+    )

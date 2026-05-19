@@ -106,7 +106,7 @@ sealed class ExpressionKind {
     @Serializable
     data class AccessIndex(
         val expr: Handle<Expression>,
-        val index: Int
+        val index: UInt
     ) : ExpressionKind()
 
     // Texture sampling

@@ -241,7 +241,7 @@ abstract class WriterBase<T : BackendOptions>(
                 val e = writeExpression(kind.expr)
                 val type = getExpressionType(kind.expr)
                 if (type.inner is TypeInner.Struct) {
-                    val member = type.inner.members[kind.index]
+                    val member = type.inner.members[kind.index.toInt()]
                     "$e.${member.name}"
                 } else {
                     "$e[${kind.index}]"
@@ -373,7 +373,7 @@ abstract class WriterBase<T : BackendOptions>(
             is ExpressionKind.AccessIndex -> {
                 val baseType = getExpressionType(kind.expr)
                 when (val inner = baseType.inner) {
-                    is TypeInner.Struct -> module.types[inner.members[kind.index].type]
+                    is TypeInner.Struct -> module.types[inner.members[kind.index.toInt()].type]
                     is TypeInner.Vector -> module.types[inner.scalar]
                     is TypeInner.Matrix -> module.types[inner.scalar] // Should be vector
                     is TypeInner.Array -> module.types[inner.element]

@@ -3,8 +3,9 @@ package io.ygdrasil.wgsl.parser.lower
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.ygdrasil.wgsl.ir.StorageClass
-import io.ygdrasil.wgsl.parser.TestUtils.lowerWgsl
+import io.ygdrasil.wgsl.parser.lowerWgsl
 
 class GlobalLoweringTest : FunSpec({
     test("T021: should lower private global variable") {
@@ -28,5 +29,12 @@ class GlobalLoweringTest : FunSpec({
         
         globalVar.name shouldBe "uniforms"
         globalVar.storageClass shouldBe StorageClass.Uniform
+    }
+
+    test("global_variables_should_preserve_initializers") {
+        val module = lowerWgsl("var<private> global: i32 = 42;")
+        
+        val globalVar = module.globalVariables.toList().first()
+        globalVar.init shouldNotBe null
     }
 })

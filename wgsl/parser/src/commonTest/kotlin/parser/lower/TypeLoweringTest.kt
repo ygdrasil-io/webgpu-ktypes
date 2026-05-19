@@ -98,4 +98,37 @@ class TypeLoweringTest : FunSpec({
         xMember shouldNotBe null
         yMember shouldNotBe null
     }
+
+    test("vec3_should_not_duplicate_scalar_types") {
+        val module = lowerWgsl("fn main() -> vec3<f32> { return vec3(1.0); }")
+        
+        val scalarF32Count = module.types.toList().count {
+            it.inner is TypeInner.Scalar && 
+            (it.inner as TypeInner.Scalar).kind == ScalarKind.F32
+        }
+        
+        // Bug: crée un nouveau F32 pour chaque vec3
+        scalarF32Count shouldBe 1
+    }
+
+    test("nested_struct_members_should_resolve_to_actual_types") {
+        val module = lowerWgsl("""
+            struct Inner { a: i32 }
+            struct Outer { inner: Inner }
+        """)
+        
+        // Trouver Outer (celui qui a un membre 'inner')
+        val outerType = module.types.toList().find { type ->
+            type.inner is TypeInner.Struct && 
+            (type.inner as TypeInner.Struct).members.any { it.name == "inner" }
+        }
+        outerType shouldNotBe null
+        
+        val innerMember = (outerType!!.inner as TypeInner.Struct).members.find { it.name == "inner" }
+        innerMember shouldNotBe null
+        
+        // Le type du membre inner doit pointer vers Inner (pas un struct vide)
+        val innerType = module.types[innerMember!!.type]
+        (innerType.inner as? TypeInner.Struct)?.members?.isEmpty() shouldBe false
+    }
 })

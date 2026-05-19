@@ -49,6 +49,9 @@ class Lowerer {
     private var currentLocalVars: Arena<IrLocalVariable>? = null
     private val localVariablesMap = mutableMapOf<String, Handle<IrLocalVariable>>()
     private val functionParamsMap = mutableMapOf<String, Int>()
+    private val structMemberIndexMap = mutableMapOf<String, Map<String, UInt>>()
+    private val structHandleToNameMap = mutableMapOf<Handle<IrType>, String>()
+    private var currentFunction: Handle<IrFunction>? = null
 
     fun lower(unit: TranslationUnit): IrModule {
         // Create a fresh module for this lowering pass
@@ -61,6 +64,8 @@ class Lowerer {
         functionMap.clear()
         localVariablesMap.clear()
         functionParamsMap.clear()
+        structMemberIndexMap.clear()
+        structHandleToNameMap.clear()
         currentExpressions = null
         currentBlocks = null
         currentLocalVars = null
@@ -111,8 +116,13 @@ class Lowerer {
 
     private fun lowerType(typeDecl: TypeDecl): Handle<IrType> {
         // Check if we have a struct by name
-        if (typeDecl is StructType) {
-            val handle = structNameMap[typeDecl.name]
+        val name = when (typeDecl) {
+            is StructType -> typeDecl.name
+            is NamedType -> typeDecl.name
+            else -> null
+        }
+        if (name != null) {
+            val handle = structNameMap[name]
             if (handle != null) {
                 return handle
             }
@@ -219,6 +229,15 @@ class Lowerer {
         }
         val type = IrType(IrTypeInner.Struct(members))
         val handle = module.types.append(type)
+        
+        // Peupler structMemberIndexMap
+        structMemberIndexMap[decl.name] = members.withIndex().associate { (idx, member) ->
+            member.name to idx.toUInt()
+        }
+        
+        // Peupler structHandleToNameMap pour résoudre le nom à partir du handle
+        structHandleToNameMap[handle] = decl.name
+        
         typeMap[StructType(decl.name, decl.span)] = handle
         structNameMap[decl.name] = handle
     }
@@ -317,12 +336,7 @@ class Lowerer {
             )
         }
 
-        val bodyHandle = if (decl.body != null) {
-            lowerBlock(decl.body)
-        } else {
-            blocks.append(IrBlock(emptyList()))
-        }
-
+        // Set current function before lowering body
         val func = IrFunction(
             name = decl.name,
             parameters = parameters,
@@ -330,12 +344,24 @@ class Lowerer {
             expressions = expressions,
             localVariables = localVars,
             blocks = blocks,
-            body = bodyHandle
+            body = blocks.append(IrBlock(emptyList())) // Placeholder, will be updated
         )
         
         val handle = module.functions.append(func)
+        currentFunction = handle
         functionMap[decl.name] = handle
         
+        // Now lower the body with currentFunction set
+        val bodyHandle = if (decl.body != null) {
+            lowerBlock(decl.body)
+        } else {
+            blocks.append(IrBlock(emptyList()))
+        }
+        
+        // Update the function body
+        module.functions[handle] = func.copy(body = bodyHandle)
+        
+        currentFunction = null
         currentExpressions = null
         currentBlocks = null
         currentLocalVars = null
@@ -483,6 +509,7 @@ class Lowerer {
     }
 
     private fun lowerExpression(astExpr: Expression): Handle<IrExpression> {
+        // Code existant commence ici...
         val kind = when (astExpr) {
             is IntLiteral -> {
                 val scalar = if (astExpr.suffix == "u") IrScalarValue.U32(astExpr.value) else IrScalarValue.I32(astExpr.value.toInt())
@@ -500,10 +527,7 @@ class Lowerer {
                     IrExpressionKind.GlobalVar(globalVarMap[name]!!)
                 } else {
                     // P004 fix: Throw error instead of silent fallback
-                    // TODO: Re-enable this once all variable references are properly resolved
-                    // throw LoweringError("Undefined variable: '$name'")
-                    // For now, use fallback to avoid breaking existing tests
-                    IrExpressionKind.Literal(IrLiteralValue.Scalar(IrScalarValue.I32(0)))
+                    throw LoweringError("Undefined variable: '$name'")
                 }
             }
             is BinaryExpr -> IrExpressionKind.Binary(
@@ -534,17 +558,72 @@ class Lowerer {
                 }
             }
             is MemberAccessExpr -> {
-                // TODO: P005 - Resolve member index from type
-                // Current: always uses index 0 (incorrect for multi-member structs)
-                // Proper fix requires type tracking for expressions
-                IrExpressionKind.AccessIndex(lowerExpression(astExpr.objectExpr), 0)
+                val objExpr = lowerExpression(astExpr.objectExpr)
+                val memberName = astExpr.member
+                
+                // Résoudre le type de l'objet
+                val objExprKind = currentExpressions!![objExpr].kind
+                val objTypeHandle = when (objExprKind) {
+                    is IrExpressionKind.LocalVar -> {
+                        currentLocalVars!![objExprKind.handle].type
+                    }
+                    is IrExpressionKind.GlobalVar -> {
+                        module.globalVariables[objExprKind.handle].type
+                    }
+                    is IrExpressionKind.FunctionArgument -> {
+                        // Résoudre via currentFunction et l'index du paramètre
+                        val func = currentFunction?.let { module.functions[it] }
+                            ?: throw LoweringError("Member access on function argument without current function context")
+                        val paramIndex = objExprKind.index
+                        if (paramIndex >= 0 && paramIndex < func.parameters.size) {
+                            func.parameters[paramIndex].type
+                        } else {
+                            throw LoweringError("Invalid function argument index: $paramIndex")
+                        }
+                    }
+                    is IrExpressionKind.TypeConstructor -> {
+                        // Pour TypeConstructor(S(1, 2)), le type est directement disponible
+                        objExprKind.type
+                    }
+                    else -> throw LoweringError("Cannot resolve member access on ${objExprKind::class.simpleName}")
+                }
+                
+                val objType = module.types[objTypeHandle]
+                val structName = structHandleToNameMap[objTypeHandle]
+                    ?: throw LoweringError("Cannot access member on non-struct type or type not found in struct map")
+                
+                // Récupérer l'index du membre
+                val memberIndex = structMemberIndexMap[structName]?.get(memberName)
+                    ?: run {
+                        // DEBUG: Afficher le contenu de structMemberIndexMap
+                        println("DEBUG: Member '$memberName' not found in struct '$structName'")
+                        println("  Available structs: ${structMemberIndexMap.keys}")
+                        println("  Members of '$structName': ${structMemberIndexMap[structName]?.keys}")
+                        if (structName == "VertexOutput") {
+                            println("  Searching for VertexOutput in structNameMap...")
+                            structNameMap.forEach { (name, handle) ->
+                                if (name == "VertexOutput") {
+                                    val type = module.types[handle]
+                                    println("  Found VertexOutput: handle=$handle, type=$type")
+                                    val structInner = type.inner as? IrTypeInner.Struct
+                                    if (structInner != null) {
+                                        println("  Members: ${structInner.members.map { it.name }}")
+                                    }
+                                }
+                            }
+                            println("  VertexOutput search complete")
+                        }
+                        throw LoweringError("Member '$memberName' not found in struct '$structName'")
+                    }
+                
+                IrExpressionKind.AccessIndex(objExpr, memberIndex)
             }
             is IndexExpr -> {
                 val index = astExpr.index
                 if (index is IntLiteral) {
                     IrExpressionKind.AccessIndex(
                         lowerExpression(astExpr.objectExpr),
-                        index.value.toInt()
+                        index.value.toUInt()
                     )
                 } else {
                     IrExpressionKind.Access(

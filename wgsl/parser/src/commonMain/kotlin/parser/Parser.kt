@@ -78,6 +78,7 @@ import io.ygdrasil.wgsl.ir.Span
 import io.ygdrasil.wgsl.lexer.Lexer
 import io.ygdrasil.wgsl.lexer.Token
 import io.ygdrasil.wgsl.lexer.TokenKind
+import io.ygdrasil.wgsl.lexer.isBuiltinValue
 import io.ygdrasil.wgsl.lexer.isKeyword
 
 /**
@@ -361,12 +362,19 @@ class Parser(
         }
 
         // Parse name
-        val name = if (currentKind() == TokenKind.IDENTIFIER) {
+        var name = if (currentKind() == TokenKind.IDENTIFIER) {
             val nameToken = advance()
             nameToken.literal ?: ""
         } else {
-            error("Expected member name")
-            ""
+            // T023 fix: If name is missing, try to get it from @builtin attribute
+            val builtinAttr = attributes.find { it.name == "builtin" }
+            val builtinName = builtinAttr?.args?.firstOrNull()?.let { arg ->
+                (arg as? IdentExpr)?.name
+            }
+            builtinName ?: run {
+                error("Expected member name")
+                ""
+            }
         }
 
         // Parse type
@@ -1730,9 +1738,11 @@ class Parser(
 
                 TokenKind.DOT -> {
                     advance()
-                    if (currentKind() == TokenKind.IDENTIFIER) {
+                    // ✅ ACCEPTER : IDENTIFIER + builtin keywords
+                    if (currentKind() == TokenKind.IDENTIFIER || currentKind().isBuiltinValue) {
                         val memberToken = advance()
-                        val member = memberToken.literal ?: ""
+                        // Pour les builtins, literal est null → utiliser le nom du TokenKind
+                        val member = memberToken.literal ?: memberToken.kind.toString().lowercase()
                         val start = left.span.start
                         val end = memberToken.span.end
                         left = MemberAccessExpr(left, member, Span(start, end))
