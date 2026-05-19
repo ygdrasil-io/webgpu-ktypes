@@ -9,15 +9,15 @@ import io.kotest.matchers.shouldBe
  * Used in generic type declarations to specify constraints.
  */
 class TemplateConstraintTest : FunSpec({
-    context("Template Constraint Keywords") {
-        test("where keyword is recognized") {
+    context("Template constraint keywords") {
+        test("Where keyword is recognized") {
             val source = "where"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.WHERE
         }
 
-        test("where in template constraint context") {
+        test("Where in template constraint context") {
             val source = "fn process<T>(x: T) where T: num { }"
             val tokens = tokenizeSignificant(source)
             // Verify where is properly tokenized
@@ -30,7 +30,7 @@ class TemplateConstraintTest : FunSpec({
             )
         }
 
-        test("where with multiple constraints") {
+        test("Where with multiple constraints") {
             val source = "fn generic<T, U>(t: T, u: U) where T: num, U: vec { }"
             val tokens = tokenizeSignificant(source)
             // Count where keyword

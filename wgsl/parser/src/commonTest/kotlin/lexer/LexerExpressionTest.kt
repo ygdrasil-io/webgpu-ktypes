@@ -7,7 +7,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 
 class LexerExpressionTest : FunSpec({
     context("Complex expressions") {
-        test("simple function call") {
+        test("Simple function call") {
             val source = "foo(42)"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 4
@@ -17,7 +17,7 @@ class LexerExpressionTest : FunSpec({
             )
         }
 
-        test("function declaration") {
+        test("Function declaration") {
             val source = "fn main() {}"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 6
@@ -27,7 +27,7 @@ class LexerExpressionTest : FunSpec({
             )
         }
 
-        test("variable declaration") {
+        test("Variable declaration") {
             val source = "let x: i32 = 42;"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 7
@@ -38,7 +38,7 @@ class LexerExpressionTest : FunSpec({
             )
         }
 
-        test("struct declaration") {
+        test("Struct declaration") {
             val source = "struct Foo { x: i32 }"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 7
@@ -49,7 +49,7 @@ class LexerExpressionTest : FunSpec({
             )
         }
 
-        test("if statement") {
+        test("If statement") {
             val source = "if (x > 0) { return; }"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(

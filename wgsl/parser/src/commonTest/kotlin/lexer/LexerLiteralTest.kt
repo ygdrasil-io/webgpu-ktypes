@@ -7,7 +7,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 
 class LexerLiteralTest : FunSpec({
-    context("WGSL Numeric Literals") {
+    context("WGSL numeric literals") {
         test("Decimal and hexadecimal integers") {
             val source = "42 0x2a 42u 0x2au"
             val tokens = tokenizeSignificant(source)
@@ -17,7 +17,7 @@ class LexerLiteralTest : FunSpec({
             )
         }
 
-        test("Integers with size suffixes (i/u/li/lu)") {
+        test("Integers with size suffixes") {
             val source = "42i 42u 42li 42lu"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -26,7 +26,7 @@ class LexerLiteralTest : FunSpec({
             )
         }
 
-        test("Floating point numbers (Floats)") {
+        test("Floating point numbers") {
             val source = "3.14 1.0e-5 .5 0x1.0p1 3.14f 3.14h 3.14lf 0x1p+0 0x1.8p+1 0x.1p1"
             val tokens = tokenizeSignificant(source)
             tokens.forEach { it.kind shouldBe TokenKind.FLOAT_LITERAL }
@@ -54,7 +54,7 @@ class LexerLiteralTest : FunSpec({
         }
     }
 
-    context("WGSL Boolean Literals") {
+    context("WGSL boolean literals") {
         test("True and false values") {
             val source = "true false"
             val tokens = tokenizeSignificant(source)
@@ -64,7 +64,7 @@ class LexerLiteralTest : FunSpec({
         }
     }
 
-    context("WGSL String Literals") {
+    context("WGSL string literals") {
         test("Strings with escapes") {
             val source = "\"\" \"hello\" \"he\\\"llo\" \"he\\\\llo\" \"\\n\\r\\t\" \"\\u{1F600}\" \"\\x41\""
             val tokens = tokenizeSignificant(source)

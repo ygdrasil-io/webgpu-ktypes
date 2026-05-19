@@ -9,22 +9,22 @@ import io.kotest.matchers.shouldBe
  * These are used in struct member annotations to control memory layout.
  */
 class MemoryLayoutTest : FunSpec({
-    context("Memory Layout Keywords") {
-        test("packed keyword is recognized") {
+    context("Memory layout keywords") {
+        test("Packed keyword is recognized") {
             val source = "packed"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.PACKED
         }
 
-        test("aligned keyword is recognized") {
+        test("Aligned keyword is recognized") {
             val source = "aligned"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.ALIGNED
         }
 
-        test("packed and aligned in struct declaration context") {
+        test("Packed and aligned in struct declaration context") {
             val source = "struct Data { @packed @aligned(16) value: i32 }"
             val tokens = tokenizeSignificant(source)
             // Verify both layout keywords are present

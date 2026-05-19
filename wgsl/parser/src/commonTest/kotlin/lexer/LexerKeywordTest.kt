@@ -6,7 +6,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 
 class LexerKeywordTest : FunSpec({
-    context("WGSL Keywords") {
+    context("WGSL keywords") {
         test("Control flow keywords") {
             val source = "if else switch case default loop while for break continue return discard continuing"
             val tokens = tokenizeSignificant(source)
@@ -41,7 +41,7 @@ class LexerKeywordTest : FunSpec({
             )
         }
 
-        test("Type constructors (vector, matrix, array, ptr, atomic)") {
+        test("Type constructors") {
             val source = "array vec2 vec3 vec4 mat2x2 mat3x3 mat4x4 ptr atomic"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -86,7 +86,7 @@ class LexerKeywordTest : FunSpec({
             )
         }
 
-        test("Built-in values (stage inputs/outputs)") {
+        test("Built-in values") {
             val source = "position vertex_index instance_index front_facing primitive_index sample_index sample_mask viewport_index pointsize clip_distances cull_distances device_index view_index workgroup_id num_workgroups global_invocation_id local_invocation_id local_invocation_index"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(

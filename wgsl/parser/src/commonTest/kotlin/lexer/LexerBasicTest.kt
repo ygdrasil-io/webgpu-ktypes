@@ -8,38 +8,38 @@ import io.kotest.matchers.shouldNotBe
 
 class LexerBasicTest : FunSpec({
     context("Basic tokenization") {
-        test("empty source") {
+        test("Empty source") {
             val tokens = tokenize("")
             tokens shouldHaveSize 0
         }
 
-        test("empty source returns EOF") {
+        test("Empty source returns EOF") {
             val lexer = Lexer("")
             val token = lexer.next()
             token shouldNotBe null
             token?.isEof shouldBe true
         }
 
-        test("whitespace only") {
+        test("Whitespace only") {
             val tokens = tokenizeSignificant("   \t\n\r  ")
             tokens shouldHaveSize 0
         }
 
-        test("single identifier") {
+        test("Single identifier") {
             val tokens = tokenizeSignificant("foo")
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.IDENTIFIER
             tokens[0].literal shouldBe "foo"
         }
 
-        test("identifier with underscore") {
+        test("Identifier with underscore") {
             val tokens = tokenizeSignificant("foo_bar")
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.IDENTIFIER
             tokens[0].literal shouldBe "foo_bar"
         }
 
-        test("identifier with numbers") {
+        test("Identifier with numbers") {
             val tokens = tokenizeSignificant("foo123")
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.IDENTIFIER
@@ -48,7 +48,7 @@ class LexerBasicTest : FunSpec({
     }
 
     context("Span information") {
-        test("token spans are correct") {
+        test("Token spans are correct") {
             val tokens = tokenize("foo bar")
             // tokenize() skips whitespace, so we get: foo, bar, EOF
             // But EOF is not included, so we get: foo, bar
@@ -66,8 +66,8 @@ class LexerBasicTest : FunSpec({
         }
     }
 
-    context("TokenStream interface") {
-        test("peek does not consume") {
+    context("Token stream interface") {
+        test("Peek does not consume") {
             val lexer = Lexer("foo bar")
             val firstPeek = lexer.peek()
             val secondPeek = lexer.peek()
@@ -77,7 +77,7 @@ class LexerBasicTest : FunSpec({
             firstPeek shouldBe secondPeek
         }
 
-        test("next consumes") {
+        test("Next consumes") {
             val lexer = Lexer("foo bar")
             val first = lexer.next()
             val second = lexer.next()
@@ -87,7 +87,7 @@ class LexerBasicTest : FunSpec({
             first shouldNotBe second
         }
 
-        test("peek then next") {
+        test("Peek then next") {
             val lexer = Lexer("foo bar")
             val peeked = lexer.peek()
             val next = lexer.next()
@@ -96,3 +96,4 @@ class LexerBasicTest : FunSpec({
         }
     }
 })
+

@@ -10,29 +10,29 @@ import io.kotest.matchers.shouldBe
  * These are used in pointer type declarations like: ptr<storage, i32, read>
  */
 class PointerAccessModeTest : FunSpec({
-    context("Pointer Access Mode Keywords") {
-        test("read keyword is recognized as access mode") {
+    context("Pointer access mode keywords") {
+        test("Read keyword is recognized as access mode") {
             val source = "read"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.READ
         }
 
-        test("write keyword is recognized as access mode") {
+        test("Write keyword is recognized as access mode") {
             val source = "write"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.WRITE
         }
 
-        test("read_write keyword is recognized as access mode") {
+        test("Read_write keyword is recognized as access mode") {
             val source = "read_write"
             val tokens = tokenizeSignificant(source)
             tokens shouldHaveSize 1
             tokens[0].kind shouldBe TokenKind.READ_WRITE
         }
 
-        test("access modes are properly tokenized in ptr declaration") {
+        test("Access modes are properly tokenized in ptr declaration") {
             val source = "ptr<storage, i32, read>"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -47,7 +47,7 @@ class PointerAccessModeTest : FunSpec({
             )
         }
 
-        test("write access mode in ptr declaration") {
+        test("Write access mode in ptr declaration") {
             val source = "ptr<function, vec4<f32>, write>"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -65,7 +65,7 @@ class PointerAccessModeTest : FunSpec({
             )
         }
 
-        test("read_write access mode in ptr declaration") {
+        test("Read_write access mode in ptr declaration") {
             val source = "ptr<storage, mat4x4<f32>, read_write>"
             val tokens = tokenizeSignificant(source)
             // Verify READ_WRITE token is present

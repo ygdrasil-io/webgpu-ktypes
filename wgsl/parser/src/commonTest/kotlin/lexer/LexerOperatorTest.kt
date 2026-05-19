@@ -7,8 +7,8 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 
 class LexerOperatorTest : FunSpec({
-    context("WGSL Operators") {
-        test("Arithmetic Operators") {
+    context("WGSL operators") {
+        test("Arithmetic operators") {
             val source = "+ - * / %"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -16,7 +16,7 @@ class LexerOperatorTest : FunSpec({
             )
         }
 
-        test("Increment & Decrement") {
+        test("Increment and decrement") {
             val source = "++ --"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -24,7 +24,7 @@ class LexerOperatorTest : FunSpec({
             )
         }
 
-        test("Assignment Operators") {
+        test("Assignment operators") {
             val source = "= += -= *= /= %= &= |= ^= <<= >>="
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -35,7 +35,7 @@ class LexerOperatorTest : FunSpec({
             )
         }
 
-        test("Comparison Operators") {
+        test("Comparison operators") {
             val source = "== != < > <= >="
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -44,7 +44,7 @@ class LexerOperatorTest : FunSpec({
             )
         }
 
-        test("Logical Operators") {
+        test("Logical operators") {
             val source = "&& || !"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -52,7 +52,7 @@ class LexerOperatorTest : FunSpec({
             )
         }
 
-        test("Bitwise Operators") {
+        test("Bitwise operators") {
             val source = "& | ^ ~ << >>"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -61,7 +61,7 @@ class LexerOperatorTest : FunSpec({
             )
         }
 
-        test("Special Operators") {
+        test("Special operators") {
             val source = "-> => .* :: ? _"
             val tokens = tokenizeSignificant(source)
             tokens.map { it.kind } shouldContainExactly listOf(
@@ -71,7 +71,7 @@ class LexerOperatorTest : FunSpec({
         }
     }
 
-    context("WGSL Punctuation") {
+    context("WGSL punctuation") {
         test("Parentheses, braces and brackets") {
             val source = "() {} []"
             val tokens = tokenizeSignificant(source)
